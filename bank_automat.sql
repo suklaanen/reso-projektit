@@ -4,6 +4,7 @@
 -- ------------------------------------------------------
 -- Server version	8.0.31
 
+
 create database bank_automat;
 
 use bank_automat;
