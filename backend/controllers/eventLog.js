@@ -38,24 +38,3 @@ router.post('/', function(request, response) {
     });
 });
 
-router.put('/:id', function(request, response) {
-    eventLog.updateEvent(request.params.id, request.body, function(err, data){
-        if(err){
-            response.json(err);
-        }
-        else {
-            response.send(data);
-        }
-    });
-});
-
-router.delete('/:id', function(request, response) {
-    eventLog.deleteEvent(request.params.id, function(err, data){
-        if(err){
-            response.json(err);
-        }
-        else {
-            response.send(data);
-        }
-    });
-});

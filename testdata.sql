@@ -4,7 +4,6 @@ use bank_automat;
 -- Insert test data into tables 
 --
 
-
 # /id_user /firstname /lastname /address /city
 INSERT INTO `user` VALUES 
 (1,'Sofia','Virtanen','Ruusukatu 12','Helsinki'),
@@ -30,27 +29,26 @@ INSERT INTO `user` VALUES
 
 # /id_card /type (enum) /pin /id_user /attempts
 INSERT INTO `card` VALUES
-(1,'credit/debit',6371,1,0),
-(2,'credit/debit',6223,2,0),
+(1,'debit',6371,1,0),
+(2,'debit',6223,2,0),
 (3,'credit',2163,3,0),
 (4,'debit',7997,4,0),
 (5,'debit',3261,5,0),
 (6,'debit',1038,6,0),
-(7,'credit/debit',9121,7,0),
-(8,'credit/debit',4576,8,0),
+(7,'debit',9121,7,0),
+(8,'debit',4576,8,0),
 (9,'admin',1234,1,0),
 (10,'credit',4512,9,0),
-(11,'credit/debit',5544,4,0),
+(11,'debit',5544,4,0),
 (12,'debit',5843,5,0),
-(13,'credit/debit',3423,10,0),
+(13,'debit',3423,10,0),
 (14,'debit',0981,14,0),
-(15,'credit/debit',4352,15,0),
+(15,'debit',4352,15,0),
 (16,'credit/debit',1165,13,0),
 (17,'debit',4431,11,0),
 (18,'debit',7575,17,0),
 (19,'debit',8019,19,0),
 (20,'admin',0914,20,0);
-
 
 # /id_account /account_nmbr /bank_name /account_type / balance /max_withdrawal_per_day /credit_limit
 INSERT INTO `account` VALUES
@@ -102,11 +100,13 @@ INSERT INTO `account` VALUES
 (46,'FI8436757750000666','S-Pankki','debit',65423.87,500,0.00),
 (47,'FI4287175370001857','Danske','credit',0.00,400,9000.00),
 (48,'FI4582799790005969','Danske','debit',4321.09,600,0.00),
-(49,'FI5268695660000882','Ålandsbanken','debit',5678.90,1500,0.00),
-(50,'ADM-CARD-9',NULL,'admin',0.00,0,0.00),
-(51,'ADM-CARD-20',NULL,'admin',0.00,0,0.00);
+(49,'FI5268695660000882','Ålandsbanken','debit',5678.90,1500,0.00);
 
 # /id_accountUser /id_user /id_card /id_account
+# esim. käyttäjällä 19 on nyt kortti (16) kahteen tiliin (30) debit (33) credit
+# esim. käyttäjällä 2 ja 3 on yhteinen tili (2) debit
+# esim. käyttäjällä 4 ja 5 on yhteinen tili (5) debit
+# esim. käyttäjillä 7 ja 11 admin  oikeudet 
 INSERT INTO `accountuser` VALUES
 (1,1,1,1),
 (2,2,2,2),
@@ -116,10 +116,12 @@ INSERT INTO `accountuser` VALUES
 (6,4,6,5),
 (7,5,7,5),
 (8,5,8,6),
-(9,7,9,50),
+(9,7,9,NULL),
 (10,9,10,7),
 (11,10,17,8),
-(12,11,20,51);
+(12,11,20,NULL),
+(13,19,16,30), 
+(14,19,16,33); 
 
 # /id_event /id_automat /id_account /id_card /event_type /amount /time
 #INSERT INTO `eventlog` VALUES
