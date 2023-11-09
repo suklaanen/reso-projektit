@@ -4,12 +4,9 @@
 -- ------------------------------------------------------
 -- Server version	8.0.31
 
-# 1) <--Vasemmalta: Drop Schema..: Drop Now 
-# 2) päivitetyn Scheman ajo : Teams: BankSimul-projekti Files: Tietokanta: bank_automat.sql
-# 3) testdatan ajo: Teams: BankSimul-projekti Files: Tietokanta: testdata.sql
-# 4) taulujen tarkastelu 
 
 create database bank_automat;
+
 use bank_automat;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -39,7 +36,7 @@ CREATE TABLE `account` (
   `max_withdrawal_per_day` int NOT NULL DEFAULT '300',
   `credit_limit` decimal(15,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id_account`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +67,7 @@ CREATE TABLE `accountuser` (
   CONSTRAINT `accountUser_account` FOREIGN KEY (`id_account`) REFERENCES `account` (`id_account`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `accountUser_card` FOREIGN KEY (`id_card`) REFERENCES `card` (`id_card`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `accountUser_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +94,7 @@ CREATE TABLE `automat` (
   `balance_100` int NOT NULL,
   `max_withdrawal` int NOT NULL DEFAULT '500',
   PRIMARY KEY (`id_automat`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +122,7 @@ CREATE TABLE `card` (
   PRIMARY KEY (`id_card`),
   KEY `card_user_idx` (`id_user`),
   CONSTRAINT `card_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +156,7 @@ CREATE TABLE `eventlog` (
   CONSTRAINT `event_account` FOREIGN KEY (`id_account`) REFERENCES `account` (`id_account`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `event_automat` FOREIGN KEY (`id_automat`) REFERENCES `automat` (`id_automat`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `event_card` FOREIGN KEY (`id_card`) REFERENCES `card` (`id_card`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +182,7 @@ CREATE TABLE `user` (
   `address` varchar(255) NOT NULL,
   `city` varchar(45) NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
