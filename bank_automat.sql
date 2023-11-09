@@ -1,8 +1,12 @@
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: bank_automat
+-- Host: 127.0.0.1    Database: banaccountk_automataccountid_accountid_userfirstnamePRIMARYaccountuserid_user
 -- ------------------------------------------------------
 -- Server version	8.0.31
+
+create database bank_automat;
+use bank_automat;
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,9 +28,9 @@ DROP TABLE IF EXISTS `account`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account` (
   `id_account` int NOT NULL AUTO_INCREMENT,
-  `account_nmbr` char(18) NOT NULL,
-  `bank_name` varchar(255) NOT NULL,
-  `account_type` enum('credit','debit') NOT NULL DEFAULT 'debit',
+  `account_nmbr` char(18),
+  `bank_name` varchar(255),
+  `account_type` enum('credit','debit', 'admin') NOT NULL DEFAULT 'debit',
   `balance` decimal(15,2) NOT NULL DEFAULT '0.00',
   `max_withdrawal_per_day` int NOT NULL DEFAULT '300',
   `credit_limit` decimal(15,2) NOT NULL DEFAULT '0.00',
@@ -83,10 +87,10 @@ DROP TABLE IF EXISTS `automat`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `automat` (
   `id_automat` int NOT NULL AUTO_INCREMENT,
-  `10_balance` int NOT NULL,
-  `20_balance` int NOT NULL,
-  `50_balance` int NOT NULL,
-  `100_balance` int NOT NULL,
+  `balance_10` int NOT NULL,
+  `balance_20` int NOT NULL,
+  `balance_50` int NOT NULL,
+  `balance_100` int NOT NULL,
   `max_withdrawal` int NOT NULL DEFAULT '500',
   PRIMARY KEY (`id_automat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -186,7 +190,6 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Sofia','Virtanen','Ruusukatu 12','Helsinki'),(2,'Markus','Mustonen','Tammentie 34','Tampere'),(3,'Anni','Koivisto','Kuuselantie 7','Turku'),(4,'Mikko','Laaksonen','Kalliotie 21','Oulu'),(5,'Simo','Järvinen','Mäntyläntie 3','Jyväskylä'),(6,'Laura','Järvinen','Mäntyläntie 3','Jyväskylä'),(7,'Juha','Ranta','Merenranta 9','Vaasa'),(8,'Elina','Koskinen','Koiranta 3','Rovaniemi'),(9,'Tapani','Matalamäki','Pielitie 4','Helsinki');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
