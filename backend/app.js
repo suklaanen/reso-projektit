@@ -8,12 +8,9 @@ var usersRouter = require('./routes/users');
 var accountRouter = require('./controllers/account');
 var eventLogRouter = require('./controllers/eventLog');
 var userRouter = require('./controllers/user');
-<<<<<<< HEAD
-=======
 var cardRouter = require('./controllers/card');
 var automatRouter = require('./controllers/automat');
 
->>>>>>> main
 var app = express();
 
 app.use(logger('dev'));
@@ -27,11 +24,7 @@ app.use('/users', usersRouter);
 app.use('/account',accountRouter);
 app.use('/eventLog', eventLogRouter);
 app.use('/user', userRouter);
-<<<<<<< HEAD
-
-=======
 app.use('/card', cardRouter);
 app.use('/automat', automatRouter);
->>>>>>> main
 
 module.exports = app;
