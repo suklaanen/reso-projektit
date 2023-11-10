@@ -18,10 +18,10 @@ const automat = {
         callback);
     },
     deleteAutomat: function(id, callback) {
-        return db.query("DELETE FROM automat WHERE id_automat=?",[id],callback);
+        return db.query("DELETE FROM automat WHERE id_account=?",[id],callback);
     }
 
 
 };
 
-module.exports = automat;
+module.exports = account;

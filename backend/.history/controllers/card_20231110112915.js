@@ -47,7 +47,7 @@ router.put('/:id', function(request, response) {
 });
 
 router.delete('/:id', function(request, response) {
-    card.deleteCard(request.params.id, function(err, data) {
+    card.deleteAccount(request.params.id, function(err, data) {
         if(err) {
             response.json(err);
         }

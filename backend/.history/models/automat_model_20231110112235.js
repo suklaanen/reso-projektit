@@ -24,4 +24,4 @@ const automat = {
 
 };
 
-module.exports = automat;
+module.exports = account;

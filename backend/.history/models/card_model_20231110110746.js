@@ -5,7 +5,7 @@ const card = {
         return db.query("SELECT * FROM card",callback);
     },
     getOneCard: function(id, callback) {
-        return db.query("SELECT type FROM card WHERE id_card=?",[id],callback);
+        return db.query("SELECT * FROM card WHERE id_card=?",[id],callback);
     },
     addCard: function(newData, callback) {
         return db.query("INSERT INTO card(type,pin,id_user,attempts) VALUES(?,?,?,?)",

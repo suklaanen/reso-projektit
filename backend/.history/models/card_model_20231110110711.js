@@ -5,7 +5,7 @@ const card = {
         return db.query("SELECT * FROM card",callback);
     },
     getOneCard: function(id, callback) {
-        return db.query("SELECT type FROM card WHERE id_card=?",[id],callback);
+        return db.query("SELECT * FROM card WHERE id_card=?",[id],callback);
     },
     addCard: function(newData, callback) {
         return db.query("INSERT INTO card(type,pin,id_user,attempts) VALUES(?,?,?,?)",
@@ -17,8 +17,8 @@ const card = {
         [newData.type,newData.pin,newData.id_user,newData.attempts],
         callback);
     },
-    deleteCard: function(id, callback) {
-        return db.query("DELETE FROM card WHERE id_card=?",[id],callback);
+    deleteAccount: function(id, callback) {
+        return db.query("DELETE FROM account WHERE id_account=?",[id],callback);
     }
 
 

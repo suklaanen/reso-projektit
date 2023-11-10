@@ -9,7 +9,7 @@ var accountRouter = require('./controllers/account');
 var eventLogRouter = require('./controllers/eventLog');
 var userRouter = require('./controllers/user');
 var cardRouter = require('./controllers/card');
-var automatRouter = require('./controllers/automat');
+var automatRouter = require('./controllers/user');
 
 var app = express();
 

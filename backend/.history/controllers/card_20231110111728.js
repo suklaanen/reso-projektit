@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const card = require('../models/card_model');
+const account = require('../models/account_model');
 
 router.get('/', function(request, response) {
-    card.getAllCards(function(err, data) {
+    account.getAllAccounts(function(err, data) {
         if(err) {
             response.json(err);
         }
@@ -14,18 +14,18 @@ router.get('/', function(request, response) {
 });
 
 router.get('/:id', function(request, response) {
-    card.getOneCard(request.params.id, function(err, data) {
+    account.getOneCard(request.params.id, function(err, data) {
         if(err) {
             response.json(err);
         }
         else {
-            response.json(data[0].type)
+            response.json(data);
         }
     });
 });
 
 router.post('/', function(request, response) {
-    card.addCard(request.body, function(err, data) {
+    account.addAccount(request.body, function(err, data) {
         if(err) {
             response.json(err);
         }
@@ -36,7 +36,7 @@ router.post('/', function(request, response) {
 });
 
 router.put('/:id', function(request, response) {
-    card.updateCard(request.params.id, request.body, function(err, data) {
+    account.updateAccount(request.params.id, request.body, function(err, data) {
         if(err) {
             response.json(err);
         }
@@ -47,7 +47,7 @@ router.put('/:id', function(request, response) {
 });
 
 router.delete('/:id', function(request, response) {
-    card.deleteCard(request.params.id, function(err, data) {
+    account.deleteAccount(request.params.id, function(err, data) {
         if(err) {
             response.json(err);
         }

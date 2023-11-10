@@ -8,8 +8,8 @@ var usersRouter = require('./routes/users');
 var accountRouter = require('./controllers/account');
 var eventLogRouter = require('./controllers/eventLog');
 var userRouter = require('./controllers/user');
-var cardRouter = require('./controllers/card');
-var automatRouter = require('./controllers/automat');
+var cardRouter = require('./controllers/user');
+var userRouter = require('./controllers/user');
 
 var app = express();
 

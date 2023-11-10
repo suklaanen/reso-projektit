@@ -25,7 +25,7 @@ router.get('/:id', function(request, response) {
 });
 
 router.post('/', function(request, response) {
-    card.addCard(request.body, function(err, data) {
+    card.addAccount(request.body, function(err, data) {
         if(err) {
             response.json(err);
         }
@@ -36,7 +36,7 @@ router.post('/', function(request, response) {
 });
 
 router.put('/:id', function(request, response) {
-    card.updateCard(request.params.id, request.body, function(err, data) {
+    account.updateAccount(request.params.id, request.body, function(err, data) {
         if(err) {
             response.json(err);
         }
@@ -47,7 +47,7 @@ router.put('/:id', function(request, response) {
 });
 
 router.delete('/:id', function(request, response) {
-    card.deleteCard(request.params.id, function(err, data) {
+    account.deleteAccount(request.params.id, function(err, data) {
         if(err) {
             response.json(err);
         }
