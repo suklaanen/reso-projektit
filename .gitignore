@@ -1,4 +1,4 @@
 backend/node_modules/
 bank-automat/build/
 bank-automat/*.user
-backend/.env
+backend/*.env

@@ -1,4 +1,6 @@
 const db = require("../database");
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
 
 const card = {
     getAllCards: function(callback) {
@@ -16,6 +18,15 @@ const card = {
         return db.query("UPDATE card SET type=?,pin=?,id_user=?,attempts=? WHERE id_card=?",
         [newData.type,newData.pin,newData.id_user,newData.attempts],
         callback);
+    },
+    updatePin: function(id, newPin, callback) {
+        bcrypt.hash(newPin, saltRounds, function(err, hashedPin) {
+            return db.query("UPDATE card SET pin=? where id_card=?",
+            [hashedPin,id],callback);
+            });
+    },
+    checkPin: function(id, callback) {
+        return db.query("SELECT pin FROM card WHERE id_card=?",[id],callback);
     },
     deleteCard: function(id, callback) {
         return db.query("DELETE FROM card WHERE id_card=?",[id],callback);

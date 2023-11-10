@@ -10,6 +10,7 @@ var eventLogRouter = require('./controllers/eventLog');
 var userRouter = require('./controllers/user');
 var cardRouter = require('./controllers/card');
 var automatRouter = require('./controllers/automat');
+var loginRouter = require('./controllers/login');
 
 var app = express();
 
@@ -18,6 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/login', loginRouter);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
