@@ -71,8 +71,3 @@ CMakeLists.txt.user*
 # --------
 *.dll
 *.exe
-
-# Robot Framework
-robot/log.html
-robot/report.html
-robot/output.xml

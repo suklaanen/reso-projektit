@@ -2,3 +2,8 @@ backend/node_modules/
 bank-automat/build/
 bank-automat/*.user
 node_modules/
+
+# Robot Framework
+robot/log.html
+robot/report.html
+robot/output.xml
