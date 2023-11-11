@@ -8,9 +8,9 @@ const eventLog={
         return db.query("SELECT * FROM eventlog where id_event=?", [id], callback);
     },
     addEvent: function(newEvent, callback){
-        return db.query("INSERT INTO eventlog values(?,?,?,?,?,?,?)", 
-        [newEvent.id_event, newEvent.id_automat, newEvent.id_account, newEvent.id_card, 
-            newEvent.event_type, newEvent.amount, newEvent.time], callback);
+        return db.query("INSERT INTO eventlog(id_automat,id_account,id_card,event_type,amount,time) values(?,?,?,?)", 
+        [newEvent.id_automat,newEvent.id_account, newEvent.id_card, 
+        newEvent.event_type, newEvent.amount, newEvent.time], callback);
     }
 };
 
