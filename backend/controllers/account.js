@@ -25,12 +25,12 @@ router.get('/:id', function(request, response) {
 });
 
 router.post('/', function(request, response) {
-    account.addAccount(request.body, function(err, data) {
+    account.getAccountInfoByCardID(request.body, function(err, data) {
         if(err) {
             response.json(err);
         }
         else {
-            response.json(data);
+            response.json(data[0]);
         }
     });
 });

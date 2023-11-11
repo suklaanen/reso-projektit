@@ -19,6 +19,10 @@ const account = {
     },
     deleteAccount: function(id, callback) {
         return db.query("DELETE FROM account WHERE id_account=?",[id],callback);
+    },
+    getAccountInfoByCardID: function(cardInfo, callback) {
+        return db.query("SELECT firstname, lastname, bank_name, account_nmbr, balance FROM account INNER JOIN accountUser ON account.id_account = accountUser.id_account INNER JOIN user ON user.id_user = accountUser.id_user WHERE accountUser.id_card=? AND account.account_type=?",
+        [cardInfo.id_card,cardInfo.account_type],callback);
     }
 
 

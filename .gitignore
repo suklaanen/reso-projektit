@@ -1,7 +1,7 @@
 backend/node_modules/
 bank-automat/build/
 bank-automat/*.user
-node_modules/
+backend/*.env
 
 # Robot Framework
 robot/log.html
