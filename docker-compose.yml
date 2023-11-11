@@ -1,0 +1,12 @@
+services:
+  db-bank:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_USER=atm_user
+      - MYSQL_PASSWORD=pankkipass
+      - MYSQL_ROOT_PASSWORD=notneeded
+      - MYSQL_DATABASE=bank_automat
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d

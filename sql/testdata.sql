@@ -25,7 +25,8 @@ INSERT INTO `user` VALUES
 (17,'Lauriina','Halkonen','Lepokatu 2','Vaasa'),
 (18,'Paavo','Tietty','Pankkiirintie 15','Pirkkala'),
 (19,'Mauri','Ala-Vesko','Sieväkatu 9','Tampere'),
-(20,'Tiina','Tärskynen','Pikkuhiirunkuja 2','Kangasala');
+(20,'Tiina','Tärskynen','Pikkuhiirunkuja 2','Kangasala'),
+(21,'RFAT','RFAT','RFAT','RFAT');
 
 # /id_card /type (enum) /pin /id_user /attempts
 INSERT INTO `card` VALUES
@@ -48,7 +49,8 @@ INSERT INTO `card` VALUES
 (17,'debit',4431,11,0),
 (18,'debit',7575,17,0),
 (19,'debit',8019,19,0),
-(20,'admin',0914,20,0);
+(20,'admin',0914,20,0),
+(21,'admin',1111,21,0);
 
 # /id_account /account_nmbr /bank_name /account_type / balance /max_withdrawal_per_day /credit_limit
 INSERT INTO `account` VALUES
@@ -100,7 +102,8 @@ INSERT INTO `account` VALUES
 (46,'FI8436757750000666','S-Pankki','debit',65423.87,500,0.00),
 (47,'FI4287175370001857','Danske','credit',0.00,400,9000.00),
 (48,'FI4582799790005969','Danske','debit',4321.09,600,0.00),
-(49,'FI5268695660000882','Ålandsbanken','debit',5678.90,1500,0.00);
+(49,'FI5268695660000882','Ålandsbanken','debit',5678.90,1500,0.00),
+(50,'ROBOTFW','AUTOMATION TESTING','admin',0.00,0,0.00);
 
 # /id_accountUser /id_user /id_card /id_account
 # esim. käyttäjällä 19 on nyt kortti (16) kahteen tiliin (30) debit (33) credit
@@ -121,11 +124,8 @@ INSERT INTO `accountuser` VALUES
 (11,10,17,8),
 (12,11,20,NULL),
 (13,19,16,30), 
-(14,19,16,33); 
-
-# /id_event /id_automat /id_account /id_card /event_type /amount /time
-#INSERT INTO `eventlog` VALUES
-# NOTHING YET
+(14,19,16,33),
+(15,21,21,50);
 
 # /id_automat /balance_10 /balance_20 /balance_50 /balance_100 /max_withdrawal
 INSERT INTO `automat` VALUES
@@ -134,3 +134,6 @@ INSERT INTO `automat` VALUES
 (3,70,90,55,50,500),
 (4,110,100,82,39,500);
 
+# /id_event /id_automat /id_account /id_card /event_type /amount /time
+INSERT INTO `eventlog` VALUES
+(1,1,50,21,'First Event',0, NOW());

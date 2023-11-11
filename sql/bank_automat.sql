@@ -5,7 +5,7 @@
 -- Server version	8.0.31
 
 
-create database bank_automat;
+create database if not exists bank_automat;
 
 use bank_automat;
 

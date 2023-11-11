@@ -6,6 +6,7 @@ router.get('/', function(request, response) {
     eventLog.getEventData(function(err, data){
         if(err){
             console.log(err);
+            response.status(400);
             response.json("Error in database query");
         }
         else {
@@ -18,6 +19,7 @@ router.get('/:id', function(request, response) {
     eventLog.getOneEvent(request.params.id, function(err, data){
         if(err){
             console.log(err);
+            response.status(400);
             response.json("Error in database query");
         }
         else {
@@ -30,9 +32,12 @@ router.post('/', function(request, response) {
     console.log(request.body);
     eventLog.addEvent(request.body, function(err, data){
         if(err){
+            console.log(err);
+            response.status(400);
             response.json(err);
         }
         else{
+            console.log(data);
             response.send(data);
         }
     });

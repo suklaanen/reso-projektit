@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.11.5 on win32)" generated="20231111 10:29:54.177" rpa="false" schemaversion="4">
+<suite id="s1" name="Restapi" source="C:\ladyvsc\repos\kurssit-oamk\reso-pankkiautomaatti\group_1\robot\restapi.robot">
+<test id="s1-t1" name="Test GET Event Data" line="12">
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${BASE_URL}/eventLog</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20231111 10:29:54.290" level="INFO">GET Request : url=http://localhost:3000/eventLog 
+ path_url=/eventLog 
+ headers={'User-Agent': 'python-requests/2.28.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231111 10:29:54.290" level="INFO">GET Response : url=http://localhost:3000/eventLog 
+ status=200, reason=OK 
+ headers={'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '272', 'ETag': 'W/"110-pOtEiqyErvyp1BQEoDwrLmt7f9A"', 'Date': 'Sat, 11 Nov 2023 08:29:54 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body=[{"id_event":1,"id_automat":1,"id_account":50,"id_card":21,"event_type":"First Event","amount":"0.00","time":"2023-11-11T06:26:02.000Z"},{"id_event":2,"id_automat":1,"id_account":50,"id_card":21,"event_type":"Robot Test","amount":"0.00","time":"2023-11-11T08:27:38.000Z"}] 
+ </msg>
+<msg timestamp="20231111 10:29:54.290" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231111 10:29:54.280" endtime="20231111 10:29:54.290"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231111 10:29:54.291" level="INFO">[{'id_event': 1, 'id_automat': 1, 'id_account': 50, 'id_card': 21, 'event_type': 'First Event', 'amount': '0.00', 'time': '2023-11-11T06:26:02.000Z'}, {'id_event': 2, 'id_automat': 1, 'id_account': 50, 'id_card': 21, 'event_type': 'Robot Test', 'amount': '0.00', 'time': '2023-11-11T08:27:38.000Z'}]</msg>
+<status status="PASS" starttime="20231111 10:29:54.291" endtime="20231111 10:29:54.291"/>
+</kw>
+<status status="PASS" starttime="20231111 10:29:54.280" endtime="20231111 10:29:54.291"/>
+</test>
+<test id="s1-t2" name="Test GET One Event Data" line="16">
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>url=${BASE_URL}/eventLog?id=1</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20231111 10:29:54.296" level="INFO">GET Request : url=http://localhost:3000/eventLog?id=1 
+ path_url=/eventLog?id=1 
+ headers={'User-Agent': 'python-requests/2.28.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231111 10:29:54.296" level="INFO">GET Response : url=http://localhost:3000/eventLog?id=1 
+ status=200, reason=OK 
+ headers={'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '272', 'ETag': 'W/"110-pOtEiqyErvyp1BQEoDwrLmt7f9A"', 'Date': 'Sat, 11 Nov 2023 08:29:54 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body=[{"id_event":1,"id_automat":1,"id_account":50,"id_card":21,"event_type":"First Event","amount":"0.00","time":"2023-11-11T06:26:02.000Z"},{"id_event":2,"id_automat":1,"id_account":50,"id_card":21,"event_type":"Robot Test","amount":"0.00","time":"2023-11-11T08:27:38.000Z"}] 
+ </msg>
+<msg timestamp="20231111 10:29:54.296" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231111 10:29:54.292" endtime="20231111 10:29:54.296"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231111 10:29:54.297" level="INFO">[{'id_event': 1, 'id_automat': 1, 'id_account': 50, 'id_card': 21, 'event_type': 'First Event', 'amount': '0.00', 'time': '2023-11-11T06:26:02.000Z'}, {'id_event': 2, 'id_automat': 1, 'id_account': 50, 'id_card': 21, 'event_type': 'Robot Test', 'amount': '0.00', 'time': '2023-11-11T08:27:38.000Z'}]</msg>
+<status status="PASS" starttime="20231111 10:29:54.296" endtime="20231111 10:29:54.297"/>
+</kw>
+<status status="PASS" starttime="20231111 10:29:54.292" endtime="20231111 10:29:54.297"/>
+</test>
+<test id="s1-t3" name="Test POST Request to Express" line="20">
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20231111 10:29:54.298" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<status status="PASS" starttime="20231111 10:29:54.297" endtime="20231111 10:29:54.298"/>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${data}</var>
+<arg>id_automat=1</arg>
+<arg>id_account=50</arg>
+<arg>id_card=21</arg>
+<arg>event_type=Robot Test</arg>
+<arg>amount=0</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20231111 10:29:54.298" level="INFO">${data} = {'id_automat': '1', 'id_account': '50', 'id_card': '21', 'event_type': 'Robot Test', 'amount': '0'}</msg>
+<status status="PASS" starttime="20231111 10:29:54.298" endtime="20231111 10:29:54.298"/>
+</kw>
+<kw name="Get Current Date" library="DateTime">
+<var>${current_time}</var>
+<arg>result_format=%Y-%m-%d %H:%M:%S</arg>
+<doc>Returns current local or UTC time with an optional increment.</doc>
+<msg timestamp="20231111 10:29:54.299" level="INFO">${current_time} = 2023-11-11 10:29:54</msg>
+<status status="PASS" starttime="20231111 10:29:54.298" endtime="20231111 10:29:54.299"/>
+</kw>
+<kw name="Set To Dictionary" library="Collections">
+<arg>${data}</arg>
+<arg>time=${current_time}</arg>
+<doc>Adds the given ``key_value_pairs`` and/or ``items`` to the ``dictionary``.</doc>
+<status status="PASS" starttime="20231111 10:29:54.299" endtime="20231111 10:29:54.299"/>
+</kw>
+<kw name="POST" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${BASE_URL}/eventLog</arg>
+<arg>json=${data}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a POST request.</doc>
+<msg timestamp="20231111 10:29:54.317" level="INFO">POST Request : url=http://localhost:3000/eventLog 
+ path_url=/eventLog 
+ headers={'User-Agent': 'python-requests/2.28.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '130'} 
+ body=b'{"id_automat": "1", "id_account": "50", "id_card": "21", "event_type": "Robot Test", "amount": "0", "time": "2023-11-11 10:29:54"}' 
+ </msg>
+<msg timestamp="20231111 10:29:54.317" level="INFO">POST Response : url=http://localhost:3000/eventLog 
+ status=200, reason=OK 
+ headers={'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '107', 'ETag': 'W/"6b-xDLl7EtSBmGoXDLuV12pr8gJgS8"', 'Date': 'Sat, 11 Nov 2023 08:29:54 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"fieldCount":0,"affectedRows":1,"insertId":3,"info":"","serverStatus":2,"warningStatus":0,"changedRows":0} 
+ </msg>
+<msg timestamp="20231111 10:29:54.317" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231111 10:29:54.299" endtime="20231111 10:29:54.317"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231111 10:29:54.318" level="INFO">{'fieldCount': 0, 'affectedRows': 1, 'insertId': 3, 'info': '', 'serverStatus': 2, 'warningStatus': 0, 'changedRows': 0}</msg>
+<status status="PASS" starttime="20231111 10:29:54.317" endtime="20231111 10:29:54.318"/>
+</kw>
+<status status="PASS" starttime="20231111 10:29:54.297" endtime="20231111 10:29:54.318"/>
+</test>
+<test id="s1-t4" name="Test INVALID POST Data One Column Missing" line="30">
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20231111 10:29:54.319" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<status status="PASS" starttime="20231111 10:29:54.319" endtime="20231111 10:29:54.319"/>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${data}</var>
+<arg>id_account=50</arg>
+<arg>id_card=21</arg>
+<arg>event_type=Robot Test</arg>
+<arg>amount=120</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20231111 10:29:54.320" level="INFO">${data} = {'id_account': '50', 'id_card': '21', 'event_type': 'Robot Test', 'amount': '120'}</msg>
+<status status="PASS" starttime="20231111 10:29:54.319" endtime="20231111 10:29:54.320"/>
+</kw>
+<kw name="Get Current Date" library="DateTime">
+<var>${current_time}</var>
+<arg>result_format=%Y-%m-%d %H:%M:%S</arg>
+<doc>Returns current local or UTC time with an optional increment.</doc>
+<msg timestamp="20231111 10:29:54.320" level="INFO">${current_time} = 2023-11-11 10:29:54</msg>
+<status status="PASS" starttime="20231111 10:29:54.320" endtime="20231111 10:29:54.320"/>
+</kw>
+<kw name="Set To Dictionary" library="Collections">
+<arg>${data}</arg>
+<arg>time=${current_time}</arg>
+<doc>Adds the given ``key_value_pairs`` and/or ``items`` to the ``dictionary``.</doc>
+<status status="PASS" starttime="20231111 10:29:54.321" endtime="20231111 10:29:54.322"/>
+</kw>
+<kw name="POST" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${BASE_URL}/eventLog</arg>
+<arg>json=${data}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=400</arg>
+<doc>Sends a POST request.</doc>
+<msg timestamp="20231111 10:29:54.328" level="INFO">POST Request : url=http://localhost:3000/eventLog 
+ path_url=/eventLog 
+ headers={'User-Agent': 'python-requests/2.28.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '113'} 
+ body=b'{"id_account": "50", "id_card": "21", "event_type": "Robot Test", "amount": "120", "time": "2023-11-11 10:29:54"}' 
+ </msg>
+<msg timestamp="20231111 10:29:54.328" level="INFO">POST Response : url=http://localhost:3000/eventLog 
+ status=400, reason=Bad Request 
+ headers={'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '264', 'ETag': 'W/"108-xddHIFkcI64yAO3MsJtm7DGgruQ"', 'Date': 'Sat, 11 Nov 2023 08:29:54 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"code":"ER_BAD_NULL_ERROR","errno":1048,"sqlState":"23000","sqlMessage":"Column 'id_automat' cannot be null","sql":"INSERT INTO eventlog (id_automat, id_account, id_card, event_type, amount, time) values (NULL,'50','21','Robot Test','120','2023-11-11 10:29:54')"} 
+ </msg>
+<msg timestamp="20231111 10:29:54.328" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20231111 10:29:54.322" endtime="20231111 10:29:54.328"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231111 10:29:54.328" level="INFO">{'code': 'ER_BAD_NULL_ERROR', 'errno': 1048, 'sqlState': '23000', 'sqlMessage': "Column 'id_automat' cannot be null", 'sql': "INSERT INTO eventlog (id_automat, id_account, id_card, event_type, amount, time) values (NULL,'50','21','Robot Test','120','2023-11-11 10:29:54')"}</msg>
+<status status="PASS" starttime="20231111 10:29:54.328" endtime="20231111 10:29:54.328"/>
+</kw>
+<status status="PASS" starttime="20231111 10:29:54.319" endtime="20231111 10:29:54.329"/>
+</test>
+<doc>REST API - Crud operations</doc>
+<status status="PASS" starttime="20231111 10:29:54.178" endtime="20231111 10:29:54.329"/>
+</suite>
+<statistics>
+<total>
+<stat pass="4" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="4" fail="0" skip="0" id="s1" name="Restapi">Restapi</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
