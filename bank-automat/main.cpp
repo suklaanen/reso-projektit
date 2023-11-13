@@ -9,8 +9,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QDir::setCurrent("ABSOLUUTTINENPOLKUTÄHÄN/group_1/bank-automat");
-
     QFile styleFile("styles/bankstyle.qss");
 
     qDebug() << "Current working directory: " << QDir::currentPath();
