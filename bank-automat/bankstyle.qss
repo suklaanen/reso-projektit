@@ -1,0 +1,20 @@
+
+# STYLESHEET for BANK_AUTOMAT QT Application Ui
+
+
+#STOP {
+background-color: #ca0004; 
+}
+
+#CORRECT {
+background-color: #eff000; 
+}
+
+#FORWARD {
+background-color: #cbcbcb; 
+}
+
+#OK {
+background-color: #0fca00; 
+}
+
