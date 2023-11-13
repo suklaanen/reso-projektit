@@ -30,27 +30,26 @@ INSERT INTO `user` VALUES
 
 # /id_card /type (enum) /pin /id_user /attempts
 INSERT INTO `card` VALUES
-(1,'debit',6371,1,0),
-(2,'debit',6223,2,0),
-(3,'credit',2163,3,0),
-(4,'debit',7997,4,0),
-(5,'debit',3261,5,0),
-(6,'debit',1038,6,0),
-(7,'debit',9121,7,0),
-(8,'debit',4576,8,0),
-(9,'admin',1234,1,0),
-(10,'credit',4512,9,0),
-(11,'debit',5544,4,0),
-(12,'debit',5843,5,0),
-(13,'debit',3423,10,0),
-(14,'debit',0981,14,0),
-(15,'debit',4352,15,0),
-(16,'credit/debit',1165,13,0),
-(17,'debit',4431,11,0),
-(18,'debit',7575,17,0),
-(19,'debit',8019,19,0),
-(20,'admin',0914,20,0),
-(21,'admin',1111,21,0);
+(1,'debit','$2a$10$.sd7wgEvDqYVovZGCekutOJWmuT/UbSkKnziiHJ/PEHjLNpcGvT/2',2,0),
+(2,'debit','$2a$10$aN/zewaV8CL3jYQE0I/LA.P0IZVMUBm7WKaB9x30zNCc2GtBgJYI6',1,0),
+(3,'credit','$2a$10$SeSnzNgfIHcRN762pVzP.eTxHAZ54PUTJU9/Oe4nbwgXpr9L2A1tW',3,0),
+(4,'debit','$2a$10$L98HWiHh.p6fc7uPQ2tOfu9lfnAjseztEqHnNZNBuk7wBOX0Ij12K',4,0),
+(5,'debit','$2a$10$7Hl048Rp2TMEddzMB9qETuoTFQ.5uneik2pM0086kIG1s7wifP06m',5,0),
+(6,'debit','$2a$10$GOgKGbGAvblTl22mQxKqgeUzPB0MUghbKjxSH8vVoZGnFPl4/344C',6,0),
+(7,'debit','$2a$10$8bklPdiOMp.BCBSn6lNg9O3UTYVno.5ExTcUDulwkjw10YdvdhIWa',7,0),
+(8,'debit','$2a$10$ro6qAViOdugq04jedNuq8upRjurImj7gaFnGQuhd/5kGMRv6CCmmW',8,0),
+(9,'admin','$2a$10$5sceyVyziaaxRoG8zBcY8eSlJP04QF.8DN5R8Nid0WDCi6JD2ewwO',1,0),
+(10,'credit','$2a$10$djftLN657IIIug90A8vDde.ZSlkZpUt6bIUbbql8.UOgq2GqT1GCK',9,0),
+(11,'debit','$2a$10$Teau3aLIyl9Dy08zn2zzSONUDwLxGP22XwC2zyH6qaeUpNP/V8Ef2',4,0),
+(12,'debit','$2a$10$L2NjIxmvQucEX9RrkriBwOSURd0ITBV8XXfodVqEDccWU6ibNhS7y',5,0),
+(13,'debit','$2a$10$dmjQcu7P/rwChhhl.56foelwJsPXs3cAfgmKGYcqIoqQ4LNOwsuta',10,0),
+(14,'debit','$2a$10$D9MmIjAh7/DXQXqFkYsVb.HYqTCyV382a9yBYnI50Cuxe4SziIIpu',14,0),
+(15,'debit','$2a$10$u32TnvdQIETlYkgTZzMwQuHxZCDWcmSPGMmgF6XR1uJjMxhvwxoM6',15,0),
+(16,'credit/debit','$2a$10$XWrBB4kQnUFZId6iwm7IQu1YypE8HoIlIjxiCUjjeTwQOJDCzgegC',13,0),
+(17,'debit','$2a$10$VU4azfFqhbugRWZOwC0XwOkT5JV/WmC030O5ZEpc08YF0Z3jN4ar.',11,0),
+(18,'debit','$2a$10$NnQbWtK0rEsdtyShz/plGeGc/bC8M2WBFVRnWVdJt.iDb.BCM6Rq6',17,0),
+(19,'debit','$2a$10$6Bn88h6C4vGFsseK7XycFu.BGLg6PqelNWc.ZexptgTUxYiqvwTTu',19,0),
+(20,'admin','$2a$10$R7fw5jpjUmQfv0bbF8cbH.syU//LfWu7PchSvX/6Dya8nMOYIIhNO',20,0);
 
 # /id_account /account_nmbr /bank_name /account_type / balance /max_withdrawal_per_day /credit_limit
 INSERT INTO `account` VALUES
