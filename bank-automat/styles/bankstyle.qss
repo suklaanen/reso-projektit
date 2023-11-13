@@ -1,5 +1,8 @@
+#MainWindow { 
+spacing: 40px;
+}
 
-#STOP {
+#RED {
 background-color: #ca0004; 
 border-style: solid;
 border-width: 1px;
@@ -7,7 +10,11 @@ border-color: #505050;
 border-radius: 11px;
 }
 
-#CORRECT {
+#RED:pressed { 
+background-color: #f40c10;
+}
+
+#YELLOW {
 background-color: #eff000; 
 border-style: solid;
 border-width: 1px;
@@ -15,7 +22,11 @@ border-color: #505050;
 border-radius: 11px;
 }
 
-#FORWARD {
+#YELLOW:pressed { 
+background-color: #fbf93d;
+}
+
+#GREY {
 background-color: #cbcbcb; 
 border-style: solid;
 border-width: 1px;
@@ -23,7 +34,11 @@ border-color: #505050;
 border-radius: 11px;
 }
 
-#OK {
+#GREY:pressed { 
+background-color: #d8d8d8;
+}
+
+#GREEN {
 background-color: #0fca00; 
 border-style: solid;
 border-width: 1px;
@@ -31,3 +46,18 @@ border-color: #505050;
 border-radius: 11px;
 }
 
+#GREEN:pressed { 
+background-color: #25fd0d;
+}
+
+#pushButton1, #pushButton2, #pushButton3, #pushButton4, #pushButton5, #pushButton6, #pushButton7, #pushButton8 {
+background-color: #dfdfdf; 
+border-style: solid;
+border-width: 1px;
+border-color: #505050;
+border-radius: 8px;
+}
+
+#pushButton1:pressed, #pushButton2:pressed, #pushButton3:pressed, #pushButton4:pressed, #pushButton5:pressed, #pushButton6:pressed, #pushButton7:pressed, #pushButton8:pressed {
+background-color: #efefef; 
+}
