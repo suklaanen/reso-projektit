@@ -19,7 +19,12 @@ router.get('/:id', function(request, response) {
             response.json(err);
         }
         else {
-            response.json(data[0].type)
+            if(data.length > 0) {
+                response.json(data[0].type);
+            }
+            else {
+                response.json(false);
+            }    
         }
     });
 });
