@@ -9,4 +9,4 @@ robot/report.html
 robot/output.xml
 
 #VS Code
-.vscode/*
+.vscode/
