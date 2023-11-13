@@ -1,6 +1,5 @@
 backend/node_modules/
 bank-automat/build/
-!styles/bankstyle.qss
 bank-automat/*.user
 backend/*.env
 

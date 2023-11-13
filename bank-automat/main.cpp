@@ -4,12 +4,13 @@
 #include <QFile>
 #include <QDebug>
 #include <QDir>
+#include <QResource>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QFile styleFile("styles/bankstyle.qss");
+    QFile styleFile("../styles/bankstyle.qss");
 
     qDebug() << "Current working directory: " << QDir::currentPath();
     if (styleFile.open(QFile::ReadOnly | QFile::Text)) {
