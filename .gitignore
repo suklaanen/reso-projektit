@@ -7,3 +7,6 @@ backend/*.env
 robot/log.html
 robot/report.html
 robot/output.xml
+
+#VS Code
+.vscode/
