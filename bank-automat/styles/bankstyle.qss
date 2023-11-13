@@ -1,17 +1,33 @@
 
 #STOP {
 background-color: #ca0004; 
+border-style: solid;
+border-width: 1px;
+border-color: #505050;
+border-radius: 11px;
 }
 
 #CORRECT {
 background-color: #eff000; 
+border-style: solid;
+border-width: 1px;
+border-color: #505050;
+border-radius: 11px;
 }
 
 #FORWARD {
 background-color: #cbcbcb; 
+border-style: solid;
+border-width: 1px;
+border-color: #505050;
+border-radius: 11px;
 }
 
 #OK {
 background-color: #0fca00; 
+border-style: solid;
+border-width: 1px;
+border-color: #505050;
+border-radius: 11px;
 }
 
