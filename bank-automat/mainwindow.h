@@ -14,13 +14,42 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+    enum State {
+        INIT,
+        SELECT_USER,
+        SELECT_ADMIN,
+        CARD_OK,
+        LOGIN_OK,
+        USER_MAIN,
+        ADMIN_MAIN,
+        USER_LOGIN,
+        ADMIN_LOGIN,
+        WITHDRAW,
+        CONFIRM_WITHDRAW,
+        VIEW_TRANSACTIONS,
+        VIEW_BALANCE,
+        ADD_MONEY,
+        CONFIRM_ADD_MONEY,
+        VIEW_LOG
+    };
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
 public slots:
     void handleResponse(QNetworkReply* reply);
-    void numberClickedHandler();
-    void okClickedHandler();
+    void userRequests(/*const std::string& event*/);
+    void clickedNumberHandler();
+    void clickedGREEN();
+    void clickedYELLOW();
+    void clickedGREY();
+    void clickedRED();
+    void OK();
+    void STOP();
+    void SET();
+    void RESET();
+
 private:
     Ui::MainWindow *ui;
     QNetworkReply * reply;
@@ -28,9 +57,11 @@ private:
     QString ID;
     QString pin;
     void connectSlots();
-    int state;
     QString cardType;
     void requestID();
     void requestLogin();
+    State state;
+    void transition(State next_state);
+
 };
 #endif // MAINWINDOW_H
