@@ -5,6 +5,7 @@
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
+#include <login.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,13 +15,49 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+    enum State {
+        INIT,
+        CARD_FAIL,
+        LOGIN_FAIL,
+        SELECT_USER,
+        SELECT_ADMIN,
+        USER_LOGIN,
+        ADMIN_LOGIN,
+        CARD_OK,
+        LOGIN_OK,
+        USER_MAIN,
+        ADMIN_MAIN,
+        USER_TRANSACTIONS,
+        USER_BALANCE,
+        USER_WITHDRAWAL,
+        AUTOMAT_ADD_MONEY,
+        AUTOMAT_SET_MAX_WITHDRAWAL,
+        AUTOMAT_VIEW_LOG,
+        CONFIRM,
+        SELECT_ACCOUNT,
+        SELECT_DEBIT,
+        SELECT_CREDIT,
+        LOGOUT
+    };
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    Login *getLoginView() const;
+
 public slots:
     void handleResponse(QNetworkReply* reply);
-    void numberClickedHandler();
-    void okClickedHandler();
+    void clickedNumberHandler();
+    void clickedGREEN();
+    void clickedYELLOW();
+    void clickedGREY();
+    void clickedRED();
+    void OK();
+    void STOP();
+    void SET();
+    void RESET();
+
 private:
     Ui::MainWindow *ui;
     QNetworkReply * reply;
@@ -28,9 +65,13 @@ private:
     QString ID;
     QString pin;
     void connectSlots();
-    int state;
     QString cardType;
     void requestID();
     void requestLogin();
+    int state;
+    //State state;
+    Login * loginView;
+
+    Q_PROPERTY(Login *loginView READ getLoginView CONSTANT FINAL)
 };
 #endif // MAINWINDOW_H

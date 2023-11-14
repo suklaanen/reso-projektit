@@ -1,5 +1,23 @@
-#MainWindow { 
-spacing: 40px;
+MainWindow {
+background-color: #363636;
+}
+
+#Title, #SecondTitle, #Content { 
+color: #ffffff;
+}
+
+#MainFrame {
+background-color: #100f1d;
+border-style: solid;
+border-width: 4px;
+border-color: #505050;
+}
+
+#Frames1 {
+background-color: #070e1d; 
+border-style: solid;
+border-width: 4px;
+border-color: #505050;
 }
 
 #RED {
@@ -10,8 +28,12 @@ border-color: #505050;
 border-radius: 11px;
 }
 
-#RED:pressed { 
+#RED:hover { 
 background-color: #f40c10;
+}
+
+#RED:pressed { 
+background-color: #ca0004;
 }
 
 #YELLOW {
@@ -22,8 +44,12 @@ border-color: #505050;
 border-radius: 11px;
 }
 
-#YELLOW:pressed { 
+#YELLOW:hover { 
 background-color: #fbf93d;
+}
+
+#YELLOW:pressed { 
+background-color: #eff000;
 }
 
 #GREY {
@@ -34,8 +60,12 @@ border-color: #505050;
 border-radius: 11px;
 }
 
-#GREY:pressed { 
+#GREY:hover { 
 background-color: #d8d8d8;
+}
+
+#GREY:pressed { 
+background-color: #cbcbcb;
 }
 
 #GREEN {
@@ -46,18 +76,46 @@ border-color: #505050;
 border-radius: 11px;
 }
 
+#GREEN:hover { 
+background-color: #20f103;
+}
+
 #GREEN:pressed { 
-background-color: #25fd0d;
+background-color: #0fca00;
 }
 
 #pushButton1, #pushButton2, #pushButton3, #pushButton4, #pushButton5, #pushButton6, #pushButton7, #pushButton8 {
 background-color: #dfdfdf; 
 border-style: solid;
-border-width: 1px;
-border-color: #505050;
+border-width: 2px;
+border-color: #0d0d0d;
 border-radius: 8px;
 }
 
 #pushButton1:pressed, #pushButton2:pressed, #pushButton3:pressed, #pushButton4:pressed, #pushButton5:pressed, #pushButton6:pressed, #pushButton7:pressed, #pushButton8:pressed {
+background-color: #efefef; 
+}
+
+#N0, #N1, #N2, #N3, #N4, #N5, #N6, #N7, #N8, #N9 {
+background-color: #dfdfdf; 
+border-style: solid;
+border-width: 1px;
+border-color: #0d0d0d;
+border-radius: 8px;
+}
+
+#plus, #minus {
+background-color: #dfdfdf; 
+border-style: solid;
+border-width: 1px;
+border-color: #0d0d0d;
+border-radius: 8px;
+}
+
+#N0:hover, #N1:hover, #N2:hover, #N3:hover, #N4:hover, #N5:hover, #N6:hover, #N7:hover, #N8:hover, #N9:hover {
+background-color: #efefef; 
+}
+
+#plus:hover, #minus:hover {
 background-color: #efefef; 
 }
