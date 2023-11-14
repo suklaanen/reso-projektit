@@ -30,8 +30,10 @@ class MainWindow : public QMainWindow
         AUTOMAT_ADD_MONEY,
         AUTOMAT_SET_MAX_WITHDRAWAL,
         AUTOMAT_VIEW_LOG,
-        CONFIRM_WITHDRAW,
-        CONFIRM_ADD_MONEY,
+        CONFIRM,
+        SELECT_ACCOUNT,
+        SELECT_DEBIT,
+        SELECT_CREDIT,
         LOGOUT
     };
 

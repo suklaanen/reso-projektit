@@ -80,8 +80,8 @@ void MainWindow::handleResponse(QNetworkReply *reply)
 
         // Yrityskerrat täynnä
         // Siirtymät mm.
-        // ADMIN_MAIN : SET_MONEY / SET_MAX_WITHDRAWAL / VIEW_EVENTLOG
-        // USER_MAIN : USER_WITHDRAWAL / USER_EVENTS / USER_BALANCE
+        // ADMIN_MAIN : AUTOMAT_ADD_MONEY, AUTOMAT_SET_MAX_WITHDRAWAL, AUTOMAT_VIEW_LOG
+        // USER_MAIN : USER_WITHDRAWAL / USER_TRANSACTIONS / USER_BALANCE
         // CREDIT _ DEBIT tarkastukset / SELECT_ACCOUNT
         // AUTOMAT balanssit, tapahtumat, kyselyt taustalla
         // LOGOUT
