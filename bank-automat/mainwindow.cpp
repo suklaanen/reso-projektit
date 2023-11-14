@@ -20,10 +20,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
-    connectSlots();
+
     ID = "";
     pin = "";
     cardType = "";
+    loginView = new Login(this);
+    int x = (this->width() - loginView->width()) / 2;
+    int y = (this->height() - loginView->height()) / 28;
+    loginView->move(x,y);
+    loginView->hide();
+    connectSlots();
 
     ui->pushButton1->setDisabled(true);
     ui->pushButton2->setDisabled(true);
@@ -38,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->YELLOW->setDisabled(false);
     ui->GREY->setDisabled(false);
     ui->GREEN->setDisabled(false);
+
 }
 
 MainWindow::~MainWindow()

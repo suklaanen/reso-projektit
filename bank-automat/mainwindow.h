@@ -67,6 +67,7 @@ private:
     void requestLogin();
     int state;
     //State state;
+    login * loginView;
 
 };
 #endif // MAINWINDOW_H
