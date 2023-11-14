@@ -7,17 +7,10 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    //QState * start
-    //QState * inputCard
-    //QState * inputPin
-
     ui->setupUi(this);
 
-    ui->Title->setText("Kirjaudu sisään");
-    ui->Title->setAlignment(Qt::AlignCenter);
-    ui->SecondTitle->setText(QString("Syötä kortin ID"));
-
-    state = 0;
+    login = new Login (this);
+    showLogin();
 
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
@@ -37,7 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->YELLOW->setDisabled(false);
     ui->GREY->setDisabled(false);
     ui->GREEN->setDisabled(false);
-
 }
 
 MainWindow::~MainWindow()
@@ -51,36 +43,52 @@ void MainWindow::clickedNumberHandler()
     QString name = btn->objectName();
     qDebug()<< name << " -button clicked";
 
-    if(state == 0) {
-        ID.append(name.last(1));
-        ui->Content->setText(ID);
-        //state = CARD_OK;
-    }
-    else if(state == 1) {
-        pin.append(name.last(1));
-        ui->Content->setText(pin);
-    }
+    QString content = ui->Content->text();
+    content.append(name.last(1));
+    ui->Content->setText(content);
 }
 
 void MainWindow::clickedGREEN()
 {
     qDebug()<<"Green button clicked";
+    login->setCardID(ui->Content->text());
 }
 
 void MainWindow::clickedYELLOW()
 {
     qDebug()<<"Yellow button clicked";
+    ui->Content->clear();
 }
 
 void MainWindow::clickedGREY()
 {
     qDebug()<<"Grey button clicked";
+
+    QString content = ui->Content->text();
+    if (content.size() > 0) {
+        ui->Content->setText(content.left(content.size() -1));
+    }
 }
 
 void MainWindow::clickedRED()
 {
     qDebug()<<"Red button clicked";
-    state = 0;
+    showLogin();
+}
+
+void MainWindow::showLogin()
+{
+    ui->Title->setText("Kirjaudu sisään");
+    ui->Title->setAlignment(Qt::AlignCenter);
+    ui->SecondTitle->setText(QString("Syötä kortin ID"));
+    ui->Content->clear();
+}
+
+void MainWindow::showInputPin(QString cardType)
+{
+    ui->Title->setText(QString("Kortti tunnistettu"));
+    ui->SecondTitle->setText(QString("Syötä pin"));
+    ui->Content->clear();
 }
 
 void MainWindow::connectSlots()
@@ -96,10 +104,5 @@ void MainWindow::connectSlots()
     connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
     connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
     connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
-    connect(manager, &QNetworkAccessManager::finished, this,&MainWindow::handleResponse);
-}
-
-Login *MainWindow::getLoginView() const
-{
-    return loginView;
+    connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
 }

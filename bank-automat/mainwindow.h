@@ -47,12 +47,14 @@ public:
     Login *getLoginView() const;
 
 public slots:
-    void handleResponse(QNetworkReply* reply);
     void clickedNumberHandler();
     void clickedGREEN();
     void clickedYELLOW();
     void clickedGREY();
     void clickedRED();
+    void showLogin();
+    void showInputPin(QString cardType);
+
 
 private:
     Ui::MainWindow *ui;
@@ -65,8 +67,7 @@ private:
     void requestID();
     void requestLogin();
     int state;
-    Login * loginView;
+    Login * login;
 
-    Q_PROPERTY(Login *loginView READ getLoginView CONSTANT FINAL)
 };
 #endif // MAINWINDOW_H
