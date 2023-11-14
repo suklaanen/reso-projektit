@@ -16,6 +16,8 @@ class MainWindow : public QMainWindow
 
     enum State {
         INIT,
+        CARD_FAIL,
+        LOGIN_FAIL,
         SELECT_USER,
         SELECT_ADMIN,
         USER_LOGIN,
@@ -65,7 +67,7 @@ private:
     void requestID();
     void requestLogin();
     State state;
-    void transition(State next_state);
+    void transition(/*State next_state*/);
 
 };
 #endif // MAINWINDOW_H

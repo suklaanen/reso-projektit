@@ -6,7 +6,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
     //QState * start
     //QState * inputCard
     //QState * inputPin
@@ -26,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     pin = "";
     cardType = "";
 
-    connect(ui->GREEN, SIGNAL(clicked(bool)), this, SLOT(OK()));
+    connect(ui->GREEN, SIGNAL(clicked(bool)), this, SLOT(()));
     connect(ui->RED, SIGNAL(clicked(bool)), this, SLOT(STOP()));
     connect(ui->GREY, SIGNAL(clicked(bool)), this, SLOT(SET()));
     connect(ui->YELLOW, SIGNAL(clicked(bool)), this, SLOT(RESET()));
@@ -60,7 +59,7 @@ void MainWindow::handleResponse(QNetworkReply *reply)
         // Process responseData as needed
         QString responseString(responseData);
 
-        if (state == INIT) {
+        if (state == CARD_FAIL) {
             if (responseString == "false") {
                 ui->Title->setText(QString("Korttia ei tunnistettu"));
             } else {
@@ -107,37 +106,57 @@ void MainWindow::clickedNumberHandler()
     QPushButton * btn = qobject_cast<QPushButton*>(sender());
     QString name = btn->objectName();
 
-    if(state == 0) {
+    if(state == INIT) {
         ID.append(name.last(1));
         ui->Content->setText(ID);
+        //state = CARD_OK;
     }
-    else if(state == 1) {
+    else if(state == CARD_OK) {
         pin.append(name.last(1));
         ui->Content->setText(pin);
     }
 }
 
-void MainWindow::transition(State next_state)
+void MainWindow::transition(/*State next_state*/)
 {
+    /*
     state = next_state;
+
+
+    if (state == INIT) {
+        ui->Title->setText("1");
+    } else if (state == CARD_FAIL) {
+        ui->Title->setText("Epäonnistui");
+    } else if (state == CARD_OK) {
+        ui->Title->setText("Kortti ok");
+    }
+
+
+    if (state == USER_LOGIN) {
+        ui->Title->setText("Tervetuloa Käyttäjä");
+    } else if (state == ADMIN_LOGIN) {
+        ui->Title->setText("Tervetuloa Admin");
+    }
 
     if (state == USER_MAIN) {
         ui->Title->setText("Tervetuloa Käyttäjä");
     } else if (state == ADMIN_MAIN) {
         ui->Title->setText("Tervetuloa Admin");
-    }
+    }*/
 
 }
+
 
 void MainWindow::userRequests(/*const std::string& event*/)
 {
 
-    if(state == 0) {
+    /*)
+    if(state == INIT) {
         requestID();
     }
-    else if(state == 1) {
+    else if(state == CARD_OK) {
         requestLogin();
-    }
+    }*/
 
     /*
      * Vähän pohdin tämän sijoittelua
@@ -158,7 +177,6 @@ void MainWindow::userRequests(/*const std::string& event*/)
     }*/
 
 }
-
 
 void MainWindow::OK()
 {
@@ -182,10 +200,10 @@ void MainWindow::RESET()
 
 void MainWindow::clickedGREEN()
 {
-    if(state == 0) {
+    if(state == INIT) {
         requestID();
     }
-    else if(state == 1) {
+    else if(state == CARD_OK) {
         requestLogin();
     }
 }
@@ -235,4 +253,3 @@ void MainWindow::requestLogin()
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->post(request, QJsonDocument(body).toJson());
 }
-
