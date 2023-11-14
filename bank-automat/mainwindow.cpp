@@ -79,7 +79,12 @@ void MainWindow::handleResponse(QNetworkReply *reply)
         }
 
         // Yrityskerrat täynnä
-        // Siirtymät
+        // Siirtymät mm.
+        // ADMIN_MAIN : SET_MONEY / SET_MAX_WITHDRAWAL / VIEW_EVENTLOG
+        // USER_MAIN : USER_WITHDRAWAL / USER_EVENTS / USER_BALANCE
+        // CREDIT _ DEBIT tarkastukset
+        // AUTOMAT balanssit, tapahtumat, kyselyt taustalla
+        //
 
         if(state == USER_MAIN) {
             ui->Title->setText(QString("Tervetuloa Käyttäjä"));
