@@ -53,10 +53,6 @@ public slots:
     void clickedYELLOW();
     void clickedGREY();
     void clickedRED();
-    void OK();
-    void STOP();
-    void SET();
-    void RESET();
 
 private:
     Ui::MainWindow *ui;
@@ -69,7 +65,6 @@ private:
     void requestID();
     void requestLogin();
     int state;
-    //State state;
     Login * loginView;
 
     Q_PROPERTY(Login *loginView READ getLoginView CONSTANT FINAL)

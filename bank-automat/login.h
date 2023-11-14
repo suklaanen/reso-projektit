@@ -20,7 +20,6 @@ public:
 public slots:
     void setCardID(QString);
     void setPIN(QString);
-    void handleResponse(QNetworkReply* reply);
     void handleCard();
     void handlePin();
 signals:

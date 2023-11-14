@@ -28,48 +28,54 @@ void Login::setPIN(QString inputPin)
     requestLogin();
 }
 
-
-void Login::handleResponse(QNetworkReply *reply)
+void Login::handleCard()
 {
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+
     if (reply->error() == QNetworkReply::NoError) {
         // Successful response
         QByteArray responseData = reply->readAll();
         // Process responseData as needed
-        if(state == 0) {
-            if(responseData == "false") {
-                emit cardFail();
-            }
-            else {
-                state = 1;
-                cardType = QString(responseData);
-                emit cardOk (cardType);
-            }
+
+        if(responseData == "false") {
+            emit cardFail();
         }
-        else if(state == 1) {
-            if(responseData.length()>20) {
-                emit loginOk();
-            }
-            else {
-                emit loginFail();
-            }
+        else {
+            cardType = QString(responseData);
+            emit cardOk (cardType);
         }
     } else {
         // Handle the error
-        qDebug() << "Network request failed:" << reply->errorString();
+        qDebug() << "Couldnt get card type" << reply->errorString();
+    }
+    // Clean up the reply
+    reply->deleteLater();
+
+}
+
+void Login::handlePin()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+
+    if (reply->error() == QNetworkReply::NoError) {
+        // Successful response
+        QByteArray responseData = reply->readAll();
+        // Process responseData as needed
+
+        if(responseData.length()>20) {
+            emit loginOk();
+        }
+        else {
+            emit loginFail();
+        }
+    } else {
+        // Handle the error
+        qDebug() << "Could not login" << reply->errorString();
     }
     // Clean up the reply
     reply->deleteLater();
 }
 
-void Login::handleCard()
-{
-    // kesken
-}
-
-void Login::handlePin()
-{
-    // kesken
-}
 
 // kesken
 void Login::requestCardID()
@@ -77,7 +83,7 @@ void Login::requestCardID()
     QNetworkRequest request;
     request.setUrl(QUrl("http://localhost:3000/card/"+cardID));
     reply = manager->get(request);
-    //connect(reply, SIGNAL());
+    connect(reply, SIGNAL(finished()), this, SLOT(handleCard()));
 }
 
 //kesken
@@ -90,6 +96,7 @@ void Login::requestLogin()
     request.setUrl(QUrl("http://localhost:3000/login"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->post(request, QJsonDocument(body).toJson());
+    connect(reply, SIGNAL(finished()), this, SLOT(handlePin()));
 }
 
 // kesken
