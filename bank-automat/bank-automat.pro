@@ -18,7 +18,6 @@ HEADERS += \
     mainwindow.h
 
 FORMS += \
-    login.ui \
     mainwindow.ui
 
 # Default rules for deployment.
