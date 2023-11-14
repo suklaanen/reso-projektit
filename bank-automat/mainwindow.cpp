@@ -73,7 +73,7 @@ void MainWindow::handleResponse(QNetworkReply *reply)
         } else if (state == LOGIN_OK) {
             ui->Title->setText(QString("Kirjautuminen onnistui"));
             state = USER_MAIN;
-            // sekä USER_ADMIN siirtymät, miten
+            // sekä ADMIN_MAIN siirtymät, miten
         } else {
             ui->Title->setText(QString("Väärä PIN-koodi, yritä uudelleen"));
         }
