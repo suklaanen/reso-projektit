@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "login.h"
 #include "ui_mainwindow.h"
 #include <iostream>
 
@@ -233,4 +234,9 @@ void MainWindow::requestLogin()
     request.setUrl(QUrl("http://localhost:3000/login"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->post(request, QJsonDocument(body).toJson());
+}
+
+Login *MainWindow::getLoginView() const
+{
+    return loginView;
 }

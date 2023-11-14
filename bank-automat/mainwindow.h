@@ -5,6 +5,7 @@
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
+#include <login.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,6 +44,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    Login *getLoginView() const;
+
 public slots:
     void handleResponse(QNetworkReply* reply);
     void clickedNumberHandler();
@@ -67,7 +70,8 @@ private:
     void requestLogin();
     int state;
     //State state;
-    login * loginView;
+    Login * loginView;
 
+    Q_PROPERTY(Login *loginView READ getLoginView CONSTANT FINAL)
 };
 #endif // MAINWINDOW_H
