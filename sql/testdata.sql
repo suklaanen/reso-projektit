@@ -88,8 +88,8 @@ SELECT id_user FROM user;
 ALTER TABLE  `card` AUTO_INCREMENT = 1;
 INSERT INTO `card` (`type`, `pin`, `id_user`, `attempts`) 
 VALUES
-('debit','$2a$10$.sd7wgEvDqYVovZGCekutOJWmuT/UbSkKnziiHJ/PEHjLNpcGvT/2',2,0),
 ('debit','$2a$10$aN/zewaV8CL3jYQE0I/LA.P0IZVMUBm7WKaB9x30zNCc2GtBgJYI6',1,0),
+('debit','$2a$10$.sd7wgEvDqYVovZGCekutOJWmuT/UbSkKnziiHJ/PEHjLNpcGvT/2',2,0),
 ('credit','$2a$10$SeSnzNgfIHcRN762pVzP.eTxHAZ54PUTJU9/Oe4nbwgXpr9L2A1tW',3,0),
 ('debit','$2a$10$L98HWiHh.p6fc7uPQ2tOfu9lfnAjseztEqHnNZNBuk7wBOX0Ij12K',4,0),
 ('debit','$2a$10$7Hl048Rp2TMEddzMB9qETuoTFQ.5uneik2pM0086kIG1s7wifP06m',5,0),

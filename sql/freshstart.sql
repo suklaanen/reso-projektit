@@ -9,8 +9,8 @@ ALTER TABLE `eventlog` ADD CONSTRAINT `event_account` FOREIGN KEY (`id_account`)
 ALTER TABLE `card` DROP FOREIGN KEY `card_user`;
 ALTER TABLE `card` ADD CONSTRAINT `card_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`) ON DELETE CASCADE;
 
-delete from account;
 delete from accountuser;
+delete from account;
 delete from user;
 delete from automat;
 delete from card;

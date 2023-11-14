@@ -1,14 +1,106 @@
 #include "login.h"
-#include "ui_login.h"
 
 Login::Login(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Login)
+    QWidget(parent)
 {
-    ui->setupUi(this);
+    cardID = "";
+    pin = "";
+    state = 0;
+    cardType = "";
+    manager = new QNetworkAccessManager(this);
+    reply = nullptr;
 }
 
 Login::~Login()
 {
-    delete ui;
+
+}
+
+void Login::setCardID(QString inputCardID)
+{
+    cardID = inputCardID;
+    requestCardID();
+}
+
+void Login::setPIN(QString inputPin)
+{
+    pin = inputPin;
+    requestLogin();
+}
+
+void Login::handleCard()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+
+    if (reply->error() == QNetworkReply::NoError) {
+        // Successful response
+        QByteArray responseData = reply->readAll();
+        // Process responseData as needed
+
+        if(responseData == "false") {
+            emit cardFail();
+        }
+        else {
+            cardType = QString(responseData);
+            emit cardOk (cardType);
+        }
+    } else {
+        // Handle the error
+        qDebug() << "Couldnt get card type" << reply->errorString();
+    }
+    // Clean up the reply
+    reply->deleteLater();
+
+}
+
+void Login::handlePin()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+
+    if (reply->error() == QNetworkReply::NoError) {
+        // Successful response
+        QByteArray responseData = reply->readAll();
+        // Process responseData as needed
+
+        if(responseData.length()>20) {
+            emit loginOk();
+        }
+        else {
+            emit loginFail();
+        }
+    } else {
+        // Handle the error
+        qDebug() << "Could not login" << reply->errorString();
+    }
+    // Clean up the reply
+    reply->deleteLater();
+}
+
+
+// kesken
+void Login::requestCardID()
+{
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://localhost:3000/card/"+cardID));
+    reply = manager->get(request);
+    connect(reply, SIGNAL(finished()), this, SLOT(handleCard()));
+}
+
+//kesken
+void Login::requestLogin()
+{
+    QNetworkRequest request;
+    QJsonObject body;
+    body.insert("id_card",cardID);
+    body.insert("pin",pin);
+    request.setUrl(QUrl("http://localhost:3000/login"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    reply = manager->post(request, QJsonDocument(body).toJson());
+    connect(reply, SIGNAL(finished()), this, SLOT(handlePin()));
+}
+
+// kesken
+void Login::activate(bool on_off)
+{
+    active = on_off;
 }
