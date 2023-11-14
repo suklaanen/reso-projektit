@@ -45,7 +45,6 @@ public:
 
 public slots:
     void handleResponse(QNetworkReply* reply);
-    void userRequests(/*const std::string& event*/);
     void clickedNumberHandler();
     void clickedGREEN();
     void clickedYELLOW();
@@ -66,8 +65,8 @@ private:
     QString cardType;
     void requestID();
     void requestLogin();
-    State state;
-    void transition(/*State next_state*/);
+    int state;
+    //State state;
 
 };
 #endif // MAINWINDOW_H
