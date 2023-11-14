@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>917</width>
+    <width>1135</width>
     <height>751</height>
    </rect>
   </property>
@@ -17,11 +17,16 @@
    <widget class="QPushButton" name="N1">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>400</x>
       <y>470</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>1</string>
@@ -30,11 +35,16 @@
    <widget class="QPushButton" name="N2">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>460</x>
       <y>470</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>2</string>
@@ -43,11 +53,16 @@
    <widget class="QPushButton" name="N3">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>520</x>
       <y>470</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>3</string>
@@ -56,11 +71,16 @@
    <widget class="QPushButton" name="N4">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>400</x>
       <y>530</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>4</string>
@@ -69,11 +89,16 @@
    <widget class="QPushButton" name="N5">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>460</x>
       <y>530</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>5</string>
@@ -82,11 +107,16 @@
    <widget class="QPushButton" name="N6">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>520</x>
       <y>530</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>6</string>
@@ -95,11 +125,16 @@
    <widget class="QPushButton" name="N7">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>400</x>
       <y>590</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>7</string>
@@ -108,11 +143,16 @@
    <widget class="QPushButton" name="N8">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>460</x>
       <y>590</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>8</string>
@@ -121,11 +161,16 @@
    <widget class="QPushButton" name="N9">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>520</x>
       <y>590</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>9</string>
@@ -134,11 +179,16 @@
    <widget class="QPushButton" name="N0">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>460</x>
       <y>650</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>0</string>
@@ -147,11 +197,16 @@
    <widget class="QPushButton" name="minus">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>400</x>
       <y>650</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>-</string>
@@ -160,11 +215,16 @@
    <widget class="QPushButton" name="plus">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>520</x>
       <y>650</y>
       <width>51</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>+</string>
@@ -173,20 +233,25 @@
    <widget class="QPushButton" name="RED">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>610</x>
       <y>470</y>
       <width>71</width>
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string/>
+     <string>STOP</string>
     </property>
    </widget>
    <widget class="QPushButton" name="YELLOW">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>610</x>
       <y>530</y>
       <width>71</width>
       <height>51</height>
@@ -199,7 +264,7 @@
    <widget class="QPushButton" name="GREY">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>610</x>
       <y>590</y>
       <width>71</width>
       <height>51</height>
@@ -212,17 +277,22 @@
    <widget class="QPushButton" name="GREEN">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>610</x>
       <y>650</y>
       <width>71</width>
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
     <property name="styleSheet">
-     <string notr="true">background color: rgb(85, 255, 127)</string>
+     <string notr="true"/>
     </property>
     <property name="text">
-     <string/>
+     <string>OK</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton1">
@@ -233,6 +303,11 @@
       <width>81</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>&gt;</string>
@@ -247,6 +322,11 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>&gt;</string>
     </property>
@@ -260,6 +340,11 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>&gt;</string>
     </property>
@@ -268,10 +353,15 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>270</y>
+      <y>260</y>
       <width>81</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>&gt;</string>
@@ -280,11 +370,16 @@
    <widget class="QPushButton" name="pushButton5">
     <property name="geometry">
      <rect>
-      <x>830</x>
+      <x>1040</x>
       <y>20</y>
       <width>81</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>&lt;</string>
@@ -293,11 +388,16 @@
    <widget class="QPushButton" name="pushButton6">
     <property name="geometry">
      <rect>
-      <x>830</x>
+      <x>1040</x>
       <y>100</y>
       <width>81</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>&lt;</string>
@@ -306,11 +406,16 @@
    <widget class="QPushButton" name="pushButton7">
     <property name="geometry">
      <rect>
-      <x>830</x>
+      <x>1040</x>
       <y>180</y>
       <width>81</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>&lt;</string>
@@ -319,11 +424,16 @@
    <widget class="QPushButton" name="pushButton8">
     <property name="geometry">
      <rect>
-      <x>830</x>
+      <x>1040</x>
       <y>260</y>
       <width>81</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>&lt;</string>
@@ -332,8 +442,8 @@
    <widget class="QLabel" name="Title">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>20</y>
+      <x>330</x>
+      <y>30</y>
       <width>441</width>
       <height>71</height>
      </rect>
@@ -351,8 +461,8 @@
    <widget class="QLabel" name="SecondTitle">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>100</y>
+      <x>410</x>
+      <y>110</y>
       <width>271</width>
       <height>61</height>
      </rect>
@@ -367,31 +477,11 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="Content">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>170</y>
-      <width>431</width>
-      <height>171</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font: 24pt &quot;Segoe UI&quot;;
-background color: rgb(255, 255, 255)</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="PushText4">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>270</y>
+      <x>130</x>
+      <y>260</y>
       <width>111</width>
       <height>51</height>
      </rect>
@@ -418,7 +508,7 @@ background color: rgb(255, 255, 255)</string>
    <widget class="QLabel" name="PushText3">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>130</x>
       <y>180</y>
       <width>111</width>
       <height>51</height>
@@ -446,7 +536,7 @@ background color: rgb(255, 255, 255)</string>
    <widget class="QLabel" name="PushText2">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>130</x>
       <y>100</y>
       <width>111</width>
       <height>51</height>
@@ -474,7 +564,7 @@ background color: rgb(255, 255, 255)</string>
    <widget class="QLabel" name="PushText1">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>130</x>
       <y>20</y>
       <width>111</width>
       <height>51</height>
@@ -502,7 +592,7 @@ background color: rgb(255, 255, 255)</string>
    <widget class="QLabel" name="PushText5">
     <property name="geometry">
      <rect>
-      <x>710</x>
+      <x>890</x>
       <y>20</y>
       <width>111</width>
       <height>51</height>
@@ -530,7 +620,7 @@ background color: rgb(255, 255, 255)</string>
    <widget class="QLabel" name="PushText6">
     <property name="geometry">
      <rect>
-      <x>710</x>
+      <x>890</x>
       <y>100</y>
       <width>111</width>
       <height>51</height>
@@ -558,8 +648,8 @@ background color: rgb(255, 255, 255)</string>
    <widget class="QLabel" name="PushText8">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>270</y>
+      <x>890</x>
+      <y>260</y>
       <width>111</width>
       <height>51</height>
      </rect>
@@ -586,7 +676,7 @@ background color: rgb(255, 255, 255)</string>
    <widget class="QLabel" name="PushText7">
     <property name="geometry">
      <rect>
-      <x>710</x>
+      <x>890</x>
       <y>180</y>
       <width>111</width>
       <height>51</height>
@@ -611,13 +701,89 @@ background color: rgb(255, 255, 255)</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QWidget" name="Frames1" native="true">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>450</y>
+      <width>381</width>
+      <height>271</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="MainFrame" native="true">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>10</y>
+      <width>911</width>
+      <height>411</height>
+     </rect>
+    </property>
+    <widget class="QLabel" name="Content">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>150</y>
+       <width>461</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 24pt &quot;Segoe UI&quot;;
+background color: rgb(255, 255, 255)</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <zorder>MainFrame</zorder>
+   <zorder>Frames1</zorder>
+   <zorder>N1</zorder>
+   <zorder>N2</zorder>
+   <zorder>N3</zorder>
+   <zorder>N4</zorder>
+   <zorder>N5</zorder>
+   <zorder>N6</zorder>
+   <zorder>N7</zorder>
+   <zorder>N8</zorder>
+   <zorder>N9</zorder>
+   <zorder>N0</zorder>
+   <zorder>minus</zorder>
+   <zorder>plus</zorder>
+   <zorder>RED</zorder>
+   <zorder>YELLOW</zorder>
+   <zorder>GREY</zorder>
+   <zorder>GREEN</zorder>
+   <zorder>pushButton1</zorder>
+   <zorder>pushButton2</zorder>
+   <zorder>pushButton3</zorder>
+   <zorder>pushButton4</zorder>
+   <zorder>pushButton5</zorder>
+   <zorder>pushButton6</zorder>
+   <zorder>pushButton7</zorder>
+   <zorder>pushButton8</zorder>
+   <zorder>Title</zorder>
+   <zorder>SecondTitle</zorder>
+   <zorder>PushText4</zorder>
+   <zorder>PushText3</zorder>
+   <zorder>PushText2</zorder>
+   <zorder>PushText1</zorder>
+   <zorder>PushText5</zorder>
+   <zorder>PushText6</zorder>
+   <zorder>PushText8</zorder>
+   <zorder>PushText7</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>917</width>
+     <width>1135</width>
      <height>21</height>
     </rect>
    </property>
