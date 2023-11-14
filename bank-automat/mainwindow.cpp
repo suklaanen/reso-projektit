@@ -82,8 +82,9 @@ void MainWindow::handleResponse(QNetworkReply *reply)
         // Siirtymät mm.
         // ADMIN_MAIN : SET_MONEY / SET_MAX_WITHDRAWAL / VIEW_EVENTLOG
         // USER_MAIN : USER_WITHDRAWAL / USER_EVENTS / USER_BALANCE
-        // CREDIT _ DEBIT tarkastukset
+        // CREDIT _ DEBIT tarkastukset / SELECT_ACCOUNT
         // AUTOMAT balanssit, tapahtumat, kyselyt taustalla
+        // LOGOUT
         //
 
         if(state == USER_MAIN) {

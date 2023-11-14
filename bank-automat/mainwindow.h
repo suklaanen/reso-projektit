@@ -18,19 +18,21 @@ class MainWindow : public QMainWindow
         INIT,
         SELECT_USER,
         SELECT_ADMIN,
+        USER_LOGIN,
+        ADMIN_LOGIN,
         CARD_OK,
         LOGIN_OK,
         USER_MAIN,
         ADMIN_MAIN,
-        USER_LOGIN,
-        ADMIN_LOGIN,
-        WITHDRAW,
+        USER_TRANSACTIONS,
+        USER_BALANCE,
+        USER_WITHDRAWAL,
+        AUTOMAT_ADD_MONEY,
+        AUTOMAT_SET_MAX_WITHDRAWAL,
+        AUTOMAT_VIEW_LOG,
         CONFIRM_WITHDRAW,
-        VIEW_TRANSACTIONS,
-        VIEW_BALANCE,
-        ADD_MONEY,
         CONFIRM_ADD_MONEY,
-        VIEW_LOG
+        LOGOUT
     };
 
 public:
