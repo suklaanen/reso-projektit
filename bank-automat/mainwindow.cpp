@@ -52,6 +52,7 @@ void MainWindow::clickedGREEN()
 {
     qDebug()<<"Green button clicked";
     login->setCardID(ui->Content->text());
+    // jatkuu tilakoneessa
 }
 
 void MainWindow::clickedYELLOW()
