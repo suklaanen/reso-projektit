@@ -1,9 +1,5 @@
 #include "login.h"
 
-
-int attempts = 0;
-int maxAttempts = 2;
-
 Login::Login(QWidget *parent) :
     QWidget(parent)
 {
@@ -48,11 +44,17 @@ void Login::handleCard()
         }
         else {
             cardType = QString(responseData);
-            if(cardType == "debit/credit") {
-                emit cardOkSelectType();
-            }
-            else {
-                emit cardOk (cardType);
+
+            if (cardID.toInt() < 1) {
+                emit cardFail();
+            } else {
+                if(cardType == "debit/credit") {
+                    emit cardOkSelectType();
+                } else {
+                    emit cardOk (cardType);
+
+                }
+
             }
         }
     } else {
@@ -61,7 +63,6 @@ void Login::handleCard()
     }
     // Clean up the reply
     reply->deleteLater();
-
 }
 
 void Login::handlePin()
@@ -113,35 +114,7 @@ void Login::activate(bool on_off)
     active = on_off;
 }
 
-
 bool Login::checkPinOk(const QString& enteredPIN)
 {
-
-    if (enteredPIN == pin) {
-        // PIN-koodi on oikein
-        return true;
-    } else {
-        // PIN-koodi on väärin
-        attempts++;
-
-        if (attempts >= maxAttempts) {
-            // Liian monta väärää yritystä, estä kortti
-            emit cardLocked();
-            return false;
-        } else {
-            // Väärä yritys, mutta ei vielä liian monta kertaa
-            emit loginFail();
-            return false;
-        }
-    }
+    // toteutus tähän ehkä, eos
 }
-
-/*
-bool Login::checkPinOk(const QByteArray& enteredPIN)
-{
-    QString enteredPinString = QString::fromUtf8(enteredPIN);
-    return enteredPinString == pin;
-}*/
-
-
-

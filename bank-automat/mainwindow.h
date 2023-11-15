@@ -20,6 +20,7 @@ class MainWindow : public QMainWindow
         CARD_FAIL,
         CARD_OK,
         PIN_OK,
+        LOGIN_FAIL,
         PIN_ATTEMPT_1,
         PIN_ATTEMPT_2,
         PIN_ATTEMPT_3,
@@ -63,7 +64,33 @@ public slots:
     void showInputPin(QString cardType);
     void selectDebitCredit();
     void showMenu();
+    void showCardFailure();
+    void showLoginFailure();
 
+
+signals:
+    void accountCombined();
+    void accountDebit();
+    void accountManyDebits();
+    void accountCredit();
+    void accountAdmin();
+    void userMain();
+    void userTransactions();
+    void transactionsBackward();
+    void transactionsForward();
+    void userBalance();
+    void userWithdrawal();
+    void withdrawalOk();
+    void withdrawalFail();
+    void returnWithdrawal();
+    void returnUserMain();
+    void adminMain();
+    void automatAddMoney();
+    void automatLog();
+    void automatSetMax();
+    void returnAdminMain();
+    void logout();
+    void timeout();
 
 private:
     Ui::MainWindow *ui;

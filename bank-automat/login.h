@@ -26,13 +26,18 @@ public slots:
     void setPIN(QString);
     void handleCard();
     void handlePin();
-signals:
-    void loginOk(); // kytke mainissa tekstikentät oikein
+
+ signals:
     void loginFail();
-    void cardFail(); // kytke mainissa tekstikentät oikein
+    void loginOk();
+    void cardFail();
     void cardLocked();
-    void cardOk(QString cardType); // kytkennät mainiin, mm. clear ja tekstit
+    void cardOk(QString cardType);
     void cardOkSelectType();
+    void pinOk();
+    void pinFail();
+    void pinAttempts();
+
 private:
     QNetworkAccessManager *manager;
     QNetworkReply *reply;
