@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    state = SELECT_CARD;
+
     login = new Login (this);
     showLogin();
 
@@ -31,7 +33,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->GREY->setDisabled(false);
     ui->GREEN->setDisabled(false);
 
-    state = INIT;
+    //state = SELECT_CARD;
+    //currentState = SELECT_CARD;
+
+    // Luo tilat
+    //State *SELECT_CARD = new State();
+    //State *CARD_FAIL = new State();
+    //State *LOGIN_FAIL = new State();
+
+
 }
 
 MainWindow::~MainWindow()
@@ -52,15 +62,38 @@ void MainWindow::clickedNumberHandler()
 
 void MainWindow::clickedGREEN()
 {
-    switch(state) {
-    case INIT: qDebug()<<"Green button clicked";
-               login->setCardID(ui->Content->text());
+    switch (state) {
+    case SELECT_CARD:
+        qDebug()<<"Green button clicked";
+        login->setCardID(ui->Content->text());
         break;
-    case CARD_OK: login->setPIN(ui->Content->text());
+    case CARD_FAIL:
+        // tarkastus, onko kortti lukittu vai ei?
+        qDebug()<<"Green button clicked";
+        state = SELECT_CARD;
+        break;
+    case CARD_OK:
+        qDebug()<<"Green button clicked";
+        //login->setPIN(ui->Content->text());
+        state = PIN_ATTEMPT_1;
+        break;
+    case PIN_ATTEMPT_1:
+        if (login->checkPinOk(ui->Content->text())) {
+            state = USER_MENU;
+        } else {
+            state = PIN_ATTEMPT_2;
+        }
+        break;
+    case PIN_ATTEMPT_2:
+        if (login->checkPinOk(ui->Content->text())) {
+            state = USER_MENU;
+        } else {
+            state = CARD_LOCKED;
+        }
+        break;
+    case CARD_LOCKED:
         break;
     }
-
-    // jatkuu tilakoneessa
 }
 
 void MainWindow::clickedYELLOW()
@@ -82,12 +115,13 @@ void MainWindow::clickedGREY()
 void MainWindow::clickedRED()
 {
     qDebug()<<"Red button clicked";
-    state = INIT;
+    state = SELECT_CARD;
     showLogin();
 }
 
 void MainWindow::showLogin()
 {
+    state = SELECT_CARD;
     ui->Title->setText("Kirjaudu sisään");
     ui->Title->setAlignment(Qt::AlignCenter);
     ui->SecondTitle->setText(QString("Syötä kortin ID"));
@@ -96,17 +130,17 @@ void MainWindow::showLogin()
 
 void MainWindow::showInputPin(QString cardType)
 {
+    state = CARD_OK;
     this->cardType = cardType;
     ui->Title->setText(QString("Kortti tunnistettu"));
     ui->SecondTitle->setText(QString("Syötä pin"));
     ui->Content->clear();
-    state = CARD_OK;
 }
 
 void MainWindow::selectDebitCredit()
 {
     this->cardType = "debit/credit";
-    state = SELECT_DEBIT_CREDIT;
+    state = CARD_COMBINATION;
     ui->Title->setText(QString("Valitse tili"));
     ui->PushText4->setText(QString("debit"));
     ui->PushText8->setText(QString("credit"));
@@ -114,6 +148,7 @@ void MainWindow::selectDebitCredit()
 
 void MainWindow::showMenu()
 {
+    state = USER_MENU;
     ui->Title->clear();
     ui->PushText1->setText(QString("Tarkista saldo"));
 }
@@ -131,7 +166,9 @@ void MainWindow::connectSlots()
     connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
     connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
     connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
+    // TÄNNE kytkökset + virhekäsittelyt (esim jos card ei ookkaan ok tai jos pin on väärä)
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
     connect(login, SIGNAL(loginOk()), this, SLOT(showMenu()));
+    connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
 }

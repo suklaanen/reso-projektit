@@ -1,5 +1,9 @@
 #include "login.h"
 
+
+int attempts = 0;
+int maxAttempts = 2;
+
 Login::Login(QWidget *parent) :
     QWidget(parent)
 {
@@ -69,7 +73,8 @@ void Login::handlePin()
         QByteArray responseData = reply->readAll();
         // Process responseData as needed
 
-        if(responseData.length()>20) {
+        //if(responseData.length()>20) {
+        if(checkPinOk(QString(responseData))) {
             emit loginOk();
         }
         else {
@@ -83,8 +88,6 @@ void Login::handlePin()
     reply->deleteLater();
 }
 
-
-// kesken
 void Login::requestCardID()
 {
     QNetworkRequest request;
@@ -93,7 +96,6 @@ void Login::requestCardID()
     connect(reply, SIGNAL(finished()), this, SLOT(handleCard()));
 }
 
-//kesken
 void Login::requestLogin()
 {
     QNetworkRequest request;
@@ -106,8 +108,40 @@ void Login::requestLogin()
     connect(reply, SIGNAL(finished()), this, SLOT(handlePin()));
 }
 
-// kesken
 void Login::activate(bool on_off)
 {
     active = on_off;
 }
+
+
+bool Login::checkPinOk(const QString& enteredPIN)
+{
+
+    if (enteredPIN == pin) {
+        // PIN-koodi on oikein
+        return true;
+    } else {
+        // PIN-koodi on väärin
+        attempts++;
+
+        if (attempts >= maxAttempts) {
+            // Liian monta väärää yritystä, estä kortti
+            emit cardLocked();
+            return false;
+        } else {
+            // Väärä yritys, mutta ei vielä liian monta kertaa
+            emit loginFail();
+            return false;
+        }
+    }
+}
+
+/*
+bool Login::checkPinOk(const QByteArray& enteredPIN)
+{
+    QString enteredPinString = QString::fromUtf8(enteredPIN);
+    return enteredPinString == pin;
+}*/
+
+
+
