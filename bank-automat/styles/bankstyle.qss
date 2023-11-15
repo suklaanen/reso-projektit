@@ -2,7 +2,7 @@ MainWindow {
 background-color: #363636;
 }
 
-#Title, #SecondTitle, #Content { 
+#Title, #SecondTitle, #Content, #PushText1, #PushText2, #PushText3, #PushText4, #PushText5, #PushText6, #PushText7, PushText8 { 
 color: #ffffff;
 }
 

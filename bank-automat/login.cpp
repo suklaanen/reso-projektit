@@ -9,6 +9,8 @@ Login::Login(QWidget *parent) :
     cardType = "";
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
+    loginTimer = new QTimer;
+    loginTimer->setSingleShot(false);
 }
 
 Login::~Login()
@@ -42,7 +44,12 @@ void Login::handleCard()
         }
         else {
             cardType = QString(responseData);
-            emit cardOk (cardType);
+            if(cardType == "debit/credit") {
+                emit cardOkSelectType();
+            }
+            else {
+                emit cardOk (cardType);
+            }
         }
     } else {
         // Handle the error
