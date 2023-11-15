@@ -5,6 +5,7 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QPushButton>
+#include <QTimer>
 
 namespace Ui {
 class Login;
@@ -27,6 +28,7 @@ signals:
     void loginFail();
     void cardFail(); // kytke mainissa tekstikentät oikein
     void cardOk(QString cardType); // kytkennät mainiin, mm. clear ja tekstit
+    void cardOkSelectType();
 
 private:
     //void getParentPointer();
@@ -40,6 +42,7 @@ private:
     int state;
     bool active;
     void activate(bool on_off);
+    QTimer *loginTimer;
 };
 
 #endif // LOGIN_H

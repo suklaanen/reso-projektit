@@ -482,7 +482,7 @@
      <rect>
       <x>130</x>
       <y>260</y>
-      <width>111</width>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -502,7 +502,7 @@ background color: rgb(255, 255, 255)</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="PushText3">
@@ -510,7 +510,7 @@ background color: rgb(255, 255, 255)</string>
      <rect>
       <x>130</x>
       <y>180</y>
-      <width>111</width>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -530,7 +530,7 @@ background color: rgb(255, 255, 255)</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="PushText2">
@@ -538,7 +538,7 @@ background color: rgb(255, 255, 255)</string>
      <rect>
       <x>130</x>
       <y>100</y>
-      <width>111</width>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -558,7 +558,7 @@ background color: rgb(255, 255, 255)</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="PushText1">
@@ -566,7 +566,7 @@ background color: rgb(255, 255, 255)</string>
      <rect>
       <x>130</x>
       <y>20</y>
-      <width>111</width>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -586,15 +586,15 @@ background color: rgb(255, 255, 255)</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="PushText5">
     <property name="geometry">
      <rect>
-      <x>890</x>
+      <x>840</x>
       <y>20</y>
-      <width>111</width>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -614,15 +614,15 @@ background color: rgb(255, 255, 255)</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="PushText6">
     <property name="geometry">
      <rect>
-      <x>890</x>
+      <x>840</x>
       <y>100</y>
-      <width>111</width>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -642,15 +642,15 @@ background color: rgb(255, 255, 255)</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="PushText8">
     <property name="geometry">
      <rect>
-      <x>890</x>
+      <x>840</x>
       <y>260</y>
-      <width>111</width>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -670,15 +670,15 @@ background color: rgb(255, 255, 255)</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="PushText7">
     <property name="geometry">
      <rect>
-      <x>890</x>
+      <x>840</x>
       <y>180</y>
-      <width>111</width>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -698,7 +698,7 @@ background color: rgb(255, 255, 255)</string>
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QWidget" name="Frames1" native="true">

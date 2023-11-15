@@ -30,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->YELLOW->setDisabled(false);
     ui->GREY->setDisabled(false);
     ui->GREEN->setDisabled(false);
+
+    state = INIT;
 }
 
 MainWindow::~MainWindow()
@@ -50,8 +52,14 @@ void MainWindow::clickedNumberHandler()
 
 void MainWindow::clickedGREEN()
 {
-    qDebug()<<"Green button clicked";
-    login->setCardID(ui->Content->text());
+    switch(state) {
+    case INIT: qDebug()<<"Green button clicked";
+               login->setCardID(ui->Content->text());
+        break;
+    case CARD_OK: login->setPIN(ui->Content->text());
+        break;
+    }
+
     // jatkuu tilakoneessa
 }
 
@@ -74,6 +82,7 @@ void MainWindow::clickedGREY()
 void MainWindow::clickedRED()
 {
     qDebug()<<"Red button clicked";
+    state = INIT;
     showLogin();
 }
 
@@ -87,9 +96,26 @@ void MainWindow::showLogin()
 
 void MainWindow::showInputPin(QString cardType)
 {
+    this->cardType = cardType;
     ui->Title->setText(QString("Kortti tunnistettu"));
     ui->SecondTitle->setText(QString("Syötä pin"));
     ui->Content->clear();
+    state = CARD_OK;
+}
+
+void MainWindow::selectDebitCredit()
+{
+    this->cardType = "debit/credit";
+    state = SELECT_DEBIT_CREDIT;
+    ui->Title->setText(QString("Valitse tili"));
+    ui->PushText4->setText(QString("debit"));
+    ui->PushText8->setText(QString("credit"));
+}
+
+void MainWindow::showMenu()
+{
+    ui->Title->clear();
+    ui->PushText1->setText(QString("Tarkista saldo"));
 }
 
 void MainWindow::connectSlots()
@@ -106,4 +132,6 @@ void MainWindow::connectSlots()
     connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
     connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
+    connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
+    connect(login, SIGNAL(loginOk()), this, SLOT(showMenu()));
 }

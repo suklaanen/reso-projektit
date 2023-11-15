@@ -21,6 +21,7 @@ class MainWindow : public QMainWindow
         LOGIN_FAIL,
         SELECT_USER,
         SELECT_ADMIN,
+        SELECT_DEBIT_CREDIT,
         USER_LOGIN,
         ADMIN_LOGIN,
         CARD_OK,
@@ -54,6 +55,8 @@ public slots:
     void clickedRED();
     void showLogin();
     void showInputPin(QString cardType);
+    void selectDebitCredit();
+    void showMenu();
 
 
 private:
