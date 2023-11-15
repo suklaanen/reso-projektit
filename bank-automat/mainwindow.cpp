@@ -183,6 +183,6 @@ void MainWindow::connectSlots()
 // Kommentoidut toteutus pitää tehdä:
     //connect(login, SIGNAL(selectDebit()),this, SLOT(showInputPin(QString)));
     //connect(login, SIGNAL(selectCredit()),this, SLOT(showInputPin(QString)));
-    connect(login, SIGNAL(LoginFail()),this, SLOT(ShowLoginFailure()));
-    connect(login, SIGNAL(LoginOk()),this, SLOT(showMenu()));
+    connect(login, SIGNAL(loginFail()),this, SLOT(ShowLoginFailure()));
+    connect(login, SIGNAL(loginOk()),this, SLOT(showMenu()));
 }
