@@ -67,7 +67,6 @@ public slots:
     void showCardFailure();
     void showLoginFailure();
 
-
 signals:
     void accountCombined();
     void accountDebit();
@@ -104,6 +103,7 @@ private:
     void requestLogin();
     int state;
     Login * login;
+    void clearScreen();
 
 };
 #endif // MAINWINDOW_H

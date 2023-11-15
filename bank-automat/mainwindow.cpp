@@ -73,7 +73,7 @@ void MainWindow::clickedGREEN()
         ui->pushButton7->setDisabled(false);
         break;
     // Allaolevat attemptit ehkä, eos
-    case PIN_ATTEMPT_1:
+   /* case PIN_ATTEMPT_1:
         if (login->checkPinOk(ui->Content->text())) {
             state = USER_MENU;
         } else {
@@ -88,7 +88,7 @@ void MainWindow::clickedGREEN()
         }
         break;
     case CARD_LOCKED:
-        break;
+        break;*/
     }
 }
 
@@ -118,25 +118,26 @@ void MainWindow::clickedRED()
 void MainWindow::showLogin()
 {
     state = SELECT_CARD;
+    clearScreen();
     ui->Title->setText("Kirjaudu sisään");
     ui->Title->setAlignment(Qt::AlignCenter);
     ui->SecondTitle->setText(QString("Syötä kortin ID"));
-    ui->Content->clear();
 }
 
 void MainWindow::showInputPin(QString cardType)
 {
     state = CARD_OK;
     this->cardType = cardType;
+    clearScreen();
     ui->Title->setText(QString("Kortti tunnistettu"));
     ui->SecondTitle->setText(QString("Syötä pin"));
-    ui->Content->clear();
 }
 
 void MainWindow::selectDebitCredit()
 {
     this->cardType = "debit/credit";
     state = CARD_COMBINATION;
+    clearScreen();
     ui->Title->setText(QString("Valitse tili"));
     ui->PushText4->setText(QString("Debit"));
     ui->PushText8->setText(QString("Credit"));
@@ -145,7 +146,7 @@ void MainWindow::selectDebitCredit()
 void MainWindow::showMenu()
 {
     state = USER_MENU;
-    ui->Title->clear();
+    clearScreen();
     ui->PushText2->setText(QString("Saldo"));
     ui->PushText3->setText(QString("Tapahtumat"));
     ui->PushText7->setText(QString("Nosto"));
@@ -160,7 +161,7 @@ void MainWindow::showCardFailure()
 void MainWindow::showLoginFailure()
 {
     state = LOGIN_FAIL;
-    ui->Title->setText(QString("Hahaha! Pieleen meni!"));
+    ui->Title->setText(QString("Kirjautuminen epäonnistui"));
 }
 
 void MainWindow::connectSlots()
@@ -183,6 +184,21 @@ void MainWindow::connectSlots()
 // Kommentoidut toteutus pitää tehdä:
     //connect(login, SIGNAL(selectDebit()),this, SLOT(showInputPin(QString)));
     //connect(login, SIGNAL(selectCredit()),this, SLOT(showInputPin(QString)));
-    connect(login, SIGNAL(loginFail()),this, SLOT(ShowLoginFailure()));
+    connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
     connect(login, SIGNAL(loginOk()),this, SLOT(showMenu()));
+}
+
+void MainWindow::clearScreen()
+{
+    ui->Content->clear();
+    ui->Title->clear();
+    ui->SecondTitle->clear();
+    ui->PushText1->clear();
+    ui->PushText2->clear();
+    ui->PushText3->clear();
+    ui->PushText4->clear();
+    ui->PushText5->clear();
+    ui->PushText6->clear();
+    ui->PushText7->clear();
+    ui->PushText8->clear();
 }

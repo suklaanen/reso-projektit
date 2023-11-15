@@ -52,9 +52,7 @@ void Login::handleCard()
                     emit cardOkSelectType();
                 } else {
                     emit cardOk (cardType);
-
                 }
-
             }
         }
     } else {
@@ -74,8 +72,9 @@ void Login::handlePin()
         QByteArray responseData = reply->readAll();
         // Process responseData as needed
 
+        qDebug() << responseData;
         //if(responseData.length()>20) {
-        if(checkPinOk(QString(responseData))) {
+        if(responseData != "false") {
             emit loginOk();
         }
         else {
@@ -114,7 +113,3 @@ void Login::activate(bool on_off)
     active = on_off;
 }
 
-bool Login::checkPinOk(const QString& enteredPIN)
-{
-    // toteutus tähän ehkä, eos
-}
