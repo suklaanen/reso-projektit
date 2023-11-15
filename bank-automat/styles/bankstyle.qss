@@ -6,11 +6,6 @@ background-color: #363636;
 color: #ffffff;
 }
 
-#PushText1, #PushText2, #PushText3, #PushText4, #PushText5, #PushText6, #PushText7, PushText8 { 
-font-size: 11px;
-color: #ffffff;
-}
-
 #MainFrame {
 background-color: #100f1d;
 border-style: solid;
