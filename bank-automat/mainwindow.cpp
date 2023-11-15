@@ -18,15 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     connectSlots();
 
-    ui->pushButton1->setDisabled(true);
-    ui->pushButton2->setDisabled(true);
-    ui->pushButton3->setDisabled(true);
-    ui->pushButton4->setDisabled(true);
-    ui->pushButton5->setDisabled(true);
-    ui->pushButton6->setDisabled(true);
-    ui->pushButton7->setDisabled(true);
-    ui->pushButton8->setDisabled(true);
-
     ui->RED->setDisabled(false);
     ui->YELLOW->setDisabled(false);
     ui->GREY->setDisabled(false);
@@ -64,13 +55,8 @@ void MainWindow::clickedGREEN()
         login->setPIN(ui->Content->text());
         break;
     case CARD_COMBINATION:
-        ui->pushButton4->setDisabled(false);
-        ui->pushButton8->setDisabled(false);
         break;
     case USER_MENU:
-        ui->pushButton2->setDisabled(false);
-        ui->pushButton3->setDisabled(false);
-        ui->pushButton7->setDisabled(false);
         break;
     // Allaolevat attemptit ehkä, eos
    /* case PIN_ATTEMPT_1:
@@ -138,6 +124,8 @@ void MainWindow::selectDebitCredit()
     this->cardType = "debit/credit";
     state = CARD_COMBINATION;
     clearScreen();
+    ui->pushButton4->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
     ui->Title->setText(QString("Valitse tili"));
     ui->PushText4->setText(QString("Debit"));
     ui->PushText8->setText(QString("Credit"));
@@ -147,6 +135,9 @@ void MainWindow::showMenu()
 {
     state = USER_MENU;
     clearScreen();
+    ui->pushButton2->setDisabled(false);
+    ui->pushButton3->setDisabled(false);
+    ui->pushButton7->setDisabled(false);
     ui->PushText2->setText(QString("Saldo"));
     ui->PushText3->setText(QString("Tapahtumat"));
     ui->PushText7->setText(QString("Nosto"));
@@ -201,4 +192,12 @@ void MainWindow::clearScreen()
     ui->PushText6->clear();
     ui->PushText7->clear();
     ui->PushText8->clear();
+    ui->pushButton1->setDisabled(true);
+    ui->pushButton2->setDisabled(true);
+    ui->pushButton3->setDisabled(true);
+    ui->pushButton4->setDisabled(true);
+    ui->pushButton5->setDisabled(true);
+    ui->pushButton6->setDisabled(true);
+    ui->pushButton7->setDisabled(true);
+    ui->pushButton8->setDisabled(true);
 }
