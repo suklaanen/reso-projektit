@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
     token = "";
-
+    offset=5;
     connectSlots();
 
     ui->RED->setDisabled(false);
@@ -183,7 +183,13 @@ void MainWindow::showCardLocked()
 
 void MainWindow::button1Clicked()
 {
+    switch(state) {
+    case USER_TRANSACTIONS:
+        qDebug() << "vanhemmat clicked";
+        offset=offset+5;
 
+        break;
+    }
 }
 void MainWindow::button2Clicked()
 {
@@ -191,7 +197,23 @@ void MainWindow::button2Clicked()
 }
 void MainWindow::button3Clicked()
 {
+    switch(state) {
+    case USER_MENU:
+        qDebug() << "transactions clicked";
+        clearScreen();
+        ui->PushText1->setText(QString("vanhemmat"));
+        ui->PushText5->setText(QString("vanhemmat"));
+        ui->PushText4->setText(QString("uudemmat"));
+        ui->PushText8->setText(QString("uudemmat"));
+        ui->PushText3->setText(QString("palaa takaisin"));
+        ui->pushButton1->setDisabled(false);
+        ui->pushButton3->setDisabled(false);
+        ui->pushButton4->setDisabled(false);
+        ui->pushButton5->setDisabled(false);
+        ui->pushButton8->setDisabled(false);
 
+        break;
+    }
 }
 void MainWindow::button4Clicked()
 {
@@ -220,6 +242,7 @@ void MainWindow::button8Clicked()
         qDebug() << "credit clicked";
         break;
     }
+
 }
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
 void MainWindow::showCardFailure()
@@ -253,8 +276,16 @@ void MainWindow::connectSlots()
     connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
     connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
     connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
+    connect(ui->pushButton1, SIGNAL(clicked()), this, SLOT(button1Clicked()));
+    connect(ui->pushButton2, SIGNAL(clicked()), this, SLOT(button2Clicked()));
+    connect(ui->pushButton3, SIGNAL(clicked()), this, SLOT(button3Clicked()));
     connect(ui->pushButton4, SIGNAL(clicked()), this, SLOT(button4Clicked()));
+    connect(ui->pushButton5, SIGNAL(clicked()), this, SLOT(button5Clicked()));
+    connect(ui->pushButton6, SIGNAL(clicked()), this, SLOT(button6Clicked()));
+    connect(ui->pushButton7, SIGNAL(clicked()), this, SLOT(button7Clicked()));
     connect(ui->pushButton8, SIGNAL(clicked()), this, SLOT(button8Clicked()));
+
+
     connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
