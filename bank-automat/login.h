@@ -29,12 +29,12 @@ public slots:
 
  signals:
     void loginFail();
-    void loginOk();
+    void loginOkUser(QString token);
     void cardFail();
     void cardLocked();
     void cardOk(QString cardType);
     void cardOkSelectType();
-    void cardOkAdmin();
+    void loginOkAdmin(QString token);
     void pinOk();
     void pinFail();
     void pinAttempts();

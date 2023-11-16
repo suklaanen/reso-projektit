@@ -76,9 +76,9 @@ void Login::handlePin()
         //if(responseData.length()>20) {
         if(responseData != "false") {
             if (cardType == "admin") {
-                emit cardOkAdmin();
+                emit loginOkAdmin(QString(responseData));
             } else {
-                emit loginOk();
+                emit loginOkUser(QString(responseData));
             }
         }
         else {
