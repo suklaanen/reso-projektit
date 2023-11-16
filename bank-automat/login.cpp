@@ -5,12 +5,12 @@ Login::Login(QWidget *parent) :
 {
     cardID = "";
     pin = "";
-    state = 0;
     cardType = "";
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
     loginTimer = new QTimer(this);
     loginTimer->setSingleShot(false);
+    pin_attempted = false;
 }
 
 Login::~Login()
@@ -51,11 +51,7 @@ void Login::handleCard()
             if (cardID.toInt() < 1) { //Tarkistetaan, ettei ole annettu tyhjää kortin ID:tä
                 emit cardFail(); //Jos ID on tyhjä -> cardFail() maindwindow:lle
             } else {
-                if(cardType == "credit/debit") {
-                    emit cardOkSelectType(); //Jos kortin tyyppi on yhdistelmäkortti, lähetetään signaali mainwindow:lle, jossa valitaan käytettävä tili
-                } else {
-                    emit cardOk (cardType); //Debit, credit tai admin korteissa lähetetään suoraan signaali cardOk() mainwindow:lle, jossa skipataan tilin valinta
-                }
+                checkPinAttempts();
             }
         }
     } else {
@@ -86,11 +82,68 @@ void Login::handlePin()
             }
         }
         else {
-            emit loginFail(); //Jos tokenia ei tullu, tulee "false" ja signaali loginFail() mainwindow:lle
+            pin_attempted = true;
+            addAttempt();
         }
     } else {
         // Käsitellään mahdollinen virhe (verkkovirhe)
         qDebug() << "Could not login" << reply->errorString();
+    }
+    // Tyhjennetään vastaus myöhemmin
+    reply->deleteLater();
+}
+
+void Login::handleAttempts()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+    if (reply->error() == QNetworkReply::NoError) {
+        // Onnistunut vastaus
+        QByteArray responseData = reply->readAll();
+        // Käsitellään vastaus
+        if(responseData == "3") {
+            emit cardLocked();
+        }
+        else {
+            if(!pin_attempted) {
+                if(cardType == "credit/debit") {
+                    emit cardOkSelectType();
+                }
+                else {
+                    emit cardOk(cardType);
+                }
+            }
+            else {
+                emit loginFail();
+            }
+        }
+
+
+        qDebug() << responseData;
+
+    } else {
+        // Käsitellään mahdollinen virhe (verkkovirhe)
+        qDebug() << "Could not get attempts" << reply->errorString();
+    }
+    // Tyhjennetään vastaus myöhemmin
+    reply->deleteLater();
+}
+
+void Login::handleAddedAttempt()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+    if (reply->error() == QNetworkReply::NoError) {
+        // Onnistunut vastaus
+        QByteArray responseData = reply->readAll();
+        // Käsitellään vastaus
+        if(responseData == "true") {
+            checkPinAttempts();
+        }
+
+        qDebug() << responseData;
+
+    } else {
+        // Käsitellään mahdollinen virhe (verkkovirhe)
+        qDebug() << "Could not get attempts" << reply->errorString();
     }
     // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();
@@ -116,6 +169,25 @@ void Login::requestLogin()
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->post(request, QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handlePin()));
+}
+
+void Login::checkPinAttempts()
+{
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://localhost:3000/cardAttempts/"+cardID));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    reply = manager->get(request);
+    connect(reply, SIGNAL(finished()), this, SLOT(handleAttempts()));
+}
+
+void Login::addAttempt()
+{
+    QNetworkRequest request;
+    QJsonObject body;
+    request.setUrl(QUrl("http://localhost:3000/cardAttempts/"+cardID));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    reply = manager->put(request,QJsonDocument(body).toJson());
+    connect(reply, SIGNAL(finished()), this, SLOT(handleAddedAttempt()));
 }
 
 

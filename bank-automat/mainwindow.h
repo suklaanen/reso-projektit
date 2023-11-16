@@ -67,6 +67,7 @@ public slots:
     void showCardFailure();
     void showLoginFailure();
     void showAdminMenu(QString token);
+    void showCardLocked();
     void button1Clicked();
     void button2Clicked();
     void button3Clicked();

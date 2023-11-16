@@ -12,6 +12,7 @@ var cardRouter = require('./controllers/card');
 var automatRouter = require('./controllers/automat');
 var loginRouter = require('./controllers/login');
 var frontendEventsRouter = require('./controllers/eventRequests_frontend');
+var cardPinAttempts = require('./controllers/card_pin_attempts');
 
 var app = express();
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/cardAttempts',cardPinAttempts);
 app.use('/login', loginRouter);
 
 app.use('/', indexRouter);

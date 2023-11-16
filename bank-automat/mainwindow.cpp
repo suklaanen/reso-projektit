@@ -169,6 +169,14 @@ void MainWindow::showAdminMenu(QString token)
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
+void MainWindow::showCardLocked()
+{
+    clearScreen();
+    state = CARD_LOCKED;
+    ui->Title->setText(QString("Kortti lukittu"));
+    ui->SecondTitle->setText(QString("Ota yhteys pankkiin"));
+}
+
 void MainWindow::button1Clicked()
 {
 
@@ -252,6 +260,7 @@ void MainWindow::connectSlots()
     //connect(login, SIGNAL(selectCredit()),this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
     connect(login, SIGNAL(loginOkUser(QString)),this, SLOT(showMenu(QString)));
+    connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
 }
 
 // Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
