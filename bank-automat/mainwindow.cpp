@@ -200,7 +200,8 @@ void MainWindow::button2Clicked()
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
-        //showUserBalance();  // tai vastaavan niminen slotti
+        clearScreen();
+        showUserBalance();
         break;
     }
 }
@@ -283,6 +284,15 @@ void MainWindow::button8Clicked()
     }
 
 }
+
+void MainWindow::showUserBalance()
+{
+    ui->Title->setText(QString("Saldo"));
+    ui->Content->setText(QString("5. tapahtuma<br/>4. tapahtuma<br/>3.tapahtuma<br/>2.Tapahtuma<br/>1. Tapahtuma" ));
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->pushButton4->setDisabled(false);
+
+}
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
 void MainWindow::showCardFailure()
 {
@@ -334,6 +344,10 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
     connect(login, SIGNAL(loginOkUser(QString)),this, SLOT(showMenu(QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
+
+    connect(ui->pushButton2, SIGNAL(clicked()), this, SLOT(button2Clicked()));
+    connect(ui->pushButton4, SIGNAL(clicked()), this, SLOT(button4Clicked()));
+    connect(ui->pushButton8, SIGNAL(clicked()), this, SLOT(button8Clicked()));
 }
 
 // Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
