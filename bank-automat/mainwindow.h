@@ -121,5 +121,6 @@ private:
     QString token;
     void clearScreen();
 
+    int offset;
 };
 #endif // MAINWINDOW_H
