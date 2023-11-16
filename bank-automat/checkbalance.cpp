@@ -25,3 +25,13 @@ void CheckBalance::requestAccount()
 {
 
 }
+
+void CheckBalance::requestEvents()
+{
+
+}
+
+void CheckBalance::requestBalance()
+{
+
+}
