@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QFile styleFile("../styles/bankstyle.qss");
+    QFile styleFile(":/bankstyle.qss");
 
     qDebug() << "Current working directory: " << QDir::currentPath();
     if (styleFile.open(QFile::ReadOnly | QFile::Text)) {

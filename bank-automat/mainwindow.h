@@ -16,18 +16,28 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     enum State {
-        INIT,
+        SELECT_CARD,
         CARD_FAIL,
+        CARD_OK,
+        PIN_OK,
         LOGIN_FAIL,
-        SELECT_USER,
+        PIN_ATTEMPT_1,
+        PIN_ATTEMPT_2,
+        PIN_ATTEMPT_3,
+        CARD_LOCKED,
+        SELECT_ACCOUNT,
+        CARD_COMBINATION,
+        CARD_MANYDEBITS,
+        CARD_ADMIN,
+        CARD_CREDIT,
+        CARD_DEBIT,
+        SELECT_DEBIT,
+        SELECT_CREDIT,
         SELECT_ADMIN,
-        SELECT_DEBIT_CREDIT,
         USER_LOGIN,
         ADMIN_LOGIN,
-        CARD_OK,
-        LOGIN_OK,
-        USER_MAIN,
-        ADMIN_MAIN,
+        USER_MENU,
+        ADMIN_MENU,
         USER_TRANSACTIONS,
         USER_BALANCE,
         USER_WITHDRAWAL,
@@ -35,9 +45,6 @@ class MainWindow : public QMainWindow
         AUTOMAT_SET_MAX_WITHDRAWAL,
         AUTOMAT_VIEW_LOG,
         CONFIRM,
-        SELECT_ACCOUNT,
-        SELECT_DEBIT,
-        SELECT_CREDIT,
         LOGOUT
     };
 
@@ -57,7 +64,32 @@ public slots:
     void showInputPin(QString cardType);
     void selectDebitCredit();
     void showMenu();
+    void showCardFailure();
+    void showLoginFailure();
+    void showAdminMenu();
 
+signals:
+    void accountCombined();
+    void accountDebit();
+    void accountManyDebits();
+    void accountCredit();
+    void accountAdmin();
+    void userMain();
+    void userTransactions();
+    void transactionsBackward();
+    void transactionsForward();
+    void userBalance();
+    void userWithdrawal();
+    void withdrawalOk();
+    void withdrawalFail();
+    void returnWithdrawal();
+    void returnUserMain();
+    void automatAddMoney();
+    void automatLog();
+    void automatSetMax();
+    void returnAdminMain();
+    void logout();
+    void timeout();
 
 private:
     Ui::MainWindow *ui;
@@ -71,6 +103,7 @@ private:
     void requestLogin();
     int state;
     Login * login;
+    void clearScreen();
 
 };
 #endif // MAINWINDOW_H

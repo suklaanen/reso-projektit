@@ -43,12 +43,16 @@ void Login::handleCard()
             emit cardFail();
         }
         else {
-            cardType = QString(responseData);
-            if(cardType == "debit/credit") {
-                emit cardOkSelectType();
-            }
-            else {
-                emit cardOk (cardType);
+            cardType = QString(responseData).replace("\"", "");
+            qDebug() << "cardType:" << cardType;
+            if (cardID.toInt() < 1) {
+                emit cardFail();
+            } else {
+                if(cardType == "credit/debit") {
+                    emit cardOkSelectType();
+                } else {
+                    emit cardOk (cardType);
+                }
             }
         }
     } else {
@@ -57,7 +61,6 @@ void Login::handleCard()
     }
     // Clean up the reply
     reply->deleteLater();
-
 }
 
 void Login::handlePin()
@@ -69,8 +72,14 @@ void Login::handlePin()
         QByteArray responseData = reply->readAll();
         // Process responseData as needed
 
-        if(responseData.length()>20) {
-            emit loginOk();
+        qDebug() << responseData;
+        //if(responseData.length()>20) {
+        if(responseData != "false") {
+            if (cardType == "admin") {
+                emit cardOkAdmin();
+            } else {
+                emit loginOk();
+            }
         }
         else {
             emit loginFail();
@@ -83,8 +92,6 @@ void Login::handlePin()
     reply->deleteLater();
 }
 
-
-// kesken
 void Login::requestCardID()
 {
     QNetworkRequest request;
@@ -93,7 +100,6 @@ void Login::requestCardID()
     connect(reply, SIGNAL(finished()), this, SLOT(handleCard()));
 }
 
-//kesken
 void Login::requestLogin()
 {
     QNetworkRequest request;
@@ -106,8 +112,8 @@ void Login::requestLogin()
     connect(reply, SIGNAL(finished()), this, SLOT(handlePin()));
 }
 
-// kesken
 void Login::activate(bool on_off)
 {
     active = on_off;
 }
+
