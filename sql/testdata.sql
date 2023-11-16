@@ -27,7 +27,7 @@ VALUES
 ('Paavo','Tietty','Pankkiirintie 15','Pirkkala'),
 ('Mauri','Ala-Vesko','Sieväkatu 9','Tampere'),
 ('Tiina','Tärskynen','Pikkuhiirunkuja 2','Kangasala'),
-('RFAT','RFAT','RFAT','RFAT');
+('ROBOT','FRAMEWORK','AUTOMATION','TESTING');
 
 ALTER TABLE  `account` AUTO_INCREMENT = 1;
 INSERT INTO `account` (`account_nmbr`, `bank_name`, `account_type`, `balance`, `max_withdrawal_per_day`, `credit_limit`) 
@@ -85,28 +85,52 @@ VALUES
 
 SELECT id_user FROM user;
 
+-- || jos tarvii hashata uudestaan, niin ||
+-- || cmd : curl localhost:3000/login/1234 ||
+-- || 1234 tilalle pin koodi ||
 ALTER TABLE  `card` AUTO_INCREMENT = 1;
 INSERT INTO `card` (`type`, `pin`, `id_user`, `attempts`) 
 VALUES
-('debit','$2a$10$aN/zewaV8CL3jYQE0I/LA.P0IZVMUBm7WKaB9x30zNCc2GtBgJYI6',1,0),
+-- pin:
+-- 9447
 ('debit','$2a$10$.sd7wgEvDqYVovZGCekutOJWmuT/UbSkKnziiHJ/PEHjLNpcGvT/2',2,0),
+-- 5860 
+('debit','$2a$10$aN/zewaV8CL3jYQE0I/LA.P0IZVMUBm7WKaB9x30zNCc2GtBgJYI6',1,0),
+-- 1733
 ('credit','$2a$10$SeSnzNgfIHcRN762pVzP.eTxHAZ54PUTJU9/Oe4nbwgXpr9L2A1tW',3,0),
+-- 4322
 ('debit','$2a$10$L98HWiHh.p6fc7uPQ2tOfu9lfnAjseztEqHnNZNBuk7wBOX0Ij12K',4,0),
+-- 8254
 ('debit','$2a$10$7Hl048Rp2TMEddzMB9qETuoTFQ.5uneik2pM0086kIG1s7wifP06m',5,0),
+-- 1998
 ('debit','$2a$10$GOgKGbGAvblTl22mQxKqgeUzPB0MUghbKjxSH8vVoZGnFPl4/344C',6,0),
+-- 3002
 ('debit','$2a$10$8bklPdiOMp.BCBSn6lNg9O3UTYVno.5ExTcUDulwkjw10YdvdhIWa',7,0),
+-- 4105
 ('debit','$2a$10$ro6qAViOdugq04jedNuq8upRjurImj7gaFnGQuhd/5kGMRv6CCmmW',8,0),
+-- 4809
 ('admin','$2a$10$5sceyVyziaaxRoG8zBcY8eSlJP04QF.8DN5R8Nid0WDCi6JD2ewwO',1,0),
+-- 3944
 ('credit','$2a$10$djftLN657IIIug90A8vDde.ZSlkZpUt6bIUbbql8.UOgq2GqT1GCK',9,0),
+-- 4755
 ('debit','$2a$10$Teau3aLIyl9Dy08zn2zzSONUDwLxGP22XwC2zyH6qaeUpNP/V8Ef2',4,0),
+-- 3226
 ('debit','$2a$10$L2NjIxmvQucEX9RrkriBwOSURd0ITBV8XXfodVqEDccWU6ibNhS7y',5,0),
+-- 6499
 ('debit','$2a$10$dmjQcu7P/rwChhhl.56foelwJsPXs3cAfgmKGYcqIoqQ4LNOwsuta',10,0),
+-- 6877
 ('debit','$2a$10$D9MmIjAh7/DXQXqFkYsVb.HYqTCyV382a9yBYnI50Cuxe4SziIIpu',14,0),
+-- 2331
 ('debit','$2a$10$u32TnvdQIETlYkgTZzMwQuHxZCDWcmSPGMmgF6XR1uJjMxhvwxoM6',15,0),
+-- 3422
 ('credit/debit','$2a$10$XWrBB4kQnUFZId6iwm7IQu1YypE8HoIlIjxiCUjjeTwQOJDCzgegC',13,0),
+-- 1665
 ('debit','$2a$10$VU4azfFqhbugRWZOwC0XwOkT5JV/WmC030O5ZEpc08YF0Z3jN4ar.',11,0),
+-- 2942
 ('debit','$2a$10$NnQbWtK0rEsdtyShz/plGeGc/bC8M2WBFVRnWVdJt.iDb.BCM6Rq6',17,0),
+-- 2498
 ('debit','$2a$10$6Bn88h6C4vGFsseK7XycFu.BGLg6PqelNWc.ZexptgTUxYiqvwTTu',19,0),
+-- 2452
 ('admin','$2a$10$R7fw5jpjUmQfv0bbF8cbH.syU//LfWu7PchSvX/6Dya8nMOYIIhNO',20,0);
 
 # esim. käyttäjällä 19 on nyt kortti (16) kahteen tiliin (30) debit (33) credit
