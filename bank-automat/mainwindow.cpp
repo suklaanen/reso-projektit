@@ -64,23 +64,6 @@ void MainWindow::clickedGREEN()
         break;
     case USER_MENU:
         break;
-    // Allaolevat attemptit ehkä, eos
-   /* case PIN_ATTEMPT_1:
-        if (login->checkPinOk(ui->Content->text())) {
-            state = USER_MENU;
-        } else {
-            state = PIN_ATTEMPT_2;
-        }
-        break;
-    case PIN_ATTEMPT_2:
-        if (login->checkPinOk(ui->Content->text())) {
-            state = USER_MENU;
-        } else {
-            state = CARD_LOCKED;
-        }
-        break;
-    case CARD_LOCKED:
-        break;*/
     }
 }
 
@@ -174,6 +157,7 @@ void MainWindow::showLoginFailure()
     ui->SecondTitle->setText(QString("Syötä pin ja yritä uudelleen"));
 }
 
+
 // Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin, mikä tekee sen, että
 // SIGNAALISTA siirrytään SLOTTIIN (showJokinTila, joita useita tuossa yläpuolella)
 void MainWindow::connectSlots()
@@ -189,11 +173,10 @@ void MainWindow::connectSlots()
     connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
     connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
     connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
-// Tänne kytkökset + virhekäsittelyt (esim jos card ei ookkaan ok tai jos pin on väärä)
     connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
-// Kommentoidut toteutus pitää tehdä:
+// Kommentoidut toteutus tulossa:
     //connect(login, SIGNAL(selectDebit()),this, SLOT(showInputPin(QString)));
     //connect(login, SIGNAL(selectCredit()),this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
