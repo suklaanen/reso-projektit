@@ -448,7 +448,7 @@
      <rect>
       <x>130</x>
       <y>320</y>
-      <width>161</width>
+      <width>211</width>
       <height>51</height>
      </rect>
     </property>
@@ -475,7 +475,7 @@
      <rect>
       <x>130</x>
       <y>240</y>
-      <width>161</width>
+      <width>211</width>
       <height>51</height>
      </rect>
     </property>
@@ -502,7 +502,7 @@
      <rect>
       <x>130</x>
       <y>160</y>
-      <width>161</width>
+      <width>211</width>
       <height>51</height>
      </rect>
     </property>
@@ -529,7 +529,7 @@
      <rect>
       <x>130</x>
       <y>80</y>
-      <width>161</width>
+      <width>211</width>
       <height>51</height>
      </rect>
     </property>
@@ -554,9 +554,9 @@
    <widget class="QLabel" name="PushText5">
     <property name="geometry">
      <rect>
-      <x>840</x>
+      <x>790</x>
       <y>80</y>
-      <width>161</width>
+      <width>211</width>
       <height>51</height>
      </rect>
     </property>
@@ -581,9 +581,9 @@
    <widget class="QLabel" name="PushText6">
     <property name="geometry">
      <rect>
-      <x>840</x>
+      <x>790</x>
       <y>160</y>
-      <width>161</width>
+      <width>211</width>
       <height>51</height>
      </rect>
     </property>
@@ -608,9 +608,9 @@
    <widget class="QLabel" name="PushText8">
     <property name="geometry">
      <rect>
-      <x>840</x>
+      <x>790</x>
       <y>320</y>
-      <width>161</width>
+      <width>211</width>
       <height>51</height>
      </rect>
     </property>
@@ -635,9 +635,9 @@
    <widget class="QLabel" name="PushText7">
     <property name="geometry">
      <rect>
-      <x>840</x>
+      <x>790</x>
       <y>240</y>
-      <width>161</width>
+      <width>211</width>
       <height>51</height>
      </rect>
     </property>
