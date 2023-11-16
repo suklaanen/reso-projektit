@@ -5,3 +5,23 @@ CheckBalance::CheckBalance(QObject *parent)
 {
 
 }
+
+CheckBalance::~CheckBalance()
+{
+
+}
+
+void CheckBalance::showBalance()
+{
+
+}
+
+void CheckBalance::showFiveLastEvent()
+{
+
+}
+
+void CheckBalance::requestAccount()
+{
+
+}

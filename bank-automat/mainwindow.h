@@ -79,6 +79,7 @@ public slots:
     void button6Clicked();
     void button7Clicked();
     void button8Clicked();
+    void showUserBalance();
 
 signals:
     void accountCombined();

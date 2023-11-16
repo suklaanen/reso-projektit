@@ -8,8 +8,16 @@ class CheckBalance : public QObject
     Q_OBJECT
 public:
     explicit CheckBalance(QObject *parent = nullptr);
+    ~CheckBalance();
+
+public slots:
+    void showBalance();
+    void showFiveLastEvent();
 
 signals:
+
+private:
+    void requestAccount();
 
 };
 
