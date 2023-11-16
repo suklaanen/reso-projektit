@@ -22,6 +22,7 @@ Login::~Login()
 void Login::setCardID(QString inputCardID)
 {
     cardID = inputCardID;
+    pin_attempted = false;
     requestCardID(); // Kutsutaan metodia, josta lähtee pyyntö REST APIlle kortin tyypin tarkistukselle
 }
 
@@ -51,7 +52,7 @@ void Login::handleCard()
             if (cardID.toInt() < 1) { //Tarkistetaan, ettei ole annettu tyhjää kortin ID:tä
                 emit cardFail(); //Jos ID on tyhjä -> cardFail() maindwindow:lle
             } else {
-                checkPinAttempts();
+                checkPinAttempts(); //Jos kortti löytyy, lähdetään tarkistamaan pin koodin yrityskerrat
             }
         }
     } else {
@@ -93,6 +94,7 @@ void Login::handlePin()
     reply->deleteLater();
 }
 
+//Ottaa vastaan ja käsittelee vastauksen kortin pin koodin yrityskerroista
 void Login::handleAttempts()
 {
     QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
@@ -101,19 +103,19 @@ void Login::handleAttempts()
         QByteArray responseData = reply->readAll();
         // Käsitellään vastaus
         if(responseData == "3") {
-            emit cardLocked();
+            emit cardLocked(); //Jos kolme yritystä on täynnä niin lähetetään cardLocked() signaali mainwindow:lle
         }
         else {
-            if(!pin_attempted) {
-                if(cardType == "credit/debit") {
-                    emit cardOkSelectType();
+            if(!pin_attempted) { //Muussa tapauksessa, tarkistetaan onko piniä yritetty tällä käyttökerralla jo vähintään kerran
+                if(cardType == "credit/debit") { //Jos piniä ei vielä oltu yritetty ja kyseessä on yhdistelmäkortti
+                    emit cardOkSelectType();     //Lähetetään signaali mainwindow:lle, joka aktivoi valitse tyyppi tilan
                 }
-                else {
-                    emit cardOk(cardType);
+                else { //Jos kortti on credit, debit tai admin
+                    emit cardOk(cardType); //Lähetetään signaali cardOk() mainwindow:lle, jossa siirrytään pin koodin kyselyyn
                 }
             }
             else {
-                emit loginFail();
+                emit loginFail(); //Jos piniä oli jo yritetty kertaalleen, ja korttia ei vielä lukita, lähetetään signaali mainwindow:lle, jossa siirrytään yritä uudestaan tilaan
             }
         }
 
@@ -128,6 +130,7 @@ void Login::handleAttempts()
     reply->deleteLater();
 }
 
+//Ottaa vastaan tiedon onnistuneesta pin koodin yrityskerran lisäämisesta kortille tietokantaan
 void Login::handleAddedAttempt()
 {
     QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
@@ -136,7 +139,7 @@ void Login::handleAddedAttempt()
         QByteArray responseData = reply->readAll();
         // Käsitellään vastaus
         if(responseData == "true") {
-            checkPinAttempts();
+            checkPinAttempts(); //Jos vastaus on odotettu, ja yksi yrityskerta on lisätty kortille, niin lähdetään heti perään tarkistamaan yrityskerrat.
         }
 
         qDebug() << responseData;
@@ -171,6 +174,7 @@ void Login::requestLogin()
     connect(reply, SIGNAL(finished()), this, SLOT(handlePin()));
 }
 
+//Lähettää pyynnön RESR APIlle pin koodin yritykertojen noutamiseksi
 void Login::checkPinAttempts()
 {
     QNetworkRequest request;
@@ -180,6 +184,7 @@ void Login::checkPinAttempts()
     connect(reply, SIGNAL(finished()), this, SLOT(handleAttempts()));
 }
 
+//Lähettää pyynnön lisätä yksi yrityskerta kortille tietokantaan
 void Login::addAttempt()
 {
     QNetworkRequest request;

@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
     token = "";
-    offset=5;
+    offset = 0;
     connectSlots();
 
     ui->RED->setDisabled(false);
@@ -63,7 +63,12 @@ void MainWindow::clickedGREEN()
 
     switch (state) {
     case SELECT_CARD:
-        login->setCardID(ui->Content->text());
+        if(ui->Content->text() != "") { //Mietitään, voidaan kopioida kaikkiin (setCardID())
+            login->setCardID(ui->Content->text());
+        }
+        else {
+            login->setCardID("0");
+        }
         break;
     case CARD_FAIL:
         login->setCardID(ui->Content->text());
