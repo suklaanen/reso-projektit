@@ -285,7 +285,7 @@ void MainWindow::button8Clicked()
 void MainWindow::showUserBalance()
 {
     ui->Title->setText(QString("Saldo"));
-    ui->Content->setText(QString("5. tapahtuma<br/>4. tapahtuma<br/>3.tapahtuma<br/>2.Tapahtuma<br/>1. Tapahtuma" ));
+    ui->Content2->setText(QString("5. tapahtuma<br/>4. tapahtuma<br/>3.tapahtuma<br/>2.Tapahtuma<br/>1. Tapahtuma" ));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
     ui->PushText4->setText(QString("Palaa takaisin"));
@@ -349,6 +349,7 @@ void MainWindow::connectSlots()
 void MainWindow::clearScreen()
 {
     ui->Content->clear();
+    ui->Content2->clear();
     ui->Title->clear();
     ui->SecondTitle->clear();
     ui->PushText1->clear();

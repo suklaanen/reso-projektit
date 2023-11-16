@@ -40,7 +40,7 @@ QLineEdit {
     font: 24pt "Segoe UI";
 }
 
-#Content { 
+#Content, #Content2 { 
     color: #ffffff;
     font: 24pt "Segoe UI";
 }
