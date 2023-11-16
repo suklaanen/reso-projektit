@@ -66,6 +66,7 @@ public slots:
     void showMenu();
     void showCardFailure();
     void showLoginFailure();
+    void showAdminMenu();
 
 signals:
     void accountCombined();
@@ -83,7 +84,6 @@ signals:
     void withdrawalFail();
     void returnWithdrawal();
     void returnUserMain();
-    void adminMain();
     void automatAddMoney();
     void automatLog();
     void automatSetMax();

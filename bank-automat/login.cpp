@@ -75,7 +75,11 @@ void Login::handlePin()
         qDebug() << responseData;
         //if(responseData.length()>20) {
         if(responseData != "false") {
-            emit loginOk();
+            if (cardType == "admin") {
+                emit cardOkAdmin();
+            } else {
+                emit loginOk();
+            }
         }
         else {
             emit loginFail();

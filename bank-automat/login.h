@@ -34,6 +34,7 @@ public slots:
     void cardLocked();
     void cardOk(QString cardType);
     void cardOkSelectType();
+    void cardOkAdmin();
     void pinOk();
     void pinFail();
     void pinAttempts();

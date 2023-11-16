@@ -64,6 +64,8 @@ void MainWindow::clickedGREEN()
         break;
     case USER_MENU:
         break;
+    case ADMIN_MENU:
+        break;
     }
 }
 
@@ -141,6 +143,27 @@ void MainWindow::showMenu()
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
+// Adminin menu
+void MainWindow::showAdminMenu()
+{
+    state = ADMIN_MENU;
+    clearScreen();
+    ui->pushButton1->setDisabled(false);
+    ui->pushButton2->setDisabled(false);
+    ui->pushButton3->setDisabled(false);
+    ui->pushButton6->setDisabled(false);
+    ui->pushButton7->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
+    ui->Title->setText(QString("Valitse toiminto"));
+    ui->PushText1->setText(QString("Lokitiedot"));
+    ui->PushText2->setText(QString("Automaatin varat"));
+    ui->PushText3->setText(QString("Lisää varoja"));
+    ui->PushText6->setText(QString("Nostoraja"));
+    ui->PushText7->setText(QString("Muuta nostorajaa"));
+    ui->PushText8->setText(QString("Keskeytä"));
+}
+
+
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
 void MainWindow::showCardFailure()
 {
@@ -176,6 +199,7 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
+    connect(login, SIGNAL(cardOkAdmin()),this, SLOT(showAdminMenu()));
 // Kommentoidut toteutus tulossa:
     //connect(login, SIGNAL(selectDebit()),this, SLOT(showInputPin(QString)));
     //connect(login, SIGNAL(selectCredit()),this, SLOT(showInputPin(QString)));
