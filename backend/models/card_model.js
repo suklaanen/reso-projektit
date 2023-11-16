@@ -34,6 +34,12 @@ const card = {
     },
     deleteCard: function(id, callback) {
         return db.query("DELETE FROM card WHERE id_card=?",[id],callback);
+    },
+    checkAttempts: function(id, callback) {
+        return db.query("SELECT attempts FROM card WHERE id_card=?",[id], callback);
+    },
+    addAttempt: function(id, callback) {
+        return db.query("UPDATE card SET attempts=attempts+1 WHERE id_card=?",[id],callback);
     }
 
 

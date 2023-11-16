@@ -23,7 +23,7 @@ router.get('/:id', function(request, response) {
             response.json("Error in database query");
         }
         else {
-            response.send(data);
+            response.json(data);
         }
     });
 });

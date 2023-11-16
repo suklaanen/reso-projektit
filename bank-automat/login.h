@@ -26,6 +26,8 @@ public slots:
     void setPIN(QString);
     void handleCard();
     void handlePin();
+    void handleAttempts();
+    void handleAddedAttempt();
 
  signals:
     void loginFail();
@@ -36,7 +38,7 @@ public slots:
     void cardOkSelectType();
     void loginOkAdmin(QString token);
     void pinOk();
-    void pinFail();
+    //void pinFail();
     void pinAttempts();
 
 private:
@@ -47,10 +49,10 @@ private:
     QString cardType;
     void requestCardID();
     void requestLogin();
-    int state;
-    bool active;
-    void activate(bool on_off);
+    void checkPinAttempts();
+    void addAttempt();
     QTimer *loginTimer;
+    bool pin_attempted;
 };
 
 #endif // LOGIN_H
