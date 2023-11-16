@@ -107,6 +107,7 @@ void MainWindow::showLogin()
 // Pin kortin syöttö tila, kun kortti on tunnistettu
 void MainWindow::showInputPin(QString cardType)
 {
+    qDebug() << cardType << " selected";
     state = CARD_OK;
     this->cardType = cardType;
     clearScreen();
@@ -163,7 +164,46 @@ void MainWindow::showAdminMenu()
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
+void MainWindow::button1Clicked()
+{
 
+}
+void MainWindow::button2Clicked()
+{
+
+}
+void MainWindow::button3Clicked()
+{
+
+}
+void MainWindow::button4Clicked()
+{
+    switch(state) {
+    case CARD_COMBINATION: showInputPin("debit");
+        qDebug() << "debit clicked";
+        break;
+    }
+}
+void MainWindow::button5Clicked()
+{
+
+}
+void MainWindow::button6Clicked()
+{
+
+}
+void MainWindow::button7Clicked()
+{
+
+}
+void MainWindow::button8Clicked()
+{
+    switch(state) {
+    case CARD_COMBINATION: showInputPin("credit");
+        qDebug() << "credit clicked";
+        break;
+    }
+}
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
 void MainWindow::showCardFailure()
 {
@@ -196,6 +236,8 @@ void MainWindow::connectSlots()
     connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
     connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
     connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
+    connect(ui->pushButton4, SIGNAL(clicked()), this, SLOT(button4Clicked()));
+    connect(ui->pushButton8, SIGNAL(clicked()), this, SLOT(button8Clicked()));
     connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));

@@ -67,6 +67,14 @@ public slots:
     void showCardFailure();
     void showLoginFailure();
     void showAdminMenu();
+    void button1Clicked();
+    void button2Clicked();
+    void button3Clicked();
+    void button4Clicked();
+    void button5Clicked();
+    void button6Clicked();
+    void button7Clicked();
+    void button8Clicked();
 
 signals:
     void accountCombined();
