@@ -14,6 +14,10 @@ MainWindow::MainWindow(QWidget *parent)
     login = new Login (this);
     showLogin();
 
+    balance = new CheckBalance(this);
+    transactions = new Transactions(this);
+    withdraw = new Withdraw(this);
+
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
     token = "";

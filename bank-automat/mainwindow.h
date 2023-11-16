@@ -6,6 +6,9 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <login.h>
+#include "transactions.h"
+#include "checkbalance.h"
+#include "withdraw.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -108,10 +111,12 @@ private:
     QString pin;
     void connectSlots();
     QString cardType;
-    void requestID();
-    void requestLogin();
+
     int state;
     Login * login;
+    CheckBalance * balance;
+    Withdraw * withdraw;
+    Transactions * transactions;
     QString token;
     void clearScreen();
 
