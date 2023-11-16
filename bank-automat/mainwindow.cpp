@@ -209,7 +209,6 @@ void MainWindow::button2Clicked()
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
-        clearScreen();
         showUserBalance();
         break;
     }
@@ -281,17 +280,18 @@ void MainWindow::button8Clicked()
         showLogin();
         break;
     }
-
 }
 
 void MainWindow::showUserBalance()
 {
     ui->Title->setText(QString("Saldo"));
     ui->Content->setText(QString("5. tapahtuma<br/>4. tapahtuma<br/>3.tapahtuma<br/>2.Tapahtuma<br/>1. Tapahtuma" ));
-    ui->PushText4->setText(QString("Palaa takaisin"));
     ui->pushButton4->setDisabled(false);
-
+    ui->pushButton8->setDisabled(false);
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->PushText8->setText(QString("Keskeytä"));
 }
+
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
 void MainWindow::showCardFailure()
 {
