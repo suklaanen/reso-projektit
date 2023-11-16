@@ -43,8 +43,17 @@ void MainWindow::clickedNumberHandler()
     qDebug()<< name << " -button clicked";
 
     QString content = ui->Content->text();
-    content.append(name.last(1));
-    ui->Content->setText(content);
+
+    if (content.length() < 4) {
+        content.append(name.last(1));
+        ui->Content->setText(content);
+    }
+
+    if (state == CARD_OK || state == LOGIN_FAIL) {
+        ui->Content->setEchoMode(QLineEdit::Password);
+    } else {
+        ui->Content->setEchoMode(QLineEdit::Normal);
+    }
 }
 
 // Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
@@ -57,7 +66,7 @@ void MainWindow::clickedGREEN()
         login->setCardID(ui->Content->text());
         break;
     case CARD_FAIL:
-        // tarkastus, onko kortti lukittu vai ei?
+        login->setCardID(ui->Content->text());
         break;
     case CARD_OK:
         login->setPIN(ui->Content->text());
@@ -200,7 +209,6 @@ void MainWindow::button2Clicked()
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
-        clearScreen();
         showUserBalance();
         break;
     }
@@ -211,21 +219,11 @@ void MainWindow::button3Clicked()
 
     case ADMIN_MENU:
         qDebug() << "ATM balance -clicked";
-        //showATMBalance();  // tai vastaavan niminen slotti
+       //showATMBalance();  // tai vastaavan niminen slotti
         break;
     case USER_MENU:
         qDebug() << "transactions clicked";
         clearScreen();
-        ui->PushText1->setText(QString("vanhemmat"));
-        ui->PushText5->setText(QString("vanhemmat"));
-        ui->PushText4->setText(QString("uudemmat"));
-        ui->PushText8->setText(QString("uudemmat"));
-        ui->PushText3->setText(QString("palaa takaisin"));
-        ui->pushButton1->setDisabled(false);
-        ui->pushButton3->setDisabled(false);
-        ui->pushButton4->setDisabled(false);
-        ui->pushButton5->setDisabled(false);
-        ui->pushButton8->setDisabled(false);
         break;
     }
 }
@@ -282,22 +280,24 @@ void MainWindow::button8Clicked()
         showLogin();
         break;
     }
-
 }
 
 void MainWindow::showUserBalance()
 {
     ui->Title->setText(QString("Saldo"));
-    ui->Content->setText(QString("5. tapahtuma<br/>4. tapahtuma<br/>3.tapahtuma<br/>2.Tapahtuma<br/>1. Tapahtuma" ));
-    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->Content2->setText(QString("5. tapahtuma<br/>4. tapahtuma<br/>3.tapahtuma<br/>2.Tapahtuma<br/>1. Tapahtuma" ));
     ui->pushButton4->setDisabled(false);
-
+    ui->pushButton8->setDisabled(false);
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->PushText8->setText(QString("Keskeytä"));
 }
+
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
 void MainWindow::showCardFailure()
 {
-    showLogin();
-    // rakenne myös kortin tarkastamiseen (jos lukittu)?
+    state = CARD_FAIL;
+    ui->Title->setText(QString("Korttia ei löydy"));
+    ui->SecondTitle->setText(QString("Syötä kortin ID"));
 }
 
 // Kirjautumisen epäonnistuminen, esim. väärä pin ja yritä uudelleen
@@ -332,15 +332,10 @@ void MainWindow::connectSlots()
     connect(ui->pushButton6, SIGNAL(clicked()), this, SLOT(button6Clicked()));
     connect(ui->pushButton7, SIGNAL(clicked()), this, SLOT(button7Clicked()));
     connect(ui->pushButton8, SIGNAL(clicked()), this, SLOT(button8Clicked()));
-
-
     connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
     connect(login, SIGNAL(loginOkAdmin(QString)),this, SLOT(showAdminMenu(QString)));
-// Kommentoidut toteutus tulossa:
-    //connect(login, SIGNAL(selectDebit()),this, SLOT(showInputPin(QString)));
-    //connect(login, SIGNAL(selectCredit()),this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
     connect(login, SIGNAL(loginOkUser(QString)),this, SLOT(showMenu(QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
@@ -354,6 +349,7 @@ void MainWindow::connectSlots()
 void MainWindow::clearScreen()
 {
     ui->Content->clear();
+    ui->Content2->clear();
     ui->Title->clear();
     ui->SecondTitle->clear();
     ui->PushText1->clear();

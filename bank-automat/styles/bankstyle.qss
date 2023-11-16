@@ -15,6 +15,12 @@ MainWindow {
     color: #2b1d65;
 }
 
+QLineEdit {
+    background: transparent;
+    border: none;
+    qproperty-alignment: 'AlignCenter';
+}
+
 #pushButton1:hover, #pushButton2:hover, #pushButton3:hover, #pushButton4:hover, #pushButton5:hover, #pushButton6:hover, #pushButton7:hover, #pushButton8:hover {
     background-color: #c0bcb8;
 }
@@ -34,7 +40,7 @@ MainWindow {
     font: 24pt "Segoe UI";
 }
 
-#Content { 
+#Content, #Content2 { 
     color: #ffffff;
     font: 24pt "Segoe UI";
 }
