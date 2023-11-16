@@ -63,10 +63,18 @@ public slots:
     void showLogin();
     void showInputPin(QString cardType);
     void selectDebitCredit();
-    void showMenu();
+    void showMenu(QString token);
     void showCardFailure();
     void showLoginFailure();
-    void showAdminMenu();
+    void showAdminMenu(QString token);
+    void button1Clicked();
+    void button2Clicked();
+    void button3Clicked();
+    void button4Clicked();
+    void button5Clicked();
+    void button6Clicked();
+    void button7Clicked();
+    void button8Clicked();
 
 signals:
     void accountCombined();
@@ -103,6 +111,7 @@ private:
     void requestLogin();
     int state;
     Login * login;
+    QString token;
     void clearScreen();
 
 };

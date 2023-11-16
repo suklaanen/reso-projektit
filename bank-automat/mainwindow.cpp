@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
+    token = "";
 
     connectSlots();
 
@@ -107,6 +108,7 @@ void MainWindow::showLogin()
 // Pin kortin syöttö tila, kun kortti on tunnistettu
 void MainWindow::showInputPin(QString cardType)
 {
+    qDebug() << cardType << " selected";
     state = CARD_OK;
     this->cardType = cardType;
     clearScreen();
@@ -128,8 +130,10 @@ void MainWindow::selectDebitCredit()
 }
 
 // Käyttäjän menu (adminin menu tulee erikseen)
-void MainWindow::showMenu()
+void MainWindow::showMenu(QString token)
 {
+    this->token = token;
+    qDebug() << token << " user";
     state = USER_MENU;
     clearScreen();
     ui->pushButton2->setDisabled(false);
@@ -144,8 +148,10 @@ void MainWindow::showMenu()
 }
 
 // Adminin menu
-void MainWindow::showAdminMenu()
+void MainWindow::showAdminMenu(QString token)
 {
+    this->token = token;
+    qDebug() << token << " admin";
     state = ADMIN_MENU;
     clearScreen();
     ui->pushButton1->setDisabled(false);
@@ -163,7 +169,46 @@ void MainWindow::showAdminMenu()
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
+void MainWindow::button1Clicked()
+{
 
+}
+void MainWindow::button2Clicked()
+{
+
+}
+void MainWindow::button3Clicked()
+{
+
+}
+void MainWindow::button4Clicked()
+{
+    switch(state) {
+    case CARD_COMBINATION: showInputPin("debit");
+        qDebug() << "debit clicked";
+        break;
+    }
+}
+void MainWindow::button5Clicked()
+{
+
+}
+void MainWindow::button6Clicked()
+{
+
+}
+void MainWindow::button7Clicked()
+{
+
+}
+void MainWindow::button8Clicked()
+{
+    switch(state) {
+    case CARD_COMBINATION: showInputPin("credit");
+        qDebug() << "credit clicked";
+        break;
+    }
+}
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
 void MainWindow::showCardFailure()
 {
@@ -196,15 +241,17 @@ void MainWindow::connectSlots()
     connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
     connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
     connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
+    connect(ui->pushButton4, SIGNAL(clicked()), this, SLOT(button4Clicked()));
+    connect(ui->pushButton8, SIGNAL(clicked()), this, SLOT(button8Clicked()));
     connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
-    connect(login, SIGNAL(cardOkAdmin()),this, SLOT(showAdminMenu()));
+    connect(login, SIGNAL(loginOkAdmin(QString)),this, SLOT(showAdminMenu(QString)));
 // Kommentoidut toteutus tulossa:
     //connect(login, SIGNAL(selectDebit()),this, SLOT(showInputPin(QString)));
     //connect(login, SIGNAL(selectCredit()),this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
-    connect(login, SIGNAL(loginOk()),this, SLOT(showMenu()));
+    connect(login, SIGNAL(loginOkUser(QString)),this, SLOT(showMenu(QString)));
 }
 
 // Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
