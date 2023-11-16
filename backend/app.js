@@ -11,6 +11,7 @@ var userRouter = require('./controllers/user');
 var cardRouter = require('./controllers/card');
 var automatRouter = require('./controllers/automat');
 var loginRouter = require('./controllers/login');
+var frontendEventsRouter = require('./controllers/eventRequests_frontend');
 
 var app = express();
 
@@ -29,5 +30,6 @@ app.use('/eventLog', eventLogRouter);
 app.use('/user', userRouter);
 app.use('/card', cardRouter);
 app.use('/automat', automatRouter);
+app.use('/frontendEvents',frontendEventsRouter);
 
 module.exports = app;

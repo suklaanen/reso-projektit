@@ -15,6 +15,10 @@ const eventLog={
           newEvent.event_type,
           newEvent.amount,
           newEvent.time], callback);
+    },
+    getEventsByAccountId: function(id_account, offset, callback) {
+        return db.query("SELECT * FROM eventLog WHERE id_account=? AND event_type='withdrawal' LIMIT 5 OFFSET=?",
+        [id_account, offset], callback);
     }
 };
 
