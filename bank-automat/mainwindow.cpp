@@ -3,11 +3,13 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 
+// Tämä setuppaa alkutilan
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    state = SELECT_CARD;
 
     login = new Login (this);
     showLogin();
@@ -17,21 +19,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     connectSlots();
 
-    ui->pushButton1->setDisabled(true);
-    ui->pushButton2->setDisabled(true);
-    ui->pushButton3->setDisabled(true);
-    ui->pushButton4->setDisabled(true);
-    ui->pushButton5->setDisabled(true);
-    ui->pushButton6->setDisabled(true);
-    ui->pushButton7->setDisabled(true);
-    ui->pushButton8->setDisabled(true);
-
     ui->RED->setDisabled(false);
     ui->YELLOW->setDisabled(false);
     ui->GREY->setDisabled(false);
     ui->GREEN->setDisabled(false);
-
-    state = INIT;
 }
 
 MainWindow::~MainWindow()
@@ -39,6 +30,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// Tämä käsittelee painikkeiden klikkaamisen
 void MainWindow::clickedNumberHandler()
 {
     QPushButton * btn = qobject_cast<QPushButton*>(sender());
@@ -50,25 +42,41 @@ void MainWindow::clickedNumberHandler()
     ui->Content->setText(content);
 }
 
+// Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
 void MainWindow::clickedGREEN()
 {
-    switch(state) {
-    case INIT: qDebug()<<"Green button clicked";
-               login->setCardID(ui->Content->text());
+    qDebug()<<"Green button clicked";
+
+    switch (state) {
+    case SELECT_CARD:
+        login->setCardID(ui->Content->text());
         break;
-    case CARD_OK: login->setPIN(ui->Content->text());
+    case CARD_FAIL:
+        // tarkastus, onko kortti lukittu vai ei?
+        break;
+    case CARD_OK:
+        login->setPIN(ui->Content->text());
+        break;
+    case CARD_COMBINATION:
+        break;
+    case LOGIN_FAIL:
+        login->setPIN(ui->Content->text());
+        break;
+    case USER_MENU:
+        break;
+    case ADMIN_MENU:
         break;
     }
-
-    // jatkuu tilakoneessa
 }
 
+// Keltaisen painikkeen "kumita kaikki merkit" toiminto
 void MainWindow::clickedYELLOW()
 {
     qDebug()<<"Yellow button clicked";
     ui->Content->clear();
 }
 
+// Harmaan painikkeen "kumita yksi merkki" toiminto
 void MainWindow::clickedGREY()
 {
     qDebug()<<"Grey button clicked";
@@ -79,45 +87,102 @@ void MainWindow::clickedGREY()
     }
 }
 
+// Punaisen painikkeen "keskeytä" STOP -toiminto, joka palaa alkutilaan
 void MainWindow::clickedRED()
 {
     qDebug()<<"Red button clicked";
-    state = INIT;
+    state = SELECT_CARD;
     showLogin();
 }
 
+// Alkutila, jossa on kirjautumiskehoite
 void MainWindow::showLogin()
 {
+    state = SELECT_CARD;
+    clearScreen();
     ui->Title->setText("Kirjaudu sisään");
-    ui->Title->setAlignment(Qt::AlignCenter);
     ui->SecondTitle->setText(QString("Syötä kortin ID"));
-    ui->Content->clear();
 }
 
+// Pin kortin syöttö tila, kun kortti on tunnistettu
 void MainWindow::showInputPin(QString cardType)
 {
+    state = CARD_OK;
     this->cardType = cardType;
+    clearScreen();
     ui->Title->setText(QString("Kortti tunnistettu"));
     ui->SecondTitle->setText(QString("Syötä pin"));
-    ui->Content->clear();
-    state = CARD_OK;
 }
 
+// Valitse Debit tai Credit (ennen pinin kyselyä, jos yhdistelmäkortti)
 void MainWindow::selectDebitCredit()
 {
-    this->cardType = "debit/credit";
-    state = SELECT_DEBIT_CREDIT;
+    this->cardType = "credit/debit";
+    state = CARD_COMBINATION;
+    clearScreen();
+    ui->pushButton4->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
     ui->Title->setText(QString("Valitse tili"));
-    ui->PushText4->setText(QString("debit"));
-    ui->PushText8->setText(QString("credit"));
+    ui->PushText4->setText(QString("Debit"));
+    ui->PushText8->setText(QString("Credit"));
 }
 
+// Käyttäjän menu (adminin menu tulee erikseen)
 void MainWindow::showMenu()
 {
-    ui->Title->clear();
-    ui->PushText1->setText(QString("Tarkista saldo"));
+    state = USER_MENU;
+    clearScreen();
+    ui->pushButton2->setDisabled(false);
+    ui->pushButton3->setDisabled(false);
+    ui->pushButton4->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
+    ui->Title->setText(QString("Valitse toiminto"));
+    ui->PushText2->setText(QString("Saldo"));
+    ui->PushText3->setText(QString("Tapahtumat"));
+    ui->PushText4->setText(QString("Nosto"));
+    ui->PushText8->setText(QString("Keskeytä"));
 }
 
+// Adminin menu
+void MainWindow::showAdminMenu()
+{
+    state = ADMIN_MENU;
+    clearScreen();
+    ui->pushButton1->setDisabled(false);
+    ui->pushButton2->setDisabled(false);
+    ui->pushButton3->setDisabled(false);
+    ui->pushButton6->setDisabled(false);
+    ui->pushButton7->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
+    ui->Title->setText(QString("Valitse toiminto"));
+    ui->PushText1->setText(QString("Lokitiedot"));
+    ui->PushText2->setText(QString("Automaatin varat"));
+    ui->PushText3->setText(QString("Lisää varoja"));
+    ui->PushText6->setText(QString("Nostoraja"));
+    ui->PushText7->setText(QString("Muuta nostorajaa"));
+    ui->PushText8->setText(QString("Keskeytä"));
+}
+
+
+// Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
+void MainWindow::showCardFailure()
+{
+    showLogin();
+    // rakenne myös kortin tarkastamiseen (jos lukittu)?
+}
+
+// Kirjautumisen epäonnistuminen, esim. väärä pin ja yritä uudelleen
+void MainWindow::showLoginFailure()
+{
+    state = LOGIN_FAIL;
+    clearScreen();
+    ui->Title->setText(QString("Kirjautuminen epäonnistui"));
+    ui->SecondTitle->setText(QString("Syötä pin ja yritä uudelleen"));
+}
+
+
+// Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin, mikä tekee sen, että
+// SIGNAALISTA siirrytään SLOTTIIN (showJokinTila, joita useita tuossa yläpuolella)
 void MainWindow::connectSlots()
 {
     for(int i = 0; i <= 9; i++) {
@@ -131,7 +196,37 @@ void MainWindow::connectSlots()
     connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
     connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
     connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
+    connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
-    connect(login, SIGNAL(loginOk()), this, SLOT(showMenu()));
+    connect(login, SIGNAL(cardOkAdmin()),this, SLOT(showAdminMenu()));
+// Kommentoidut toteutus tulossa:
+    //connect(login, SIGNAL(selectDebit()),this, SLOT(showInputPin(QString)));
+    //connect(login, SIGNAL(selectCredit()),this, SLOT(showInputPin(QString)));
+    connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
+    connect(login, SIGNAL(loginOk()),this, SLOT(showMenu()));
+}
+
+// Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
+void MainWindow::clearScreen()
+{
+    ui->Content->clear();
+    ui->Title->clear();
+    ui->SecondTitle->clear();
+    ui->PushText1->clear();
+    ui->PushText2->clear();
+    ui->PushText3->clear();
+    ui->PushText4->clear();
+    ui->PushText5->clear();
+    ui->PushText6->clear();
+    ui->PushText7->clear();
+    ui->PushText8->clear();
+    ui->pushButton1->setDisabled(true);
+    ui->pushButton2->setDisabled(true);
+    ui->pushButton3->setDisabled(true);
+    ui->pushButton4->setDisabled(true);
+    ui->pushButton5->setDisabled(true);
+    ui->pushButton6->setDisabled(true);
+    ui->pushButton7->setDisabled(true);
+    ui->pushButton8->setDisabled(true);
 }

@@ -6,6 +6,8 @@
 #include <QJsonDocument>
 #include <QPushButton>
 #include <QTimer>
+#include <QByteArray>
+
 
 namespace Ui {
 class Login;
@@ -18,20 +20,26 @@ class Login : public QWidget
 public:
     explicit Login(QWidget *parent = nullptr);
     ~Login();
+    bool checkPinOk(const QString& enteredPIN);
 public slots:
     void setCardID(QString);
     void setPIN(QString);
     void handleCard();
     void handlePin();
-signals:
-    void loginOk(); // kytke mainissa tekstikentät oikein
+
+ signals:
     void loginFail();
-    void cardFail(); // kytke mainissa tekstikentät oikein
-    void cardOk(QString cardType); // kytkennät mainiin, mm. clear ja tekstit
+    void loginOk();
+    void cardFail();
+    void cardLocked();
+    void cardOk(QString cardType);
     void cardOkSelectType();
+    void cardOkAdmin();
+    void pinOk();
+    void pinFail();
+    void pinAttempts();
 
 private:
-    //void getParentPointer();
     QNetworkAccessManager *manager;
     QNetworkReply *reply;
     QString cardID;
