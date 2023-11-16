@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 
+// Tämä setuppaa alkutilan
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -29,6 +30,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// Tämä käsittelee painikkeiden klikkaamisen
 void MainWindow::clickedNumberHandler()
 {
     QPushButton * btn = qobject_cast<QPushButton*>(sender());
@@ -40,6 +42,7 @@ void MainWindow::clickedNumberHandler()
     ui->Content->setText(content);
 }
 
+// Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
 void MainWindow::clickedGREEN()
 {
     qDebug()<<"Green button clicked";
@@ -55,6 +58,9 @@ void MainWindow::clickedGREEN()
         login->setPIN(ui->Content->text());
         break;
     case CARD_COMBINATION:
+        break;
+    case LOGIN_FAIL:
+        login->setPIN(ui->Content->text());
         break;
     case USER_MENU:
         break;
@@ -78,12 +84,14 @@ void MainWindow::clickedGREEN()
     }
 }
 
+// Keltaisen painikkeen "kumita kaikki merkit" toiminto
 void MainWindow::clickedYELLOW()
 {
     qDebug()<<"Yellow button clicked";
     ui->Content->clear();
 }
 
+// Harmaan painikkeen "kumita yksi merkki" toiminto
 void MainWindow::clickedGREY()
 {
     qDebug()<<"Grey button clicked";
@@ -94,6 +102,7 @@ void MainWindow::clickedGREY()
     }
 }
 
+// Punaisen painikkeen "keskeytä" STOP -toiminto, joka palaa alkutilaan
 void MainWindow::clickedRED()
 {
     qDebug()<<"Red button clicked";
@@ -101,15 +110,16 @@ void MainWindow::clickedRED()
     showLogin();
 }
 
+// Alkutila, jossa on kirjautumiskehoite
 void MainWindow::showLogin()
 {
     state = SELECT_CARD;
     clearScreen();
     ui->Title->setText("Kirjaudu sisään");
-    ui->Title->setAlignment(Qt::AlignCenter);
     ui->SecondTitle->setText(QString("Syötä kortin ID"));
 }
 
+// Pin kortin syöttö tila, kun kortti on tunnistettu
 void MainWindow::showInputPin(QString cardType)
 {
     state = CARD_OK;
@@ -119,9 +129,10 @@ void MainWindow::showInputPin(QString cardType)
     ui->SecondTitle->setText(QString("Syötä pin"));
 }
 
+// Valitse Debit tai Credit (ennen pinin kyselyä, jos yhdistelmäkortti)
 void MainWindow::selectDebitCredit()
 {
-    this->cardType = "debit/credit";
+    this->cardType = "credit/debit";
     state = CARD_COMBINATION;
     clearScreen();
     ui->pushButton4->setDisabled(false);
@@ -131,30 +142,40 @@ void MainWindow::selectDebitCredit()
     ui->PushText8->setText(QString("Credit"));
 }
 
+// Käyttäjän menu (adminin menu tulee erikseen)
 void MainWindow::showMenu()
 {
     state = USER_MENU;
     clearScreen();
     ui->pushButton2->setDisabled(false);
     ui->pushButton3->setDisabled(false);
-    ui->pushButton7->setDisabled(false);
+    ui->pushButton4->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
+    ui->Title->setText(QString("Valitse toiminto"));
     ui->PushText2->setText(QString("Saldo"));
     ui->PushText3->setText(QString("Tapahtumat"));
-    ui->PushText7->setText(QString("Nosto"));
+    ui->PushText4->setText(QString("Nosto"));
+    ui->PushText8->setText(QString("Keskeytä"));
 }
 
+// Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
 void MainWindow::showCardFailure()
 {
     showLogin();
     // rakenne myös kortin tarkastamiseen (jos lukittu)?
 }
 
+// Kirjautumisen epäonnistuminen, esim. väärä pin ja yritä uudelleen
 void MainWindow::showLoginFailure()
 {
     state = LOGIN_FAIL;
+    clearScreen();
     ui->Title->setText(QString("Kirjautuminen epäonnistui"));
+    ui->SecondTitle->setText(QString("Syötä pin ja yritä uudelleen"));
 }
 
+// Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin, mikä tekee sen, että
+// SIGNAALISTA siirrytään SLOTTIIN (showJokinTila, joita useita tuossa yläpuolella)
 void MainWindow::connectSlots()
 {
     for(int i = 0; i <= 9; i++) {
@@ -179,6 +200,7 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(loginOk()),this, SLOT(showMenu()));
 }
 
+// Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
 void MainWindow::clearScreen()
 {
     ui->Content->clear();

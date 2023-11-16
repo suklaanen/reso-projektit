@@ -43,12 +43,12 @@ void Login::handleCard()
             emit cardFail();
         }
         else {
-            cardType = QString(responseData);
-
+            cardType = QString(responseData).replace("\"", "");
+            qDebug() << "cardType:" << cardType;
             if (cardID.toInt() < 1) {
                 emit cardFail();
             } else {
-                if(cardType == "debit/credit") {
+                if(cardType == "credit/debit") {
                     emit cardOkSelectType();
                 } else {
                     emit cardOk (cardType);

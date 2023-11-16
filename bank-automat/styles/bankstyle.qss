@@ -39,7 +39,7 @@ MainWindow {
     font: 24pt "Segoe UI";
 }
 
-#PushText1, #PushText2, #PushText3, #PushText4, #PushText5, #PushText6, #PushText7, PushText8 { 
+#PushText1, #PushText2, #PushText3, #PushText4, #PushText5, #PushText6, #PushText7, #PushText8 { 
     color: #ffffff;
     font: 18pt "Segoe UI";
 }
