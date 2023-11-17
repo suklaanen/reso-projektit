@@ -12,6 +12,21 @@ router.get('/', function(request, response) {
         }
     });
 });
+router.post('/getID', function(request, response) {
+    account.getAccountID(request.body.id_card, request.body.account_type, function(err, data) {
+        if(err) {
+            response.json(err);
+        }
+        else {
+            if(data.length > 0) {
+                response.json(data[0].id_account);
+            }
+            else {
+                response.json(false);
+            }    
+        }
+    });
+});
 
 router.get('/:id', function(request, response) {
     account.getOneAccount(request.params.id, function(err, data) {

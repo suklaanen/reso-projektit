@@ -28,8 +28,9 @@ void Login::setCardID(QString inputCardID)
 }
 
 //Ottaa vastaan PIN koodin mainwindows:sta
-void Login::setPIN(QString inputPin)
+void Login::setPIN(QString inputPin, QString cardType)
 {
+    this->cardType = cardType;
     pin = inputPin;
     requestLogin();// Kutsutaan metodia, josta lähtee login pyyntö REST APIlle
 }
@@ -53,6 +54,7 @@ void Login::handleCard()
             if (cardID.toInt() < 1) { //Tarkistetaan, ettei ole annettu tyhjää kortin ID:tä
                 emit cardFail(); //Jos ID on tyhjä -> cardFail() maindwindow:lle
             } else {
+                token = ""; //Pyyhitään mahdollinen edellinen token
                 checkPinAttempts(); //Jos kortti löytyy, lähdetään tarkistamaan pin koodin yrityskerrat
             }
         }
@@ -161,8 +163,9 @@ void Login::handleClearAttempts()
         if(responseData == "true") { //Jos vastaus on odotettu, ja yritykerrat kortilta on nollattu, niin siirrytään kirjautumisesta eteenpäin
             if (cardType == "admin") { //Tarkistetaan vasta täällä, onko kortin tyyppi admin, koska seuraavat signaalit vievät käyttäjän tai adminin päävalikkoon
                 emit loginOkAdmin(token); //Signaali mainwindow:lle adminin päävalikkoon siirtymiseksi
-            } else {
-                emit loginOkUser(token);  //Signaali käyttäjän päävalikkoon siitymiseksi
+            }
+            else {
+                requestAccountID(); //Jos tili on credit tai debit, niin noudetaan tietokannast vielä id_account, jota tarvitaan muissa tiloissa
             }
         }
 
@@ -171,6 +174,31 @@ void Login::handleClearAttempts()
     } else {
         // Käsitellään mahdollinen virhe (verkkovirhe)
         qDebug() << "Could not clear attempts" << reply->errorString();
+    }
+    // Tyhjennetään vastaus myöhemmin
+    reply->deleteLater();
+}
+
+void Login::handleGetAccountID()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+    if (reply->error() == QNetworkReply::NoError) {
+        // Onnistunut vastaus
+        QByteArray responseData = reply->readAll();
+        // Käsitellään vastaus
+        if(responseData != "false") {
+            this->accountID = QString(responseData);
+            emit loginOkUser(token, accountID);  //Signaali käyttäjän päävalikkoon siitymiseksi
+            qDebug() << responseData;
+        }
+        else {
+            qDebug() << "No matching account ID";
+            emit loginFail();
+        }
+
+    } else {
+        // Käsitellään mahdollinen virhe (verkkovirhe)
+        qDebug() << "Could not get account ID" << reply->errorString();
     }
     // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();
@@ -217,6 +245,18 @@ void Login::clearPinAttempts()
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->put(request,QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handleClearAttempts()));
+}
+
+void Login::requestAccountID()
+{
+    QNetworkRequest request;
+    QJsonObject body;
+    body.insert("id_card",cardID);
+    body.insert("account_type",cardType);
+    request.setUrl(QUrl("http://localhost:3000/account/getID"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    reply = manager->post(request,QJsonDocument(body).toJson());
+    connect(reply, SIGNAL(finished()), this, SLOT(handleGetAccountID()));
 }
 
 //Lähettää pyynnön lisätä yksi yrityskerta kortille tietokantaan

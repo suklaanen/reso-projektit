@@ -66,7 +66,7 @@ public slots:
     void showLogin();
     void showInputPin(QString cardType);
     void selectDebitCredit();
-    void showMenu(QString token);
+    void showMenu(QString token, QString accountID);
     void showCardFailure();
     void showLoginFailure();
     void showAdminMenu(QString token);
@@ -80,7 +80,7 @@ public slots:
     void button7Clicked();
     void button8Clicked();
     void showUserBalance();
-
+    void showWithdrawal();
 signals:
     void accountCombined();
     void accountDebit();
@@ -112,6 +112,7 @@ private:
     QString pin;
     void connectSlots();
     QString cardType;
+    QString accountID;
 
     int state;
     Login * login;
