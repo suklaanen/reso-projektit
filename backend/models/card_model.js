@@ -39,10 +39,10 @@ const card = {
         return db.query("SELECT attempts FROM card WHERE id_card=?",[id], callback);
     },
     addAttempt: function(id, callback) {
-        return db.query("UPDATE card SET attempts=attempts+1 WHERE id_card=?",[id],callback);
+        return db.query("call addAttemptAndLog(?)",[id],callback);
     },
     clearAttempts: function(id, callback) {
-        return db.query("UPDATE card SET attempts=0 WHERE id_card=?", [id], callback);
+        return db.query("call clearAttemptsAndLog(?)", [id], callback);
     }
 
 
