@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
     token = "";
-    offset=5;
+    offset = 0;
     connectSlots();
 
     ui->RED->setDisabled(false);
@@ -38,21 +38,23 @@ MainWindow::~MainWindow()
 // Tämä käsittelee painikkeiden klikkaamisen
 void MainWindow::clickedNumberHandler()
 {
-    QPushButton * btn = qobject_cast<QPushButton*>(sender());
-    QString name = btn->objectName();
-    qDebug()<< name << " -button clicked";
+    if(state == SELECT_CARD || state == CARD_OK || state == CARD_FAIL || state == LOGIN_FAIL) {
+        QPushButton * btn = qobject_cast<QPushButton*>(sender());
+        QString name = btn->objectName();
+        qDebug()<< name << " -button clicked";
 
-    QString content = ui->Content->text();
+        QString content = ui->Content->text();
 
-    if (content.length() < 4) {
-        content.append(name.last(1));
-        ui->Content->setText(content);
-    }
+        if (content.length() < 4) {
+            content.append(name.last(1));
+            ui->Content->setText(content);
+        }
 
-    if (state == CARD_OK || state == LOGIN_FAIL) {
-        ui->Content->setEchoMode(QLineEdit::Password);
-    } else {
-        ui->Content->setEchoMode(QLineEdit::Normal);
+        if (state == CARD_OK || state == LOGIN_FAIL) {
+            ui->Content->setEchoMode(QLineEdit::Password);
+        } else {
+            ui->Content->setEchoMode(QLineEdit::Normal);
+        }
     }
 }
 
@@ -63,18 +65,23 @@ void MainWindow::clickedGREEN()
 
     switch (state) {
     case SELECT_CARD:
-        login->setCardID(ui->Content->text());
+        if(ui->Content->text() != "") { //Mietitään, voidaan kopioida kaikkiin (setCardID())
+            login->setCardID(ui->Content->text());
+        }
+        else {
+            login->setCardID("0");
+        }
         break;
     case CARD_FAIL:
         login->setCardID(ui->Content->text());
         break;
     case CARD_OK:
-        login->setPIN(ui->Content->text());
+        login->setPIN(ui->Content->text(),cardType);
         break;
     case CARD_COMBINATION:
         break;
     case LOGIN_FAIL:
-        login->setPIN(ui->Content->text());
+        login->setPIN(ui->Content->text(),cardType);
         break;
     case USER_MENU:
         break;
@@ -143,10 +150,11 @@ void MainWindow::selectDebitCredit()
 }
 
 // Käyttäjän menu (adminin menu tulee erikseen)
-void MainWindow::showMenu(QString token)
+void MainWindow::showMenu(QString token, QString accountID)
 {
     this->token = token;
-    qDebug() << token << " user";
+    this->accountID = accountID;
+    qDebug() << "user token: " << token << " user accountID: " << accountID;
     state = USER_MENU;
     clearScreen();
     ui->pushButton2->setDisabled(false);
@@ -239,7 +247,7 @@ void MainWindow::button4Clicked()
         break;
     case USER_MENU:
         qDebug() << "User Withdrawal -clicked";
-        //showWithdrawal();  // tai vastaavan niminen slotti
+        showWithdrawal();  // tai vastaavan niminen slotti
         break;
     }
 }
@@ -292,6 +300,18 @@ void MainWindow::showUserBalance()
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
+void MainWindow::showWithdrawal()
+{
+    clearScreen();
+    ui->Title->setText(QString("Valitse nostettava summa"));
+    ui->PushText1->setText(QString("10"));
+    ui->PushText5->setText(QString("20"));
+    ui->PushText2->setText(QString("40"));
+    ui->PushText6->setText(QString("60"));
+    ui->PushText3->setText(QString("80"));
+    ui->PushText7->setText(QString("Muu summa"));
+}
+
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
 void MainWindow::showCardFailure()
 {
@@ -337,7 +357,7 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
     connect(login, SIGNAL(loginOkAdmin(QString)),this, SLOT(showAdminMenu(QString)));
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
-    connect(login, SIGNAL(loginOkUser(QString)),this, SLOT(showMenu(QString)));
+    connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
 
     connect(ui->pushButton2, SIGNAL(clicked()), this, SLOT(button2Clicked()));

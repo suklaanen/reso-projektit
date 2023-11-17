@@ -11,6 +11,8 @@ public:
 
 signals:
 
+private:
+    void setAmount(QString);
 };
 
 #endif // WITHDRAW_H

@@ -24,4 +24,15 @@ router.put('/:id', function(request, response) {
     });
 });
 
+router.put('/clear/:id', function(request, response) {
+    card.clearAttempts(request.params.id, function(err, data) {
+        if(err) {
+            response.json(err);
+        }
+        else {
+            response.json(true);
+        }
+    });
+});
+
 module.exports = router;

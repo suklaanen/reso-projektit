@@ -23,23 +23,22 @@ public:
     bool checkPinOk(const QString& enteredPIN);
 public slots:
     void setCardID(QString);
-    void setPIN(QString);
+    void setPIN(QString, QString);
     void handleCard();
     void handlePin();
     void handleAttempts();
     void handleAddedAttempt();
+    void handleClearAttempts();
+    void handleGetAccountID();
 
  signals:
     void loginFail();
-    void loginOkUser(QString token);
+    void loginOkUser(QString token, QString accountID);
     void cardFail();
     void cardLocked();
     void cardOk(QString cardType);
     void cardOkSelectType();
     void loginOkAdmin(QString token);
-    void pinOk();
-    //void pinFail();
-    void pinAttempts();
 
 private:
     QNetworkAccessManager *manager;
@@ -47,9 +46,13 @@ private:
     QString cardID;
     QString pin;
     QString cardType;
+    QString token;
+    QString accountID;
     void requestCardID();
     void requestLogin();
     void checkPinAttempts();
+    void clearPinAttempts();
+    void requestAccountID();
     void addAttempt();
     QTimer *loginTimer;
     bool pin_attempted;
