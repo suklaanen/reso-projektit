@@ -32,6 +32,6 @@ app.use('/eventLog', eventLogRouter);
 app.use('/user', userRouter);
 app.use('/card', cardRouter);
 app.use('/automat', automatRouter);
-app.use('/frontendEvents',frontendEventsRouter);
+app.use('/frontendEvents',frontendEventsRouter);g
 
 module.exports = app;

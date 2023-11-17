@@ -6,6 +6,7 @@ Login::Login(QWidget *parent) :
     cardID = "";
     pin = "";
     cardType = "";
+    token = "";
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
     loginTimer = new QTimer(this);
@@ -76,15 +77,12 @@ void Login::handlePin()
         qDebug() << responseData;
         //if(responseData.length()>20) {
         if(responseData != "false") { //Jos vastaus on != "false", niin token on vastaanotettu ja kirjautuminen ok
-            if (cardType == "admin") { //Tarkistetaan vasta täällä, onko kortin tyyppi admin, koska seuraavat signaalit vievät käyttäjän tai adminin päävalikkoon
-                emit loginOkAdmin(QString(responseData)); //Lähetetään mainwindow:lle signaali adminin päävalikkoon siirtymiseksi
-            } else {
-                emit loginOkUser(QString(responseData));  //Signaali käyttäjän päävalikkoon siityminen
-            }
+            token = QString(responseData); //Tallennetaan webtoken myöhempää signaalia varten
+            clearPinAttempts(); //Kutsutaan metodia, joka tyhjentää pin koodin yritykerrat kortilta tietokannasta
         }
         else {
             pin_attempted = true;
-            addAttempt();
+            addAttempt(); //Jos kirjautuminen epäonnistui, kutsutaan metodia, joka lisää pin koodin yritykerran kortille tietokantaan.
         }
     } else {
         // Käsitellään mahdollinen virhe (verkkovirhe)
@@ -146,7 +144,33 @@ void Login::handleAddedAttempt()
 
     } else {
         // Käsitellään mahdollinen virhe (verkkovirhe)
-        qDebug() << "Could not get attempts" << reply->errorString();
+        qDebug() << "Could not add an attempt" << reply->errorString();
+    }
+    // Tyhjennetään vastaus myöhemmin
+    reply->deleteLater();
+}
+
+//Ottaa vastaan ja käsittelee vastauksen pin koodin yrityskerojen nollaamisesta
+void Login::handleClearAttempts()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+    if (reply->error() == QNetworkReply::NoError) {
+        // Onnistunut vastaus
+        QByteArray responseData = reply->readAll();
+        // Käsitellään vastaus
+        if(responseData == "true") { //Jos vastaus on odotettu, ja yritykerrat kortilta on nollattu, niin siirrytään kirjautumisesta eteenpäin
+            if (cardType == "admin") { //Tarkistetaan vasta täällä, onko kortin tyyppi admin, koska seuraavat signaalit vievät käyttäjän tai adminin päävalikkoon
+                emit loginOkAdmin(token); //Signaali mainwindow:lle adminin päävalikkoon siirtymiseksi
+            } else {
+                emit loginOkUser(token);  //Signaali käyttäjän päävalikkoon siitymiseksi
+            }
+        }
+
+        qDebug() << responseData;
+
+    } else {
+        // Käsitellään mahdollinen virhe (verkkovirhe)
+        qDebug() << "Could not clear attempts" << reply->errorString();
     }
     // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();
@@ -174,7 +198,7 @@ void Login::requestLogin()
     connect(reply, SIGNAL(finished()), this, SLOT(handlePin()));
 }
 
-//Lähettää pyynnön RESR APIlle pin koodin yritykertojen noutamiseksi
+//Lähettää pyynnön REST APIlle pin koodin yritykertojen noutamiseksi
 void Login::checkPinAttempts()
 {
     QNetworkRequest request;
@@ -182,6 +206,17 @@ void Login::checkPinAttempts()
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(handleAttempts()));
+}
+
+//Lähettää pyynnnön REST APIlle pin koodin yrityskertojen nollaamiseksi
+void Login::clearPinAttempts()
+{
+    QNetworkRequest request;
+    QJsonObject body;
+    request.setUrl(QUrl("http://localhost:3000/cardAttempts/clear/"+cardID));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    reply = manager->put(request,QJsonDocument(body).toJson());
+    connect(reply, SIGNAL(finished()), this, SLOT(handleClearAttempts()));
 }
 
 //Lähettää pyynnön lisätä yksi yrityskerta kortille tietokantaan
