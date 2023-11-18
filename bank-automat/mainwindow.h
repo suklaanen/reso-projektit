@@ -44,6 +44,7 @@ class MainWindow : public QMainWindow
         USER_TRANSACTIONS,
         USER_BALANCE,
         USER_WITHDRAWAL,
+        USER_INSERT_AMOUNT,
         AUTOMAT_ADD_MONEY,
         AUTOMAT_SET_MAX_WITHDRAWAL,
         AUTOMAT_VIEW_LOG,
@@ -81,6 +82,7 @@ public slots:
     void button8Clicked();
     void showUserBalance();
     void showWithdrawal();
+    void showInsertAmount();
 signals:
     void accountCombined();
     void accountDebit();

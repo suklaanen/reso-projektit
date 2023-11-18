@@ -38,7 +38,7 @@ MainWindow::~MainWindow()
 // Tämä käsittelee painikkeiden klikkaamisen
 void MainWindow::clickedNumberHandler()
 {
-    if(state == SELECT_CARD || state == CARD_OK || state == CARD_FAIL || state == LOGIN_FAIL) {
+    if(state == SELECT_CARD || state == CARD_OK || state == CARD_FAIL || state == LOGIN_FAIL || state == USER_INSERT_AMOUNT) {
         QPushButton * btn = qobject_cast<QPushButton*>(sender());
         QString name = btn->objectName();
         qDebug()<< name << " -button clicked";
@@ -86,6 +86,10 @@ void MainWindow::clickedGREEN()
     case USER_MENU:
         break;
     case ADMIN_MENU:
+        break;
+    case USER_INSERT_AMOUNT:
+        qDebug() << "Amount inserted, green clicked";
+        withdraw->setAmount(ui->Content->text());
         break;
     }
 }
@@ -204,7 +208,10 @@ void MainWindow::button1Clicked()
     case USER_TRANSACTIONS:
         qDebug() << "vanhemmat clicked";
         offset=offset+5;
-
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 10 clicked";
+        withdraw->setAmount(QString("10"));
         break;
     }
 }
@@ -219,6 +226,10 @@ void MainWindow::button2Clicked()
         qDebug() << "User Balance -clicked";
         showUserBalance();
         break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 40 clicked";
+        withdraw->setAmount(QString("40"));
+        break;
     }
 }
 void MainWindow::button3Clicked()
@@ -232,6 +243,10 @@ void MainWindow::button3Clicked()
     case USER_MENU:
         qDebug() << "transactions clicked";
         clearScreen();
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 80 clicked";
+        withdraw->setAmount(QString("80"));
         break;
     }
 }
@@ -249,11 +264,24 @@ void MainWindow::button4Clicked()
         qDebug() << "User Withdrawal -clicked";
         showWithdrawal();  // tai vastaavan niminen slotti
         break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Return to menu clicked";
+        showMenu(token, accountID);
+        break;
+    case USER_INSERT_AMOUNT:
+        qDebug() << "Return to menu clicked";
+        showMenu(token, accountID);
+        break;
     }
 }
 void MainWindow::button5Clicked()
 {
-
+    switch(state) {
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 20 clicked";
+        withdraw->setAmount(QString("20"));
+        break;
+    }
 }
 void MainWindow::button6Clicked()
 {
@@ -261,6 +289,10 @@ void MainWindow::button6Clicked()
     case ADMIN_MENU:
         qDebug() << "ATM current limit -clicked";
         //showTransactions();  // tai vastaavan niminen slotti
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 60 clicked";
+        withdraw->setAmount(QString("60"));
         break;
     }
 }
@@ -270,6 +302,10 @@ void MainWindow::button7Clicked()
     case ADMIN_MENU:
         qDebug() << "ATM set limit -clicked";
         //showATNSetLimit();  // tai vastaavan niminen slotti
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Insert amount clicked";
+        showInsertAmount();
         break;
     }
 }
@@ -303,6 +339,8 @@ void MainWindow::showUserBalance()
 void MainWindow::showWithdrawal()
 {
     clearScreen();
+    state = USER_WITHDRAWAL;
+    withdraw->setInfo(token,accountID,ID,cardType);
     ui->Title->setText(QString("Valitse nostettava summa"));
     ui->PushText1->setText(QString("10"));
     ui->PushText5->setText(QString("20"));
@@ -310,6 +348,23 @@ void MainWindow::showWithdrawal()
     ui->PushText6->setText(QString("60"));
     ui->PushText3->setText(QString("80"));
     ui->PushText7->setText(QString("Muu summa"));
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->pushButton1->setDisabled(false);
+    ui->pushButton2->setDisabled(false);
+    ui->pushButton3->setDisabled(false);
+    ui->pushButton4->setDisabled(false);
+    ui->pushButton5->setDisabled(false);
+    ui->pushButton6->setDisabled(false);
+    ui->pushButton7->setDisabled(false);
+}
+
+void MainWindow::showInsertAmount()
+{
+    clearScreen();
+    state = USER_INSERT_AMOUNT;
+    ui->Title->setText(QString("Syötä nostettava summa"));
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->pushButton4->setDisabled(false);
 }
 
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
@@ -359,10 +414,6 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
     connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
-
-    connect(ui->pushButton2, SIGNAL(clicked()), this, SLOT(button2Clicked()));
-    connect(ui->pushButton4, SIGNAL(clicked()), this, SLOT(button4Clicked()));
-    connect(ui->pushButton8, SIGNAL(clicked()), this, SLOT(button8Clicked()));
 }
 
 // Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
