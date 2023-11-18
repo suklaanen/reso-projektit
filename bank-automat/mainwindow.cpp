@@ -35,6 +35,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// ------------------------------------------------------------------------------------------
+// Käsittelyt tässä osiossa, painikkeiden handleri, ruudun tyhjentäminen sekä connectit:
+// ** clickedNumberHandler **
+// ** clearScreen **
+// ** connectSlots **
+// ------------------------------------------------------------------------------------------
+
 // Tämä käsittelee painikkeiden klikkaamisen
 void MainWindow::clickedNumberHandler()
 {
@@ -57,6 +64,70 @@ void MainWindow::clickedNumberHandler()
         }
     }
 }
+
+// Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
+void MainWindow::clearScreen()
+{
+    ui->Content->clear();
+    ui->Content2->clear();
+    ui->Title->clear();
+    ui->SecondTitle->clear();
+    ui->PushText1->clear();
+    ui->PushText2->clear();
+    ui->PushText3->clear();
+    ui->PushText4->clear();
+    ui->PushText5->clear();
+    ui->PushText6->clear();
+    ui->PushText7->clear();
+    ui->PushText8->clear();
+    ui->pushButton1->setDisabled(true);
+    ui->pushButton2->setDisabled(true);
+    ui->pushButton3->setDisabled(true);
+    ui->pushButton4->setDisabled(true);
+    ui->pushButton5->setDisabled(true);
+    ui->pushButton6->setDisabled(true);
+    ui->pushButton7->setDisabled(true);
+    ui->pushButton8->setDisabled(true);
+}
+
+// Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin, mikä tekee sen, että
+// SIGNAALISTA siirrytään SLOTTIIN (showJokinTila, joita useita tuossa yläpuolella)
+void MainWindow::connectSlots()
+{
+    for(int i = 0; i <= 9; i++) {
+        QString btnName = "N" + QString::number(i);
+        QPushButton * btn = this->findChild<QPushButton*>(btnName);
+        if(btn) {
+            connect(btn, SIGNAL(clicked()),this, SLOT(clickedNumberHandler()));
+        }
+    }
+    connect(ui->RED, SIGNAL(clicked()),this, SLOT(clickedRED()));
+    connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
+    connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
+    connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
+    connect(ui->pushButton1, SIGNAL(clicked()), this, SLOT(button1Clicked()));
+    connect(ui->pushButton2, SIGNAL(clicked()), this, SLOT(button2Clicked()));
+    connect(ui->pushButton3, SIGNAL(clicked()), this, SLOT(button3Clicked()));
+    connect(ui->pushButton4, SIGNAL(clicked()), this, SLOT(button4Clicked()));
+    connect(ui->pushButton5, SIGNAL(clicked()), this, SLOT(button5Clicked()));
+    connect(ui->pushButton6, SIGNAL(clicked()), this, SLOT(button6Clicked()));
+    connect(ui->pushButton7, SIGNAL(clicked()), this, SLOT(button7Clicked()));
+    connect(ui->pushButton8, SIGNAL(clicked()), this, SLOT(button8Clicked()));
+    connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
+    connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
+    connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
+    connect(login, SIGNAL(loginOkAdmin(QString)),this, SLOT(showAdminMenu(QString)));
+    connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
+    connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
+    connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
+    connect(login, SIGNAL(userTransactions()),this, SLOT(showTransactions()));
+}
+
+// -------------------------------------------------------------------------------------
+// ** Painikkeet ** ja napit alkavat tästä sekä niistä etenemiset switch casella
+// case NIMI:   kertoo "nykyisen" vaiheen (state) ja se ilmaistaan tiloissa alempana
+// -------------------------------------------------------------------------------------
+
 
 // Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
 void MainWindow::clickedGREEN()
@@ -119,6 +190,171 @@ void MainWindow::clickedRED()
     state = SELECT_CARD;
     showLogin();
 }
+
+
+// Sivu painike numero 1 , vasemmalla
+void MainWindow::button1Clicked()
+{
+    switch(state) {
+    case USER_TRANSACTIONS:
+        qDebug() << "vanhemmat clicked";
+        offset=offset+5;
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 10 clicked";
+        withdraw->setAmount(QString("10"));
+        break;
+    }
+}
+
+// Sivu painike numero 2 , vasemmalla
+void MainWindow::button2Clicked()
+{
+    switch(state) {
+    case ADMIN_MENU:
+        qDebug() << "ATM Events -clicked";
+        //showATMEvents();  // tai vastaavan niminen slotti
+        break;
+    case USER_MENU:
+        qDebug() << "User Balance -clicked";
+        showUserBalance();
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 20 clicked";
+        withdraw->setAmount(QString("20"));
+        break;
+    }
+}
+
+
+// Sivu painike numero 3 , vasemmalla
+void MainWindow::button3Clicked()
+{
+    switch(state) {
+
+    case ADMIN_MENU:
+        qDebug() << "ATM balance -clicked";
+        //showATMBalance();  // tai vastaavan niminen slotti
+        break;
+    case USER_MENU:
+        qDebug() << "transactions clicked";
+        clearScreen();
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 40 clicked";
+        withdraw->setAmount(QString("40"));
+        break;
+    }
+}
+
+// Sivu painike numero 4 , vasemmalla (useimmin meillä "palaa takaisin")
+void MainWindow::button4Clicked()
+{
+    switch(state) {
+    case CARD_COMBINATION: showInputPin("debit");
+        qDebug() << "debit clicked";
+        break;
+    case ADMIN_MENU:
+        qDebug() << "ATM Add money -clicked";
+        //showAddMoney();  // tai vastaavan niminen slotti
+        break;
+    case USER_MENU:
+        qDebug() << "User Withdrawal -clicked";
+        showWithdrawal();  // tai vastaavan niminen slotti
+        break;
+    case USER_BALANCE:
+        qDebug() << "Return -clicked";
+        showMenu(token, accountID);
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Return -clicked";
+        showMenu(token, accountID);
+        break;
+    case USER_INSERT_AMOUNT:
+        qDebug() << "Return -clicked";
+        qDebug() << "user token: " << token << " user accountID: " << accountID;
+        showWithdrawal();
+        break;
+    case USER_TRANSACTIONS:
+        qDebug() << "Return -clicked";
+        showMenu(token, accountID);
+        break;
+    }
+}
+
+// Sivu painike numero 5 , oikealla
+void MainWindow::button5Clicked()
+{
+    switch(state) {
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 60 -clicked";
+        withdraw->setAmount(QString("20"));
+        break;
+    }
+
+}
+
+// Sivu painike numero 6 , oikealla
+void MainWindow::button6Clicked()
+{
+    switch(state) {
+    case ADMIN_MENU:
+        qDebug() << "ATM current limit -clicked";
+        //showTransactions();  // tai vastaavan niminen slotti
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Withdraw 60 clicked";
+        withdraw->setAmount(QString("60"));
+        break;
+    }
+}
+
+// Sivu painike numero 7 , oikealla
+void MainWindow::button7Clicked()
+{
+    switch(state) {
+    case ADMIN_MENU:
+        qDebug() << "ATM set limit -clicked";
+        //showATNSetLimit();  // tai vastaavan niminen slotti
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Insert amount clicked";
+        showInsertAmount();
+        break;
+    }
+}
+
+// Sivu painike numero 8 , oikealla (useimmin meillä "keskeytä")
+void MainWindow::button8Clicked()
+{
+    switch(state) {
+    case CARD_COMBINATION: showInputPin("credit");
+        qDebug() << "credit clicked";
+        break;
+    case ADMIN_MENU:
+        qDebug() << "Stop session -clicked";
+        showLogin();
+        break;
+    case USER_MENU:
+        qDebug() << "Stop session -clicked";
+        showLogin();
+        break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Stop session -clicked";
+        showLogin();
+        break;
+    case USER_TRANSACTIONS:
+        qDebug() << "Stop session -clicked";
+        showLogin();
+        break;
+    }
+}
+
+// -------------------------------------------------------------------------------------------------------
+// Valikoista ja painikkeista avautuvat ** Tilat ** alkavat tästä, ja kaikissa show -tunniste nimen alussa
+// state = NIMI;    kussakin tilassa ilmaisee kyseisessä tilassa olevan vaiheen (state)
+// clearScreen();   hyvä muistaa useimmissa sijoittaa alkuun
+// -------------------------------------------------------------------------------------------------------
 
 // Alkutila, jossa on kirjautumiskehoite
 void MainWindow::showLogin()
@@ -202,141 +438,6 @@ void MainWindow::showCardLocked()
     ui->SecondTitle->setText(QString("Ota yhteys pankkiin"));
 }
 
-void MainWindow::button1Clicked()
-{
-    switch(state) {
-    case USER_TRANSACTIONS:
-        qDebug() << "vanhemmat clicked";
-        offset=offset+5;
-        break;
-    case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 10 clicked";
-        withdraw->setAmount(QString("10"));
-        break;
-    }
-}
-void MainWindow::button2Clicked()
-{
-    switch(state) {
-    case ADMIN_MENU:
-        qDebug() << "ATM Events -clicked";
-        //showATMEvents();  // tai vastaavan niminen slotti
-        break;
-    case USER_MENU:
-        qDebug() << "User Balance -clicked";
-        showUserBalance();
-        break;
-    case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 20 clicked";
-        withdraw->setAmount(QString("20"));
-        break;
-    }
-}
-void MainWindow::button3Clicked()
-{
-    switch(state) {
-
-    case ADMIN_MENU:
-        qDebug() << "ATM balance -clicked";
-       //showATMBalance();  // tai vastaavan niminen slotti
-        break;
-    case USER_MENU:
-        qDebug() << "transactions clicked";
-        clearScreen();
-        break;
-    case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 40 clicked";
-        withdraw->setAmount(QString("40"));
-        break;
-    }
-}
-void MainWindow::button4Clicked()
-{
-    switch(state) {
-    case CARD_COMBINATION: showInputPin("debit");
-        qDebug() << "debit clicked";
-        break;
-    case ADMIN_MENU:
-        qDebug() << "ATM Add money -clicked";
-        //showAddMoney();  // tai vastaavan niminen slotti
-        break;
-    case USER_MENU:
-        qDebug() << "User Withdrawal -clicked";
-        showWithdrawal();  // tai vastaavan niminen slotti
-        break;
-    case USER_BALANCE:
-        qDebug() << "Return -clicked";
-        showMenu(token, accountID);
-        break;
-    case USER_WITHDRAWAL:
-        qDebug() << "Return -clicked";
-        showMenu(token, accountID);
-        break;
-    case USER_INSERT_AMOUNT:
-        qDebug() << "Return -clicked";
-        qDebug() << "user token: " << token << " user accountID: " << accountID;
-        showWithdrawal();
-        break;
-
-    }
-}
-void MainWindow::button5Clicked()
-{
-    switch(state) {
-    case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 60 -clicked";
-        withdraw->setAmount(QString("20"));
-        break;
-}
-
-}
-void MainWindow::button6Clicked()
-{
-    switch(state) {
-    case ADMIN_MENU:
-        qDebug() << "ATM current limit -clicked";
-        //showTransactions();  // tai vastaavan niminen slotti
-        break;
-    case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 60 clicked";
-        withdraw->setAmount(QString("60"));
-        break;
-    }
-}
-void MainWindow::button7Clicked()
-{
-    switch(state) {
-    case ADMIN_MENU:
-        qDebug() << "ATM set limit -clicked";
-        //showATNSetLimit();  // tai vastaavan niminen slotti
-        break;
-    case USER_WITHDRAWAL:
-        qDebug() << "Insert amount clicked";
-        showInsertAmount();
-        break;
-    }
-}
-void MainWindow::button8Clicked()
-{
-    switch(state) {
-    case CARD_COMBINATION: showInputPin("credit");
-        qDebug() << "credit clicked";
-        break;
-    case ADMIN_MENU:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
-    case USER_MENU:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
-    case USER_WITHDRAWAL:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
-    }
-}
-
 void MainWindow::showUserBalance()
 {
     clearScreen();
@@ -402,59 +503,16 @@ void MainWindow::showLoginFailure()
     ui->SecondTitle->setText(QString("Syötä pin ja yritä uudelleen"));
 }
 
-// Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin, mikä tekee sen, että
-// SIGNAALISTA siirrytään SLOTTIIN (showJokinTila, joita useita tuossa yläpuolella)
-void MainWindow::connectSlots()
+void MainWindow::showTransactions()
 {
-    for(int i = 0; i <= 9; i++) {
-        QString btnName = "N" + QString::number(i);
-        QPushButton * btn = this->findChild<QPushButton*>(btnName);
-        if(btn) {
-            connect(btn, SIGNAL(clicked()),this, SLOT(clickedNumberHandler()));
-        }
-    }
-    connect(ui->RED, SIGNAL(clicked()),this, SLOT(clickedRED()));
-    connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
-    connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
-    connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
-    connect(ui->pushButton1, SIGNAL(clicked()), this, SLOT(button1Clicked()));
-    connect(ui->pushButton2, SIGNAL(clicked()), this, SLOT(button2Clicked()));
-    connect(ui->pushButton3, SIGNAL(clicked()), this, SLOT(button3Clicked()));
-    connect(ui->pushButton4, SIGNAL(clicked()), this, SLOT(button4Clicked()));
-    connect(ui->pushButton5, SIGNAL(clicked()), this, SLOT(button5Clicked()));
-    connect(ui->pushButton6, SIGNAL(clicked()), this, SLOT(button6Clicked()));
-    connect(ui->pushButton7, SIGNAL(clicked()), this, SLOT(button7Clicked()));
-    connect(ui->pushButton8, SIGNAL(clicked()), this, SLOT(button8Clicked()));
-    connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
-    connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
-    connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
-    connect(login, SIGNAL(loginOkAdmin(QString)),this, SLOT(showAdminMenu(QString)));
-    connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
-    connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
-    connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
-}
-
-// Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
-void MainWindow::clearScreen()
-{
-    ui->Content->clear();
-    ui->Content2->clear();
-    ui->Title->clear();
-    ui->SecondTitle->clear();
-    ui->PushText1->clear();
-    ui->PushText2->clear();
-    ui->PushText3->clear();
-    ui->PushText4->clear();
-    ui->PushText5->clear();
-    ui->PushText6->clear();
-    ui->PushText7->clear();
-    ui->PushText8->clear();
-    ui->pushButton1->setDisabled(true);
-    ui->pushButton2->setDisabled(true);
-    ui->pushButton3->setDisabled(true);
-    ui->pushButton4->setDisabled(true);
-    ui->pushButton5->setDisabled(true);
-    ui->pushButton6->setDisabled(true);
-    ui->pushButton7->setDisabled(true);
-    ui->pushButton8->setDisabled(true);
+    state = USER_TRANSACTIONS;
+    clearScreen();
+    ui->Title->setText(QString("Otsikko"));
+    ui->SecondTitle->setText(QString("Alaotsikko jos on"));
+    // vanhemmat + uudemmat tapahtumat
+    // disablointi 1 ja 5 ?
+    ui->pushButton4->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->PushText8->setText(QString("Keskeytä"));
 }

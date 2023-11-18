@@ -83,7 +83,11 @@ public slots:
     void showUserBalance();
     void showWithdrawal();
     void showInsertAmount();
+    void showTransactions();
 signals:
+    // transaction signaalien siirto >> transactions.h
+    // balance signaalien siirto >> checkbalance.h
+    // withdrawal signaalien siirto >> withdraw.h
     void accountCombined();
     void accountDebit();
     void accountManyDebits();

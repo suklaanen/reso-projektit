@@ -40,9 +40,14 @@ QLineEdit {
     font: 24pt "Segoe UI";
 }
 
-#Content, #Content2 { 
+#Content { 
     color: #ffffff;
     font: 24pt "Segoe UI";
+}
+
+#Content2 { 
+    color: #ffffff;
+    font: 18pt "Segoe UI";
 }
 
 #PushText1, #PushText2, #PushText3, #PushText4, #PushText5, #PushText6, #PushText7, #PushText8 { 
