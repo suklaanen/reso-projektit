@@ -227,8 +227,8 @@ void MainWindow::button2Clicked()
         showUserBalance();
         break;
     case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 40 clicked";
-        withdraw->setAmount(QString("40"));
+        qDebug() << "Withdraw 20 clicked";
+        withdraw->setAmount(QString("20"));
         break;
     }
 }
@@ -245,8 +245,8 @@ void MainWindow::button3Clicked()
         clearScreen();
         break;
     case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 80 clicked";
-        withdraw->setAmount(QString("80"));
+        qDebug() << "Withdraw 40 clicked";
+        withdraw->setAmount(QString("40"));
         break;
     }
 }
@@ -264,24 +264,31 @@ void MainWindow::button4Clicked()
         qDebug() << "User Withdrawal -clicked";
         showWithdrawal();  // tai vastaavan niminen slotti
         break;
+    case USER_BALANCE:
+        qDebug() << "Return -clicked";
+        showMenu(token, accountID);
+        break;
     case USER_WITHDRAWAL:
-        qDebug() << "Return to menu clicked";
+        qDebug() << "Return -clicked";
         showMenu(token, accountID);
         break;
     case USER_INSERT_AMOUNT:
-        qDebug() << "Return to menu clicked";
-        showMenu(token, accountID);
+        qDebug() << "Return -clicked";
+        qDebug() << "user token: " << token << " user accountID: " << accountID;
+        showWithdrawal();
         break;
+
     }
 }
 void MainWindow::button5Clicked()
 {
     switch(state) {
     case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 20 clicked";
+        qDebug() << "Withdraw 60 -clicked";
         withdraw->setAmount(QString("20"));
         break;
-    }
+}
+
 }
 void MainWindow::button6Clicked()
 {
@@ -323,11 +330,17 @@ void MainWindow::button8Clicked()
         qDebug() << "Stop session -clicked";
         showLogin();
         break;
+    case USER_WITHDRAWAL:
+        qDebug() << "Stop session -clicked";
+        showLogin();
+        break;
     }
 }
 
 void MainWindow::showUserBalance()
 {
+    clearScreen();
+    state = USER_BALANCE;
     ui->Title->setText(QString("Saldo"));
     ui->Content2->setText(QString("5. tapahtuma<br/>4. tapahtuma<br/>3.tapahtuma<br/>2.Tapahtuma<br/>1. Tapahtuma" ));
     ui->pushButton4->setDisabled(false);
@@ -341,14 +354,6 @@ void MainWindow::showWithdrawal()
     clearScreen();
     state = USER_WITHDRAWAL;
     withdraw->setInfo(token,accountID,ID,cardType);
-    ui->Title->setText(QString("Valitse nostettava summa"));
-    ui->PushText1->setText(QString("10"));
-    ui->PushText5->setText(QString("20"));
-    ui->PushText2->setText(QString("40"));
-    ui->PushText6->setText(QString("60"));
-    ui->PushText3->setText(QString("80"));
-    ui->PushText7->setText(QString("Muu summa"));
-    ui->PushText4->setText(QString("Palaa takaisin"));
     ui->pushButton1->setDisabled(false);
     ui->pushButton2->setDisabled(false);
     ui->pushButton3->setDisabled(false);
@@ -356,15 +361,27 @@ void MainWindow::showWithdrawal()
     ui->pushButton5->setDisabled(false);
     ui->pushButton6->setDisabled(false);
     ui->pushButton7->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
+    ui->Title->setText(QString("Valitse nostettava summa"));
+    ui->PushText1->setText(QString("10"));
+    ui->PushText2->setText(QString("20"));
+    ui->PushText3->setText(QString("40"));
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->PushText5->setText(QString("60"));
+    ui->PushText6->setText(QString("80"));
+    ui->PushText7->setText(QString("Muu summa"));
+    ui->PushText4->setText(QString("Palaa takaisin"));
 }
 
 void MainWindow::showInsertAmount()
 {
     clearScreen();
     state = USER_INSERT_AMOUNT;
+    ui->pushButton4->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
     ui->Title->setText(QString("Syötä nostettava summa"));
     ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->pushButton4->setDisabled(false);
+    ui->PushText8->setText(QString("Keskeytä"));
 }
 
 // Kortin kanssa epäonnistuminen, mikä palaa tällä hetkellä showLoginiin eli alkutilaan
