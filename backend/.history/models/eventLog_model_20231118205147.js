@@ -2,7 +2,7 @@ const db = require('../database');
 
 const eventLog={
     getEventData: function(callback){
-        return db.query("SELECT * FROM eventlog", callback);
+        return db.query("SELECT * FROM eventLog", callback);
     },
     getOneEvent: function(id, callback){
         return db.query("SELECT * FROM eventlog where id_event=?", [id], callback);

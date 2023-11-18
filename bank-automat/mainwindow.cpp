@@ -199,7 +199,7 @@ void MainWindow::button1Clicked()
     case USER_TRANSACTIONS:
         qDebug() << "vanhemmat clicked";
         if (offset>0){
-            offset=offset+5;
+            offset=offset-5;
         }else
         {
             offset=0;
@@ -306,9 +306,9 @@ void MainWindow::button5Clicked()
         qDebug() << "Uudemmat clicked";
         qDebug() << "näytöllä merkkejä: " << characterCount;
             if(characterCount>149){
-            offset=offset-5;
+            offset=offset+5;
         }else{
-            offset=offset;
+            offset=offset-5;
         }
         qDebug() << "offset: "<< offset;
         showTransactions();
@@ -532,11 +532,13 @@ void MainWindow::showTransactions()
 {
     clearScreen();
     state = USER_TRANSACTIONS;
-    ui->PushText1->setText(QString("Vanhemmat"));
-    ui->PushText5->setText(QString("Uudemmat"));
+    if (offset!=0){
+        ui->PushText1->setText(QString("Uudemmat"));
+        ui->pushButton1->setDisabled(false);
+    }
+    ui->PushText5->setText(QString("Vanhemmat"));
     ui->PushText4->setText(QString("Paluu"));
     ui->PushText8->setText(QString("Lopeta"));
-    ui->pushButton1->setDisabled(false);
     ui->pushButton4->setDisabled(false);
     ui->pushButton5->setDisabled(false);
     ui->pushButton8->setDisabled(false);
@@ -586,5 +588,4 @@ void MainWindow::handleTransactionsReady(const QString &data)
     //qDebug() << otsikot;
     //qDebug() << tapahtumat;
     ui->Content2->setText(tapahtumat);
-
 }
