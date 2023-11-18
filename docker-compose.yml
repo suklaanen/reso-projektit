@@ -11,5 +11,5 @@ services:
     volumes:
       # Suoritusjärjestys: bank_automat, testdata, procedures
       - ./sql/bank_automat.sql:/docker-entrypoint-initdb.d/1-bank_automat.sql
-      - ./sql/testdata.sql:/docker-entrypoint-initdb.d/2-testdata.sql
-      - ./sql/procedures.sql:/docker-entrypoint-initdb.d/3-procedures.sql
+      - ./sql/procedures.sql:/docker-entrypoint-initdb.d/2-procedures.sql
+      - ./sql/testdata.sql:/docker-entrypoint-initdb.d/3-testdata.sql
