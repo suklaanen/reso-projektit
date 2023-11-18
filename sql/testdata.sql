@@ -166,4 +166,22 @@ VALUES
 
 INSERT INTO `eventlog` (`id_automat`, `id_account`, `id_card`, `event_type`, `amount`, `time`) 
 VALUES 
-(1, 50, 20, 'Test Event', 0, NOW());
+(1, 50, 20, 'Test Event', 0, NOW()),
+(1, 1, 1, 'Withdrawal', 150, NOW()),
+(1, 1, 1, 'Withdrawal', 80, NOW()),
+(1, 1, 1, 'Withdrawal', 80, NOW()),
+(1, 1, 1, 'Withdrawal', 200, NOW()),
+(1, 1, 1, 'Withdrawal', 60, NOW()),
+(1, 1, 1, 'Withdrawal', 20, NOW()),
+(1, 1, 1, 'Withdrawal', 300, NOW()),
+(1, 1, 1, 'Withdrawal', 10, NOW()),
+(1, 1, 1, 'Withdrawal', 50, NOW()),
+(1, 1, 1, 'Withdrawal', 40, NOW()),
+(1, 1, 1, 'Withdrawal', 100, NOW()),
+(1, 1, 1, 'Withdrawal', 190, NOW()),
+(1, 1, 1, 'Withdrawal', 70, NOW()),
+(1, 1, 1, 'Withdrawal', 280, NOW()),
+(1, 1, 1, 'Withdrawal', 150, NOW()),
+(1, 1, 1, 'Withdrawal', 40, NOW()),
+(1, 1, 1, 'Withdrawal', 40, NOW()),
+(1, 1, 1, 'Withdrawal', 20, NOW());
