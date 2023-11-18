@@ -84,6 +84,7 @@ public slots:
     void showWithdrawal();
     void showInsertAmount();
     void showTransactions();
+    void handleTransactionsReady(const QString &data);
 signals:
     // transaction signaalien siirto >> transactions.h
     // balance signaalien siirto >> checkbalance.h
@@ -94,7 +95,7 @@ signals:
     void accountCredit();
     void accountAdmin();
     void userMain();
-    void userTransactions();
+
     void transactionsBackward();
     void transactionsForward();
     void userBalance();
