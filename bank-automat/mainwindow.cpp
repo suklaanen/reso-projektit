@@ -120,7 +120,7 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
     connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
-    connect(login, SIGNAL(userTransactions()),this, SLOT(showTransactions()));
+    connect(transactions, SIGNAL(transactionsReady(QString)), this, SLOT(handleTransactionsReady(QString)));
 }
 
 // -------------------------------------------------------------------------------------
@@ -198,7 +198,14 @@ void MainWindow::button1Clicked()
     switch(state) {
     case USER_TRANSACTIONS:
         qDebug() << "vanhemmat clicked";
-        offset=offset+5;
+        if (offset>0){
+            offset=offset+5;
+        }else
+        {
+            offset=0;
+        }
+        qDebug() << "offset: "<< offset;
+        showTransactions();
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 10 clicked";
@@ -238,7 +245,7 @@ void MainWindow::button3Clicked()
         break;
     case USER_MENU:
         qDebug() << "transactions clicked";
-        clearScreen();
+        showTransactions();
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 40 clicked";
@@ -276,7 +283,10 @@ void MainWindow::button4Clicked()
         showWithdrawal();
         break;
     case USER_TRANSACTIONS:
-        qDebug() << "Return -clicked";
+        qDebug() << "Paluu clicked";
+        offset=0;
+        ui->Content2->setAlignment(Qt::AlignCenter);
+        ui->SecondTitle->setAlignment(Qt::AlignCenter);
         showMenu(token, accountID);
         break;
     }
@@ -289,6 +299,19 @@ void MainWindow::button5Clicked()
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 60 -clicked";
         withdraw->setAmount(QString("20"));
+        break;
+    case USER_TRANSACTIONS:
+        QString labelText = ui->Content2->text();
+        int characterCount = labelText.length();
+        qDebug() << "Uudemmat clicked";
+        qDebug() << "näytöllä merkkejä: " << characterCount;
+            if(characterCount>149){
+            offset=offset-5;
+        }else{
+            offset=offset;
+        }
+        qDebug() << "offset: "<< offset;
+        showTransactions();
         break;
     }
 
@@ -345,6 +368,8 @@ void MainWindow::button8Clicked()
         break;
     case USER_TRANSACTIONS:
         qDebug() << "Stop session -clicked";
+        ui->Content2->setAlignment(Qt::AlignCenter);
+        ui->SecondTitle->setAlignment(Qt::AlignCenter);
         showLogin();
         break;
     }
@@ -505,14 +530,61 @@ void MainWindow::showLoginFailure()
 
 void MainWindow::showTransactions()
 {
-    state = USER_TRANSACTIONS;
     clearScreen();
-    ui->Title->setText(QString("Otsikko"));
-    ui->SecondTitle->setText(QString("Alaotsikko jos on"));
-    // vanhemmat + uudemmat tapahtumat
-    // disablointi 1 ja 5 ?
+    state = USER_TRANSACTIONS;
+    ui->PushText1->setText(QString("Vanhemmat"));
+    ui->PushText5->setText(QString("Uudemmat"));
+    ui->PushText4->setText(QString("Paluu"));
+    ui->PushText8->setText(QString("Lopeta"));
+    ui->pushButton1->setDisabled(false);
     ui->pushButton4->setDisabled(false);
+    ui->pushButton5->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-    ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->PushText8->setText(QString("Keskeytä"));
+    transactions->showTransactions(token, accountID, offset);
+}
+
+void MainWindow::handleTransactionsReady(const QString &data)
+{
+    ui->Content2->setAlignment(Qt::AlignLeft);
+    ui->SecondTitle->setAlignment(Qt::AlignLeft);
+    QString tapahtumat="";
+    QString otsikot="";
+
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+
+    if (!jsonResponse.isArray()) {
+        qDebug() << "Invalid JSON data format.";
+        return;
+    }
+
+    QJsonArray jsonArray = jsonResponse.array();
+
+    //Tulosta otsikot
+    //otsikot="Aika\tCard_ID\tTapahtuma\tSumma(€)";//kommentoituna, jos id_card tiedolle ei ole tarvetta.
+    otsikot="   Aika\t\t     Tapahtuma\t Summa(€)";//kommentoituna, jos id_card halutaan käyttöön.
+
+    ui->SecondTitle->setText(otsikot);
+
+    for (const auto& jsonValue : jsonArray) {
+        QString event_type;
+        if (jsonValue.isObject()) {
+            QJsonObject jsonObject = jsonValue.toObject();
+
+            //int id_card = jsonObject["id_card"].toInt(); //kommentoituna, jos id_card tiedolle ei ole tarvetta.
+            if (jsonObject["event_type"].toString()=="withdrawal"){//withdrawal käännettynä suomeksi, muuta mahdolliset tapahtumat saa mennä ominaan.
+                event_type = "Nosto";
+            }
+            else {
+                event_type = jsonObject["event_type"].toString();
+            }
+            QDateTime time = QDateTime::fromString(jsonObject["time"].toString(), Qt::ISODate);
+            QString amount = jsonObject["amount"].toString();
+            //tapahtumat += QString("%1\t%2\t%3\t%4\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(id_card).arg(event_type).arg(amount);//kommentoituna, jos id_card tiedolle ei ole tarvetta.
+            tapahtumat += QString("%1   %2\t\t%3\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(event_type).arg(amount);//kommentoituna, jos id_card halutaan käyttöön
+        }
+    }
+    //qDebug() << otsikot;
+    //qDebug() << tapahtumat;
+    ui->Content2->setText(tapahtumat);
+
 }

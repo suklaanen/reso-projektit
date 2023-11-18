@@ -15,11 +15,20 @@ class Transactions : public QObject
 public:
     explicit Transactions(QObject *parent = nullptr);
     void requestTransactions(QString token, QString cardID, QString cardType);
-    //Offset request bodyyn parametriksi. Eteen ja taakse päin voisi kasvattaa/pienentää offset muuttujaa viidellä?
+    void showTransactions(QString, QString, int);
+public slots:
+    void handleGetTransaction();
 signals:
-
+    void transactionsReady(const QString& data);
+    void userTransactions();
 private:
-    QString showTransactions(int ln);
+    QString token;
+    QString accountID;
+    QString cardID;
+    int offset;
+    QNetworkAccessManager *manager;
+    QNetworkReply *reply;
+    QString returnedTransactions;
 };
 
 #endif // TRANSACTIONS_H
