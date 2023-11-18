@@ -308,7 +308,7 @@ void MainWindow::button5Clicked()
             if(characterCount>149){
             offset=offset+5;
         }else{
-            offset=offset-5;
+            offset=offset;
         }
         qDebug() << "offset: "<< offset;
         showTransactions();
@@ -532,6 +532,7 @@ void MainWindow::showTransactions()
 {
     clearScreen();
     state = USER_TRANSACTIONS;
+    //tähän voi miettiä myös hailakampaa näkymää, jos uudempia tapahtumia ei ole..
     if (offset!=0){
         ui->PushText1->setText(QString("Uudemmat"));
         ui->pushButton1->setDisabled(false);
@@ -562,8 +563,8 @@ void MainWindow::handleTransactionsReady(const QString &data)
     QJsonArray jsonArray = jsonResponse.array();
 
     //Tulosta otsikot
-    //otsikot="Aika\tCard_ID\tTapahtuma\tSumma(€)";//kommentoituna, jos id_card tiedolle ei ole tarvetta.
-    otsikot="   Aika\t\t     Tapahtuma\t Summa(€)";//kommentoituna, jos id_card halutaan käyttöön.
+    //tapahtumat="Aika\tCard_ID\tTapahtuma\tSumma(€)";//kommentoituna, jos id_card tiedolle ei ole tarvetta.
+    tapahtumat="\tAika\t\tTapahtuma\tSumma(€)\n";//kommentoituna, jos id_card halutaan käyttöön.
 
     ui->SecondTitle->setText(otsikot);
 
@@ -582,10 +583,19 @@ void MainWindow::handleTransactionsReady(const QString &data)
             QDateTime time = QDateTime::fromString(jsonObject["time"].toString(), Qt::ISODate);
             QString amount = jsonObject["amount"].toString();
             //tapahtumat += QString("%1\t%2\t%3\t%4\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(id_card).arg(event_type).arg(amount);//kommentoituna, jos id_card tiedolle ei ole tarvetta.
-            tapahtumat += QString("%1   %2\t\t%3\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(event_type).arg(amount);//kommentoituna, jos id_card halutaan käyttöön
+            tapahtumat += QString("\t%1\t%2\t\t%3\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(event_type).arg(amount);//kommentoituna, jos id_card halutaan käyttöön
         }
     }
+            int characterCount = tapahtumat.length();
+            qDebug() << "tapahtumien pituus merkkeinä: " << characterCount;
+                if(characterCount>149){
+                ui->Content2->setText(tapahtumat);
+            }else{
+                ui->Content2->setText("\n\n\t\tEi vanhempia tapahtumia!");
+                //ui->PushText5->setStyleSheet();//Tähän hailakampaa väriä tms..
+                ui->pushButton5->setDisabled(true);
+            }
     //qDebug() << otsikot;
     //qDebug() << tapahtumat;
-    ui->Content2->setText(tapahtumat);
+
 }
