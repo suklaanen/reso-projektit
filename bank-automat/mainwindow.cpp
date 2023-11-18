@@ -370,7 +370,8 @@ void MainWindow::showWithdrawal()
     ui->PushText5->setText(QString("60"));
     ui->PushText6->setText(QString("80"));
     ui->PushText7->setText(QString("Muu summa"));
-    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->PushText8->setText(QString("Keskeytä"));
+
 }
 
 void MainWindow::showInsertAmount()
