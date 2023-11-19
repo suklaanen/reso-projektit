@@ -17,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
     balance = new CheckBalance(this);
     transactions = new Transactions(this);
     withdraw = new Withdraw(this);
+    //viewlog = new ViewLog(this);
+    //addmoney = new AddMoney(this);
+    //setlimits = new SetLimits(this);
 
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
@@ -121,12 +124,17 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
     connect(transactions, SIGNAL(transactionsReady()), this, SLOT(showTransactions()));
-    connect(balance, SIGNAL(transactionsReady(QString)), this, SLOT(handleTransactionsReady(QString)));
-    connect(balance,SIGNAL(balanceReady(QString)), this, SLOT (handleBalanceReady(QString)));
-    connect(balance, &CheckBalance::balanceReady, this, &MainWindow::showUserBalance);
+    //connect(balance,SIGNAL(balanceReady(QString)), this, SLOT (displayBalance(QString)));
+    connect(balance, SIGNAL(balanceReady(QString)),this, SLOT(showUserBalance(QString)));
+    // KAKSI seuraavaa, ovatko / onko toinen käytössä?
+    //connect(balance, SIGNAL(transactionsReady(QString)), this, SLOT(handleTransactionsReady(QString)));
+    //connect(balance,SIGNAL(transactionsReady(QString)), this, SLOT(displayTransactions(QString)));
 
+    //connect(balance,SIGNAL(balanceReady(QString)), this, SLOT (handleBalanceReady(QString)));
+    // TULOSSA nyt tämä signaali:
+
+   // connect(balance, &CheckBalance::balanceReady, this, &MainWindow::showUserBalance);
 }
-
 
 // -------------------------------------------------------------------------------------
 // ** Painikkeet ** ja napit alkavat tästä sekä niistä etenemiset switch casella
@@ -196,7 +204,6 @@ void MainWindow::clickedRED()
     showLogin();
 }
 
-
 // Sivu painike numero 1 , vasemmalla
 void MainWindow::button1Clicked()
 {
@@ -225,11 +232,11 @@ void MainWindow::button2Clicked()
     switch(state) {
     case ADMIN_MENU:
         qDebug() << "ATM Events -clicked";
-        //showATMEvents();  // tai vastaavan niminen slotti
+        showATMEvents();
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
-        showUserBalance(saldo);
+        balance->displayBalance(token, accountID);
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 20 clicked";
@@ -238,7 +245,6 @@ void MainWindow::button2Clicked()
     }
 }
 
-
 // Sivu painike numero 3 , vasemmalla
 void MainWindow::button3Clicked()
 {
@@ -246,7 +252,7 @@ void MainWindow::button3Clicked()
 
     case ADMIN_MENU:
         qDebug() << "ATM balance -clicked";
-        //showATMBalance();  // tai vastaavan niminen slotti
+        showATMBalance();
         break;
     case USER_MENU:
         qDebug() << "transactions clicked";
@@ -269,7 +275,7 @@ void MainWindow::button4Clicked()
         break;
     case ADMIN_MENU:
         qDebug() << "ATM Add money -clicked";
-        //showAddMoney();  // tai vastaavan niminen slotti
+        showAddMoney();
         break;
     case USER_MENU:
         qDebug() << "User Withdrawal -clicked";
@@ -312,14 +318,12 @@ void MainWindow::button5Clicked()
         withdraw->setAmount(QString("20"));
         break;
     case USER_TRANSACTIONS:
-
         qDebug() << "Vanhemmat clicked";
         offset += 5;
         qDebug() << "offset: "<< offset;
         transactions->showTransactions(token, accountID, offset);
         break;
     }
-
 }
 
 // Sivu painike numero 6 , oikealla
@@ -328,7 +332,7 @@ void MainWindow::button6Clicked()
     switch(state) {
     case ADMIN_MENU:
         qDebug() << "ATM current limit -clicked";
-        //showTransactions();  // tai vastaavan niminen slotti
+        showATMCurrentLimits();
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 60 clicked";
@@ -343,7 +347,7 @@ void MainWindow::button7Clicked()
     switch(state) {
     case ADMIN_MENU:
         qDebug() << "ATM set limit -clicked";
-        //showATNSetLimit();  // tai vastaavan niminen slotti
+        showATMSetLimit();
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Insert amount clicked";
@@ -476,26 +480,37 @@ void MainWindow::showCardLocked()
     ui->SecondTitle->setText(QString("Ota yhteys pankkiin"));
 }
 
-void MainWindow::showUserBalance(const QString& saldo)
+
+// void MainWindow::showUserBalance()
+void MainWindow::showUserBalance(QString balance)
 {
-    this->saldo = saldo;  // Aseta saldo-muuttujan arvo
+
+    this->saldo = balance;  // Aseta saldo-muuttujan arvo
     clearScreen();
     state = USER_BALANCE;
-    ui->PushText4->setText(QString("Paluu"));
+
+    ui->Title->setText("Tilin saldo");
+    ui->SecondTitle->setText(this->saldo);
+
+    /* Tuleeko transaktioita saldon kyselyyn?
+    ui->SecondTitle->setText("Ajankohta | Tapahtuma | Summa (€)");
+     for (int i = 0; i < transactions->getTransactions().size(); i++)
+     {
+         ui->Content2->setText(ui->Content2->text()+transactions->getTransactions().at(i));
+     } */
+
+    ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Lopeta"));
     ui->pushButton4->setDisabled(false);
-    ui->pushButton5->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-    balance->showBalance(token, accountID, offset);
-    ui->Title->setText("Saldo: " + this->saldo);
-    transactions->showTransactions(token, accountID, offset);
+    ui->Title->setText("Tilin saldo " + this->saldo);
 
-
-
+    //balance->checkBalance(token, accountID, offset);
     //balance->showBalance();
-
 }
 
+/*  TÄMÄ siirtyykö checkbalance.cpp hen vai onko tää ns turha nyt ?
+ *
 void MainWindow::handleBalanceReady(const QString &data)
 {
     // Tarkistetaan, onko vastaus tyhjä
@@ -532,7 +547,7 @@ void MainWindow::handleBalanceReady(const QString &data)
 
     // Päivitetään käyttöliittymä
     ui->Title->setText("Saldo: " + saldo);
-}
+} */
 
 void MainWindow::showWithdrawal()
 {
@@ -556,7 +571,6 @@ void MainWindow::showWithdrawal()
     ui->PushText6->setText(QString("80"));
     ui->PushText7->setText(QString("Muu summa"));
     ui->PushText8->setText(QString("Keskeytä"));
-
 }
 
 void MainWindow::showInsertAmount()
@@ -592,7 +606,6 @@ void MainWindow::showTransactions()
     clearScreen();
     state = USER_TRANSACTIONS;
 
-
     if (offset == 0) {
         ui->pushButton1->setDisabled(true);
         ui->PushText1->setStyleSheet("color: #7777c7;");
@@ -617,7 +630,6 @@ void MainWindow::showTransactions()
         ui->Content2->setText(ui->Content2->text()+transactions->getTransactions().at(i));
     }
 
-
     if (offset != 0 && transactions->maxTransactions() < offset + 5) {
         ui->Content2->setText(ui->Content2->text() + "Ei vanhempia tapahtumia!\n");
     }
@@ -629,5 +641,30 @@ void MainWindow::showTransactions()
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
     //transactions->showTransactions(token, accountID, offset);
-};
+}
 
+
+void MainWindow::showAddMoney()
+{
+
+}
+
+void MainWindow::showATMBalance()
+{
+
+}
+
+void MainWindow::showATMCurrentLimits()
+{
+
+}
+
+void MainWindow::showATMSetLimit()
+{
+
+}
+
+void MainWindow::showATMEvents()
+{
+
+}
