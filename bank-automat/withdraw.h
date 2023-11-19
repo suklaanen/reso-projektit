@@ -16,15 +16,21 @@ public:
     explicit Withdraw(QObject *parent = nullptr);
     void setAmount(QString);
     void setInfo(QString, QString, QString, QString);
-
+public slots:
+    void handleAtmLimit();
 signals:
-
+    void atmLimitReady(QString limit);
 private:
     QString token;
     QString accountID;
     QString cardID;
     QString cardType;
     QString amount;
+    QString automatID;
+    QString maxWithdrawal;
+    QNetworkAccessManager * manager;
+    QNetworkReply * reply;
+    void requestAtmLimit();
 };
 
 #endif // WITHDRAW_H

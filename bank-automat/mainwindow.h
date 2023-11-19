@@ -5,6 +5,7 @@
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
+#include <QTimer>
 #include <login.h>
 #include "transactions.h"
 #include "checkbalance.h"
@@ -27,21 +28,12 @@ class MainWindow : public QMainWindow
         CARD_OK,
         PIN_OK,
         LOGIN_FAIL,
-        PIN_ATTEMPT_1,
-        PIN_ATTEMPT_2,
-        PIN_ATTEMPT_3,
         CARD_LOCKED,
         SELECT_ACCOUNT,
         CARD_COMBINATION,
         CARD_MANYDEBITS,
         CARD_ADMIN,
-        CARD_CREDIT,
-        CARD_DEBIT,
-        SELECT_DEBIT,
-        SELECT_CREDIT,
         SELECT_ADMIN,
-        USER_LOGIN,
-        ADMIN_LOGIN,
         USER_MENU,
         ADMIN_MENU,
         USER_TRANSACTIONS,
@@ -85,13 +77,13 @@ public slots:
     void showWithdrawal();
     void showInsertAmount();
     void showTransactions();
-    //void handleTransactionsReady(const QString &data); 
-    //void handleBalanceReady(const QString &data);
     void showATMEvents();
     void showATMBalance();
     void showAddMoney();
     void showATMSetLimit();
     void showATMCurrentLimits();
+    void handleTimeout();
+    void handleAtmLimit(QString limit);
 signals:
 // transaction signaalien siirto >> transactions.h
 // balance signaalien siirto >> checkbalance.h
@@ -106,10 +98,6 @@ signals:
     void returnUserMain();
     void returnAdminMain();
     void logout();
-    void timeout();
-    // transaktioihin, jos tarvitaan
-    void transactionsBackward();
-    void transactionsForward();
     // balanceen, jos tarvitaan
     void userBalance();
     void userWithdrawal();
@@ -122,11 +110,9 @@ private:
     QNetworkReply * reply;
     QNetworkAccessManager *manager;
     QString ID;
-    QString pin;
     void connectSlots();
     QString cardType;
     QString accountID;
-    int state;
     Login * login;
     CheckBalance * balance;
     Withdraw * withdraw;
@@ -134,6 +120,9 @@ private:
     QString token;
     void clearScreen();
     int offset;
+    State state;
     QString saldo;
+    QTimer * timer;
+    QString atmMaxWithdrawal;
 };
 #endif // MAINWINDOW_H

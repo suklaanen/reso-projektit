@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
     //addmoney = new AddMoney(this);
     //setlimits = new SetLimits(this);
 
+    timer = new QTimer(this);
+    timer->setSingleShot(true);
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
     token = "";
@@ -62,6 +64,8 @@ void MainWindow::clickedNumberHandler()
 
         if (state == CARD_OK || state == LOGIN_FAIL) {
             ui->Content->setEchoMode(QLineEdit::Password);
+            timer->stop();
+            timer->start(10000);
         } else {
             ui->Content->setEchoMode(QLineEdit::Normal);
         }
@@ -124,16 +128,10 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
     connect(transactions, SIGNAL(transactionsReady()), this, SLOT(showTransactions()));
-    //connect(balance,SIGNAL(balanceReady(QString)), this, SLOT (displayBalance(QString)));
+    connect(timer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
     connect(balance, SIGNAL(balanceReady(QString)),this, SLOT(showUserBalance(QString)));
-    // KAKSI seuraavaa, ovatko / onko toinen käytössä?
-    //connect(balance, SIGNAL(transactionsReady(QString)), this, SLOT(handleTransactionsReady(QString)));
-    //connect(balance,SIGNAL(transactionsReady(QString)), this, SLOT(displayTransactions(QString)));
+    connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
 
-    //connect(balance,SIGNAL(balanceReady(QString)), this, SLOT (handleBalanceReady(QString)));
-    // TULOSSA nyt tämä signaali:
-
-   // connect(balance, &CheckBalance::balanceReady, this, &MainWindow::showUserBalance);
 }
 
 // -------------------------------------------------------------------------------------
@@ -149,7 +147,8 @@ void MainWindow::clickedGREEN()
 
     switch (state) {
     case SELECT_CARD:
-        if(ui->Content->text() != "") { //Mietitään, voidaan kopioida kaikkiin (setCardID())
+        if(ui->Content->text() != "") {
+            ID = ui->Content->text();
             login->setCardID(ui->Content->text());
         }
         else {
@@ -157,15 +156,23 @@ void MainWindow::clickedGREEN()
         }
         break;
     case CARD_FAIL:
-        login->setCardID(ui->Content->text());
+        if(ui->Content->text() != "") {
+            ID = ui->Content->text();
+            login->setCardID(ui->Content->text());
+        }
+        else {
+            login->setCardID("0");
+        }
         break;
     case CARD_OK:
         login->setPIN(ui->Content->text(),cardType);
+        timer->stop();
         break;
     case CARD_COMBINATION:
         break;
     case LOGIN_FAIL:
         login->setPIN(ui->Content->text(),cardType);
+        timer->stop();
         break;
     case USER_MENU:
         break;
@@ -183,6 +190,8 @@ void MainWindow::clickedYELLOW()
 {
     qDebug()<<"Yellow button clicked";
     ui->Content->clear();
+    timer->stop();
+    timer->start(10000);
 }
 
 // Harmaan painikkeen "kumita yksi merkki" toiminto
@@ -194,6 +203,8 @@ void MainWindow::clickedGREY()
     if (content.size() > 0) {
         ui->Content->setText(content.left(content.size() -1));
     }
+    timer->stop();
+    timer->start(10000);
 }
 
 // Punaisen painikkeen "keskeytä" STOP -toiminto, joka palaa alkutilaan
@@ -315,7 +326,7 @@ void MainWindow::button5Clicked()
     switch(state) {
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 60 -clicked";
-        withdraw->setAmount(QString("20"));
+        withdraw->setAmount(QString("60"));
         break;
     case USER_TRANSACTIONS:
         qDebug() << "Vanhemmat clicked";
@@ -335,8 +346,8 @@ void MainWindow::button6Clicked()
         showATMCurrentLimits();
         break;
     case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 60 clicked";
-        withdraw->setAmount(QString("60"));
+        qDebug() << "Withdraw 80 clicked";
+        withdraw->setAmount(QString("80"));
         break;
     }
 }
@@ -414,6 +425,7 @@ void MainWindow::showInputPin(QString cardType)
     state = CARD_OK;
     this->cardType = cardType;
     clearScreen();
+    timer->start(10000);
     ui->Title->setText(QString("Kortti tunnistettu"));
     ui->SecondTitle->setText(QString("Syötä pin"));
 }
@@ -480,8 +492,6 @@ void MainWindow::showCardLocked()
     ui->SecondTitle->setText(QString("Ota yhteys pankkiin"));
 }
 
-
-// void MainWindow::showUserBalance()
 void MainWindow::showUserBalance(QString balance)
 {
 
@@ -588,6 +598,7 @@ void MainWindow::showInsertAmount()
 void MainWindow::showCardFailure()
 {
     state = CARD_FAIL;
+    clearScreen();
     ui->Title->setText(QString("Korttia ei löydy"));
     ui->SecondTitle->setText(QString("Syötä kortin ID"));
 }
@@ -597,6 +608,7 @@ void MainWindow::showLoginFailure()
 {
     state = LOGIN_FAIL;
     clearScreen();
+    timer->start(10000);
     ui->Title->setText(QString("Kirjautuminen epäonnistui"));
     ui->SecondTitle->setText(QString("Syötä pin ja yritä uudelleen"));
 }
@@ -640,7 +652,6 @@ void MainWindow::showTransactions()
     ui->PushText8->setText(QString("Lopeta"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-    //transactions->showTransactions(token, accountID, offset);
 }
 
 
@@ -657,6 +668,24 @@ void MainWindow::showATMBalance()
 void MainWindow::showATMCurrentLimits()
 {
 
+}
+
+void MainWindow::handleTimeout()
+{
+    switch(state) {
+    case CARD_OK:
+        showLogin();
+        break;
+    case LOGIN_FAIL:
+        showLogin();
+        break;
+    }
+}
+
+void MainWindow::handleAtmLimit(QString limit)
+{
+    this->atmMaxWithdrawal = limit;
+    qDebug() << "Atm maxwithdrawal is " << this->atmMaxWithdrawal;
 }
 
 void MainWindow::showATMSetLimit()
