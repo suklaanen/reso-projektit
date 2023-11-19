@@ -121,6 +121,9 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
     connect(transactions, SIGNAL(transactionsReady(QString)), this, SLOT(handleTransactionsReady(QString)));
+    connect(balance, SIGNAL(transactionsReady(QString)), this, SLOT(handleTransactionsReady(QString)));
+    connect(balance,SIGNAL(balanceReady(QString)), this, SLOT (handleBalanceReady(QString)));
+    connect(balance, &CheckBalance::balanceReady, this, &MainWindow::showUserBalance);
 }
 
 // -------------------------------------------------------------------------------------
@@ -224,7 +227,7 @@ void MainWindow::button2Clicked()
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
-        showUserBalance();
+        showUserBalance(saldo);
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 20 clicked";
@@ -270,7 +273,10 @@ void MainWindow::button4Clicked()
         showWithdrawal();  // tai vastaavan niminen slotti
         break;
     case USER_BALANCE:
-        qDebug() << "Return -clicked";
+        qDebug() << "Paluu clicked";
+        offset=0;
+        ui->Content2->setAlignment(Qt::AlignCenter);
+        ui->SecondTitle->setAlignment(Qt::AlignCenter);
         showMenu(token, accountID);
         break;
     case USER_WITHDRAWAL:
@@ -372,6 +378,12 @@ void MainWindow::button8Clicked()
         ui->SecondTitle->setAlignment(Qt::AlignCenter);
         showLogin();
         break;
+    case USER_BALANCE:
+        qDebug() << "Stop session -clicked";
+        ui->Content2->setAlignment(Qt::AlignCenter);
+        ui->SecondTitle->setAlignment(Qt::AlignCenter);
+        showLogin();
+        break;
     }
 }
 
@@ -463,16 +475,62 @@ void MainWindow::showCardLocked()
     ui->SecondTitle->setText(QString("Ota yhteys pankkiin"));
 }
 
-void MainWindow::showUserBalance()
+void MainWindow::showUserBalance(const QString& saldo)
 {
+    this->saldo = saldo;  // Aseta saldo-muuttujan arvo
     clearScreen();
     state = USER_BALANCE;
-    ui->Title->setText(QString("Saldo"));
-    ui->Content2->setText(QString("5. tapahtuma<br/>4. tapahtuma<br/>3.tapahtuma<br/>2.Tapahtuma<br/>1. Tapahtuma" ));
+    ui->PushText4->setText(QString("Paluu"));
+    ui->PushText8->setText(QString("Lopeta"));
     ui->pushButton4->setDisabled(false);
+    ui->pushButton5->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-    ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->PushText8->setText(QString("Keskeytä"));
+    balance->showBalance(token, accountID, offset);
+    ui->Title->setText("Saldo: " + this->saldo);
+    transactions->showTransactions(token, accountID, offset);
+
+
+
+    //balance->showBalance();
+
+}
+
+void MainWindow::handleBalanceReady(const QString &data)
+{
+    // Tarkistetaan, onko vastaus tyhjä
+    if (data.isEmpty()) {
+        qDebug() << "Tyhjä vastaus saldosta.";
+            return;
+    }
+
+    // Käsitellään JSON-vastaus
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+
+    // Tarkistetaan, onko JSON-data muotoa, jota odotamme
+    if (!jsonResponse.isArray()) {
+        qDebug() << "Virheellinen JSON-dataformaatti saldossa.";
+        qDebug() << "Saatu data: " << data;
+        return;
+    }
+
+    QJsonArray jsonArray = jsonResponse.array();
+
+    // Luodaan muuttuja saldo
+    QString saldo = "N/A";  // Oletusarvo, jos saldoa ei saatu
+
+    // Käydään läpi JSON-taulukko
+    for (const auto& jsonValue : jsonArray) {
+        if (jsonValue.isObject()) {
+            QJsonObject jsonObject = jsonValue.toObject();
+
+            // Olettaen, että saldo on suoraan "amount"-avaimen alla
+            QString amount = jsonObject["amount"].toString();
+            saldo = amount;
+        }
+    }
+
+    // Päivitetään käyttöliittymä
+    ui->Title->setText("Saldo: " + saldo);
 }
 
 void MainWindow::showWithdrawal()
@@ -599,3 +657,5 @@ void MainWindow::handleTransactionsReady(const QString &data)
     //qDebug() << tapahtumat;
 
 }
+
+

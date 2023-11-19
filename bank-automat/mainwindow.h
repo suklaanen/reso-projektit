@@ -80,11 +80,12 @@ public slots:
     void button6Clicked();
     void button7Clicked();
     void button8Clicked();
-    void showUserBalance();
+    void showUserBalance(const QString& saldo);
     void showWithdrawal();
     void showInsertAmount();
     void showTransactions();
     void handleTransactionsReady(const QString &data);
+    void handleBalanceReady(const QString &data);
 signals:
     // transaction signaalien siirto >> transactions.h
     // balance signaalien siirto >> checkbalance.h
@@ -130,5 +131,6 @@ private:
     void clearScreen();
 
     int offset;
+    QString saldo;
 };
 #endif // MAINWINDOW_H
