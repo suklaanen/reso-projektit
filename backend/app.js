@@ -13,6 +13,7 @@ var automatRouter = require('./controllers/automat');
 var loginRouter = require('./controllers/login');
 var frontendEventsRouter = require('./controllers/eventRequests_frontend');
 var cardPinAttempts = require('./controllers/card_pin_attempts');
+var frontendBalanceRouter = require('./controllers/balanceRequest_frontend');
 
 var app = express();
 
@@ -33,5 +34,6 @@ app.use('/user', userRouter);
 app.use('/card', cardRouter);
 app.use('/automat', automatRouter);
 app.use('/frontendEvents',frontendEventsRouter);
+app.use('/getBalance', frontendBalanceRouter);
 
 module.exports = app;

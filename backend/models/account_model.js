@@ -27,8 +27,10 @@ const account = {
     getAccountID: function(id_card, account_type, callback) {
         return db.query("SELECT account.id_account FROM account INNER JOIN accountuser ON account.id_account = accountuser.id_account WHERE accountuser.id_card=? AND account.account_type=?",
         [id_card, account_type], callback);
+    },
+    getBalance: function(id, callback) {
+        return db.query("SELECT balance FROM account WHERE id_account=?",[id],callback);
     }
-
 
 };
 

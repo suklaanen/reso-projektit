@@ -6,10 +6,12 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <login.h>
-#include "qlabel.h"
 #include "transactions.h"
 #include "checkbalance.h"
 #include "withdraw.h"
+//#include "addmoney.h"
+//#include "setlimits.h"
+//#include "viewlog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -52,11 +54,9 @@ class MainWindow : public QMainWindow
         CONFIRM,
         LOGOUT
     };
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
     Login *getLoginView() const;
 public slots:
     void clickedNumberHandler();
@@ -80,40 +80,43 @@ public slots:
     void button6Clicked();
     void button7Clicked();
     void button8Clicked();
-    void showUserBalance(const QString& saldo);
+    void showUserBalance(QString balance);
+    // ehkä ylimäärä void showBalance();
     void showWithdrawal();
     void showInsertAmount();
     void showTransactions();
-
     //void handleTransactionsReady(const QString &data); 
-    void handleBalanceReady(const QString &data);
-
+    //void handleBalanceReady(const QString &data);
+    void showATMEvents();
+    void showATMBalance();
+    void showAddMoney();
+    void showATMSetLimit();
+    void showATMCurrentLimits();
 signals:
-    // transaction signaalien siirto >> transactions.h
-    // balance signaalien siirto >> checkbalance.h
-    // withdrawal signaalien siirto >> withdraw.h
+// transaction signaalien siirto >> transactions.h
+// balance signaalien siirto >> checkbalance.h
+// withdrawal signaalien siirto >> withdraw.h
+    // loginiin, jos tarvitaan
     void accountCombined();
     void accountDebit();
     void accountManyDebits();
     void accountCredit();
     void accountAdmin();
     void userMain();
-
-    void transactionsBackward();
-    void transactionsForward();
-    void userBalance();
-    void userWithdrawal();
-    void withdrawalOk();
-    void withdrawalFail();
-    void returnWithdrawal();
     void returnUserMain();
-    void automatAddMoney();
-    void automatLog();
-    void automatSetMax();
     void returnAdminMain();
     void logout();
     void timeout();
-
+    // transaktioihin, jos tarvitaan
+    void transactionsBackward();
+    void transactionsForward();
+    // balanceen, jos tarvitaan
+    void userBalance();
+    void userWithdrawal();
+    // withdrawaliin, jos tarvitaan
+    void withdrawalOk();
+    void withdrawalFail();
+    void returnWithdrawal();
 private:
     Ui::MainWindow *ui;
     QNetworkReply * reply;
@@ -123,7 +126,6 @@ private:
     void connectSlots();
     QString cardType;
     QString accountID;
-
     int state;
     Login * login;
     CheckBalance * balance;
@@ -131,7 +133,6 @@ private:
     Transactions * transactions;
     QString token;
     void clearScreen();
-
     int offset;
     QString saldo;
 };
