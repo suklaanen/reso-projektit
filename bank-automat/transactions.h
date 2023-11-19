@@ -16,12 +16,15 @@ public:
     explicit Transactions(QObject *parent = nullptr);
     void requestTransactions(QString token, QString cardID, QString cardType);
     void showTransactions(QString, QString, int);
+    QList<QString> getTransactions();
+    int maxTransactions();
 public slots:
     void handleGetTransaction();
 signals:
-    void transactionsReady(const QString& data);
+    void transactionsReady();
     void userTransactions();
 private:
+    void parseTransactions(const QString &data);
     QString token;
     QString accountID;
     QString cardID;
@@ -29,6 +32,8 @@ private:
     QNetworkAccessManager *manager;
     QNetworkReply *reply;
     QString returnedTransactions;
+    QList<QString> parsedTransactions;
+    int maximumTransactions;
 };
 
 #endif // TRANSACTIONS_H

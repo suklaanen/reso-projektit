@@ -120,11 +120,13 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
     connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
-    connect(transactions, SIGNAL(transactionsReady(QString)), this, SLOT(handleTransactionsReady(QString)));
+    connect(transactions, SIGNAL(transactionsReady()), this, SLOT(showTransactions()));
     connect(balance, SIGNAL(transactionsReady(QString)), this, SLOT(handleTransactionsReady(QString)));
     connect(balance,SIGNAL(balanceReady(QString)), this, SLOT (handleBalanceReady(QString)));
     connect(balance, &CheckBalance::balanceReady, this, &MainWindow::showUserBalance);
+
 }
+
 
 // -------------------------------------------------------------------------------------
 // ** Painikkeet ** ja napit alkavat tästä sekä niistä etenemiset switch casella
@@ -208,7 +210,7 @@ void MainWindow::button1Clicked()
             offset=0;
         }
         qDebug() << "offset: "<< offset;
-        showTransactions();
+        transactions->showTransactions(token, accountID, offset);
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 10 clicked";
@@ -248,7 +250,8 @@ void MainWindow::button3Clicked()
         break;
     case USER_MENU:
         qDebug() << "transactions clicked";
-        showTransactions();
+        offset = 0;
+        transactions->showTransactions(token, accountID, offset);
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 40 clicked";
@@ -309,17 +312,11 @@ void MainWindow::button5Clicked()
         withdraw->setAmount(QString("20"));
         break;
     case USER_TRANSACTIONS:
-        QString labelText = ui->Content2->text();
-        int characterCount = labelText.length();
+
         qDebug() << "Vanhemmat clicked";
-        qDebug() << "näytöllä merkkejä: " << characterCount;
-        if(characterCount>149){
-            offset=offset+5;
-        }else{
-            offset=offset;
-        }
+        offset += 5;
         qDebug() << "offset: "<< offset;
-        showTransactions();
+        transactions->showTransactions(token, accountID, offset);
         break;
     }
 
@@ -594,80 +591,43 @@ void MainWindow::showTransactions()
 {
     clearScreen();
     state = USER_TRANSACTIONS;
-    //tähän voi miettiä myös hailakampaa näkymää, jos uudempia tapahtumia ei ole..
-    if (offset==0){
-        ui->PushText1->setStyleSheet("color: rgb(160, 160, 160);");
+
+
+    if (offset == 0) {
         ui->pushButton1->setDisabled(true);
-    }else{
-        ui->PushText1->setStyleSheet("color: rgb(255, 255, 255);");
+        ui->PushText1->setStyleSheet("color: #7777c7;");
+        ui->pushButton5->setDisabled(false);
+        ui->PushText5->setStyleSheet("");
+    } else if (offset != 0 && transactions->maxTransactions() < offset+5) {
         ui->pushButton1->setDisabled(false);
+        ui->PushText1->setStyleSheet("");
+        ui->pushButton5->setDisabled(true);
+        ui->PushText5->setStyleSheet("color: #7777c7;");
+    } else {
+        ui->pushButton1->setDisabled(false);
+        ui->PushText1->setStyleSheet("");
+        ui->pushButton5->setDisabled(false);
+        ui->PushText5->setStyleSheet("");
     }
+
+    ui->Title->setText("Tilitapahtumat");
+    ui->SecondTitle->setText("Ajankohta | Tapahtuma | Summa (€)");
+    for (int i = 0; i < transactions->getTransactions().size(); i++)
+    {
+        ui->Content2->setText(ui->Content2->text()+transactions->getTransactions().at(i));
+    }
+
+
+    if (offset != 0 && transactions->maxTransactions() < offset + 5) {
+        ui->Content2->setText(ui->Content2->text() + "Ei vanhempia tapahtumia!\n");
+    }
+
     ui->PushText1->setText(QString("Uudemmat"));
     ui->PushText5->setText(QString("Vanhemmat"));
     ui->PushText4->setText(QString("Paluu"));
     ui->PushText8->setText(QString("Lopeta"));
     ui->pushButton4->setDisabled(false);
-    ui->pushButton5->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-    transactions->showTransactions(token, accountID, offset);
-}
-
-void MainWindow::handleTransactionsReady(const QString &data)
-{
-    ui->Content2->setAlignment(Qt::AlignLeft);
-    ui->SecondTitle->setAlignment(Qt::AlignLeft);
-    QString tapahtumat="";
-
-    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
-
-    if (!jsonResponse.isArray()) {
-        qDebug() << "Invalid JSON data format.";
-        return;
-    }
-
-    QJsonArray jsonArray = jsonResponse.array();
-
-    //Tulosta otsikot
-    //tapahtumat="Aika\tCard_ID\tTapahtuma\tSumma(€)";//kommentoituna, jos id_card tiedolle ei ole tarvetta.
-    tapahtumat="\tAika\t\tTapahtuma\tSumma(€)\n";//kommentoituna, jos id_card halutaan käyttöön.
-
-    for (const auto& jsonValue : jsonArray) {
-        QString event_type;
-        if (jsonValue.isObject()) {
-            QJsonObject jsonObject = jsonValue.toObject();
-
-            //int id_card = jsonObject["id_card"].toInt(); //kommentoituna, jos id_card tiedolle ei ole tarvetta.
-            if (jsonObject["event_type"].toString()=="withdrawal"){//withdrawal käännettynä suomeksi, muuta mahdolliset tapahtumat saa mennä ominaan.
-                event_type = "Nosto";
-            }
-            else {
-                event_type = jsonObject["event_type"].toString();
-            }
-            QDateTime time = QDateTime::fromString(jsonObject["time"].toString(), Qt::ISODate);
-            QString amount = jsonObject["amount"].toString();
-            //tapahtumat += QString("%1\t%2\t%3\t%4\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(id_card).arg(event_type).arg(amount);//kommentoituna, jos id_card tiedolle ei ole tarvetta.
-            tapahtumat += QString("\t%1\t%2\t\t%3\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(event_type).arg(amount);//kommentoituna, jos id_card halutaan käyttöön
-        }
-    }
-            int characterCount = tapahtumat.length();
-            qDebug() << "tapahtumien pituus merkkeinä: " << characterCount;
-                if(characterCount>170){
-                ui->Content2->setText(tapahtumat);
-                ui->PushText5->setStyleSheet("color: rgb(255, 255, 255);");
-                ui->pushButton5->setDisabled(false);
-                }else if(characterCount<35){
-                ui->Content2->setText("\n\n\t\tEi vanhempia tapahtumia!");
-                ui->PushText5->setStyleSheet("color: rgb(160, 160, 160);");
-                ui->pushButton5->setDisabled(true);
-                }else{
-                ui->PushText5->setStyleSheet("color: rgb(160, 160, 160);");
-                ui->pushButton5->setDisabled(true);
-                ui->Content2->setText(tapahtumat);
-                }
-
-    //qDebug() << otsikot;
-    //qDebug() << tapahtumat;
-
-}
-
+    //transactions->showTransactions(token, accountID, offset);
+};
 

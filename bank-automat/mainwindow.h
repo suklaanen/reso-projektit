@@ -6,6 +6,7 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <login.h>
+#include "qlabel.h"
 #include "transactions.h"
 #include "checkbalance.h"
 #include "withdraw.h"
@@ -57,7 +58,6 @@ public:
     ~MainWindow();
 
     Login *getLoginView() const;
-
 public slots:
     void clickedNumberHandler();
     void clickedGREEN();
@@ -84,8 +84,10 @@ public slots:
     void showWithdrawal();
     void showInsertAmount();
     void showTransactions();
-    void handleTransactionsReady(const QString &data);
+
+    //void handleTransactionsReady(const QString &data); 
     void handleBalanceReady(const QString &data);
+
 signals:
     // transaction signaalien siirto >> transactions.h
     // balance signaalien siirto >> checkbalance.h
