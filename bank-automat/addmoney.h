@@ -16,6 +16,7 @@ class AddMoney:public QObject
 public:
     AddMoney(QObject * parent = nullptr);
 signals:
+    void automatCheckBalance();
     void automatAddMoney();
 };
 

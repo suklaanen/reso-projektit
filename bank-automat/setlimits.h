@@ -16,6 +16,7 @@ class SetLimits:public QObject
 public:
     SetLimits(QObject * parent = nullptr);
 signals:
+    void automatCheckLimits();
     void automatSetLimits();
 };
 
