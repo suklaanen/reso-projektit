@@ -2,6 +2,9 @@
 <RCC version="1.0">
     <qresource>
         <file>brushedsteel.jpg</file>
+		<file>bg.jpg</file>
+		<file>suoja.png</file>
+		<file>numbers.png</file>
         <file>bankstyle.qss</file>
     </qresource>
 </RCC>
