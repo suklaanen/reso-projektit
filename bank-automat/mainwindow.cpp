@@ -533,7 +533,7 @@ void MainWindow::showTransactions()
         ui->PushText1->setStyleSheet("color: #7777c7;");
         ui->pushButton5->setDisabled(false);
         ui->PushText5->setStyleSheet("");
-    } else if (offset != 0 && transactions->getTransactions().size() < 5) {
+    } else if (offset != 0 && transactions->maxTransactions() < offset+5) {
         ui->pushButton1->setDisabled(false);
         ui->PushText1->setStyleSheet("");
         ui->pushButton5->setDisabled(true);
@@ -545,11 +545,15 @@ void MainWindow::showTransactions()
         ui->PushText5->setStyleSheet("");
     }
 
-    ui->SecondTitle->setText("\tAika\t\tTapahtuma\tSumma(€)");
+    ui->Title->setText("Tilitapahtumat");
+    ui->SecondTitle->setText("Ajankohta | Tapahtuma | Summa (€)");
     for (int i = 0; i < transactions->getTransactions().size(); i++)
     {
-        qDebug() << i ;
         ui->Content2->setText(ui->Content2->text()+transactions->getTransactions().at(i));
+    }
+
+    if (offset != 0 && transactions->maxTransactions() < offset + 5) {
+        ui->Content2->setText(ui->Content2->text() + "Ei vanhempia tapahtumia!\n");
     }
 
     ui->PushText1->setText(QString("Uudemmat"));
@@ -557,63 +561,6 @@ void MainWindow::showTransactions()
     ui->PushText4->setText(QString("Paluu"));
     ui->PushText8->setText(QString("Lopeta"));
     ui->pushButton4->setDisabled(false);
-    //ui->pushButton5->setDisabled(false);
     ui->pushButton8->setDisabled(false);
     //transactions->showTransactions(token, accountID, offset);
-}
-
-
-/*
-
-void MainWindow::handleTransactionsReady(const QString &data)
-{
-    //ui->Content2->setAlignment(Qt::AlignLeft);
-    //ui->SecondTitle->setAlignment(Qt::AlignLeft);
-    QString tapahtumat="";
-    QString otsikot="";
-
-    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
-
-    if (!jsonResponse.isArray()) {
-        qDebug() << "Invalid JSON data format.";
-        return;
-    }
-
-    QJsonArray jsonArray = jsonResponse.array();
-
-    //Tulosta otsikot
-    //tapahtumat="Aika\tCard_ID\tTapahtuma\tSumma(€)";//kommentoituna, jos id_card tiedolle ei ole tarvetta.
-    tapahtumat="\tAika\t\tTapahtuma\tSumma(€)\n";//kommentoituna, jos id_card halutaan käyttöön.
-
-
-    ui->SecondTitle->setText(otsikot);
-
-    for (const auto& jsonValue : jsonArray) {
-        QString event_type;
-        if (jsonValue.isObject()) {
-            QJsonObject jsonObject = jsonValue.toObject();
-
-            //int id_card = jsonObject["id_card"].toInt(); //kommentoituna, jos id_card tiedolle ei ole tarvetta.
-            if (jsonObject["event_type"].toString()=="withdrawal"){//withdrawal käännettynä suomeksi, muuta mahdolliset tapahtumat saa mennä ominaan.
-                event_type = "Nosto";
-            }
-            else {
-                event_type = jsonObject["event_type"].toString();
-            }
-            QDateTime time = QDateTime::fromString(jsonObject["time"].toString(), Qt::ISODate);
-            QString amount = jsonObject["amount"].toString();
-            //tapahtumat += QString("%1\t%2\t%3\t%4\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(id_card).arg(event_type).arg(amount);//kommentoituna, jos id_card tiedolle ei ole tarvetta.
-            tapahtumat += QString("\t%1\t%2\t\t%3\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(event_type).arg(amount);//kommentoituna, jos id_card halutaan käyttöön
-        }
-    }
-    int characterCount = tapahtumat.length();
-    qDebug() << "tapahtumien pituus merkkeinä: " << characterCount;
-        if(characterCount>149){
-        ui->Content2->setText(tapahtumat);
-    }else{
-        ui->Content2->setText("\n\n\t\tEi vanhempia tapahtumia!");
-        ui->PushText5->setStyleSheet("color: #7777c7;");
-        ui->pushButton5->setDisabled(true);
-    }
-}
-*/
+};

@@ -22,12 +22,16 @@ void Transactions::showTransactions(QString token, QString accountID, int offset
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->post(request,QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handleGetTransaction()));
-
 }
 
 QList<QString> Transactions::getTransactions()
 {
     return parsedTransactions;
+}
+
+int Transactions::maxTransactions()
+{
+    return maximumTransactions;
 }
 
 void Transactions::handleGetTransaction()
@@ -41,6 +45,7 @@ void Transactions::handleGetTransaction()
             //qDebug() << responseData;
             //returnedTransactions = responseData;
             //emit transactionsReady(returnedTransactions);
+            maximumTransactions = reply->rawHeader("X-Transactions-Count").toInt();
             parseTransactions(responseData);
         }
         else {
@@ -80,9 +85,8 @@ void Transactions::parseTransactions(const QString &data)
             QDateTime time = QDateTime::fromString(jsonObject["time"].toString(), Qt::ISODate);
             QString amount = jsonObject["amount"].toString();
 
-            parsedTransactions.append( QString("\t%1\t%2\t\t%3\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(event_type).arg(amount));
+            parsedTransactions.append( QString("%1\t  %2\t\t%3\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(event_type).arg(amount));
         }
     }
     emit transactionsReady();
 }
-

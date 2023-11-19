@@ -17,10 +17,10 @@ public:
     void requestTransactions(QString token, QString cardID, QString cardType);
     void showTransactions(QString, QString, int);
     QList<QString> getTransactions();
+    int maxTransactions();
 public slots:
     void handleGetTransaction();
 signals:
-    void transactionsReady(const QString& data);
     void transactionsReady();
     void userTransactions();
 private:
@@ -33,6 +33,7 @@ private:
     QNetworkReply *reply;
     QString returnedTransactions;
     QList<QString> parsedTransactions;
+    int maximumTransactions;
 };
 
 #endif // TRANSACTIONS_H

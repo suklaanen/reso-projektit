@@ -10,7 +10,18 @@ router.post('/', function(request, response) {
             response.json("Error in database query");
         }
         else {
-            response.json(data);
+            eventLog.getEventsCountByAccountId(request.body.id_account,function(err, count){
+                if(err){
+                    console.log(err);
+                    response.status(400);
+                    response.json("Error in database query");
+                }
+                else { 
+                    console.log(count [0].countEvents);
+                    response.header("X-Transactions-Count", count [0].countEvents);
+                    response.json(data);
+                }
+            });
         }
     });
 });
