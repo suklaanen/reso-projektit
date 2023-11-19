@@ -1,13 +1,14 @@
 #include "mainwindow.h"
-
 #include <QApplication>
 #include <QFile>
 #include <QDebug>
 #include <QDir>
 #include <QResource>
 
+
 int main(int argc, char *argv[])
 {
+
     QApplication a(argc, argv);
 
     QFile styleFile(":/bankstyle.qss");
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
 
     MainWindow w;
 
+    w.setWindowTitle("Bankki");
     w.show();
 
     return a.exec();
