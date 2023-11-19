@@ -93,9 +93,9 @@ INSERT INTO `card` (`type`, `pin`, `id_user`, `attempts`)
 VALUES
 -- pin:
 -- 9447
-('debit','$2a$10$.sd7wgEvDqYVovZGCekutOJWmuT/UbSkKnziiHJ/PEHjLNpcGvT/2',2,0),
+('debit','$2a$10$.sd7wgEvDqYVovZGCekutOJWmuT/UbSkKnziiHJ/PEHjLNpcGvT/2',1,0),
 -- 5860 
-('debit','$2a$10$aN/zewaV8CL3jYQE0I/LA.P0IZVMUBm7WKaB9x30zNCc2GtBgJYI6',1,0),
+('debit','$2a$10$aN/zewaV8CL3jYQE0I/LA.P0IZVMUBm7WKaB9x30zNCc2GtBgJYI6',2,0),
 -- 1733
 ('credit','$2a$10$SeSnzNgfIHcRN762pVzP.eTxHAZ54PUTJU9/Oe4nbwgXpr9L2A1tW',3,0),
 -- 4322
@@ -138,23 +138,30 @@ VALUES
 # esim. käyttäjällä 4 ja 5 on yhteinen tili (5) debit
 # esim. käyttäjillä 7 ja 11 admin  oikeudet 
 ALTER TABLE  `accountuser` AUTO_INCREMENT = 1;
-INSERT INTO `accountuser` (`id_user`, `id_card`, `id_account`) 
+# /id_user /id_card /id_account
+INSERT INTO `accountuser` ( `id_user`, `id_card`, `id_account`) 
 VALUES
-(1, 1, 1),
-(2, 2, 2),
-(3, 3, 2),
-(8, 4, 3),
-(6, 5, 4),
-(4, 6, 5),
-(5, 7, 5),
-(5, 8, 6),
-(7, 9, NULL),
-(9, 10, 7),
-(10, 17, 8),
-(11, 20, NULL),
-(19, 16, 30),
-(19, 16, 33),
-(20, 20, 50);
+(1,1,1),
+(2,2,2),
+(3,3,3),
+(4,4,5),
+(5,5,6),
+(6,6,6),
+(7,7,11),
+(8,8,12),
+(1,9,null),
+(9,10,4),
+(4,11,14),
+(5,12,15),
+(10,13,16),
+(14,14,18),
+(15,15,19),
+(13,16,7),
+(13,16,20),
+(11,17,21),
+(17,18,24),
+(19,19,25),
+(20,20,null);
 
 ALTER TABLE  `automat` AUTO_INCREMENT = 1;
 INSERT INTO `automat` (`balance_10`, `balance_20`, `balance_50`, `balance_100`, `max_withdrawal`) 
@@ -166,7 +173,7 @@ VALUES
 
 INSERT INTO `eventlog` (`id_automat`, `id_account`, `id_card`, `event_type`, `amount`, `time`) 
 VALUES 
-(1, 50, 20, 'Test Event', 0, NOw()),
+
 (1, 1, 1, 'withdrawal', 150, NOw()),
 (1, 1, 1, 'withdrawal', 80, NOw()),
 (1, 1, 1, 'withdrawal', 80, NOw()),
