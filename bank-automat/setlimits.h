@@ -10,11 +10,11 @@
 #include <QTimer>
 #include <QByteArray>
 
-class SetLimits
+class SetLimits:public QObject
 {
     Q_OBJECT
 public:
-    SetLimits();
+    SetLimits(QObject * parent = nullptr);
 signals:
     void automatSetLimits();
 };

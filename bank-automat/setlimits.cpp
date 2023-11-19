@@ -2,7 +2,7 @@
 
 // ** SetLimits ** -liittyy automaatin hallinnointiin (ATM) ja siihen päästään admin näkymästä, ADMIN_MENU kautta
 
-SetLimits::SetLimits()
+SetLimits::SetLimits(QObject * parent): QObject(parent)
 {
 
 }

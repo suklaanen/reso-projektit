@@ -10,11 +10,11 @@
 #include <QTimer>
 #include <QByteArray>
 
-class AddMoney
+class AddMoney:public QObject
 {
     Q_OBJECT
 public:
-    AddMoney();
+    AddMoney(QObject * parent = nullptr);
 signals:
     void automatAddMoney();
 };

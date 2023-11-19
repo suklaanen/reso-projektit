@@ -11,11 +11,11 @@
 #include <QByteArray>
 
 
-class ViewLog
+class ViewLog:public QObject
 {
     Q_OBJECT
 public:
-    ViewLog();
+    ViewLog(QObject * parent = nullptr);
 signals:
     void automatLog();
 };

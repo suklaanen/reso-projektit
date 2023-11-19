@@ -2,7 +2,7 @@
 
 // ** AddMoney ** -liittyy automaatin hallinnointiin (ATM) ja siihen päästään admin näkymästä, ADMIN_MENU kautta
 
-AddMoney::AddMoney()
+AddMoney::AddMoney(QObject * parent): QObject(parent)
 {
 
 }
