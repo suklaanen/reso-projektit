@@ -197,7 +197,7 @@ void MainWindow::button1Clicked()
 {
     switch(state) {
     case USER_TRANSACTIONS:
-        qDebug() << "vanhemmat clicked";
+        qDebug() << "Uudemmat clicked";
         if (offset>0){
             offset=offset-5;
         }else
@@ -287,6 +287,8 @@ void MainWindow::button4Clicked()
         offset=0;
         ui->Content2->setAlignment(Qt::AlignCenter);
         ui->SecondTitle->setAlignment(Qt::AlignCenter);
+        ui->PushText1->setStyleSheet("color: rgb(255, 255, 255);");
+        ui->PushText5->setStyleSheet("color: rgb(255, 255, 255);");
         showMenu(token, accountID);
         break;
     }
@@ -303,9 +305,9 @@ void MainWindow::button5Clicked()
     case USER_TRANSACTIONS:
         QString labelText = ui->Content2->text();
         int characterCount = labelText.length();
-        qDebug() << "Uudemmat clicked";
+        qDebug() << "Vanhemmat clicked";
         qDebug() << "näytöllä merkkejä: " << characterCount;
-            if(characterCount>149){
+        if(characterCount>149){
             offset=offset+5;
         }else{
             offset=offset;
@@ -370,6 +372,8 @@ void MainWindow::button8Clicked()
         qDebug() << "Stop session -clicked";
         ui->Content2->setAlignment(Qt::AlignCenter);
         ui->SecondTitle->setAlignment(Qt::AlignCenter);
+        ui->PushText1->setStyleSheet("color: rgb(255, 255, 255);");
+        ui->PushText5->setStyleSheet("color: rgb(255, 255, 255);");
         showLogin();
         break;
     }
@@ -533,10 +537,14 @@ void MainWindow::showTransactions()
     clearScreen();
     state = USER_TRANSACTIONS;
     //tähän voi miettiä myös hailakampaa näkymää, jos uudempia tapahtumia ei ole..
-    if (offset!=0){
-        ui->PushText1->setText(QString("Uudemmat"));
+    if (offset==0){
+        ui->PushText1->setStyleSheet("color: rgb(160, 160, 160);");
+        ui->pushButton1->setDisabled(true);
+    }else{
+        ui->PushText1->setStyleSheet("color: rgb(255, 255, 255);");
         ui->pushButton1->setDisabled(false);
     }
+    ui->PushText1->setText(QString("Uudemmat"));
     ui->PushText5->setText(QString("Vanhemmat"));
     ui->PushText4->setText(QString("Paluu"));
     ui->PushText8->setText(QString("Lopeta"));
@@ -551,7 +559,6 @@ void MainWindow::handleTransactionsReady(const QString &data)
     ui->Content2->setAlignment(Qt::AlignLeft);
     ui->SecondTitle->setAlignment(Qt::AlignLeft);
     QString tapahtumat="";
-    QString otsikot="";
 
     QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
 
@@ -565,8 +572,6 @@ void MainWindow::handleTransactionsReady(const QString &data)
     //Tulosta otsikot
     //tapahtumat="Aika\tCard_ID\tTapahtuma\tSumma(€)";//kommentoituna, jos id_card tiedolle ei ole tarvetta.
     tapahtumat="\tAika\t\tTapahtuma\tSumma(€)\n";//kommentoituna, jos id_card halutaan käyttöön.
-
-    ui->SecondTitle->setText(otsikot);
 
     for (const auto& jsonValue : jsonArray) {
         QString event_type;
@@ -588,13 +593,20 @@ void MainWindow::handleTransactionsReady(const QString &data)
     }
             int characterCount = tapahtumat.length();
             qDebug() << "tapahtumien pituus merkkeinä: " << characterCount;
-                if(characterCount>149){
+                if(characterCount>170){
                 ui->Content2->setText(tapahtumat);
-            }else{
+                ui->PushText5->setStyleSheet("color: rgb(255, 255, 255);");
+                ui->pushButton5->setDisabled(false);
+                }else if(characterCount<35){
                 ui->Content2->setText("\n\n\t\tEi vanhempia tapahtumia!");
-                //ui->PushText5->setStyleSheet();//Tähän hailakampaa väriä tms..
+                ui->PushText5->setStyleSheet("color: rgb(160, 160, 160);");
                 ui->pushButton5->setDisabled(true);
-            }
+                }else{
+                ui->PushText5->setStyleSheet("color: rgb(160, 160, 160);");
+                ui->pushButton5->setDisabled(true);
+                ui->Content2->setText(tapahtumat);
+                }
+
     //qDebug() << otsikot;
     //qDebug() << tapahtumat;
 
