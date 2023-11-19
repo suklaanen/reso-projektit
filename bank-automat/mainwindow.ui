@@ -748,9 +748,9 @@
      <property name="geometry">
       <rect>
        <x>140</x>
-       <y>140</y>
+       <y>100</y>
        <width>641</width>
-       <height>261</height>
+       <height>301</height>
       </rect>
      </property>
      <property name="font">
