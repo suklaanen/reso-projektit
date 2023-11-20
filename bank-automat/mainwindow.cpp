@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     balance = new CheckBalance(this);
     transactions = new Transactions(this);
     withdraw = new Withdraw(this);
+    atmBalances = new AddMoney(this);
     //viewlog = new ViewLog(this);
     //addmoney = new AddMoney(this);
     //setlimits = new SetLimits(this);
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     reply = nullptr;
     token = "";
     offset = 0;
+    automatID = "1";
     connectSlots();
 
     ui->RED->setDisabled(false);
@@ -134,6 +136,7 @@ void MainWindow::connectSlots()
     connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
     connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
+    connect(atmBalances, SIGNAL(atmBalancesReady()),this, SLOT(showAtmBalances()));
 
 }
 
@@ -266,7 +269,7 @@ void MainWindow::button3Clicked()
 
     case ADMIN_MENU:
         qDebug() << "ATM balance -clicked";
-        showATMBalance();
+        atmBalances->checkAtmBalances(token, automatID, offset);
         break;
     case USER_MENU:
         qDebug() << "transactions clicked";
@@ -323,6 +326,10 @@ void MainWindow::button4Clicked()
     case WITHDRAWAL_FAIL:
         qDebug() << "Paluu clicked";
         showMenu(token, accountID);
+    case ATM_CHECKBALANCES:
+        qDebug() << "Paluu clicked";
+        showAdminMenu(token);
+        break;
     }
 }
 
@@ -404,6 +411,10 @@ void MainWindow::button8Clicked()
         qDebug() << "Stop session -clicked";
         ui->Content2->setAlignment(Qt::AlignCenter);
         ui->SecondTitle->setAlignment(Qt::AlignCenter);
+        showLogin();
+        break;
+    case ATM_CHECKBALANCES:
+        qDebug() << "Stop session -clicked";
         showLogin();
         break;
     }
@@ -626,9 +637,25 @@ void MainWindow::showAddMoney()
 
 }
 
-void MainWindow::showATMBalance()
+void MainWindow::showAtmBalances()
 {
+    //qDebug() << "Pääseekö tähän asti? 2";
+    clearScreen();
+    state = ATM_CHECKBALANCES;
 
+    ui->Title->setText("Automaatin varat ");
+    ui->SecondTitle->setText("Setelit ja määrät");
+
+    QString contentText = "\t\t10 € \t=\t" + atmBalances->getAtmBalances().at(0) + "\n" +
+    "\t\t20 € \t=\t" + atmBalances->getAtmBalances().at(1) + "\n" +
+    "\t\t50 € \t=\t" + atmBalances->getAtmBalances().at(2) + "\n" +
+    "\t\t100 € \t=\t" + atmBalances->getAtmBalances().at(3);
+
+    ui->Content2->setText(contentText);
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->PushText8->setText(QString("Lopeta"));
+    ui->pushButton4->setDisabled(false);
+    ui->pushButton8->setDisabled(false);
 }
 
 void MainWindow::showATMCurrentLimits()

@@ -68,4 +68,15 @@ router.delete('/:id', function(request, response) {
     });
 });
 
+router.get('/getBalances/:id', function(request, response) {
+    automat.getBalances(request.params.id, function(err, data) {
+        if(err) {
+            response.json(err);
+        }
+        else {
+            response.json(data[0]);
+        }
+    });
+});
+
 module.exports = router;
