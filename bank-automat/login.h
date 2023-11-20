@@ -53,7 +53,6 @@ private:
     void clearPinAttempts();
     void requestAccountID();
     void addAttempt();
-    QTimer *loginTimer;
     bool pin_attempted;
 };
 

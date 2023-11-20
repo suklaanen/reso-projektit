@@ -9,8 +9,6 @@ Login::Login(QWidget *parent) :
     token = "";
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
-    loginTimer = new QTimer(this);
-    loginTimer->setSingleShot(false);
     pin_attempted = false;
 }
 
