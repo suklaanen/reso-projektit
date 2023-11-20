@@ -20,10 +20,9 @@ class Login : public QWidget
 public:
     explicit Login(QWidget *parent = nullptr);
     ~Login();
-    bool checkPinOk(const QString& enteredPIN);
+    void setCardID(const QString &inputCardID);
+    void setPIN(const QString &inputPin,const QString &cardType);
 public slots:
-    void setCardID(QString);
-    void setPIN(QString, QString);
     void handleCard();
     void handlePin();
     void handleAttempts();

@@ -20,7 +20,7 @@ Login::~Login()
 }
 
 //Ottaa vastaan kortin ID:n mainwindow:sta
-void Login::setCardID(QString inputCardID)
+void Login::setCardID(const QString &inputCardID)
 {
     cardID = inputCardID;
     pin_attempted = false;
@@ -28,7 +28,7 @@ void Login::setCardID(QString inputCardID)
 }
 
 //Ottaa vastaan PIN koodin mainwindows:sta
-void Login::setPIN(QString inputPin, QString cardType)
+void Login::setPIN(const QString &inputPin,const QString &cardType)
 {
     this->cardType = cardType;
     pin = inputPin;
