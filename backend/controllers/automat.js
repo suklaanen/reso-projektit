@@ -24,6 +24,17 @@ router.get('/:id', function(request, response) {
     });
 });
 
+router.get('/getAtmLimit/:id', function(request, response) {
+    automat.getAtmLimit(request.params.id, function(err, data) {
+        if(err) {
+            response.json(err);
+        }
+        else {
+            response.json(data[0].max_withdrawal);
+        }
+    });
+})
+
 router.post('/', function(request, response) {
     automat.addAutomat(request.body, function(err, data) {
         if(err) {
