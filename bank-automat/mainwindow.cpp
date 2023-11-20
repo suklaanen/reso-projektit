@@ -77,6 +77,7 @@ void MainWindow::clearScreen()
 {
     ui->Content->clear();
     ui->Content2->clear();
+    ui->Content2->setAlignment(Qt::AlignLeft);
     ui->Title->clear();
     ui->SecondTitle->clear();
     ui->PushText1->clear();
@@ -505,64 +506,24 @@ void MainWindow::showUserBalance(QString balance)
     state = USER_BALANCE;
 
     ui->Title->setText("Tilin saldo");
-    ui->SecondTitle->setText(this->saldo);
+    ui->Title->setText("Tilin saldo " + this->saldo);
+    ui->SecondTitle->setText("");
 
-    /* Tuleeko transaktioita saldon kyselyyn?
-    ui->SecondTitle->setText("Ajankohta | Tapahtuma | Summa (€)");
-     for (int i = 0; i < transactions->getTransactions().size(); i++)
-     {
-         ui->Content2->setText(ui->Content2->text()+transactions->getTransactions().at(i));
-     } */
+    /*************************************************************************
+    int transactionCount = transactions->getTransactions().size();
+    int startIndex = (transactionCount > 5) ? (transactionCount - 5) : 0;
+
+    for (int i = startIndex; i < transactionCount; i++)
+    {
+        ui->Content2->setText(ui->Content2->text() + transactions->getTransactions().at(i));
+    }
+    **************************************************************************/
 
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Lopeta"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-    ui->Title->setText("Tilin saldo " + this->saldo);
-
-    //balance->checkBalance(token, accountID, offset);
-    //balance->showBalance();
 }
-
-/*  TÄMÄ siirtyykö checkbalance.cpp hen vai onko tää ns turha nyt ?
- *
-void MainWindow::handleBalanceReady(const QString &data)
-{
-    // Tarkistetaan, onko vastaus tyhjä
-    if (data.isEmpty()) {
-        qDebug() << "Tyhjä vastaus saldosta.";
-            return;
-    }
-
-    // Käsitellään JSON-vastaus
-    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
-
-    // Tarkistetaan, onko JSON-data muotoa, jota odotamme
-    if (!jsonResponse.isArray()) {
-        qDebug() << "Virheellinen JSON-dataformaatti saldossa.";
-        qDebug() << "Saatu data: " << data;
-        return;
-    }
-
-    QJsonArray jsonArray = jsonResponse.array();
-
-    // Luodaan muuttuja saldo
-    QString saldo = "N/A";  // Oletusarvo, jos saldoa ei saatu
-
-    // Käydään läpi JSON-taulukko
-    for (const auto& jsonValue : jsonArray) {
-        if (jsonValue.isObject()) {
-            QJsonObject jsonObject = jsonValue.toObject();
-
-            // Olettaen, että saldo on suoraan "amount"-avaimen alla
-            QString amount = jsonObject["amount"].toString();
-            saldo = amount;
-        }
-    }
-
-    // Päivitetään käyttöliittymä
-    ui->Title->setText("Saldo: " + saldo);
-} */
 
 void MainWindow::showWithdrawal()
 {
