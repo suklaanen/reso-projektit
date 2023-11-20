@@ -418,6 +418,10 @@ void MainWindow::button8Clicked()
 void MainWindow::showLogin()
 {
     state = SELECT_CARD;
+    token = "";
+    ID = "";
+    accountID = "";
+    cardType = "";
     clearScreen();
     ui->Title->setText("Kirjaudu sisään");
     ui->SecondTitle->setText(QString("Syötä kortin ID"));
@@ -495,6 +499,7 @@ void MainWindow::showCardLocked()
     state = CARD_LOCKED;
     ui->Title->setText(QString("Kortti lukittu"));
     ui->SecondTitle->setText(QString("Ota yhteys pankkiin"));
+    timer->start(4000);
 }
 
 void MainWindow::showUserBalance(QString balance)
@@ -705,6 +710,10 @@ void MainWindow::handleTimeout()
         break;
     case WITHDRAWAL_OK:
         showLogin();
+        break;
+    case CARD_LOCKED:
+        showLogin();
+        break;
     }
 }
 
