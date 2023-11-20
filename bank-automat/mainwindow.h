@@ -40,6 +40,8 @@ class MainWindow : public QMainWindow
         USER_BALANCE,
         USER_WITHDRAWAL,
         USER_INSERT_AMOUNT,
+        WITHDRAWAL_OK,
+        WITHDRAWAL_FAIL,
         AUTOMAT_ADD_MONEY,
         AUTOMAT_SET_MAX_WITHDRAWAL,
         AUTOMAT_VIEW_LOG,

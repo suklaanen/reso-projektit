@@ -64,7 +64,7 @@ void Withdraw::handleWithdrawal()
 
     } else {
         // Käsitellään mahdollinen virhe (verkkovirhe)
-        qDebug() << "Could not get automat limit" << reply->errorString();
+        qDebug() << "Could not get response from withdrawal" << reply->errorString();
     }
     // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();
