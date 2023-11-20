@@ -131,6 +131,8 @@ void MainWindow::connectSlots()
     connect(timer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
     connect(balance, SIGNAL(balanceReady(QString)),this, SLOT(showUserBalance(QString)));
     connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
+    connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
+    connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
 
 }
 
@@ -668,6 +670,18 @@ void MainWindow::showATMBalance()
 void MainWindow::showATMCurrentLimits()
 {
 
+}
+
+void MainWindow::showWithdrawFailure(QString reason)
+{
+    ui->Title->setText("Nosto epäonnistui");
+    ui->SecondTitle->setText(reason);
+}
+
+void MainWindow::showWithdrawOk(QString amount)
+{
+    ui->Title->setText("Nosto suoritettu");
+    ui->SecondTitle->setText("Nostettu "+amount+" euroa");
 }
 
 void MainWindow::handleTimeout()

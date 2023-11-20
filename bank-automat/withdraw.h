@@ -18,8 +18,11 @@ public:
     void setInfo(QString, QString, QString, QString);
 public slots:
     void handleAtmLimit();
+    void handleWithdrawal();
 signals:
     void atmLimitReady(QString limit);
+    void withdrawFailure(QString reason);
+    void withdrawalOk(QString amount);
 private:
     QString token;
     QString accountID;
@@ -31,6 +34,7 @@ private:
     QNetworkAccessManager * manager;
     QNetworkReply * reply;
     void requestAtmLimit();
+    void requestWithdrawal();
 };
 
 #endif // WITHDRAW_H
