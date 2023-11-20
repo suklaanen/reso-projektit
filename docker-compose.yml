@@ -8,6 +8,7 @@ services:
       - MYSQL_PASSWORD=pankkipass
       - MYSQL_ROOT_PASSWORD=notneeded
       - MYSQL_DATABASE=bank_automat
+      - TZ=Europe/Helsinki
     volumes:
       # Suoritusjärjestys: bank_automat, testdata, procedures
       - ./sql/bank_automat.sql:/docker-entrypoint-initdb.d/1-bank_automat.sql
