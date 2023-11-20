@@ -83,4 +83,15 @@ router.get('/getBalance/:id', function(request, response) {
     });
 });
 
+router.post('/attemptWithdrawal', function(request, response) {
+    account.attemptWithdrawal(request.body, function(err, data) {
+        if(err) {
+            response.json(err);
+        }
+        else {
+            response.json(data[0][0].result);
+        }
+    });
+});
+
 module.exports = router;

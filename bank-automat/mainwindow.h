@@ -40,6 +40,8 @@ class MainWindow : public QMainWindow
         USER_BALANCE,
         USER_WITHDRAWAL,
         USER_INSERT_AMOUNT,
+        WITHDRAWAL_OK,
+        WITHDRAWAL_FAIL,
         AUTOMAT_ADD_MONEY,
         AUTOMAT_SET_MAX_WITHDRAWAL,
         AUTOMAT_VIEW_LOG,
@@ -82,29 +84,12 @@ public slots:
     void showAddMoney();
     void showATMSetLimit();
     void showATMCurrentLimits();
+    void showWithdrawFailure(QString reason);
+    void showWithdrawOk(QString amount);
     void handleTimeout();
     void handleAtmLimit(QString limit);
 signals:
-// transaction signaalien siirto >> transactions.h
-// balance signaalien siirto >> checkbalance.h
-// withdrawal signaalien siirto >> withdraw.h
-    // loginiin, jos tarvitaan
-    void accountCombined();
-    void accountDebit();
-    void accountManyDebits();
-    void accountCredit();
-    void accountAdmin();
-    void userMain();
-    void returnUserMain();
-    void returnAdminMain();
-    void logout();
-    // balanceen, jos tarvitaan
-    void userBalance();
-    void userWithdrawal();
-    // withdrawaliin, jos tarvitaan
-    void withdrawalOk();
-    void withdrawalFail();
-    void returnWithdrawal();
+
 private:
     Ui::MainWindow *ui;
     QNetworkReply * reply;

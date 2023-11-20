@@ -27,13 +27,15 @@ BEGIN
 	IF (amount > 0) THEN
 		INSERT INTO eventlog(id_automat,id_account, id_card, event_type, amount, time) 
 			VALUES(automat_nbr,account_nbr,id_card,'withdrawal attempt, not enough bills', w_balance, NOW());
+		SELECT 'not enough bills' as result;
 	ELSE
 		START TRANSACTION;
   		BEGIN
-		UPDATE account SET balance = balance - w_balance WHERE id_account = account_nbr AND balance + credit_limit - w_balance >= 0;
+		UPDATE account SET balance = balance - w_balance
+		WHERE id_account = account_nbr AND balance + credit_limit - w_balance >=0;
 		SET test1=ROW_COUNT();
-		UPDATE automat SET balance_100=balance_100-bal_100, balance_50=balance_50-bal_50, balance_20=balance_20-bal_20, balance_10=balance_10-bal_10
-			WHERE id_automat=automat_nbr;
+		UPDATE automat SET balance_100=balance_100-bal_100, balance_50=balance_50-bal_50, balance_20=balance_20-bal_20, 
+		balance_10=balance_10-bal_10 WHERE id_automat=automat_nbr;
 		SET test2=ROW_COUNT();
     		END;
 	
@@ -41,14 +43,36 @@ BEGIN
 				COMMIT;
 	  			INSERT INTO eventlog(id_automat,id_account, id_card, event_type, amount, time) 
 				VALUES(automat_nbr, account_nbr,id_card,'withdrawal', w_balance, NOW());
+                		SELECT 'withdrawal ok' as result;
+                
 			ELSE
 	  			ROLLBACK;
 	  			INSERT INTO eventlog(id_automat,id_account, id_card, event_type, amount, time) 
 					VALUES(automat_nbr, account_nbr,id_card,'withdrawal attempt, not enough', w_balance, NOW());
+                		SELECT 'not enough balance' as result;    
 			END IF;
 	END IF;
 END //
 DELIMITER ;
+
+DELIMITER //
+create procedure checkLimitAndWithdraw(IN accountID INT, IN cardID INT, IN automatNmbr INT, IN w_amount INT)
+begin
+DECLARE withdrawn_today INT DEFAULT 0;
+DECLARE daily_limit INT DEFAULT 0;
+SELECT sum(amount) into withdrawn_today from eventLog where id_account = accountID and DATE(time) = CURRENT_DATE and event_type = 'withdrawal';
+SELECT max_withdrawal_per_day into daily_limit FROM account where id_account = accountID;
+IF(withdrawn_today IS NULL) THEN
+	set withdrawn_today = 0;
+END IF;
+IF((daily_limit - withdrawn_today) >= w_amount) THEN
+	call withdrawal(accountID, cardID, automatNmbr, w_amount);
+ELSE
+	SELECT 'account limit exceeded' as result;
+END IF;	    
+end //
+DELIMITER ;
+
 
 DELIMITER //
 create procedure addAttemptAndLog(IN cardID INT)

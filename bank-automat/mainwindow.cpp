@@ -131,6 +131,8 @@ void MainWindow::connectSlots()
     connect(timer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
     connect(balance, SIGNAL(balanceReady(QString)),this, SLOT(showUserBalance(QString)));
     connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
+    connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
+    connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
 
 }
 
@@ -317,6 +319,9 @@ void MainWindow::button4Clicked()
         ui->PushText5->setStyleSheet("color: rgb(255, 255, 255);");
         showMenu(token, accountID);
         break;
+    case WITHDRAWAL_FAIL:
+        qDebug() << "Paluu clicked";
+        showMenu(token, accountID);
     }
 }
 
@@ -670,6 +675,25 @@ void MainWindow::showATMCurrentLimits()
 
 }
 
+void MainWindow::showWithdrawFailure(QString reason)
+{
+    state = WITHDRAWAL_FAIL;
+    clearScreen();
+    ui->Title->setText("Nosto epäonnistui");
+    ui->SecondTitle->setText(reason);
+    ui->PushText4->setText(QString("Paluu"));
+    ui->pushButton4->setDisabled(false);
+}
+
+void MainWindow::showWithdrawOk(QString amount)
+{
+    state = WITHDRAWAL_OK;
+    clearScreen();
+    ui->Title->setText("Nosto suoritettu");
+    ui->SecondTitle->setText("Nostettu "+amount+" euroa");
+    timer->start(4000);
+}
+
 void MainWindow::handleTimeout()
 {
     switch(state) {
@@ -679,6 +703,8 @@ void MainWindow::handleTimeout()
     case LOGIN_FAIL:
         showLogin();
         break;
+    case WITHDRAWAL_OK:
+        showLogin();
     }
 }
 
