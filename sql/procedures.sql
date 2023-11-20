@@ -60,7 +60,7 @@ create procedure checkLimitAndWithdraw(IN accountID INT, IN cardID INT, IN autom
 begin
 DECLARE withdrawn_today INT DEFAULT 0;
 DECLARE daily_limit INT DEFAULT 0;
-SELECT sum(amount) into withdrawn_today from eventLog where id_account = accountID and DATE(time) = CURRENT_DATE and event_type = 'withdrawal';
+SELECT sum(amount) into withdrawn_today from eventlog where id_account = accountID and DATE(time) = CURRENT_DATE and event_type = 'withdrawal';
 SELECT max_withdrawal_per_day into daily_limit FROM account where id_account = accountID;
 IF(withdrawn_today IS NULL) THEN
 	set withdrawn_today = 0;
