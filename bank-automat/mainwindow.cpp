@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     {
     ui->setupUi(this);
-
+    ui->statusbar->showMessage("© OAMK Tietotekniikan opiskelijat - 11/2023");
     state = SELECT_CARD;
     showMapView();
 
@@ -30,7 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
     reply = nullptr;
     token = "";
     offset = 0;
-    //automatID = "1";
     connectSlots();
 
     ui->RED->setDisabled(false);
