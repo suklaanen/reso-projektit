@@ -107,12 +107,13 @@ private:
     AddMoney * atmBalances;
     QString token;
     void clearScreen();
+    void checkAtmLimit();
     int offset;
     State state;
     QString saldo;
     QString atm;
     QString automatID;
     QTimer * timer;
-    QString atmMaxWithdrawal;
+    int atmMaxWithdrawal;
 };
 #endif // MAINWINDOW_H
