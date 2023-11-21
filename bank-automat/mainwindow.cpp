@@ -435,6 +435,8 @@ void MainWindow::button4Clicked()
     case USER_TRANSACTIONS:
         qDebug() << "Paluu clicked";
         offset=0;
+        ui->PushText1->setStyleSheet("");
+        ui->PushText5->setStyleSheet("");
         showMenu(token, accountID);
         break;
     case WITHDRAWAL_FAIL:
