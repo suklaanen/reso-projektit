@@ -19,6 +19,7 @@ router.post('/', function(request, response) {
                 else { 
                     console.log(count [0].countEvents);
                     response.header("X-Transactions-Count", count [0].countEvents);
+                    console.log(data);
                     response.json(data);
                 }
             });
