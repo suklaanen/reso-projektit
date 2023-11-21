@@ -10,10 +10,10 @@ CONFIG += c++17
 
 SOURCES += \
     addmoney.cpp \
-    buttons.cpp \
     checkbalance.cpp \
     login.cpp \
     main.cpp \
+    mainwindow-buttons.cpp \
     mainwindow.cpp \
     setlimits.cpp \
     transactions.cpp \
