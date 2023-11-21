@@ -13,6 +13,7 @@ SOURCES += \
     checkbalance.cpp \
     login.cpp \
     main.cpp \
+    mainwindow-buttons.cpp \
     mainwindow.cpp \
     setlimits.cpp \
     transactions.cpp \
