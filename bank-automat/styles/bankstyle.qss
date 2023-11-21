@@ -6,6 +6,31 @@ MainWindow {
     background-color: #363636;
 }
 
+
+#Mapframe {
+    background-color: #100f1d;
+    background-image: url(:/map.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #505050;
+}
+
+
+#Title2 { 
+    color: #ffffff;
+    font: 33pt "Segoe UI";
+}
+
+#atm1, #atm2, #atm3, #atm4 {
+    background-color: #ada9a5;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #0d0d0d;
+    border-radius: 24px;
+}
+
 #pushButton1, #pushButton2, #pushButton3, #pushButton4, #pushButton5, #pushButton6, #pushButton7, #pushButton8 {
     background-color: #ada9a5;
     border-style: solid;

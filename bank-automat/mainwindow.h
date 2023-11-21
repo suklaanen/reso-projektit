@@ -2,11 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QWidget>
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QTimer>
 #include <login.h>
+#include <QMainWindow>
 #include "transactions.h"
 #include "checkbalance.h"
 #include "withdraw.h"
@@ -48,7 +50,8 @@ class MainWindow : public QMainWindow
         AUTOMAT_SET_MAX_WITHDRAWAL,
         AUTOMAT_VIEW_LOG,
         CONFIRM,
-        LOGOUT
+        LOGOUT,
+        MAP_VIEW
     };
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -76,8 +79,11 @@ public slots:
     void button6Clicked();
     void button7Clicked();
     void button8Clicked();
+    void atm1Clicked();
+    void atm2Clicked();
+    void atm3Clicked();
+    void atm4Clicked();
     void showUserBalance(QString balance);
-    // ehkä ylimäärä void showBalance();
     void showWithdrawal();
     void showInsertAmount();
     void showTransactions();
@@ -90,8 +96,7 @@ public slots:
     void showWithdrawOk(QString amount);
     void handleTimeout();
     void handleAtmLimit(QString limit);
-signals:
-
+    void showMapView();
 private:
     Ui::MainWindow *ui;
     QNetworkReply * reply;
@@ -101,6 +106,7 @@ private:
     QString cardType;
     QString accountID;
     Login * login;
+    //QWidget Mapframe;
     CheckBalance * balance;
     Withdraw * withdraw;
     Transactions * transactions;
@@ -114,5 +120,6 @@ private:
     QString automatID;
     QTimer * timer;
     QString atmMaxWithdrawal;
+
 };
 #endif // MAINWINDOW_H

@@ -7,34 +7,37 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-    state = SELECT_CARD;
 
-    login = new Login (this);
-    showLogin();
+    {
+        ui->setupUi(this);
 
-    balance = new CheckBalance(this);
-    transactions = new Transactions(this);
-    withdraw = new Withdraw(this);
-    atmBalances = new AddMoney(this);
-    //viewlog = new ViewLog(this);
-    //addmoney = new AddMoney(this);
-    //setlimits = new SetLimits(this);
+        state = SELECT_CARD;
+        showMapView();
 
-    timer = new QTimer(this);
-    timer->setSingleShot(true);
-    manager = new QNetworkAccessManager(this);
-    reply = nullptr;
-    token = "";
-    offset = 0;
-    automatID = "1";
-    connectSlots();
+        login = new Login (this);
+        //login->hide();
+        showLogin();
 
-    ui->RED->setDisabled(false);
-    ui->YELLOW->setDisabled(false);
-    ui->GREY->setDisabled(false);
-    ui->GREEN->setDisabled(false);
+        balance = new CheckBalance(this);
+        transactions = new Transactions(this);
+        withdraw = new Withdraw(this);
+        //viewlog = new ViewLog(this);
+        //addmoney = new AddMoney(this);
+        //setlimits = new SetLimits(this);
+
+        timer = new QTimer(this);
+        timer->setSingleShot(true);
+        manager = new QNetworkAccessManager(this);
+        reply = nullptr;
+        token = "";
+        offset = 0;
+        //automatID = "1";
+        connectSlots();
+
+        ui->RED->setDisabled(false);
+        ui->YELLOW->setDisabled(false);
+        ui->GREY->setDisabled(false);
+        ui->GREEN->setDisabled(false);
 }
 
 MainWindow::~MainWindow()
@@ -100,6 +103,7 @@ void MainWindow::clearScreen()
     ui->pushButton8->setDisabled(true);
 }
 
+
 // Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin, mikä tekee sen, että
 // SIGNAALISTA siirrytään SLOTTIIN (showJokinTila, joita useita tuossa yläpuolella)
 void MainWindow::connectSlots()
@@ -137,7 +141,32 @@ void MainWindow::connectSlots()
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
     connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
     connect(atmBalances, SIGNAL(atmBalancesReady()),this, SLOT(showAtmBalances()));
+    connect(ui->atm1, SIGNAL(clicked()), this, SLOT(atm1Clicked()));
+    connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atm2Clicked()));
+    connect(ui->atm3, SIGNAL(clicked()), this, SLOT(atm3Clicked()));
+    connect(ui->atm4, SIGNAL(clicked()), this, SLOT(atm4Clicked()));
+}
 
+// *************************************************************************************
+// ** Automaatin valinta kartalta ? *****************************************************
+// *************************************************************************************
+
+void MainWindow::showMapView()
+{
+    state = MAP_VIEW;
+
+    //Mapframe = new QWidget(this);
+    //Mapframe->show();
+
+    //clearScreen();
+    ui->Title2->setText("Valitse automaatti kartalta");
+    ui->atm1->setDisabled(false);
+    ui->atm2->setDisabled(false);
+    ui->atm3->setDisabled(false);
+    ui->atm4->setDisabled(false);
+
+
+    //mapwidget->deleteLater();
 }
 
 // -------------------------------------------------------------------------------------
@@ -147,6 +176,51 @@ void MainWindow::connectSlots()
 
 
 // Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
+
+void MainWindow::atm1Clicked()
+{
+    qDebug()<<"ATM1 button clicked";
+    automatID = "1";
+
+    ui->Mapframe->hide();
+
+    showLogin();
+    state = SELECT_CARD;
+}
+
+void MainWindow::atm2Clicked()
+{
+    qDebug()<<"ATM2 button clicked";
+    automatID = "2";
+
+    ui->Mapframe->hide();
+
+    showLogin();
+    state = SELECT_CARD;
+}
+
+void MainWindow::atm3Clicked()
+{
+    qDebug()<<"ATM3 button clicked";
+    automatID = "3";
+
+    ui->Mapframe->hide();
+
+    showLogin();
+    state = SELECT_CARD;
+}
+
+void MainWindow::atm4Clicked()
+{
+    qDebug()<<"ATM4 button clicked";
+    automatID = "4";
+
+    ui->Mapframe->hide();
+
+    showLogin();
+    state = SELECT_CARD;
+}
+
 void MainWindow::clickedGREEN()
 {
     qDebug()<<"Green button clicked";
@@ -187,6 +261,9 @@ void MainWindow::clickedGREEN()
     case USER_INSERT_AMOUNT:
         qDebug() << "Amount inserted, green clicked";
         withdraw->setAmount(ui->Content->text());
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -240,6 +317,9 @@ void MainWindow::button1Clicked()
         qDebug() << "Withdraw 10 clicked";
         withdraw->setAmount(QString("10"));
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -258,6 +338,9 @@ void MainWindow::button2Clicked()
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 20 clicked";
         withdraw->setAmount(QString("20"));
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -280,6 +363,9 @@ void MainWindow::button3Clicked()
         qDebug() << "Withdraw 40 clicked";
         withdraw->setAmount(QString("40"));
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -301,8 +387,6 @@ void MainWindow::button4Clicked()
     case USER_BALANCE:
         qDebug() << "Paluu clicked";
         offset=0;
-        ui->Content2->setAlignment(Qt::AlignCenter);
-        ui->SecondTitle->setAlignment(Qt::AlignCenter);
         showMenu(token, accountID);
         break;
     case USER_WITHDRAWAL:
@@ -317,18 +401,18 @@ void MainWindow::button4Clicked()
     case USER_TRANSACTIONS:
         qDebug() << "Paluu clicked";
         offset=0;
-        ui->Content2->setAlignment(Qt::AlignCenter);
-        ui->SecondTitle->setAlignment(Qt::AlignCenter);
-        ui->PushText1->setStyleSheet("color: rgb(255, 255, 255);");
-        ui->PushText5->setStyleSheet("color: rgb(255, 255, 255);");
         showMenu(token, accountID);
         break;
     case WITHDRAWAL_FAIL:
         qDebug() << "Paluu clicked";
         showMenu(token, accountID);
+        break;
     case ATM_CHECKBALANCES:
         qDebug() << "Paluu clicked";
         showAdminMenu(token);
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -347,6 +431,9 @@ void MainWindow::button5Clicked()
         qDebug() << "offset: "<< offset;
         transactions->showTransactions(token, accountID, offset);
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -362,6 +449,9 @@ void MainWindow::button6Clicked()
         qDebug() << "Withdraw 80 clicked";
         withdraw->setAmount(QString("80"));
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -376,6 +466,9 @@ void MainWindow::button7Clicked()
     case USER_WITHDRAWAL:
         qDebug() << "Insert amount clicked";
         showInsertAmount();
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -401,21 +494,18 @@ void MainWindow::button8Clicked()
         break;
     case USER_TRANSACTIONS:
         qDebug() << "Stop session -clicked";
-        ui->Content2->setAlignment(Qt::AlignCenter);
-        ui->SecondTitle->setAlignment(Qt::AlignCenter);
-        ui->PushText1->setStyleSheet("color: rgb(255, 255, 255);");
-        ui->PushText5->setStyleSheet("color: rgb(255, 255, 255);");
         showLogin();
         break;
     case USER_BALANCE:
         qDebug() << "Stop session -clicked";
-        ui->Content2->setAlignment(Qt::AlignCenter);
-        ui->SecondTitle->setAlignment(Qt::AlignCenter);
         showLogin();
         break;
     case ATM_CHECKBALANCES:
         qDebug() << "Stop session -clicked";
         showLogin();
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -430,6 +520,7 @@ void MainWindow::button8Clicked()
 void MainWindow::showLogin()
 {
     state = SELECT_CARD;
+
     clearScreen();
     ui->Title->setText("Kirjaudu sisään");
     ui->SecondTitle->setText(QString("Syötä kortin ID"));
@@ -693,6 +784,9 @@ void MainWindow::handleTimeout()
         break;
     case WITHDRAWAL_OK:
         showLogin();
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
