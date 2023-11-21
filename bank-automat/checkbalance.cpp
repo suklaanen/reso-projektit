@@ -52,7 +52,7 @@ void CheckBalance::handleGetBalance()
     if (reply->error() == QNetworkReply::NoError) {
         // Onnistunut vastaus
         QByteArray responseData = reply->readAll();
-        QString balance = QString(responseData);
+        QString balance = QString(responseData).replace("\"", "");
         emit balanceReady(balance);
     }
     // Tyhjennetään vastaus myöhemmin

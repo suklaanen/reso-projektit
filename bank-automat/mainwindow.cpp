@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     login = new Login (this);
     showLogin();
-
+    qDebug() << QDateTime::currentDateTime().toString(Qt::ISODate);
     balance = new CheckBalance(this);
     transactions = new Transactions(this);
     withdraw = new Withdraw(this);
@@ -523,7 +523,7 @@ void MainWindow::showUserBalance(QString balance)
     ui->PushText8->setText(QString("Lopeta"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-    ui->Title->setText("Tilin saldo " + this->saldo);
+    ui->Title->setText(QString("Tilin saldo ") + this->saldo);
 
     //balance->checkBalance(token, accountID, offset);
     //balance->showBalance();
@@ -713,7 +713,7 @@ void MainWindow::handleTimeout()
         break;
     case CARD_LOCKED:
         showLogin();
-        break;
+
     }
 }
 
