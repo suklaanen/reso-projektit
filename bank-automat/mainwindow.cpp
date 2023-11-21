@@ -292,6 +292,9 @@ void MainWindow::clickedYELLOW()
     case USER_INSERT_AMOUNT:
         checkAtmLimit();
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -315,6 +318,9 @@ void MainWindow::clickedGREY()
         break;
     case USER_INSERT_AMOUNT:
         checkAtmLimit();
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -530,6 +536,10 @@ void MainWindow::button8Clicked()
         showLogin();
         break;
     case ATM_CHECKBALANCES:
+        qDebug() << "Stop session -clicked";
+        showLogin();
+        break;
+    case USER_INSERT_AMOUNT:
         qDebug() << "Stop session -clicked";
         showLogin();
         break;
