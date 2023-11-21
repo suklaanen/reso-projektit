@@ -195,3 +195,4 @@ VALUES
 (1, 1, 1, 'withdrawal', 40, NOW()),
 (1, 1, 1, 'withdrawal', 40, NOW()),
 (1, 1, 1, 'withdrawal', 20, NOW());
+

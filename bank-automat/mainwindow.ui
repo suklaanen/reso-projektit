@@ -781,6 +781,104 @@
      </rect>
     </property>
    </widget>
+   <widget class="QWidget" name="Mapframe" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1141</width>
+      <height>731</height>
+     </rect>
+    </property>
+    <widget class="QPushButton" name="atm1">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>370</y>
+       <width>51</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="atm2">
+     <property name="geometry">
+      <rect>
+       <x>990</x>
+       <y>250</y>
+       <width>51</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>2</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="atm3">
+     <property name="geometry">
+      <rect>
+       <x>870</x>
+       <y>380</y>
+       <width>51</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>3</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="atm4">
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>450</y>
+       <width>51</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>4</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="Title2">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>60</y>
+       <width>671</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
    <zorder>Kilke</zorder>
    <zorder>MainFrame</zorder>
    <zorder>Frames1</zorder>
@@ -816,6 +914,7 @@
    <zorder>PushText6</zorder>
    <zorder>PushText8</zorder>
    <zorder>PushText7</zorder>
+   <zorder>Mapframe</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

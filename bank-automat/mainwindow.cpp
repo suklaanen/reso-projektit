@@ -7,13 +7,15 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-{
+
+    {
     ui->setupUi(this);
+
     state = SELECT_CARD;
+    showMapView();
 
     login = new Login (this);
-    showLogin();
-    qDebug() << QDateTime::currentDateTime().toString(Qt::ISODate);
+    showLogin();    
     balance = new CheckBalance(this);
     transactions = new Transactions(this);
     withdraw = new Withdraw(this);
@@ -28,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     reply = nullptr;
     token = "";
     offset = 0;
-    automatID = "1";
+    //automatID = "1";
     connectSlots();
 
     ui->RED->setDisabled(false);
@@ -153,7 +155,25 @@ void MainWindow::connectSlots()
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
     connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
     connect(atmBalances, SIGNAL(atmBalancesReady()),this, SLOT(showAtmBalances()));
+    connect(ui->atm1, SIGNAL(clicked()), this, SLOT(atm1Clicked()));
+    connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atm2Clicked()));
+    connect(ui->atm3, SIGNAL(clicked()), this, SLOT(atm3Clicked()));
+    connect(ui->atm4, SIGNAL(clicked()), this, SLOT(atm4Clicked()));
+}
 
+// *************************************************************************************
+// ** Automaatin valinta kartalta ? *****************************************************
+// *************************************************************************************
+
+void MainWindow::showMapView()
+{
+    state = MAP_VIEW;
+
+    ui->Title2->setText("Valitse Bankki-automaatti kartalta");
+    ui->atm1->setDisabled(false);
+    ui->atm2->setDisabled(false);
+    ui->atm3->setDisabled(false);
+    ui->atm4->setDisabled(false);
 }
 
 // -------------------------------------------------------------------------------------
@@ -163,6 +183,51 @@ void MainWindow::connectSlots()
 
 
 // Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
+
+void MainWindow::atm1Clicked()
+{
+    qDebug()<<"ATM1 button clicked";
+    automatID = "1";
+
+    ui->Mapframe->hide();
+
+    showLogin();
+    state = SELECT_CARD;
+}
+
+void MainWindow::atm2Clicked()
+{
+    qDebug()<<"ATM2 button clicked";
+    automatID = "2";
+
+    ui->Mapframe->hide();
+
+    showLogin();
+    state = SELECT_CARD;
+}
+
+void MainWindow::atm3Clicked()
+{
+    qDebug()<<"ATM3 button clicked";
+    automatID = "3";
+
+    ui->Mapframe->hide();
+
+    showLogin();
+    state = SELECT_CARD;
+}
+
+void MainWindow::atm4Clicked()
+{
+    qDebug()<<"ATM4 button clicked";
+    automatID = "4";
+
+    ui->Mapframe->hide();
+
+    showLogin();
+    state = SELECT_CARD;
+}
+
 void MainWindow::clickedGREEN()
 {
     qDebug()<<"Green button clicked";
@@ -204,6 +269,9 @@ void MainWindow::clickedGREEN()
         qDebug() << "Amount inserted, green clicked";
         withdraw->setAmount(ui->Content->text());
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -223,6 +291,9 @@ void MainWindow::clickedYELLOW()
         break;
     case USER_INSERT_AMOUNT:
         checkAtmLimit();
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -247,6 +318,9 @@ void MainWindow::clickedGREY()
         break;
     case USER_INSERT_AMOUNT:
         checkAtmLimit();
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -278,6 +352,9 @@ void MainWindow::button1Clicked()
         qDebug() << "Withdraw 10 clicked";
         withdraw->setAmount(QString("10"));
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -296,6 +373,9 @@ void MainWindow::button2Clicked()
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 20 clicked";
         withdraw->setAmount(QString("20"));
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -318,6 +398,9 @@ void MainWindow::button3Clicked()
         qDebug() << "Withdraw 40 clicked";
         withdraw->setAmount(QString("40"));
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -339,8 +422,6 @@ void MainWindow::button4Clicked()
     case USER_BALANCE:
         qDebug() << "Paluu clicked";
         offset=0;
-        ui->Content2->setAlignment(Qt::AlignCenter);
-        ui->SecondTitle->setAlignment(Qt::AlignCenter);
         showMenu(token, accountID);
         break;
     case USER_WITHDRAWAL:
@@ -355,18 +436,18 @@ void MainWindow::button4Clicked()
     case USER_TRANSACTIONS:
         qDebug() << "Paluu clicked";
         offset=0;
-        ui->Content2->setAlignment(Qt::AlignCenter);
-        ui->SecondTitle->setAlignment(Qt::AlignCenter);
-        ui->PushText1->setStyleSheet("color: rgb(255, 255, 255);");
-        ui->PushText5->setStyleSheet("color: rgb(255, 255, 255);");
         showMenu(token, accountID);
         break;
     case WITHDRAWAL_FAIL:
         qDebug() << "Paluu clicked";
         showMenu(token, accountID);
+        break;
     case ATM_CHECKBALANCES:
         qDebug() << "Paluu clicked";
         showAdminMenu(token);
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -385,6 +466,9 @@ void MainWindow::button5Clicked()
         qDebug() << "offset: "<< offset;
         transactions->showTransactions(token, accountID, offset);
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -400,6 +484,9 @@ void MainWindow::button6Clicked()
         qDebug() << "Withdraw 80 clicked";
         withdraw->setAmount(QString("80"));
         break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
@@ -414,6 +501,9 @@ void MainWindow::button7Clicked()
     case USER_WITHDRAWAL:
         qDebug() << "Insert amount clicked";
         showInsertAmount();
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -439,21 +529,22 @@ void MainWindow::button8Clicked()
         break;
     case USER_TRANSACTIONS:
         qDebug() << "Stop session -clicked";
-        ui->Content2->setAlignment(Qt::AlignCenter);
-        ui->SecondTitle->setAlignment(Qt::AlignCenter);
-        ui->PushText1->setStyleSheet("color: rgb(255, 255, 255);");
-        ui->PushText5->setStyleSheet("color: rgb(255, 255, 255);");
         showLogin();
         break;
     case USER_BALANCE:
         qDebug() << "Stop session -clicked";
-        ui->Content2->setAlignment(Qt::AlignCenter);
-        ui->SecondTitle->setAlignment(Qt::AlignCenter);
         showLogin();
         break;
     case ATM_CHECKBALANCES:
         qDebug() << "Stop session -clicked";
         showLogin();
+        break;
+    case USER_INSERT_AMOUNT:
+        qDebug() << "Stop session -clicked";
+        showLogin();
+        break;
+    default:
+        // "kaikki muut enum-arvot"
         break;
     }
 }
@@ -736,10 +827,12 @@ void MainWindow::handleTimeout()
         break;
     case WITHDRAWAL_OK:
         showLogin();
-        break;
     case CARD_LOCKED:
         showLogin();
-
+        break;
+    default:
+        // "kaikki muut enum-arvot"
+        break;
     }
 }
 
