@@ -27,7 +27,8 @@ VALUES
 ('Paavo','Tietty','Pankkiirintie 15','Pirkkala'),
 ('Mauri','Ala-Vesko','Sieväkatu 9','Tampere'),
 ('Tiina','Tärskynen','Pikkuhiirunkuja 2','Kangasala'),
-('ROBOT','FRAMEWORK','AUTOMATION','TESTING');
+('ROBOT','FRAMEWORK','AUTOMATION','TESTING'),
+('Lassi','Järvinen','Mäntyläntie 3','Jyväskylä');
 
 ALTER TABLE  `account` AUTO_INCREMENT = 1;
 INSERT INTO `account` (`account_nmbr`, `bank_name`, `account_type`, `balance`, `max_withdrawal_per_day`, `credit_limit`) 
@@ -152,7 +153,7 @@ VALUES
 (1,9,null),
 (9,10,4),
 (4,11,14),
-(5,12,15),
+(5,5,15),
 (10,13,16),
 (14,14,18),
 (15,15,19),
@@ -161,7 +162,9 @@ VALUES
 (11,17,21),
 (17,18,24),
 (19,19,25),
-(20,20,null);
+(20,20,null),
+(22,null,31),
+(5,5,31);
 
 ALTER TABLE  `automat` AUTO_INCREMENT = 1;
 INSERT INTO `automat` (`balance_10`, `balance_20`, `balance_50`, `balance_100`, `max_withdrawal`) 
@@ -174,6 +177,7 @@ VALUES
 INSERT INTO `eventlog` (`id_automat`, `id_account`, `id_card`, `event_type`, `amount`, `time`) 
 VALUES 
 
+<<<<<<< HEAD
 (1, 1, 1, 'withdrawal', 150, NOw()),
 (1, 1, 1, 'withdrawal', 80, NOw()),
 (1, 1, 1, 'withdrawal', 80, NOw()),
@@ -192,3 +196,23 @@ VALUES
 (1, 1, 1, 'withdrawal', 40, NOw()),
 (1, 1, 1, 'withdrawal', 40, NOw()),
 (1, 1, 1, 'withdrawal', 20, NOw());
+=======
+(1, 1, 1, 'withdrawal', 150, NOW()),
+(1, 1, 1, 'withdrawal', 80, NOW()),
+(1, 1, 1, 'withdrawal', 80, NOW()),
+(1, 1, 1, 'withdrawal', 200, NOW()),
+(1, 1, 1, 'withdrawal', 60, NOW()),
+(1, 1, 1, 'withdrawal', 20, NOW()),
+(1, 1, 1, 'withdrawal', 300, NOW()),
+(1, 1, 1, 'withdrawal', 10, NOW()),
+(1, 1, 1, 'withdrawal', 50, NOW()),
+(1, 1, 1, 'withdrawal', 40, NOW()),
+(1, 1, 1, 'withdrawal', 100, NOW()),
+(1, 1, 1, 'withdrawal', 190, NOW()),
+(1, 1, 1, 'withdrawal', 70, NOW()),
+(1, 1, 1, 'withdrawal', 280, NOW()),
+(1, 1, 1, 'withdrawal', 150, NOW()),
+(1, 1, 1, 'withdrawal', 40, NOW()),
+(1, 1, 1, 'withdrawal', 40, NOW()),
+(1, 1, 1, 'withdrawal', 20, NOW());
+>>>>>>> origin

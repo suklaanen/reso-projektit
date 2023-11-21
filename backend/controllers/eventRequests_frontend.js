@@ -7,14 +7,14 @@ router.post('/', function(request, response) {
         if(err){
             console.log(err);
             response.status(400);
-            response.json("Error in database query");
+            response.json("Error in database query first");
         }
         else {
             eventLog.getEventsCountByAccountId(request.body.id_account,function(err, count){
                 if(err){
                     console.log(err);
                     response.status(400);
-                    response.json("Error in database query");
+                    response.json("Error in database query second");
                 }
                 else { 
                     console.log(count [0].countEvents);
