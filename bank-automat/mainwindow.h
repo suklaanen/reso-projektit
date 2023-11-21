@@ -104,10 +104,11 @@ private:
     Transactions * transactions;
     QString token;
     void clearScreen();
+    void checkAtmLimit();
     int offset;
     State state;
     QString saldo;
     QTimer * timer;
-    QString atmMaxWithdrawal;
+    int atmMaxWithdrawal;
 };
 #endif // MAINWINDOW_H

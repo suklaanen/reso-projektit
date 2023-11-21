@@ -61,7 +61,9 @@ void MainWindow::clickedNumberHandler()
             content.append(name.last(1));
             ui->Content->setText(content);
         }
-
+        if(state == USER_INSERT_AMOUNT) {
+            checkAtmLimit();
+        }
         if (state == CARD_OK || state == LOGIN_FAIL) {
             ui->Content->setEchoMode(QLineEdit::Password);
             timer->stop();
@@ -95,6 +97,20 @@ void MainWindow::clearScreen()
     ui->pushButton6->setDisabled(true);
     ui->pushButton7->setDisabled(true);
     ui->pushButton8->setDisabled(true);
+}
+
+void MainWindow::checkAtmLimit()
+{
+    if(ui->Content->text().toInt() > atmMaxWithdrawal) {
+        ui->Content->setStyleSheet("color: #FF0000");
+        ui->GREEN->setDisabled(true);
+        ui->SecondTitle->setText(QString("Summa ylittää automaatin nostorajan ("+QString::number(atmMaxWithdrawal)+"€)"));
+    }
+    else {
+        ui->Content->setStyleSheet("color: #FFFFFF");
+        ui->GREEN->setDisabled(false);
+        ui->SecondTitle->clear();
+    }
 }
 
 // Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin, mikä tekee sen, että
@@ -192,8 +208,19 @@ void MainWindow::clickedYELLOW()
 {
     qDebug()<<"Yellow button clicked";
     ui->Content->clear();
-    timer->stop();
-    timer->start(10000);
+    switch(state) {
+    case CARD_OK:
+        timer->stop();
+        timer->start(10000);
+        break;
+    case LOGIN_FAIL:
+        timer->stop();
+        timer->start(10000);
+        break;
+    case USER_INSERT_AMOUNT:
+        checkAtmLimit();
+        break;
+    }
 }
 
 // Harmaan painikkeen "kumita yksi merkki" toiminto
@@ -205,8 +232,19 @@ void MainWindow::clickedGREY()
     if (content.size() > 0) {
         ui->Content->setText(content.left(content.size() -1));
     }
-    timer->stop();
-    timer->start(10000);
+    switch(state) {
+    case CARD_OK:
+        timer->stop();
+        timer->start(10000);
+        break;
+    case LOGIN_FAIL:
+        timer->stop();
+        timer->start(10000);
+        break;
+    case USER_INSERT_AMOUNT:
+        checkAtmLimit();
+        break;
+    }
 }
 
 // Punaisen painikkeen "keskeytä" STOP -toiminto, joka palaa alkutilaan
@@ -719,7 +757,7 @@ void MainWindow::handleTimeout()
 
 void MainWindow::handleAtmLimit(QString limit)
 {
-    this->atmMaxWithdrawal = limit;
+    this->atmMaxWithdrawal = limit.toInt();
     qDebug() << "Atm maxwithdrawal is " << this->atmMaxWithdrawal;
 }
 
