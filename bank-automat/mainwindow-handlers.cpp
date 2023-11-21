@@ -54,7 +54,7 @@ void MainWindow::handleTimeout()
 void MainWindow::handleAtmLimit(QString limit)
 {
     this->atmMaxWithdrawal = limit.toInt();
-    qDebug() << "Atm maxwithdrawal is " << this->atmMaxWithdrawal;
+    qDebug() << "Atm " << this->automatID << " maxwithdrawal is " << this->atmMaxWithdrawal;
 }
 
 // Valitse Debit tai Credit (ennen pinin kyselyä, jos yhdistelmäkortti)

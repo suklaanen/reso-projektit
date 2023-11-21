@@ -120,7 +120,7 @@ void MainWindow::showWithdrawal()
 {
     clearScreen();
     state = USER_WITHDRAWAL;
-    withdraw->setInfo(token,accountID,ID,cardType);
+    withdraw->setInfo(token,accountID,ID,cardType,automatID);
     ui->pushButton1->setDisabled(false);
     ui->pushButton2->setDisabled(false);
     ui->pushButton3->setDisabled(false);

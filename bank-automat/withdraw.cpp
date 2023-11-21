@@ -14,13 +14,13 @@ void Withdraw::setAmount(QString amount)
     requestWithdrawal();
 }
 
-void Withdraw::setInfo(QString token, QString accountID, QString cardID, QString cardType)
+void Withdraw::setInfo(QString token, QString accountID, QString cardID, QString cardType, QString automatID)
 {
     this->token = token;
     this->accountID = accountID;
     this->cardID = cardID;
     this->cardType = cardType;
-    this->automatID = "2";
+    this->automatID = automatID;
     requestAtmLimit();
 }
 
