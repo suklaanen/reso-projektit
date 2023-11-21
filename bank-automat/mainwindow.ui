@@ -793,8 +793,8 @@
     <widget class="QPushButton" name="atm1">
      <property name="geometry">
       <rect>
-       <x>330</x>
-       <y>370</y>
+       <x>270</x>
+       <y>250</y>
        <width>51</width>
        <height>51</height>
       </rect>
@@ -811,8 +811,8 @@
     <widget class="QPushButton" name="atm2">
      <property name="geometry">
       <rect>
-       <x>990</x>
-       <y>250</y>
+       <x>910</x>
+       <y>80</y>
        <width>51</width>
        <height>51</height>
       </rect>
@@ -829,8 +829,8 @@
     <widget class="QPushButton" name="atm3">
      <property name="geometry">
       <rect>
-       <x>870</x>
-       <y>380</y>
+       <x>990</x>
+       <y>290</y>
        <width>51</width>
        <height>51</height>
       </rect>
@@ -847,8 +847,8 @@
     <widget class="QPushButton" name="atm4">
      <property name="geometry">
       <rect>
-       <x>610</x>
-       <y>450</y>
+       <x>510</x>
+       <y>320</y>
        <width>51</width>
        <height>51</height>
       </rect>
@@ -865,8 +865,8 @@
     <widget class="QLabel" name="Title2">
      <property name="geometry">
       <rect>
-       <x>220</x>
-       <y>60</y>
+       <x>150</x>
+       <y>30</y>
        <width>671</width>
        <height>71</height>
       </rect>
