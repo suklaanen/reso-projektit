@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
         balance = new CheckBalance(this);
         transactions = new Transactions(this);
         withdraw = new Withdraw(this);
+        atmBalances = new AddMoney(this);
         //viewlog = new ViewLog(this);
         //addmoney = new AddMoney(this);
         //setlimits = new SetLimits(this);
@@ -155,18 +156,11 @@ void MainWindow::showMapView()
 {
     state = MAP_VIEW;
 
-    //Mapframe = new QWidget(this);
-    //Mapframe->show();
-
-    //clearScreen();
-    ui->Title2->setText("Valitse automaatti kartalta");
+    ui->Title2->setText("Valitse Bankki-automaatti kartalta");
     ui->atm1->setDisabled(false);
     ui->atm2->setDisabled(false);
     ui->atm3->setDisabled(false);
     ui->atm4->setDisabled(false);
-
-
-    //mapwidget->deleteLater();
 }
 
 // -------------------------------------------------------------------------------------
