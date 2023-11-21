@@ -43,40 +43,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-// ------------------------------------------------------------------------------------------
-// Käsittelyt tässä osiossa, painikkeiden handleri, ruudun tyhjentäminen sekä connectit:
-// ** clickedNumberHandler **
-// ** clearScreen **
-// ** connectSlots **
-// ------------------------------------------------------------------------------------------
-
-// Tämä käsittelee painikkeiden klikkaamisen
-
-void MainWindow::clickedNumberHandler()
-{
-    if(state == SELECT_CARD || state == CARD_OK || state == CARD_FAIL || state == LOGIN_FAIL || state == USER_INSERT_AMOUNT) {
-        QPushButton * btn = qobject_cast<QPushButton*>(sender());
-        QString name = btn->objectName();
-        qDebug()<< name << " -button clicked";
-
-        QString content = ui->Content->text();
-
-        if (content.length() < 4) {
-            content.append(name.last(1));
-            ui->Content->setText(content);
-        }
-        if(state == USER_INSERT_AMOUNT) {
-            checkAtmLimit();
-        }
-        if (state == CARD_OK || state == LOGIN_FAIL) {
-            ui->Content->setEchoMode(QLineEdit::Password);
-            timer->stop();
-            timer->start(10000);
-        } else {
-            ui->Content->setEchoMode(QLineEdit::Normal);
-        }
-    }
-}
+// ** Käsittelijöitä **
 
 // Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
 void MainWindow::clearScreen()
@@ -118,8 +85,8 @@ void MainWindow::checkAtmLimit()
     }
 }
 
-// Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin, mikä tekee sen, että
-// SIGNAALISTA siirrytään SLOTTIIN (showJokinTila, joita useita tuossa yläpuolella)
+// Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin
+// l. Signaalista siirtymä Slottiin (esim. showJokinTila)
 void MainWindow::connectSlots()
 {
     for(int i = 0; i <= 9; i++) {
@@ -159,57 +126,4 @@ void MainWindow::connectSlots()
     connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atm2Clicked()));
     connect(ui->atm3, SIGNAL(clicked()), this, SLOT(atm3Clicked()));
     connect(ui->atm4, SIGNAL(clicked()), this, SLOT(atm4Clicked()));
-}
-
-// Automaatin valinta kartalta
-void MainWindow::showMapView()
-{
-    state = MAP_VIEW;
-
-    ui->Title2->setText("Valitse Bankki-automaatti kartalta");
-    ui->atm1->setDisabled(false);
-    ui->atm2->setDisabled(false);
-    ui->atm3->setDisabled(false);
-    ui->atm4->setDisabled(false);
-}
-
-
-// Handlerit / Handlers
-void MainWindow::handleTimeout()
-{
-    switch(state) {
-    case CARD_OK:
-        showLogin();
-        break;
-    case LOGIN_FAIL:
-        showLogin();
-        break;
-    case WITHDRAWAL_OK:
-        showLogin();
-    case CARD_LOCKED:
-        showLogin();
-        break;
-    default:
-        // "kaikki muut enum-arvot"
-        break;
-    }
-}
-
-void MainWindow::handleAtmLimit(QString limit)
-{
-    this->atmMaxWithdrawal = limit.toInt();
-    qDebug() << "Atm maxwithdrawal is " << this->atmMaxWithdrawal;
-}
-
-// Valitse Debit tai Credit (ennen pinin kyselyä, jos yhdistelmäkortti)
-void MainWindow::selectDebitCredit()
-{
-    this->cardType = "credit/debit";
-    state = CARD_COMBINATION;
-    clearScreen();
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
-    ui->Title->setText(QString("Valitse tili"));
-    ui->PushText4->setText(QString("Debit"));
-    ui->PushText8->setText(QString("Credit"));
 }
