@@ -21,7 +21,11 @@ const automat = {
         return db.query("DELETE FROM automat WHERE id_automat=?",[id],callback);
     },
     getAtmLimit: function(id, callback) {
-        return db.query("SELECT max_withdrawal FROM automat WHERE id_automat=?", [id], callback);
+        return d
+        b.query("SELECT max_withdrawal FROM automat WHERE id_automat=?", [id], callback);
+    },
+    getBalances: function(id, callback) {
+        return db.query("SELECT balance_10, balance_20, balance_50, balance_100 FROM automat WHERE id_automat=?",[id],callback);
     }
 
 

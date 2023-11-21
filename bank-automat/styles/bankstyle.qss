@@ -53,6 +53,7 @@ QLineEdit {
 #Content2 { 
     color: #ffffff;
     font: 18pt "Segoe UI";
+    alignment: top left;
 }
 
 #PushText1, #PushText2, #PushText3, #PushText4, #PushText5, #PushText6, #PushText7, #PushText8 { 

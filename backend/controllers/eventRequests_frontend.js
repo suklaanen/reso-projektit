@@ -17,8 +17,9 @@ router.post('/', function(request, response) {
                     response.json("Error in database query second");
                 }
                 else { 
-                    console.log(count[0].countEvents);
-                    response.header("X-Transactions-Count", count[0].countEvents);
+                    console.log(count [0].countEvents);
+                    response.header("X-Transactions-Count", count [0].countEvents);
+                    console.log(data);
                     response.json(data);
                 }
             });

@@ -10,7 +10,7 @@
 #include "transactions.h"
 #include "checkbalance.h"
 #include "withdraw.h"
-//#include "addmoney.h"
+#include "addmoney.h"
 //#include "setlimits.h"
 //#include "viewlog.h"
 
@@ -43,6 +43,8 @@ class MainWindow : public QMainWindow
         WITHDRAWAL_OK,
         WITHDRAWAL_FAIL,
         AUTOMAT_ADD_MONEY,
+        ATM_CHECKBALANCES,
+        AUTOMAT_CHECK_MAX,
         AUTOMAT_SET_MAX_WITHDRAWAL,
         AUTOMAT_VIEW_LOG,
         CONFIRM,
@@ -80,7 +82,7 @@ public slots:
     void showInsertAmount();
     void showTransactions();
     void showATMEvents();
-    void showATMBalance();
+    void showAtmBalances();
     void showAddMoney();
     void showATMSetLimit();
     void showATMCurrentLimits();
@@ -102,12 +104,15 @@ private:
     CheckBalance * balance;
     Withdraw * withdraw;
     Transactions * transactions;
+    AddMoney * atmBalances;
     QString token;
     void clearScreen();
     void checkAtmLimit();
     int offset;
     State state;
     QString saldo;
+    QString atm;
+    QString automatID;
     QTimer * timer;
     int atmMaxWithdrawal;
 };

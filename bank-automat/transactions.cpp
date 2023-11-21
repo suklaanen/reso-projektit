@@ -82,7 +82,11 @@ void Transactions::parseTransactions(const QString &data)
             else {
                 event_type = jsonObject["event_type"].toString();
             }
+            qDebug() << jsonObject["time"].toString();
             QDateTime time = QDateTime::fromString(jsonObject["time"].toString(), Qt::ISODate);
+            QTimeZone stadi("Europe/Helsinki");
+            time = time.toTimeZone(stadi);
+            qDebug() << time;
             QString amount = jsonObject["amount"].toString();
 
             parsedTransactions.append( QString("%1\t  %2\t\t%3\n").arg(time.toString("dd.MM.-yy hh:mm")).arg(event_type).arg(amount));
