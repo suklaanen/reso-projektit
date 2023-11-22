@@ -18,9 +18,10 @@ Login::~Login()
 }
 
 //Ottaa vastaan kortin ID:n mainwindow:sta
-void Login::setCardID(const QString &inputCardID)
+void Login::setCardID(const QString &inputCardID, const QString &automatID)
 {
     cardID = inputCardID;
+    this->automatID = automatID;
     pin_attempted = false;
     requestCardID(); // Kutsutaan metodia, josta lähtee pyyntö REST APIlle kortin tyypin tarkistukselle
 }
@@ -239,9 +240,11 @@ void Login::clearPinAttempts()
 {
     QNetworkRequest request;
     QJsonObject body;
-    request.setUrl(QUrl("http://localhost:3000/cardAttempts/clear/"+cardID));
+    body.insert("id_card",this->cardID);
+    body.insert("automat_id",this->automatID);
+    request.setUrl(QUrl("http://localhost:3000/cardAttempts/clear"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    reply = manager->put(request,QJsonDocument(body).toJson());
+    reply = manager->post(request,QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handleClearAttempts()));
 }
 
@@ -262,9 +265,11 @@ void Login::addAttempt()
 {
     QNetworkRequest request;
     QJsonObject body;
-    request.setUrl(QUrl("http://localhost:3000/cardAttempts/"+cardID));
+    body.insert("id_card",this->cardID);
+    body.insert("automat_id",this->automatID);
+    request.setUrl(QUrl("http://localhost:3000/cardAttempts/addAttempt"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    reply = manager->put(request,QJsonDocument(body).toJson());
+    reply = manager->post(request,QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handleAddedAttempt()));
 }
 

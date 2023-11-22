@@ -14,6 +14,8 @@ SOURCES += \
     login.cpp \
     main.cpp \
     mainwindow-buttons.cpp \
+    mainwindow-handlers.cpp \
+    mainwindow-shows.cpp \
     mainwindow.cpp \
     setlimits.cpp \
     transactions.cpp \

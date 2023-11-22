@@ -26,6 +26,29 @@ router.post('/', function(request, response) {
         }
     });
 });
-
+router.post('/allEvents', function(request, response) {
+    eventLog.getAllEvents(request.body.offset, request.body.automat_id, function(err, data){
+        if(err){
+            console.log(err);
+            response.status(400);
+            response.json("Error in database query first");
+        }
+        else {
+            eventLog.getEventsCountByEventId(request.body.automat_id, function(err, count){
+                if(err){
+                    console.log(err);
+                    response.status(400);
+                    response.json("Error in database query second");
+                }
+                else { 
+                    console.log(count[0].countEvents);
+                    response.header("X-Transactions-Count", count[0].countEvents);
+                    console.log(data);
+                    response.json(data);
+                }
+            });
+        }
+    });
+});
 module.exports=router;
 

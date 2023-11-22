@@ -14,7 +14,6 @@ class Transactions : public QObject
     Q_OBJECT
 public:
     explicit Transactions(QObject *parent = nullptr);
-    void requestTransactions(QString token, QString cardID, QString cardType);
     void showTransactions(QString, QString, int);
     QList<QString> getTransactions();
     int maxTransactions();
