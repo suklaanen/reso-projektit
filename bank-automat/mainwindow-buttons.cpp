@@ -62,19 +62,19 @@ void MainWindow::clickedGREEN()
     case SELECT_CARD:
         if(ui->Content->text() != "") {
             ID = ui->Content->text();
-            login->setCardID(ui->Content->text());
+            login->setCardID(ui->Content->text(),automatID);
         }
         else {
-            login->setCardID("0");
+            login->setCardID("0",automatID);
         }
         break;
     case CARD_FAIL:
         if(ui->Content->text() != "") {
             ID = ui->Content->text();
-            login->setCardID(ui->Content->text());
+            login->setCardID(ui->Content->text(),automatID);
         }
         else {
-            login->setCardID("0");
+            login->setCardID("0",automatID);
         }
         break;
     case CARD_OK:
@@ -174,6 +174,17 @@ void MainWindow::button1Clicked()
         qDebug() << "offset: "<< offset;
         transactions->showTransactions(token, accountID, offset);
         break;
+    case AUTOMAT_VIEW_LOG:
+        qDebug() << "Uudemmat clicked";
+        if (offset>0){
+            offset=offset-5;
+        }else
+        {
+            offset=0;
+        }
+        qDebug() << "offset: "<< offset;
+        viewlog->requestEvents(token, automatID, offset);
+        break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 10 clicked";
         withdraw->setAmount(QString("10"));
@@ -190,7 +201,8 @@ void MainWindow::button2Clicked()
     switch(state) {
     case ADMIN_MENU:
         qDebug() << "ATM Events -clicked";
-        showATMEvents();
+        offset = 0;
+        viewlog->requestEvents(token, automatID, offset);
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
@@ -274,6 +286,9 @@ void MainWindow::button4Clicked()
         qDebug() << "Paluu clicked";
         showAdminMenu(token);
         break;
+    case AUTOMAT_VIEW_LOG:
+        qDebug() << "Paluu clicked";
+        showAdminMenu(token);
     default:
         // "kaikki muut enum-arvot"
         break;
@@ -293,6 +308,12 @@ void MainWindow::button5Clicked()
         offset += 5;
         qDebug() << "offset: "<< offset;
         transactions->showTransactions(token, accountID, offset);
+        break;
+    case AUTOMAT_VIEW_LOG:
+        qDebug() << "Vanhemmat clicked";
+        offset += 5;
+        qDebug() << "offset: "<< offset;
+        viewlog->requestEvents(token,automatID,offset);
         break;
     default:
         // "kaikki muut enum-arvot"

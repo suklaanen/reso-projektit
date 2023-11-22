@@ -270,5 +270,41 @@ void MainWindow::showATMSetLimit()
 
 void MainWindow::showATMEvents()
 {
+    clearScreen();
+    state = AUTOMAT_VIEW_LOG;
 
+    if (offset == 0) {
+        ui->pushButton1->setDisabled(true);
+        ui->PushText1->setStyleSheet("color: #7777c7;");
+        ui->pushButton5->setDisabled(false);
+        ui->PushText5->setStyleSheet("");
+    } else if (offset != 0 && viewlog->maxEvents() < offset+5) {
+        ui->pushButton1->setDisabled(false);
+        ui->PushText1->setStyleSheet("");
+        ui->pushButton5->setDisabled(true);
+        ui->PushText5->setStyleSheet("color: #7777c7;");
+    } else {
+        ui->pushButton1->setDisabled(false);
+        ui->PushText1->setStyleSheet("");
+        ui->pushButton5->setDisabled(false);
+        ui->PushText5->setStyleSheet("");
+    }
+
+    ui->Title->setText("Automaatin tapahtumat");
+    ui->SecondTitle->setText("Ajankohta | Tapahtuma | Summa (€)");
+        for (int i = 0; i < viewlog->getEvents().size(); i++)
+        {
+            ui->Content2->setText(ui->Content2->text()+viewlog->getEvents().at(i));
+        }
+
+        if (offset != 0 && viewlog->maxEvents() < offset + 5) {
+            ui->Content2->setText(ui->Content2->text() + "Ei vanhempia tapahtumia!\n");
+        }
+
+        ui->PushText1->setText(QString("Uudemmat"));
+        ui->PushText5->setText(QString("Vanhemmat"));
+        ui->PushText4->setText(QString("Paluu"));
+        ui->PushText8->setText(QString("Lopeta"));
+        ui->pushButton4->setDisabled(false);
+        ui->pushButton8->setDisabled(false);
 }

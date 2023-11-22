@@ -24,6 +24,12 @@ const eventLog={
     getEventsCountByAccountId: function(id_account, callback) {
         return db.query("SELECT count(id_account) as countEvents FROM eventlog WHERE id_account=? AND event_type='withdrawal'",
         [id_account], callback);
+    },
+    getAllEvents: function(offset, automatID, callback) {
+        return db.query("SELECT * FROM eventlog WHERE id_automat=? ORDER BY time desc, id_event desc LIMIT 5 OFFSET ?", [automatID, offset], callback);
+    },
+    getEventsCountByEventId: function(automatID, callback) {
+        return db.query("SELECT count(id_event) as countEvents FROM eventlog WHERE id_automat=?",[automatID], callback);
     }
 };
 

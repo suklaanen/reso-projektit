@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     transactions = new Transactions(this);
     withdraw = new Withdraw(this);
     atmBalances = new AddMoney(this);
-    //viewlog = new ViewLog(this);
+    viewlog = new ViewLog(this);
     //addmoney = new AddMoney(this);
     //setlimits = new SetLimits(this);
 
@@ -61,6 +61,8 @@ void MainWindow::clearScreen()
     ui->PushText6->clear();
     ui->PushText7->clear();
     ui->PushText8->clear();
+    ui->GREEN->setDisabled(false);
+    ui->Content->setStyleSheet("color: #FFFFFF");
     ui->pushButton1->setDisabled(true);
     ui->pushButton2->setDisabled(true);
     ui->pushButton3->setDisabled(true);
@@ -122,6 +124,7 @@ void MainWindow::connectSlots()
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
     connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
     connect(atmBalances, SIGNAL(atmBalancesReady()),this, SLOT(showAtmBalances()));
+    connect(viewlog, SIGNAL(LogReady()), this, SLOT(showATMEvents()));
     connect(ui->atm1, SIGNAL(clicked()), this, SLOT(atm1Clicked()));
     connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atm2Clicked()));
     connect(ui->atm3, SIGNAL(clicked()), this, SLOT(atm3Clicked()));
