@@ -15,7 +15,7 @@
 #include "addmoney.h"
 
 //#include "setlimits.h"
-//#include "viewlog.h"
+#include "viewlog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -111,6 +111,7 @@ private:
     CheckBalance * balance;
     Withdraw * withdraw;
     Transactions * transactions;
+    ViewLog * viewlog;
     AddMoney * atmBalances;
     QString token;
     void clearScreen();

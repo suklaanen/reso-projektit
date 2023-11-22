@@ -16,8 +16,21 @@ class ViewLog:public QObject
     Q_OBJECT
 public:
     ViewLog(QObject * parent = nullptr);
+    void requestEvents(QString, int);
+    QList<QString> getEvents();
+    int maxEvents();
+public slots:
+    void handleGetEvents();
 signals:
-    void automatLog();
+    void LogReady();
+private:
+    void parseEvents(const QString &data);
+    QString token;
+    int offset;
+    QNetworkAccessManager *manager;
+    QNetworkReply *reply;
+    QList<QString> parsedEvents;
+    int maximumEvents;
 };
 
 #endif // VIEWLOG_H
