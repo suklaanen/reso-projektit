@@ -120,7 +120,6 @@ void MainWindow::connectSlots()
     connect(transactions, SIGNAL(transactionsReady()), this, SLOT(showTransactions()));
     connect(timer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
     connect(balance, SIGNAL(balanceReady(QString)),this, SLOT(showUserBalance(QString)));
-    connect(balance, SIGNAL(creditReady(QString)),this, SLOT(showUserBalance(QString)));
     connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
     connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
