@@ -392,6 +392,10 @@ void MainWindow::button8Clicked()
         qDebug() << "Stop session -clicked";
         showLogin();
         break;
+    case AUTOMAT_VIEW_LOG:
+        qDebug() << "Stop session -clicked";
+        showLogin();
+        break;
     default:
         // "kaikki muut enum-arvot"
         break;

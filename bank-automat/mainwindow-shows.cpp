@@ -111,7 +111,7 @@ void MainWindow::showUserBalance(QString balance)
 
 
     ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->PushText8->setText(QString("Lopeta"));
+    ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
 }
@@ -205,8 +205,8 @@ void MainWindow::showTransactions()
 
     ui->PushText1->setText(QString("Uudemmat"));
     ui->PushText5->setText(QString("Vanhemmat"));
-    ui->PushText4->setText(QString("Paluu"));
-    ui->PushText8->setText(QString("Lopeta"));
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
 }
@@ -233,7 +233,7 @@ void MainWindow::showAtmBalances()
 
     ui->Content2->setText(contentText);
     ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->PushText8->setText(QString("Lopeta"));
+    ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
 }
@@ -249,7 +249,7 @@ void MainWindow::showWithdrawFailure(QString reason)
     clearScreen();
     ui->Title->setText("Nosto epäonnistui");
     ui->SecondTitle->setText(reason);
-    ui->PushText4->setText(QString("Paluu"));
+    ui->PushText4->setText(QString("Palaa takaisin"));
     ui->pushButton4->setDisabled(false);
 }
 
@@ -303,8 +303,8 @@ void MainWindow::showATMEvents()
 
         ui->PushText1->setText(QString("Uudemmat"));
         ui->PushText5->setText(QString("Vanhemmat"));
-        ui->PushText4->setText(QString("Paluu"));
-        ui->PushText8->setText(QString("Lopeta"));
+        ui->PushText4->setText(QString("Palaa takaisin"));
+        ui->PushText8->setText(QString("Keskeytä"));
         ui->pushButton4->setDisabled(false);
         ui->pushButton8->setDisabled(false);
 }
