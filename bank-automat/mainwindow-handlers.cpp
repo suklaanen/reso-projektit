@@ -42,6 +42,7 @@ void MainWindow::handleTimeout()
         break;
     case WITHDRAWAL_OK:
         showLogin();
+        break;
     case CARD_LOCKED:
         showLogin();
         break;
