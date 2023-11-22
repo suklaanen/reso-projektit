@@ -8,9 +8,10 @@ ViewLog::ViewLog(QObject * parent): QObject(parent)
     reply = nullptr;
 }
 
-void ViewLog::requestEvents(QString token, int offset)
+void ViewLog::requestEvents(QString token, QString automatID, int offset)
 {
     this->token = token;
+    this->automatID = automatID;
     this->offset = offset;
 
     QNetworkRequest request;
@@ -18,6 +19,7 @@ void ViewLog::requestEvents(QString token, int offset)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     QJsonObject body;
     body.insert("offset",this->offset);
+    body.insert("automat_id",this->automatID);
     reply = manager->post(request,QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handleGetEvents()));
 }

@@ -13,8 +13,8 @@ router.get('/:id', function(request, response) {
     });
 });
 
-router.put('/:id', function(request, response) {
-    card.addAttempt(request.params.id, function(err, data) {
+router.post('/addAttempt', function(request, response) {
+    card.addAttempt(request.body.id_card, request.body.automat_id, function(err, data) {
         if(err) {
             response.json(err);
         }
@@ -24,8 +24,8 @@ router.put('/:id', function(request, response) {
     });
 });
 
-router.put('/clear/:id', function(request, response) {
-    card.clearAttempts(request.params.id, function(err, data) {
+router.post('/clear', function(request, response) {
+    card.clearAttempts(request.body.id_card, request.body.automat_id, function(err, data) {
         if(err) {
             response.json(err);
         }

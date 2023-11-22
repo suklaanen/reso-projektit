@@ -62,19 +62,19 @@ void MainWindow::clickedGREEN()
     case SELECT_CARD:
         if(ui->Content->text() != "") {
             ID = ui->Content->text();
-            login->setCardID(ui->Content->text());
+            login->setCardID(ui->Content->text(),automatID);
         }
         else {
-            login->setCardID("0");
+            login->setCardID("0",automatID);
         }
         break;
     case CARD_FAIL:
         if(ui->Content->text() != "") {
             ID = ui->Content->text();
-            login->setCardID(ui->Content->text());
+            login->setCardID(ui->Content->text(),automatID);
         }
         else {
-            login->setCardID("0");
+            login->setCardID("0",automatID);
         }
         break;
     case CARD_OK:
@@ -183,7 +183,7 @@ void MainWindow::button1Clicked()
             offset=0;
         }
         qDebug() << "offset: "<< offset;
-        viewlog->requestEvents(token,offset);
+        viewlog->requestEvents(token, automatID, offset);
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 10 clicked";
@@ -201,7 +201,8 @@ void MainWindow::button2Clicked()
     switch(state) {
     case ADMIN_MENU:
         qDebug() << "ATM Events -clicked";
-        viewlog->requestEvents(token, offset);
+        offset = 0;
+        viewlog->requestEvents(token, automatID, offset);
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
@@ -312,7 +313,7 @@ void MainWindow::button5Clicked()
         qDebug() << "Vanhemmat clicked";
         offset += 5;
         qDebug() << "offset: "<< offset;
-        viewlog->requestEvents(token,offset);
+        viewlog->requestEvents(token,automatID,offset);
         break;
     default:
         // "kaikki muut enum-arvot"

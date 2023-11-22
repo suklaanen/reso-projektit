@@ -16,7 +16,7 @@ class ViewLog:public QObject
     Q_OBJECT
 public:
     ViewLog(QObject * parent = nullptr);
-    void requestEvents(QString, int);
+    void requestEvents(QString, QString, int);
     QList<QString> getEvents();
     int maxEvents();
 public slots:
@@ -26,6 +26,7 @@ signals:
 private:
     void parseEvents(const QString &data);
     QString token;
+    QString automatID;
     int offset;
     QNetworkAccessManager *manager;
     QNetworkReply *reply;

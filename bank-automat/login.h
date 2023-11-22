@@ -20,7 +20,7 @@ class Login : public QWidget
 public:
     explicit Login(QWidget *parent = nullptr);
     ~Login();
-    void setCardID(const QString &inputCardID);
+    void setCardID(const QString &inputCardID, const QString &automatID);
     void setPIN(const QString &inputPin,const QString &cardType);
 public slots:
     void handleCard();
@@ -47,6 +47,7 @@ private:
     QString cardType;
     QString token;
     QString accountID;
+    QString automatID;
     void requestCardID();
     void requestLogin();
     void checkPinAttempts();

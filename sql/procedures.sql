@@ -73,19 +73,18 @@ END IF;
 end //
 DELIMITER ;
 
-
 DELIMITER //
-create procedure addAttemptAndLog(IN cardID INT)
+CREATE PROCEDURE addAttemptAndLog(IN cardID INT, IN automatID INT)
 begin
 UPDATE card SET attempts = attempts+1 WHERE id_card = cardID;
-INSERT INTO eventlog(id_automat, id_card, event_type, time) VALUES(1, cardID, "login attempt", NOW());
-end //
+INSERT INTO eventlog(id_automat, id_card, event_type, time) VALUES(automatID, cardID, "login attempt", NOW());
+end//
 DELIMITER ;
 
 DELIMITER //
-create procedure clearAttemptsAndLog(IN cardID INT)
+CREATE PROCEDURE clearAttemptsAndLog(IN cardID INT, IN automatID INT)
 begin
 UPDATE card SET attempts = 0 WHERE id_card = cardID;
-INSERT INTO eventlog(id_automat, id_card, event_type, time) VALUES(1, cardID, "login", NOW());
-end //
+INSERT INTO eventlog(id_automat, id_card, event_type, time) VALUES(automatID, cardID, "login", NOW());
+end//
 DELIMITER ;

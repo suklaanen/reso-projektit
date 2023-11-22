@@ -27,14 +27,14 @@ router.post('/', function(request, response) {
     });
 });
 router.post('/allEvents', function(request, response) {
-    eventLog.getAllEvents(request.body.offset, function(err, data){
+    eventLog.getAllEvents(request.body.offset, request.body.automat_id, function(err, data){
         if(err){
             console.log(err);
             response.status(400);
             response.json("Error in database query first");
         }
         else {
-            eventLog.getEventsCountByEventId(function(err, count){
+            eventLog.getEventsCountByEventId(request.body.automat_id, function(err, count){
                 if(err){
                     console.log(err);
                     response.status(400);

@@ -38,11 +38,11 @@ const card = {
     checkAttempts: function(id, callback) {
         return db.query("SELECT attempts FROM card WHERE id_card=?",[id], callback);
     },
-    addAttempt: function(id, callback) {
-        return db.query("call addAttemptAndLog(?)",[id],callback);
+    addAttempt: function(cardID, automatID, callback) {
+        return db.query("call addAttemptAndLog(?,?)",[cardID,automatID],callback);
     },
-    clearAttempts: function(id, callback) {
-        return db.query("call clearAttemptsAndLog(?)", [id], callback);
+    clearAttempts: function(cardID, automatID, callback) {
+        return db.query("call clearAttemptsAndLog(?,?)", [cardID,automatID], callback);
     }
 
 
