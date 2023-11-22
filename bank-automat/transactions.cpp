@@ -7,12 +7,13 @@ Transactions::Transactions(QObject *parent)
     reply = nullptr;
 }
 
-void Transactions::showTransactions(QString token, QString accountID, int offset)
+void Transactions::showTransactions(QString token, QString accountID, int offset, QString type)
 {
     this->token = token;
     this->accountID = accountID;
     //this->cardID = cardID;
     this->offset = offset;
+    this->type = type;
 
     QNetworkRequest request;
     QJsonObject body;
@@ -92,5 +93,9 @@ void Transactions::parseTransactions(const QString &data)
             parsedTransactions.append( QString("%1    %2\t%3\n").arg(time.toString("dd.MM.yyyy hh:mm")).arg(event_type).arg(amount));
         }
     }
-    emit transactionsReady();
+    if (type == "balance"){
+        emit balanceTransReady();
+    } else {
+        emit transactionsReady();
+    }
 }

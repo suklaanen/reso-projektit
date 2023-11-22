@@ -129,4 +129,5 @@ void MainWindow::connectSlots()
     connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atm2Clicked()));
     connect(ui->atm3, SIGNAL(clicked()), this, SLOT(atm3Clicked()));
     connect(ui->atm4, SIGNAL(clicked()), this, SLOT(atm4Clicked()));
+    connect(transactions, SIGNAL(balanceTransReady()), this, SLOT(takesBalanceTransactions()));
 }

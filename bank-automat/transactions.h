@@ -14,14 +14,15 @@ class Transactions : public QObject
     Q_OBJECT
 public:
     explicit Transactions(QObject *parent = nullptr);
-    void showTransactions(QString, QString, int);
+    void showTransactions(QString, QString, int, QString);
     QList<QString> getTransactions();
     int maxTransactions();
 public slots:
     void handleGetTransaction();
 signals:
     void transactionsReady();
-    void userTransactions();
+    void balanceTransReady();
+    //void userTransactions();
 private:
     void parseTransactions(const QString &data);
     QString token;
@@ -33,6 +34,7 @@ private:
     QString returnedTransactions;
     QList<QString> parsedTransactions;
     int maximumTransactions;
+    QString type;
 };
 
 #endif // TRANSACTIONS_H

@@ -172,7 +172,7 @@ void MainWindow::button1Clicked()
             offset=0;
         }
         qDebug() << "offset: "<< offset;
-        transactions->showTransactions(token, accountID, offset);
+        transactions->showTransactions(token, accountID, offset, QString("transactions"));
         break;
     case AUTOMAT_VIEW_LOG:
         qDebug() << "Uudemmat clicked";
@@ -206,7 +206,9 @@ void MainWindow::button2Clicked()
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
-        balance->displayBalance(token, accountID);
+        offset = 0;
+
+        transactions->showTransactions(token, accountID, offset, QString("balance"));
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 20 clicked";
@@ -230,7 +232,7 @@ void MainWindow::button3Clicked()
     case USER_MENU:
         qDebug() << "transactions clicked";
         offset = 0;
-        transactions->showTransactions(token, accountID, offset);
+        transactions->showTransactions(token, accountID, offset, QString("transactions"));
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 40 clicked";
@@ -307,7 +309,7 @@ void MainWindow::button5Clicked()
         qDebug() << "Vanhemmat clicked";
         offset += 5;
         qDebug() << "offset: "<< offset;
-        transactions->showTransactions(token, accountID, offset);
+        transactions->showTransactions(token, accountID, offset, QString("transactions"));
         break;
     case AUTOMAT_VIEW_LOG:
         qDebug() << "Vanhemmat clicked";
