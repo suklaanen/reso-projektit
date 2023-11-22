@@ -207,7 +207,6 @@ void MainWindow::button2Clicked()
     case USER_MENU:
         qDebug() << "User Balance -clicked";
         offset = 0;
-
         transactions->showTransactions(token, accountID, offset, QString("balance"));
         break;
     case USER_WITHDRAWAL:

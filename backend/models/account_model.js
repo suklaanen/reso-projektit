@@ -31,6 +31,7 @@ const account = {
     getBalance: function(id, callback) {
         return db.query("SELECT balance FROM account WHERE id_account=?",[id],callback);
     },
+
     attemptWithdrawal: function(values, callback) {
         return db.query("call checkLimitAndWithdraw(?,?,?,?)", [values.id_account, values.id_card, values.id_automat, values.amount], callback);
     }
