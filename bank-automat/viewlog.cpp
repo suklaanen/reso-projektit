@@ -71,7 +71,7 @@ void ViewLog::parseEvents(const QString &data)
         if (jsonValue.isObject()) {
             QJsonObject jsonObject = jsonValue.toObject();
 
-            if (jsonObject["event_type"].toString()=="withdrawal"){//withdrawal käännettynä suomeksi, muuta mahdolliset tapahtumat saa mennä ominaan.
+            if (jsonObject["event_type"].toString()=="withdrawal"){
                 event_type = "Nosto";
             }
             else if(jsonObject["event_type"].toString()=="withdrawal attempt, not enough bills" || jsonObject["event_type"].toString()=="withdrawal attempt, not enough" ) {
