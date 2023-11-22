@@ -85,6 +85,7 @@ public slots:
     void atm3Clicked();
     void atm4Clicked();
     void showUserBalance(QString balance);
+    void takesBalanceTransactions();
     void showWithdrawal();
     void showInsertAmount();
     void showTransactions();

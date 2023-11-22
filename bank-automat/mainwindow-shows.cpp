@@ -116,6 +116,12 @@ void MainWindow::showUserBalance(QString balance)
     ui->pushButton8->setDisabled(false);
 }
 
+void MainWindow::takesBalanceTransactions()
+{
+    balance->displayBalance(token, accountID);
+
+}
+
 void MainWindow::showWithdrawal()
 {
     clearScreen();
