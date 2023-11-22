@@ -200,7 +200,7 @@ void MainWindow::showTransactions()
     }
 
     if (offset != 0 && transactions->maxTransactions() < offset + 5) {
-        ui->Content2->setText(ui->Content2->text() + "Ei vanhempia tapahtumia!\n");
+        ui->Content2->setText(ui->Content2->text() + "\tEi vanhempia tapahtumia!\n");
     }
 
     ui->PushText1->setText(QString("Uudemmat"));
@@ -298,7 +298,7 @@ void MainWindow::showATMEvents()
         }
 
         if (offset != 0 && viewlog->maxEvents() < offset + 5) {
-            ui->Content2->setText(ui->Content2->text() + "Ei vanhempia tapahtumia!\n");
+            ui->Content2->setText(ui->Content2->text() + "\tEi vanhempia tapahtumia!\n");
         }
 
         ui->PushText1->setText(QString("Uudemmat"));
