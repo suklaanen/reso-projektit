@@ -40,7 +40,6 @@ private:
     QList<QString> parsedTransactions;
     QList<QString> parsedBalance;
     int maximumTransactions;
-    double creditLimit;
 };
 
 #endif // CHECKBALANCE_H
