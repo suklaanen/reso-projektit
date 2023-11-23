@@ -11,16 +11,15 @@ AddMoney::AddMoney(QObject * parent): QObject(parent)
     reply = nullptr;
 }
 
-void AddMoney::checkAtmBalances (QString token, QString automatID, int offset)
+void AddMoney::checkAtmBalances (QString token, QString automatID)
 {
     this->token = token;
     this->automatID = automatID;
-    this->offset = offset;
 
     QNetworkRequest request;
     QJsonObject body;
     body.insert("id_automat",this->automatID);
-    body.insert("offset",this->offset);
+    //body.insert("offset",this->offset);
     request.setUrl(QUrl("http://localhost:3000/automat/getBalances/"+automatID));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->get(request);
@@ -63,66 +62,29 @@ void AddMoney::parseAtmBalances(const QString &data)
 
 // Lisää käyttövaroja automaattiin -alkaa
 
-void AddMoney::insertValueOf10s(QString amount)
+void AddMoney::insertValueOf(const QString &denomination, QString amount)
 {
     QNetworkRequest request;
     QJsonObject body;
-    body.insert("id_automat",automatID);
-    body.insert("amount",amount);
-    request.setUrl(QUrl("http://localhost:3000/automat/addMoney10/"));
+    body.insert("id_automat", automatID);
+    body.insert("amount", amount);
+    request.setUrl(QUrl("http://localhost:3000/automat/addMoney" + denomination + "/"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->put(request, QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handleInsertValues()));
 }
 
-
-void AddMoney::insertValueOf20s(QString amount)
-{
-    QNetworkRequest request;
-    QJsonObject body;
-    body.insert("id_automat",automatID);
-    body.insert("amount",amount);
-    request.setUrl(QUrl("http://localhost:3000/automat/addMoney20/"));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    reply = manager->put(request, QJsonDocument(body).toJson());
-    connect(reply, SIGNAL(finished()), this, SLOT(handleInsertValues()));
-}
-
-
-void AddMoney::insertValueOf50s(QString amount)
-{
-    QNetworkRequest request;
-    QJsonObject body;
-    body.insert("id_automat",automatID);
-    body.insert("amount",amount);
-    request.setUrl(QUrl("http://localhost:3000/automat/addMoney50/"));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    reply = manager->put(request, QJsonDocument(body).toJson());
-    connect(reply, SIGNAL(finished()), this, SLOT(handleInsertValues()));
-}
-
-
-void AddMoney::insertValueOf100s(QString amount)
-{
-    QNetworkRequest request;
-    QJsonObject body;
-    body.insert("id_automat",automatID);
-    body.insert("amount",amount);
-    request.setUrl(QUrl("http://localhost:3000/automat/addMoney100/"));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    reply = manager->put(request, QJsonDocument(body).toJson());
-    connect(reply, SIGNAL(finished()), this, SLOT(handleInsertValues()));
-    //qDebug() << "Pääseekö tähän asti?";
-}
-
-void AddMoney::handleInsertValues()
-{
+void AddMoney::handleInsertValues() {
     QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray responseData = reply->readAll();
         QString response = QString(responseData).replace("\"", "");
-        qDebug() << "Withdraw response: " << QString(responseData);
-        emit atmInsertValuesOk();
+
+        if (response == "success") {
+            emit atmInsertValuesOk();
+        } else {
+            qDebug() << "Unexpected response: " << response;
+        }
     } else {
         qDebug() << "Could not get response" << reply->errorString();
     }

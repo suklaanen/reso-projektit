@@ -16,11 +16,8 @@ class AddMoney:public QObject
 public:
     AddMoney(QObject * parent = nullptr);
     void requestTransactions(QString token, QString cardID, QString cardType);
-    void checkAtmBalances(QString, QString, int);
-    void insertValueOf10s(QString amount);
-    void insertValueOf20s(QString amount);
-    void insertValueOf50s(QString amount);
-    void insertValueOf100s(QString amount);
+    void checkAtmBalances(QString, QString);
+    void insertValueOf(const QString &denomination, QString amount);
     QList<QString> getAtmBalances();
     QList<QString> getAddedMoney();
 public slots:
@@ -43,6 +40,3 @@ private:
 };
 
 #endif // ADDMONEY_H
-
-
-
