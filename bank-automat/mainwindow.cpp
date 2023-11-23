@@ -62,7 +62,11 @@ void MainWindow::clearScreen()
     ui->PushText7->clear();
     ui->PushText8->clear();
     ui->GREEN->setDisabled(false);
-    ui->Content->setStyleSheet("color: #FFFFFF");
+    ui->Content->setStyleSheet("color: #ffffff");
+    ui->PushText2->setStyleSheet("color: #ffffff");
+    ui->PushText3->setStyleSheet("color: #ffffff");
+    ui->PushText6->setStyleSheet("color: #ffffff");
+    ui->PushText7->setStyleSheet("color: #ffffff");
     ui->pushButton1->setDisabled(true);
     ui->pushButton2->setDisabled(true);
     ui->pushButton3->setDisabled(true);
@@ -130,4 +134,6 @@ void MainWindow::connectSlots()
     connect(ui->atm3, SIGNAL(clicked()), this, SLOT(atm3Clicked()));
     connect(ui->atm4, SIGNAL(clicked()), this, SLOT(atm4Clicked()));
     connect(transactions, SIGNAL(balanceTransReady()), this, SLOT(takesBalanceTransactions()));
+    connect(atmBalances, SIGNAL(atmInsertValuesOk()),this, SLOT(handleAddedMoney(QString)));
+    connect(atmBalances, SIGNAL(atmAddedMoneyOk()),this, SLOT(showAddedMoney(QString)));
 }
