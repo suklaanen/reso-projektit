@@ -118,11 +118,17 @@ void MainWindow::showCardLocked()
 
 void MainWindow::showUserBalance(QString balance)
 {
-
     this->saldo = balance;  // Aseta saldo-muuttujan arvo
     clearScreen();
     state = USER_BALANCE;
+
     ui->Title->setText("Tilin saldo " + this->saldo + " €");
+
+    QString creditLimitText = "";
+    if (cardType == "credit")
+    {
+     ui->Title->setText("Luottoa nostettavissa " + this->saldo + " €" + creditLimitText);
+    }
 
     ui->SecondTitle->setText("Ajankohta | Tapahtuma | Summa (€)");
     for (int i = 0; i < transactions->getTransactions().size(); i++)
@@ -134,6 +140,7 @@ void MainWindow::showUserBalance(QString balance)
     ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
+
 }
 
 void MainWindow::takesBalanceTransactions()

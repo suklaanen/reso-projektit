@@ -78,7 +78,10 @@ router.get('/getBalance/:id', function(request, response) {
             response.json(err);
         }
         else {
-            response.json(data[0].balance);
+            response.json({
+                balance: data[0].balance,
+                credit_limit: data[0].credit_limit
+            });
         }
     });
 });

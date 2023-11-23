@@ -17,14 +17,12 @@ class CheckBalance : public QObject
 public:
     explicit CheckBalance(QObject* parent = nullptr);
     ~CheckBalance();
-    //void requestBalance(QString token, QString accountID, QString cardtype);
     void displayBalance(QString token, QString accountID, QString cardType);
     QList<QString> getBalance();
 public slots:
     void handleGetBalance();
 signals:
     void balanceReady(QString balance);
-    void userBalance();
 
 private:
 
