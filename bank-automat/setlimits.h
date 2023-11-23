@@ -15,9 +15,18 @@ class SetLimits:public QObject
     Q_OBJECT
 public:
     SetLimits(QObject * parent = nullptr);
+    void requestLimit(QString automatID);
+public slots:
+    void handleGetLimit();
 signals:
     void automatCheckLimits();
     void automatSetLimits();
+private:
+    QString automatID;
+    void parseLimits(const QString &data);
+    QNetworkAccessManager *manager;
+    QNetworkReply *reply;
+
 };
 
 #endif // SETLIMITS_H

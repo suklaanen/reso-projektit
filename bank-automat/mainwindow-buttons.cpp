@@ -317,6 +317,7 @@ void MainWindow::button4Clicked()
     case ATM_ADDMONEY50:
     case ATM_ADDMONEY100:
     case ATM_MONEYSENT:
+    case AUTOMAT_SET_MAX_WITHDRAWAL:
         qDebug() << "Paluu clicked";
         showAdminMenu(token);
         break;
@@ -423,6 +424,7 @@ void MainWindow::button8Clicked()
     case ATM_ADDMONEY50:
     case ATM_ADDMONEY100:
     case ATM_MONEYSENT:
+    case AUTOMAT_SET_MAX_WITHDRAWAL:
         qDebug() << "Stop session -clicked";
         showLogin();
         break;

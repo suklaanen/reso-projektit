@@ -135,4 +135,18 @@ router.put('/addMoney100/', function(request, response) {
     });
 });
 
+router.put('/setATMLimit/', function(request, response) {
+    automat.setATMLimit(request.body, function(err, data) {
+        if(err) {
+            console.log(err);
+            response.json(err);
+        }
+        else {
+            console.log(data);
+            response.json(data[0]);
+        }
+    });
+});
+
+
 module.exports = router;

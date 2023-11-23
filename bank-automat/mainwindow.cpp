@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     atmBalances = new AddMoney(this);
     viewlog = new ViewLog(this);
     //addmoney = new AddMoney(this);
-    //setlimits = new SetLimits(this);
+    setlimits = new SetLimits(this);
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
