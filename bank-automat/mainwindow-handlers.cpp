@@ -4,7 +4,6 @@
 // ** Handlers / Handlerit ** voidaan sijoittaa tänne
 
 // Tämä käsittelee painikkeiden klikkaamisen
-
 void MainWindow::clickedNumberHandler()
 {
     if(state == SELECT_CARD || state == CARD_OK || state == CARD_FAIL || state == LOGIN_FAIL ||

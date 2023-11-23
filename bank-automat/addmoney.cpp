@@ -4,7 +4,6 @@
 // Automaatin käyttövarojen tarkastaminen on valmis
 // Käyttövarojen lisääminen ei aloitettu
 
-
 AddMoney::AddMoney(QObject * parent): QObject(parent)
 {
     manager = new QNetworkAccessManager(this);
@@ -57,7 +56,6 @@ void AddMoney::parseAtmBalances(const QString &data)
 
     emit atmBalancesReady();
 }
-
 
 // Lisää käyttövaroja automaattiin -alkaa tästä
 void AddMoney::insertValueOf(const QString &denomination, QString amount)

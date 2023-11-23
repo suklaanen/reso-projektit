@@ -1,12 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-// -------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
 // Valikoista ja painikkeista avautuvat ** Tilat ** alkavat tästä, ja kaikissa show -tunniste nimen alussa
 // state = NIMI;    kussakin tilassa ilmaisee kyseisessä tilassa olevan vaiheen (state)
 // clearScreen();   hyvä muistaa useimmissa sijoittaa alkuun
-// -------------------------------------------------------------------------------------------------------
-
+// --------------------------------------------------------------------------------------------------------
 
 // Automaatin valinta kartalta
 void MainWindow::showMapView()
@@ -141,7 +140,6 @@ void MainWindow::showUserBalance(QString balance)
 void MainWindow::takesBalanceTransactions()
 {
     balance->displayBalance(token, accountID);
-
 }
 
 void MainWindow::showWithdrawal()
@@ -365,7 +363,6 @@ void MainWindow::showAtmBalances()
 
 void MainWindow::showAddedMoney(QString amount)
 {
-
     QString banknote;
 
     switch (state) {

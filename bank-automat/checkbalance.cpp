@@ -40,5 +40,3 @@ void CheckBalance::handleGetBalance()
     // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();
 }
-
-
