@@ -101,14 +101,13 @@ void MainWindow::showUserBalance(QString balance)
     this->saldo = balance;  // Aseta saldo-muuttujan arvo
     clearScreen();
     state = USER_BALANCE;
-    ui->Title->setText("Tilin saldo " + this->saldo);
+    ui->Title->setText("Tilin saldo " + this->saldo + " €");
 
     ui->SecondTitle->setText("Ajankohta | Tapahtuma | Summa (€)");
     for (int i = 0; i < transactions->getTransactions().size(); i++)
         {
         ui->Content2->setText(ui->Content2->text()+transactions->getTransactions().at(i));
         }
-
 
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
@@ -118,7 +117,7 @@ void MainWindow::showUserBalance(QString balance)
 
 void MainWindow::takesBalanceTransactions()
 {
-    balance->displayBalance(token, accountID);
+    balance->displayBalance(token, accountID, cardType);
 
 }
 
