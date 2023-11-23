@@ -45,7 +45,12 @@ class MainWindow : public QMainWindow
         USER_INSERT_AMOUNT,
         WITHDRAWAL_OK,
         WITHDRAWAL_FAIL,
-        AUTOMAT_ADD_MONEY,
+        ATM_ADDMONEY,
+        ATM_ADDMONEY10,
+        ATM_ADDMONEY20,
+        ATM_ADDMONEY50,
+        ATM_ADDMONEY100,
+        ATM_MONEYSENT,
         ATM_CHECKBALANCES,
         AUTOMAT_CHECK_MAX,
         AUTOMAT_SET_MAX_WITHDRAWAL,
@@ -91,7 +96,6 @@ public slots:
     void showTransactions();
     void showATMEvents();
     void showAtmBalances();
-    void showAddMoney();
     void showATMSetLimit();
     void showATMCurrentLimits();
     void showWithdrawFailure(QString reason);
@@ -99,6 +103,12 @@ public slots:
     void handleTimeout();
     void handleAtmLimit(QString limit);
     void showMapView();
+    void showAddMoney();
+    void showAddMoney10();
+    void showAddMoney20();
+    void showAddMoney50();
+    void showAddMoney100();
+    void showAddedMoney(QString amount);
 private:
     Ui::MainWindow *ui;
     QNetworkReply * reply;
@@ -108,7 +118,6 @@ private:
     QString cardType;
     QString accountID;
     Login * login;
-    //QWidget Mapframe;
     CheckBalance * balance;
     Withdraw * withdraw;
     Transactions * transactions;
@@ -117,6 +126,10 @@ private:
     QString token;
     void clearScreen();
     void checkAtmLimit();
+    void addMoney10();
+    void addMoney20();
+    void addMoney50();
+    void addMoney100();
     int offset;
     State state;
     QString saldo;

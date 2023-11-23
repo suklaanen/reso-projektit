@@ -46,6 +46,9 @@ router.post('/', function(request, response) {
     });
 });
 
+/********************************************************************************************
+ *** JOS palautat käyttöön, niin vaihda polku/nimi :) muuten menee addmoney rikki ***********
+
 router.put('/:id', function(request, response) {
     automat.updateAutomat(request.params.id, request.body, function(err, data) {
         if(err) {
@@ -56,6 +59,7 @@ router.put('/:id', function(request, response) {
         }
     });
 });
+********************************************************************************************/
 
 router.delete('/:id', function(request, response) {
     automat.deleteAutomat(request.params.id, function(err, data) {
@@ -74,6 +78,58 @@ router.get('/getBalances/:id', function(request, response) {
             response.json(err);
         }
         else {
+            response.json(data[0]);
+        }
+    });
+});
+
+router.put('/addMoney10/', function(request, response) {
+    automat.addMoney10(request.body, function(err, data) {
+        if(err) {
+            console.log(err);
+            response.json(err);
+        }
+        else {
+            console.log(data);
+            response.json(data[0]);
+        }
+    });
+});
+
+router.put('/addMoney20/', function(request, response) {
+    automat.addMoney20(request.body, function(err, data) {
+        if(err) {
+            console.log(err);
+            response.json(err);
+        }
+        else {
+            console.log(data);
+            response.json(data[0]);
+        }
+    });
+});
+
+router.put('/addMoney50/', function(request, response) {
+    automat.addMoney50(request.body, function(err, data) {
+        if(err) {
+            console.log(err);
+            response.json(err);
+        }
+        else {
+            console.log(data);
+            response.json(data[0]);
+        }
+    });
+});
+
+router.put('/addMoney100/', function(request, response) {
+    automat.addMoney100(request.body, function(err, data) {
+        if(err) {
+            console.log(err);
+            response.json(err);
+        }
+        else {
+            console.log(data);
             response.json(data[0]);
         }
     });
