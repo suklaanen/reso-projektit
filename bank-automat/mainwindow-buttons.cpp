@@ -1,12 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-
 // -------------------------------------------------------------------------------------
 // ** Painikkeet ** ja napit alkavat tästä sekä niistä etenemiset switch casella
 // case NIMI:   kertoo "nykyisen" vaiheen (state) ja se ilmaistaan tiloissa alempana
 // -------------------------------------------------------------------------------------
-
 
 // Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
 
@@ -56,7 +54,6 @@ void MainWindow::atm4Clicked()
 
 void MainWindow::clickedGREEN()
 {
-
     //QString amountToAdd = ui->Content->text();
     qDebug()<<"Green button clicked";
 
@@ -92,7 +89,6 @@ void MainWindow::clickedGREEN()
     case USER_MENU:
         break;
     case ADMIN_MENU:
-        //atmBalances->checkAtmBalances(token, automatID);
         break;
     case USER_INSERT_AMOUNT:
         qDebug() << "Amount inserted, green clicked";

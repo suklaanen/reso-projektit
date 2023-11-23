@@ -1,12 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-// -------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
 // Valikoista ja painikkeista avautuvat ** Tilat ** alkavat tästä, ja kaikissa show -tunniste nimen alussa
 // state = NIMI;    kussakin tilassa ilmaisee kyseisessä tilassa olevan vaiheen (state)
 // clearScreen();   hyvä muistaa useimmissa sijoittaa alkuun
-// -------------------------------------------------------------------------------------------------------
-
+// --------------------------------------------------------------------------------------------------------
 
 // Automaatin valinta kartalta
 void MainWindow::showMapView()
@@ -71,13 +70,35 @@ void MainWindow::showAdminMenu(QString token)
     qDebug() << token << " admin";
     state = ADMIN_MENU;
     clearScreen();
+
     ui->pushButton2->setDisabled(false);
     ui->pushButton3->setDisabled(false);
     ui->pushButton4->setDisabled(false);
     ui->pushButton6->setDisabled(false);
     ui->pushButton7->setDisabled(false);
     ui->pushButton8->setDisabled(false);
+
+    /****************************************************************
+     ***** Jos halutaan tää näyttää, niin pitää korjata logiikka
+     ***** HOX : atmBalancet ulos oikeille paikoilleen
+                    atmBalances->getAtmBalances().at(0)
+                    atmBalances->getAtmBalances().at(1)
+                    atmBalances->getAtmBalances().at(2)
+                    atmBalances->getAtmBalances().at(3)
+     ***** Sekä Nostorajan näkymä oikeana, kuten tietokannassa
+    ****************************************************************/
+
+    QString contentText =
+        "\t Nostoraja : " + QString::number(atmMaxWithdrawal) + " Euroa \n" +
+        "\t Setelit ja määrät : \n"
+        "\t 10 €  \t" + "Kpl määrä tähän" + " \n"
+        "\t 20 €  \t" + "Kpl määrä tähän" + " \n"
+        "\t 50 €  \t" + "Kpl määrä tähän" + " \n"
+        "\t 100 €  \t" + "Kpl määrä tähän" + " \n";
+
     ui->Title->setText(QString("Valitse toiminto"));
+    ui->SecondTitle->setText("Automaatin ID: " + automatID);
+    ui->Content2->setText(contentText);
     ui->PushText2->setText(QString("Lokitiedot"));
     ui->PushText3->setText(QString("Automaatin varat"));
     ui->PushText4->setText(QString("Lisää varoja"));
@@ -118,7 +139,6 @@ void MainWindow::showUserBalance(QString balance)
 void MainWindow::takesBalanceTransactions()
 {
     balance->displayBalance(token, accountID, cardType);
-
 }
 
 void MainWindow::showWithdrawal()
@@ -320,10 +340,8 @@ void MainWindow::showAddMoney100()
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
-
 void MainWindow::showAtmBalances()
 {
-    //qDebug() << "Pääseekö tähän asti? 2";
     clearScreen();
     state = ATM_CHECKBALANCES;
 
@@ -342,10 +360,8 @@ void MainWindow::showAtmBalances()
     ui->pushButton8->setDisabled(false);
 }
 
-
 void MainWindow::showAddedMoney(QString amount)
 {
-
     QString banknote;
 
     switch (state) {
@@ -379,7 +395,6 @@ void MainWindow::showAddedMoney(QString amount)
     ui->pushButton8->setDisabled(false);
 }
 
-
 void MainWindow::showATMCurrentLimits()
 {
 
@@ -403,7 +418,6 @@ void MainWindow::showWithdrawOk(QString amount)
     ui->SecondTitle->setText("Nostettu "+amount+" euroa");
     timer->start(4000);
 }
-
 
 void MainWindow::showATMSetLimit()
 {
