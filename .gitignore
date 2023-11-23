@@ -1,5 +1,5 @@
 backend/node_modules/
-backend/history/
+backend/.history/
 bank-automat/build/
 bank-automat/*.user
 backend/*.env

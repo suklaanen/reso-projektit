@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     atmBalances = new AddMoney(this);
     viewlog = new ViewLog(this);
     //addmoney = new AddMoney(this);
-    //setlimits = new SetLimits(this);
+    setlimits = new SetLimits(this);
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
@@ -137,4 +137,5 @@ void MainWindow::connectSlots()
     connect(transactions, SIGNAL(balanceTransReady()), this, SLOT(takesBalanceTransactions()));
     connect(atmBalances, SIGNAL(atmInsertValuesOk()),this, SLOT(handleAddedMoney(QString)));
     connect(atmBalances, SIGNAL(atmAddedMoneyOk()),this, SLOT(showAddedMoney(QString)));
+    connect(setlimits, SIGNAL(atmLimitReady()), this, SLOT(showATMSetLimit()));
 }

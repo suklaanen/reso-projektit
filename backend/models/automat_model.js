@@ -45,6 +45,11 @@ const automat = {
         return db.query("UPDATE automat SET balance_100 = ? + balance_100 WHERE id_automat=?",
         [newData.amount, newData.id_automat],
         callback);
+    },
+    setATMLimit: function(newData, callback) {
+        return db.query("UPDATE automat SET max_withdrawal = ? WHERE id_automat=?",
+        [newData.ATMlimit, newData.id_automat],
+        callback);
     }
 };
 
