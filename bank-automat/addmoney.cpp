@@ -19,7 +19,6 @@ void AddMoney::checkAtmBalances (QString token, QString automatID)
     QNetworkRequest request;
     QJsonObject body;
     body.insert("id_automat",this->automatID);
-    //body.insert("offset",this->offset);
     request.setUrl(QUrl("http://localhost:3000/automat/getBalances/"+automatID));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->get(request);
@@ -60,8 +59,7 @@ void AddMoney::parseAtmBalances(const QString &data)
 }
 
 
-// Lisää käyttövaroja automaattiin -alkaa
-
+// Lisää käyttövaroja automaattiin -alkaa tästä
 void AddMoney::insertValueOf(const QString &denomination, QString amount)
 {
     QNetworkRequest request;

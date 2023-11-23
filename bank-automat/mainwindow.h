@@ -133,7 +133,6 @@ private:
     int offset;
     State state;
     QString saldo;
-    QString atm;
     QString automatID;
     QTimer * timer;
     int atmMaxWithdrawal;

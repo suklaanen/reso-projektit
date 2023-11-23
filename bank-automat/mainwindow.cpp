@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     reply = nullptr;
     token = "";
     offset = 0;
+    automatID = "";
     connectSlots();
 
     ui->RED->setDisabled(false);

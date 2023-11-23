@@ -92,7 +92,6 @@ void MainWindow::clickedGREEN()
     case USER_MENU:
         break;
     case ADMIN_MENU:
-        //atmBalances->checkAtmBalances(token, automatID);
         break;
     case USER_INSERT_AMOUNT:
         qDebug() << "Amount inserted, green clicked";
