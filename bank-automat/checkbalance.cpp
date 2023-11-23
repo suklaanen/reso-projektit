@@ -1,4 +1,5 @@
 #include "checkbalance.h"
+#include <QLocale>
 
 CheckBalance::CheckBalance(QObject *parent)
     : QObject{parent}
@@ -55,7 +56,16 @@ void CheckBalance::handleGetBalance()
                         balance += creditLimit;
                     }
 
-                    emit balanceReady(QString::number(balance, 'f', 2));
+                    QLocale locale(QLocale::English);
+                    QString formattedBalance = locale.toString(balance, 'f', 2) + " €";
+                    QString formattedCreditLimit = locale.toString(creditLimit, 'f', 2) + " €";
+
+                    formattedBalance.replace(",", " ");
+                    formattedCreditLimit.replace(",", " ");
+
+                     emit balanceReady(formattedBalance, formattedCreditLimit);
+                    //emit balanceReady(QString::number(balance, 'f', 2));
+
                 } else {
                     qDebug() << "Invalid balance or credit_limit format";
                 }

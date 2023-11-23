@@ -89,7 +89,8 @@ public slots:
     void atm2Clicked();
     void atm3Clicked();
     void atm4Clicked();
-    void showUserBalance(QString balance);
+    //void showUserBalance(QString balance);
+    void showUserBalance(QString formattedBalance, QString formattedCreditLimit);
     void takesBalanceTransactions();
     void showWithdrawal();
     void showInsertAmount();
@@ -133,6 +134,7 @@ private:
     int offset;
     State state;
     QString saldo;
+    QString csaldo;
     QString automatID;
     QTimer * timer;
     int atmMaxWithdrawal;
