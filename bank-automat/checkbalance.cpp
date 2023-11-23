@@ -43,46 +43,45 @@ void CheckBalance::handleGetBalance()
     // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();*/
 
-  QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
     if (reply->error() == QNetworkReply::NoError) {
-        // Onnistunut vastaus
         QByteArray responseData = reply->readAll();
-        QString balanceString = QString(responseData).replace("\"", "");
+        qDebug() << "Response Data:" << responseData;
 
-        // Muunna saldo liukuluvuksi
-        bool ok;
-        double balance = balanceString.toDouble(&ok);
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
 
-        if (ok) {
-            // Käsittely credit-kortin tapauksessa
-            if (cardType == "credit") {
-                // Käytä QJsonDocumentia parsimaan vastaus JSON-objektiksi
-                QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
+        if (!jsonResponse.isNull() && jsonResponse.isObject()) {
+            QJsonObject jsonObject = jsonResponse.object();
 
-                // Tarkista, että vastaus on JSON-objekti
-                if (jsonResponse.isObject()) {
-                    QJsonObject jsonObject = jsonResponse.object();
-                    double creditLimit = jsonObject["credit_limit"].toDouble();
+            if (jsonObject.contains("balance") && jsonObject.contains("credit_limit")) {
+                QString balanceString = jsonObject["balance"].toString();
+                QString creditLimitString = jsonObject["credit_limit"].toString();
 
-                    // Lisää luottoraja saldoon
-                    balance += creditLimit;
+                bool balanceOk, creditLimitOk;
+                double balance = balanceString.toDouble(&balanceOk);
+                double creditLimit = creditLimitString.toDouble(&creditLimitOk);
+
+                if (balanceOk && creditLimitOk) {
+                    if (cardType == "credit") {
+                        balance += creditLimit;
+                    }
+
+                    emit balanceReady(QString::number(balance, 'f', 2));
                 } else {
-                    qDebug() << "Invalid JSON data format.";
+                    qDebug() << "Invalid balance or credit_limit format";
                 }
+            } else {
+                qDebug() << "Invalid JSON structure. Missing fields.";
             }
-
-            emit balanceReady(QString::number(balance));
         } else {
-            qDebug() << "Invalid balance format";
+            qDebug() << "Invalid JSON data format.";
         }
     } else {
-        // Käsitellään mahdollinen virhe (verkkovirhe)
         qDebug() << "Could not get balance" << reply->errorString();
     }
 
-    // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();
-
 
 
 }

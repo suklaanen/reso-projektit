@@ -24,7 +24,8 @@ public slots:
     void handleGetBalance();
 signals:
     void balanceReady(QString balance);
-    void userBalance();
+    //void userBalance();
+    void creditLimitReady(const QString &creditLimit);
 
 private:
 
