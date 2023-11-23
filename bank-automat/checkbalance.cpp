@@ -31,19 +31,7 @@ void CheckBalance::displayBalance(QString token, QString accountID, QString card
 
 void CheckBalance::handleGetBalance()
 {
-    /*QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
-    if (reply->error() == QNetworkReply::NoError) {
-        // Onnistunut vastaus
-        QByteArray responseData = reply->readAll();
-        QString balance = QString(responseData).replace("\"", "");
-
-
-        emit balanceReady(balance);
-    }
-    // Tyhjennetään vastaus myöhemmin
-    reply->deleteLater();*/
-
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray responseData = reply->readAll();

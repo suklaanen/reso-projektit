@@ -98,11 +98,6 @@ void MainWindow::showCardLocked()
 void MainWindow::showUserBalance(QString balance)
 {
 
-    /*this->saldo = balance;  // Aseta saldo-muuttujan arvo
-    clearScreen();
-    state = USER_BALANCE;
-    ui->Title->setText("Tilin saldo " + this->saldo + " €");*/
-
     this->saldo = balance;  // Aseta saldo-muuttujan arvo
     clearScreen();
     state = USER_BALANCE;
