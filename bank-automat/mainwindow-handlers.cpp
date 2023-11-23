@@ -4,10 +4,11 @@
 // ** Handlers / Handlerit ** voidaan sijoittaa tänne
 
 // Tämä käsittelee painikkeiden klikkaamisen
-
 void MainWindow::clickedNumberHandler()
 {
-    if(state == SELECT_CARD || state == CARD_OK || state == CARD_FAIL || state == LOGIN_FAIL || state == USER_INSERT_AMOUNT) {
+    if(state == SELECT_CARD || state == CARD_OK || state == CARD_FAIL || state == LOGIN_FAIL ||
+        state == USER_INSERT_AMOUNT || state == ATM_ADDMONEY10 || state == ATM_ADDMONEY20 ||
+        state == ATM_ADDMONEY50 || state == ATM_ADDMONEY100) {
         QPushButton * btn = qobject_cast<QPushButton*>(sender());
         QString name = btn->objectName();
         qDebug()<< name << " -button clicked";
@@ -70,5 +71,3 @@ void MainWindow::selectDebitCredit()
     ui->PushText4->setText(QString("Debit"));
     ui->PushText8->setText(QString("Credit"));
 }
-
-

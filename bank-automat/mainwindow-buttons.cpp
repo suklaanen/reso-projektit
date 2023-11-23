@@ -1,12 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-
 // -------------------------------------------------------------------------------------
 // ** Painikkeet ** ja napit alkavat tästä sekä niistä etenemiset switch casella
 // case NIMI:   kertoo "nykyisen" vaiheen (state) ja se ilmaistaan tiloissa alempana
 // -------------------------------------------------------------------------------------
-
 
 // Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
 
@@ -56,6 +54,7 @@ void MainWindow::atm4Clicked()
 
 void MainWindow::clickedGREEN()
 {
+    //QString amountToAdd = ui->Content->text();
     qDebug()<<"Green button clicked";
 
     switch (state) {
@@ -94,6 +93,22 @@ void MainWindow::clickedGREEN()
     case USER_INSERT_AMOUNT:
         qDebug() << "Amount inserted, green clicked";
         withdraw->setAmount(ui->Content->text());
+        break;
+    case ATM_ADDMONEY10:
+        atmBalances->insertValueOf("10", ui->Content->text());
+        showAddedMoney(ui->Content->text());
+        break;
+    case ATM_ADDMONEY20:
+        atmBalances->insertValueOf("20", ui->Content->text());
+        showAddedMoney(ui->Content->text());
+        break;
+    case ATM_ADDMONEY50:
+        atmBalances->insertValueOf("50", ui->Content->text());
+        showAddedMoney(ui->Content->text());
+        break;
+    case ATM_ADDMONEY100:
+        atmBalances->insertValueOf("100", ui->Content->text());
+        showAddedMoney(ui->Content->text());
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -213,6 +228,13 @@ void MainWindow::button2Clicked()
         qDebug() << "Withdraw 20 clicked";
         withdraw->setAmount(QString("20"));
         break;
+    case ATM_ADDMONEY:
+    case ATM_ADDMONEY20:
+    case ATM_ADDMONEY50:
+    case ATM_ADDMONEY100:
+        qDebug() << "Add Money 10 -clicked";
+        showAddMoney10();
+        break;
     default:
         // "kaikki muut enum-arvot"
         break;
@@ -226,7 +248,7 @@ void MainWindow::button3Clicked()
 
     case ADMIN_MENU:
         qDebug() << "ATM balance -clicked";
-        atmBalances->checkAtmBalances(token, automatID, offset);
+        atmBalances->checkAtmBalances(token, automatID);
         break;
     case USER_MENU:
         qDebug() << "transactions clicked";
@@ -236,6 +258,13 @@ void MainWindow::button3Clicked()
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 40 clicked";
         withdraw->setAmount(QString("40"));
+        break;
+    case ATM_ADDMONEY:
+    case ATM_ADDMONEY10:
+    case ATM_ADDMONEY50:
+    case ATM_ADDMONEY100:
+        qDebug() << "Add Money 20 -clicked";
+        showAddMoney20();
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -264,7 +293,8 @@ void MainWindow::button4Clicked()
         showMenu(token, accountID);
         break;
     case USER_WITHDRAWAL:
-        qDebug() << "Return -clicked";
+    case WITHDRAWAL_FAIL:
+        qDebug() << "Paluu clicked";
         showMenu(token, accountID);
         break;
     case USER_INSERT_AMOUNT:
@@ -279,17 +309,17 @@ void MainWindow::button4Clicked()
         ui->PushText5->setStyleSheet("");
         showMenu(token, accountID);
         break;
-    case WITHDRAWAL_FAIL:
-        qDebug() << "Paluu clicked";
-        showMenu(token, accountID);
-        break;
     case ATM_CHECKBALANCES:
+    case AUTOMAT_VIEW_LOG:
+    case ATM_ADDMONEY:
+    case ATM_ADDMONEY10:
+    case ATM_ADDMONEY20:
+    case ATM_ADDMONEY50:
+    case ATM_ADDMONEY100:
+    case ATM_MONEYSENT:
         qDebug() << "Paluu clicked";
         showAdminMenu(token);
         break;
-    case AUTOMAT_VIEW_LOG:
-        qDebug() << "Paluu clicked";
-        showAdminMenu(token);
     default:
         // "kaikki muut enum-arvot"
         break;
@@ -334,6 +364,13 @@ void MainWindow::button6Clicked()
         qDebug() << "Withdraw 80 clicked";
         withdraw->setAmount(QString("80"));
         break;
+    case ATM_ADDMONEY:
+    case ATM_ADDMONEY10:
+    case ATM_ADDMONEY20:
+    case ATM_ADDMONEY100:
+        qDebug() << "Add Money 50 -clicked";
+        showAddMoney50();
+        break;
     default:
         // "kaikki muut enum-arvot"
         break;
@@ -352,6 +389,13 @@ void MainWindow::button7Clicked()
         qDebug() << "Insert amount clicked";
         showInsertAmount();
         break;
+    case ATM_ADDMONEY:
+    case ATM_ADDMONEY10:
+    case ATM_ADDMONEY20:
+    case ATM_ADDMONEY50:
+        qDebug() << "Add Money 100 -clicked";
+        showAddMoney100();
+        break;
     default:
         // "kaikki muut enum-arvot"
         break;
@@ -366,34 +410,19 @@ void MainWindow::button8Clicked()
         qDebug() << "credit clicked";
         break;
     case ADMIN_MENU:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
     case USER_MENU:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
     case USER_WITHDRAWAL:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
     case USER_TRANSACTIONS:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
     case USER_BALANCE:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
     case ATM_CHECKBALANCES:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
     case USER_INSERT_AMOUNT:
-        qDebug() << "Stop session -clicked";
-        showLogin();
-        break;
     case AUTOMAT_VIEW_LOG:
+    case ATM_ADDMONEY:
+    case ATM_ADDMONEY10:
+    case ATM_ADDMONEY20:
+    case ATM_ADDMONEY50:
+    case ATM_ADDMONEY100:
+    case ATM_MONEYSENT:
         qDebug() << "Stop session -clicked";
         showLogin();
         break;

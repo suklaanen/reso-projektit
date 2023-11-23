@@ -4,28 +4,25 @@
 // Automaatin käyttövarojen tarkastaminen on valmis
 // Käyttövarojen lisääminen ei aloitettu
 
-
 AddMoney::AddMoney(QObject * parent): QObject(parent)
 {
     manager = new QNetworkAccessManager(this);
     reply = nullptr;
 }
 
-void AddMoney::checkAtmBalances (QString token, QString automatID, int offset)
+void AddMoney::checkAtmBalances (QString token, QString automatID)
 {
     this->token = token;
     this->automatID = automatID;
-    this->offset = offset;
 
     QNetworkRequest request;
     QJsonObject body;
     body.insert("id_automat",this->automatID);
-    body.insert("offset",this->offset);
     request.setUrl(QUrl("http://localhost:3000/automat/getBalances/"+automatID));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(handleGetAtmBalances()));
-    qDebug() << "Pääseekö tähän asti?";
+    //qDebug() << "Pääseekö tähän asti?";
 }
 
 QList<QString> AddMoney::getAtmBalances()
@@ -58,4 +55,41 @@ void AddMoney::parseAtmBalances(const QString &data)
     parsedAtmBalances.append(QString::number(jsonObject["balance_100"].toInt()));
 
     emit atmBalancesReady();
+}
+
+// Lisää käyttövaroja automaattiin -alkaa tästä
+void AddMoney::insertValueOf(const QString &denomination, QString amount)
+{
+    QNetworkRequest request;
+    QJsonObject body;
+    body.insert("id_automat", automatID);
+    body.insert("amount", amount);
+    request.setUrl(QUrl("http://localhost:3000/automat/addMoney" + denomination + "/"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    reply = manager->put(request, QJsonDocument(body).toJson());
+    connect(reply, SIGNAL(finished()), this, SLOT(handleInsertValues()));
+}
+
+void AddMoney::handleInsertValues() {
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+    if (reply->error() == QNetworkReply::NoError) {
+        QByteArray responseData = reply->readAll();
+        QString response = QString(responseData).replace("\"", "");
+
+        if (response == "success") {
+            emit atmInsertValuesOk();
+        } else {
+            qDebug() << "Unexpected response: " << response;
+        }
+    } else {
+        qDebug() << "Could not get response" << reply->errorString();
+    }
+    reply->deleteLater();
+}
+
+void AddMoney::handleAddedMoney()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+    emit atmAddMoneyOk();
+    reply->deleteLater();
 }

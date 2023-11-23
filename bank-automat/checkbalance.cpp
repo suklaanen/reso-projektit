@@ -73,5 +73,3 @@ void CheckBalance::handleGetBalance()
 
 
 }
-
-
