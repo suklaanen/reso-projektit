@@ -137,4 +137,5 @@ void MainWindow::connectSlots()
     connect(transactions, SIGNAL(balanceTransReady()), this, SLOT(takesBalanceTransactions()));
     connect(atmBalances, SIGNAL(atmInsertValuesOk()),this, SLOT(handleAddedMoney(QString)));
     connect(atmBalances, SIGNAL(atmAddedMoneyOk()),this, SLOT(showAddedMoney(QString)));
+    connect(setlimits, SIGNAL(atmLimitReady()), this, SLOT(showATMSetLimit()));
 }

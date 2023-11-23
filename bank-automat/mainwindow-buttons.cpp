@@ -384,7 +384,7 @@ void MainWindow::button7Clicked()
     switch(state) {
     case ADMIN_MENU:
         qDebug() << "ATM set limit -clicked";
-        showATMSetLimit();
+        setlimits->requestLimit(automatID);
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Insert amount clicked";

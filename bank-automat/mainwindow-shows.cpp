@@ -423,13 +423,13 @@ void MainWindow::showATMSetLimit()
 {
     clearScreen();
     state = AUTOMAT_SET_MAX_WITHDRAWAL;
-    ui->Title->setText("Nykyinen nostoraja:  euroa");
+    ui->Title->setText("Nykyinen nostoraja: "+setlimits->getATMLimit()+" euroa.");
     ui->SecondTitle->setText("Syötä uusi nostoraja");
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-    setlimits->requestLimit(automatID);
+
 }
 
 void MainWindow::showATMEvents()

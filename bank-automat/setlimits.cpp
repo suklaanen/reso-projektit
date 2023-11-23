@@ -21,12 +21,17 @@ void SetLimits::requestLimit(QString automatID)
     connect(reply, SIGNAL(finished()), this, SLOT(handleGetLimit()));
 }
 
+QString SetLimits::getATMLimit()
+{
+    return parsedAtmLimit;
+}
+
 void SetLimits::handleGetLimit()
 {
     QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
     if (reply->error() == QNetworkReply::NoError) {
         // Onnistunut vastaus
-        qDebug() << "Pääseekö tänne" ;
+        qDebug() << "handleGetLimit onnistunut vastaus" ;
         QByteArray responseData = reply->readAll();
         parseLimits(responseData);
     }
@@ -36,9 +41,7 @@ void SetLimits::handleGetLimit()
 
 void SetLimits::parseLimits(const QString &data)
 {
-    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
-    QJsonObject jsonObject = jsonResponse.object();
-    qDebug() << jsonObject ;
-    parsedAtmLimit.append(QString::number(jsonObject["max_withdrawal"].toInt()));
-    //emit atmBalancesReady();// jatka tästä!
+    qDebug() << "parseLimits. data:" << data ;
+    parsedAtmLimit = data;
+    emit atmLimitReady();
 }
