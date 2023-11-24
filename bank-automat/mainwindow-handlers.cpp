@@ -1,7 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-// ** Handlers / Handlerit ** voidaan sijoittaa tänne
+// *************************************************************************************
+// ** Handlers ** Käsittelijät *********************************************************
+// ***** Erilaisia käsittelijöitä on sijoitettu tänne **********************************
+// *************************************************************************************
 
 // Tämä käsittelee painikkeiden klikkaamisen
 void MainWindow::clickedNumberHandler()
@@ -50,23 +53,4 @@ void MainWindow::handleTimeout()
         // "kaikki muut enum-arvot"
         break;
     }
-}
-
-void MainWindow::handleAtmLimit(QString limit)
-{
-    this->atmMaxWithdrawal = limit.toInt();
-    qDebug() << "Atm " << this->automatID << " maxwithdrawal is " << this->atmMaxWithdrawal;
-}
-
-// Valitse Debit tai Credit (ennen pinin kyselyä, jos yhdistelmäkortti)
-void MainWindow::selectDebitCredit()
-{
-    this->cardType = "credit/debit";
-    state = CARD_COMBINATION;
-    clearScreen();
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
-    ui->Title->setText(QString("Valitse tili"));
-    ui->PushText4->setText(QString("Debit"));
-    ui->PushText8->setText(QString("Credit"));
 }

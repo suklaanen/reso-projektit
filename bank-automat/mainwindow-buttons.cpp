@@ -1,12 +1,28 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-// -------------------------------------------------------------------------------------
-// ** Painikkeet ** ja napit alkavat tästä sekä niistä etenemiset switch casella
-// case NIMI:   kertoo "nykyisen" vaiheen (state) ja se ilmaistaan tiloissa alempana
-// -------------------------------------------------------------------------------------
-
-// Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
+// *************************************************************************************
+// ** Painikkeet ** ja napit alkavat tästä sekä niistä siirtymiä (mm. switch case)
+// ** case NIMI:   kertoo "nykyisen" vaiheen (state) ja se ilmaistaan tiloissa alempana
+// *************************************************************************************
+// ****** Sisältää:
+// ********** atm1Clicked()
+// ********** atm2Clicked()
+// ********** atm3Clicked()
+// ********** atm4Clicked()
+// ********** clickedGREEN()
+// ********** clickedYELLOW()
+// ********** clickedGREY()
+// ********** clickedRED()
+// ********** button1Clicked()
+// ********** button2Clicked()
+// ********** button3Clicked()
+// ********** button4Clicked()
+// ********** button5Clicked()
+// ********** button6Clicked()
+// ********** button7Clicked()
+// ********** button8Clicked()
+// *************************************************************************************
 
 void MainWindow::atmClicked()
 {
@@ -46,14 +62,11 @@ void MainWindow::clickedGREEN()
         }
         break;
     case CARD_OK:
+    case LOGIN_FAIL:
         login->setPIN(ui->Content->text(),cardType);
         timer->stop();
         break;
     case CARD_COMBINATION:
-        break;
-    case LOGIN_FAIL:
-        login->setPIN(ui->Content->text(),cardType);
-        timer->stop();
         break;
     case USER_MENU:
         break;
@@ -109,9 +122,6 @@ void MainWindow::clickedGREY()
     }
     switch(state) {
     case CARD_OK:
-        timer->stop();
-        timer->start(10000);
-        break;
     case LOGIN_FAIL:
         timer->stop();
         timer->start(10000);
@@ -209,12 +219,12 @@ void MainWindow::button3Clicked()
         atmBalances->checkAtmBalances(token, automatID,"main");
         break;
     case USER_MENU:
-        qDebug() << "transactions clicked";
+        qDebug() << "Transactions -clicked";
         offset = 0;
         transactions->showTransactions(token, accountID, offset, QString("transactions"));
         break;
     case USER_WITHDRAWAL:
-        qDebug() << "Withdraw 40 clicked";
+        qDebug() << "Withdraw 40 -clicked";
         withdraw->setAmount(QString("40"));
         break;
     case ATM_ADDMONEY:

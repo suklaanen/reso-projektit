@@ -15,8 +15,12 @@ SOURCES += \
     login.cpp \
     main.cpp \
     mainwindow-buttons.cpp \
+    mainwindow-connects.cpp \
     mainwindow-handlers.cpp \
-    mainwindow-shows.cpp \
+    mainwindow-showAdminSlots.cpp \
+    mainwindow-showLoginSlots.cpp \
+    mainwindow-showOtherSlots.cpp \
+    mainwindow-showUserSlots.cpp \
     mainwindow.cpp \
     setlimits.cpp \
     transactions.cpp \
