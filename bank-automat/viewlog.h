@@ -16,6 +16,7 @@ class ViewLog:public QObject
     Q_OBJECT
 public:
     ViewLog(QObject * parent = nullptr);
+    ~ViewLog();
     void requestEvents(QString, QString, int);
     QList<QString> getEvents();
     int maxEvents();

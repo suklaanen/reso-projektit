@@ -8,6 +8,10 @@ ViewLog::ViewLog(QObject * parent): QObject(parent)
     reply = nullptr;
 }
 
+ViewLog::~ViewLog()
+{
+}
+
 void ViewLog::requestEvents(QString token, QString automatID, int offset)
 {
     this->token = token;

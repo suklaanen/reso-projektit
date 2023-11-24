@@ -92,6 +92,13 @@ void MainWindow::checkAtmLimit()
     }
 }
 
+void MainWindow::disableEnableButtons(QVector<QPushButton*> btns, bool state)
+{
+    for(auto btn: btns) {
+        btn->setDisabled(state);
+    }
+}
+
 // Connectit käsittelee saadun signaalin yhteyden tiettyyn slottiin
 // l. Signaalista siirtymä Slottiin (esim. showJokinTila)
 void MainWindow::connectSlots()
@@ -130,10 +137,10 @@ void MainWindow::connectSlots()
     connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
     connect(atmBalances, SIGNAL(atmBalancesReady()),this, SLOT(showAtmBalances()));
     connect(viewlog, SIGNAL(LogReady()), this, SLOT(showATMEvents()));
-    connect(ui->atm1, SIGNAL(clicked()), this, SLOT(atm1Clicked()));
-    connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atm2Clicked()));
-    connect(ui->atm3, SIGNAL(clicked()), this, SLOT(atm3Clicked()));
-    connect(ui->atm4, SIGNAL(clicked()), this, SLOT(atm4Clicked()));
+    connect(ui->atm1, SIGNAL(clicked()), this, SLOT(atmClicked()));
+    connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atmClicked()));
+    connect(ui->atm3, SIGNAL(clicked()), this, SLOT(atmClicked()));
+    connect(ui->atm4, SIGNAL(clicked()), this, SLOT(atmClicked()));
     connect(transactions, SIGNAL(balanceTransReady()), this, SLOT(takesBalanceTransactions()));
     connect(atmBalances, SIGNAL(atmInsertValuesOk(QString)),this, SLOT(showAddedMoney(QString)));
     connect(setlimits, SIGNAL(atmLimitReady()), this, SLOT(showATMSetLimit()));

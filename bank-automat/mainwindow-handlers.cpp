@@ -7,8 +7,7 @@
 void MainWindow::clickedNumberHandler()
 {
     if(state == SELECT_CARD || state == CARD_OK || state == CARD_FAIL || state == LOGIN_FAIL ||
-        state == USER_INSERT_AMOUNT || state == ATM_ADDMONEY10 || state == ATM_ADDMONEY20 ||
-        state == ATM_ADDMONEY50 || state == ATM_ADDMONEY100 || state == AUTOMAT_SET_MAX_WITHDRAWAL) {
+        state == USER_INSERT_AMOUNT || state == ATM_ADDMONEY_AMOUNT || state == AUTOMAT_SET_MAX_WITHDRAWAL) {
         QPushButton * btn = qobject_cast<QPushButton*>(sender());
         QString name = btn->objectName();
         qDebug()<< name << " -button clicked";
