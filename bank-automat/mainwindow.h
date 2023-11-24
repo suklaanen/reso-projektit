@@ -48,10 +48,7 @@ class MainWindow : public QMainWindow
         WITHDRAWAL_OK,
         WITHDRAWAL_FAIL,
         ATM_ADDMONEY,
-        ATM_ADDMONEY10,
-        ATM_ADDMONEY20,
-        ATM_ADDMONEY50,
-        ATM_ADDMONEY100,
+        ATM_ADDMONEY_AMOUNT,
         ATM_MONEYSENT,
         ATM_CHECKBALANCES,
         AUTOMAT_CHECK_MAX,
@@ -104,10 +101,6 @@ public slots:
     void showMapView();
     void showAddMoney();
     void showAddMoneyAmount(QString, int text_color_shift);
-    void showAddMoney10();
-    void showAddMoney20();
-    void showAddMoney50();
-    void showAddMoney100();
     void showAddedMoney(QString amount);
     void showATMLimitSetted();
 private:
@@ -128,10 +121,6 @@ private:
     QString token;
     void clearScreen();
     void checkAtmLimit();
-    void addMoney10();
-    void addMoney20();
-    void addMoney50();
-    void addMoney100();
     void disableEnableButtons(QVector<QPushButton*> btns, bool state);
     int offset;
     State state;

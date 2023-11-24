@@ -259,6 +259,7 @@ void MainWindow::showAddMoney()
 void MainWindow::showAddMoneyAmount(QString denomination, int text_color_shift)
 {
     clearScreen();
+    state = ATM_ADDMONEY_AMOUNT;
     disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton7,ui->pushButton8}, false);
     QLabel * clr_shift = this->findChild<QLabel*>(QString("PushText"+QString::number(text_color_shift)));
     clr_shift->setStyleSheet("color: #7777c7;");
@@ -272,79 +273,7 @@ void MainWindow::showAddMoneyAmount(QString denomination, int text_color_shift)
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
-void MainWindow::showAddMoney10()
-{
-    clearScreen();
-    state = ATM_ADDMONEY10;
-    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton7,ui->pushButton8}, false);
-    ui->PushText2->setStyleSheet("color: #7777c7;");
-    ui->Title->setText(QString("Lisää käyttövaroja automaattiin"));
-    ui->SecondTitle->setText(QString("Syötä lisättävä määrä 10 € seteleinä"));
-    ui->PushText2->setText(QString("10 €"));
-    ui->PushText3->setText(QString("20 €"));
-    ui->PushText6->setText(QString("50 €"));
-    ui->PushText7->setText(QString("100 €"));
-    ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->PushText8->setText(QString("Keskeytä"));
-}
 
-void MainWindow::showAddMoney20()
-{
-    clearScreen();
-    state = ATM_ADDMONEY20;
-    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton7,ui->pushButton8}, false);
-    ui->PushText3->setStyleSheet("color: #7777c7;");
-    ui->Title->setText(QString("Lisää käyttövaroja automaattiin"));
-    ui->SecondTitle->setText(QString("Syötä lisättävä määrä 20 € seteleinä"));
-    ui->PushText2->setText(QString("10 €"));
-    ui->PushText3->setText(QString("20 €"));
-    ui->PushText6->setText(QString("50 €"));
-    ui->PushText7->setText(QString("100 €"));
-    ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->PushText8->setText(QString("Keskeytä"));
-}
-
-void MainWindow::showAddMoney50()
-{
-    clearScreen();
-    state = ATM_ADDMONEY50;
-    ui->pushButton2->setDisabled(false);
-    ui->pushButton3->setDisabled(false);
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton6->setDisabled(false);
-    ui->pushButton7->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
-    ui->PushText6->setStyleSheet("color: #7777c7;");
-    ui->Title->setText(QString("Lisää käyttövaroja automaattiin"));
-    ui->SecondTitle->setText(QString("Syötä lisättävä määrä 50 € seteleinä"));
-    ui->PushText2->setText(QString("10 €"));
-    ui->PushText3->setText(QString("20 €"));
-    ui->PushText6->setText(QString("50 €"));
-    ui->PushText7->setText(QString("100 €"));
-    ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->PushText8->setText(QString("Keskeytä"));
-}
-
-void MainWindow::showAddMoney100()
-{
-    clearScreen();
-    state = ATM_ADDMONEY100;
-    ui->pushButton2->setDisabled(false);
-    ui->pushButton3->setDisabled(false);
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton6->setDisabled(false);
-    ui->pushButton7->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
-    ui->PushText7->setStyleSheet("color: #7777c7;");
-    ui->Title->setText(QString("Lisää käyttövaroja automaattiin"));
-    ui->SecondTitle->setText(QString("Syötä lisättävä määrä 100 € seteleinä"));
-    ui->PushText2->setText(QString("10 €"));
-    ui->PushText3->setText(QString("20 €"));
-    ui->PushText6->setText(QString("50 €"));
-    ui->PushText7->setText(QString("100 €"));
-    ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->PushText8->setText(QString("Keskeytä"));
-}
 
 void MainWindow::showAtmBalances()
 {
