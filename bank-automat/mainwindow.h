@@ -15,6 +15,7 @@
 #include "addmoney.h"
 #include "setlimits.h"
 #include <QVector>
+#include "adminmenuinfo.h"
 
 //#include "setlimits.h"
 #include "viewlog.h"
@@ -118,6 +119,7 @@ private:
     ViewLog * viewlog;
     AddMoney * atmBalances;
     SetLimits * setlimits;
+    AdminMenuInfo * adminMenu;
     QString token;
     void clearScreen();
     void checkAtmLimit();

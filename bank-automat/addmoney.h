@@ -17,7 +17,7 @@ public:
     AddMoney(QObject * parent = nullptr);
     ~AddMoney();
     void requestTransactions(QString token, QString cardID, QString cardType);
-    void checkAtmBalances(QString, QString);
+    void checkAtmBalances(QString, QString,QString);
     void insertValueOf(QString amount);
     QList<QString> getAtmBalances();
     QList<QString> getAddedMoney();
@@ -28,6 +28,7 @@ public slots:
     void handleInsertValues();
 signals:
     void atmBalancesReady();
+    void atmBalancesToAdminMenu();
     void atmInsertValuesOk(QString);
 private:
     void parseAtmBalances(const QString &data);
@@ -39,6 +40,7 @@ private:
     QString amount;
     QString denomination;
     QList<QString> parsedAtmBalances;
+    QString callingclass;
 };
 
 #endif // ADDMONEY_H

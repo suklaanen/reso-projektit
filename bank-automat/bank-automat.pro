@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     addmoney.cpp \
+    adminmenuinfo.cpp \
     checkbalance.cpp \
     login.cpp \
     main.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 HEADERS += \
     addmoney.h \
+    adminmenuinfo.h \
     checkbalance.h \
     login.h \
     mainwindow.h \

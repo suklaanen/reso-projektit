@@ -25,7 +25,7 @@ void Withdraw::setInfo(QString token, QString accountID, QString cardID, QString
     this->cardID = cardID;
     this->cardType = cardType;
     this->automatID = automatID;
-    requestAtmLimit();
+    requestAtmLimit(this->automatID, "withdraw");
 }
 
 void Withdraw::handleAtmLimit()
@@ -36,7 +36,12 @@ void Withdraw::handleAtmLimit()
         QByteArray responseData = reply->readAll();
         // Käsitellään vastaus
         maxWithdrawal = QString(responseData);
-        emit atmLimitReady(maxWithdrawal);
+        if(callingClass == "withdraw") {
+            emit atmLimitReady(maxWithdrawal);
+        }
+        else {
+            emit atmLimitToAdminMenu(maxWithdrawal);
+        }
     } else {
         // Käsitellään mahdollinen virhe (verkkovirhe)
         qDebug() << "Could not get automat limit" << reply->errorString();
@@ -74,8 +79,9 @@ void Withdraw::handleWithdrawal()
     reply->deleteLater();
 }
 
-void Withdraw::requestAtmLimit()
+void Withdraw::requestAtmLimit(QString automatID,QString callingclass)
 {
+    callingClass = callingclass;
     QNetworkRequest request;
     request.setUrl(QUrl("http://localhost:3000/automat/getAtmLimit/"+automatID));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");

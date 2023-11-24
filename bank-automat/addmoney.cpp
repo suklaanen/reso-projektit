@@ -14,10 +14,11 @@ AddMoney::~AddMoney()
 {
 }
 
-void AddMoney::checkAtmBalances (QString token, QString automatID)
+void AddMoney::checkAtmBalances (QString token, QString automatID,QString callingclass)
 {
     this->token = token;
     this->automatID = automatID;
+    this->callingclass = callingclass;
 
     QNetworkRequest request;
     QJsonObject body;
@@ -68,7 +69,12 @@ void AddMoney::parseAtmBalances(const QString &data)
     parsedAtmBalances.append(QString::number(jsonObject["balance_50"].toInt()));
     parsedAtmBalances.append(QString::number(jsonObject["balance_100"].toInt()));
 
-    emit atmBalancesReady();
+    if(callingclass == "main") {
+        emit atmBalancesReady();
+    }
+    else {
+        emit atmBalancesToAdminMenu();
+    }
 }
 
 // Lisää käyttövaroja automaattiin -alkaa tästä

@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     viewlog = new ViewLog(this);
     //addmoney = new AddMoney(this);
     setlimits = new SetLimits(this);
+    adminMenu = new AdminMenuInfo(this, withdraw, atmBalances);
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
@@ -125,7 +126,8 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
-    connect(login, SIGNAL(loginOkAdmin(QString)),this, SLOT(showAdminMenu(QString)));
+    //connect(login, SIGNAL(loginOkAdmin(QString)),this, SLOT(showAdminMenu(QString)));
+    connect(login, SIGNAL(loginOkAdmin(QString)),adminMenu, SLOT(getAdminMenuInfo(QString)));
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
     connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
@@ -133,9 +135,11 @@ void MainWindow::connectSlots()
     connect(timer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
     connect(balance, SIGNAL(balanceReady(QString, QString)),this, SLOT(showUserBalance(QString, QString)));
     connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
+    connect(withdraw, SIGNAL(atmLimitToAdminMenu(QString)),adminMenu, SLOT(handleAtmLimit(QString)));
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
     connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
     connect(atmBalances, SIGNAL(atmBalancesReady()),this, SLOT(showAtmBalances()));
+    connect(atmBalances, SIGNAL(atmBalancesToAdminMenu()),adminMenu, SLOT(handleAtmBalances()));
     connect(viewlog, SIGNAL(LogReady()), this, SLOT(showATMEvents()));
     connect(ui->atm1, SIGNAL(clicked()), this, SLOT(atmClicked()));
     connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atmClicked()));
@@ -145,4 +149,5 @@ void MainWindow::connectSlots()
     connect(atmBalances, SIGNAL(atmInsertValuesOk(QString)),this, SLOT(showAddedMoney(QString)));
     connect(setlimits, SIGNAL(atmLimitReady()), this, SLOT(showATMSetLimit()));
     connect(setlimits, SIGNAL(atmInsertLimitOk(QString)), setlimits, SLOT(requestLimit(QString)));
+    connect(adminMenu, SIGNAL(limitAndBalancesReady(QString)), this, SLOT(showAdminMenu(QString)));
 }

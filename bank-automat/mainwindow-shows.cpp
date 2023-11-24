@@ -81,12 +81,12 @@ void MainWindow::showAdminMenu(QString token)
     ****************************************************************/
 
     QString contentText =
-        "\t Nostoraja : " + QString::number(atmMaxWithdrawal) + " Euroa \n" +
+        "\t Nostoraja : " + adminMenu->getMaxWithdrawal() + " Euroa \n" +
         "\t Setelit ja määrät : \n"
-        "\t 10 €  \t" + "Kpl määrä tähän" + " \n"
-        "\t 20 €  \t" + "Kpl määrä tähän" + " \n"
-        "\t 50 €  \t" + "Kpl määrä tähän" + " \n"
-        "\t 100 €  \t" + "Kpl määrä tähän" + " \n";
+        "\t 10 €  \t" + atmBalances->getAtmBalances().at(0) + " \n"
+        "\t 20 €  \t" + atmBalances->getAtmBalances().at(1) + " \n"
+        "\t 50 €  \t" + atmBalances->getAtmBalances().at(2) + " \n"
+        "\t 100 €  \t" +atmBalances->getAtmBalances().at(3) + " \n";
 
     ui->Title->setText(QString("Valitse toiminto"));
     ui->SecondTitle->setText("Automaatin ID: " + automatID);
