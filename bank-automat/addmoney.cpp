@@ -34,6 +34,16 @@ QList<QString> AddMoney::getAtmBalances()
     return parsedAtmBalances;
 }
 
+void AddMoney::setDenomination(QString denomination)
+{
+    this->denomination = denomination;
+}
+
+QString AddMoney::getDenomination()
+{
+    return this->denomination;
+}
+
 void AddMoney::handleGetAtmBalances()
 {
     QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
@@ -62,7 +72,7 @@ void AddMoney::parseAtmBalances(const QString &data)
 }
 
 // Lisää käyttövaroja automaattiin -alkaa tästä
-void AddMoney::insertValueOf(const QString &denomination, QString amount)
+void AddMoney::insertValueOf(QString amount)
 {
     this->amount = amount;
     QNetworkRequest request;

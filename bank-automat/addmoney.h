@@ -18,9 +18,11 @@ public:
     ~AddMoney();
     void requestTransactions(QString token, QString cardID, QString cardType);
     void checkAtmBalances(QString, QString);
-    void insertValueOf(const QString &denomination, QString amount);
+    void insertValueOf(QString amount);
     QList<QString> getAtmBalances();
     QList<QString> getAddedMoney();
+    void setDenomination(QString);
+    QString getDenomination();
 public slots:
     void handleGetAtmBalances();
     void handleInsertValues();
@@ -35,6 +37,7 @@ private:
     QString token;
     QString automatID;
     QString amount;
+    QString denomination;
     QList<QString> parsedAtmBalances;
 };
 

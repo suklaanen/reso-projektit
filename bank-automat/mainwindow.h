@@ -88,10 +88,6 @@ public slots:
     void button7Clicked();
     void button8Clicked();
     void atmClicked();
-    void atm2Clicked();
-    void atm3Clicked();
-    void atm4Clicked();
-    //void showUserBalance(QString balance);
     void showUserBalance(QString formattedBalance, QString formattedCreditLimit);
     void takesBalanceTransactions();
     void showWithdrawal();
@@ -107,6 +103,7 @@ public slots:
     void handleAtmLimit(QString limit);
     void showMapView();
     void showAddMoney();
+    void showAddMoneyAmount(QString, int text_color_shift);
     void showAddMoney10();
     void showAddMoney20();
     void showAddMoney50();

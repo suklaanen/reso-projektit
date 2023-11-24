@@ -244,9 +244,26 @@ void MainWindow::showAddMoney()
 {
     clearScreen();
     state = ATM_ADDMONEY;
+    atmBalances->setDenomination("0");
     disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton7,ui->pushButton8}, false);
     ui->Title->setText(QString("Lisää käyttövaroja automaattiin"));
     ui->SecondTitle->setText(QString("Valitse lisättävät setelit"));
+    ui->PushText2->setText(QString("10 €"));
+    ui->PushText3->setText(QString("20 €"));
+    ui->PushText6->setText(QString("50 €"));
+    ui->PushText7->setText(QString("100 €"));
+    ui->PushText4->setText(QString("Palaa takaisin"));
+    ui->PushText8->setText(QString("Keskeytä"));
+}
+
+void MainWindow::showAddMoneyAmount(QString denomination, int text_color_shift)
+{
+    clearScreen();
+    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton7,ui->pushButton8}, false);
+    QLabel * clr_shift = this->findChild<QLabel*>(QString("PushText"+QString::number(text_color_shift)));
+    clr_shift->setStyleSheet("color: #7777c7;");
+    ui->Title->setText(QString("Lisää käyttövaroja automaattiin"));
+    ui->SecondTitle->setText(QString("Syötä lisättävä määrä "+denomination+" € seteleinä"));
     ui->PushText2->setText(QString("10 €"));
     ui->PushText3->setText(QString("20 €"));
     ui->PushText6->setText(QString("50 €"));
@@ -351,24 +368,7 @@ void MainWindow::showAtmBalances()
 
 void MainWindow::showAddedMoney(QString amount)
 {
-    QString banknote;
-
-    switch (state) {
-    case ATM_ADDMONEY10:
-        banknote = "10";
-        break;
-    case ATM_ADDMONEY20:
-        banknote = "20";
-        break;
-    case ATM_ADDMONEY50:
-        banknote = "50";
-        break;
-    case ATM_ADDMONEY100:
-        banknote = "100";
-        break;
-    default:
-        break;
-    }
+    QString banknote = atmBalances->getDenomination();
 
     clearScreen();
     state = ATM_MONEYSENT;

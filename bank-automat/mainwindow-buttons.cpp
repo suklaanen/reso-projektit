@@ -21,39 +21,6 @@ void MainWindow::atmClicked()
     state = SELECT_CARD;
 }
 
-void MainWindow::atm2Clicked()
-{
-    qDebug()<<"ATM2 button clicked";
-    automatID = "2";
-
-    ui->Mapframe->hide();
-
-    showLogin();
-    state = SELECT_CARD;
-}
-
-void MainWindow::atm3Clicked()
-{
-    qDebug()<<"ATM3 button clicked";
-    automatID = "3";
-
-    ui->Mapframe->hide();
-
-    showLogin();
-    state = SELECT_CARD;
-}
-
-void MainWindow::atm4Clicked()
-{
-    qDebug()<<"ATM4 button clicked";
-    automatID = "4";
-
-    ui->Mapframe->hide();
-
-    showLogin();
-    state = SELECT_CARD;
-}
-
 void MainWindow::clickedGREEN()
 {
     //QString amountToAdd = ui->Content->text();
@@ -96,17 +63,20 @@ void MainWindow::clickedGREEN()
         qDebug() << "Amount inserted, green clicked";
         withdraw->setAmount(ui->Content->text());
         break;
+    case ATM_ADDMONEY:
+        atmBalances->insertValueOf(ui->Content->text());
+        break;
     case ATM_ADDMONEY10:
-        atmBalances->insertValueOf("10", ui->Content->text());
+        //atmBalances->insertValueOf("10", ui->Content->text());
         break;
     case ATM_ADDMONEY20:
-        atmBalances->insertValueOf("20", ui->Content->text());
+        //atmBalances->insertValueOf("20", ui->Content->text());
         break;
     case ATM_ADDMONEY50:
-        atmBalances->insertValueOf("50", ui->Content->text());
+        //atmBalances->insertValueOf("50", ui->Content->text());
         break;
     case ATM_ADDMONEY100:
-        atmBalances->insertValueOf("100", ui->Content->text());
+        //atmBalances->insertValueOf("100", ui->Content->text());
         break;
     case AUTOMAT_SET_MAX_WITHDRAWAL:
         setlimits->setLimit(automatID, ui->Content->text());
@@ -230,11 +200,9 @@ void MainWindow::button2Clicked()
         withdraw->setAmount(QString("20"));
         break;
     case ATM_ADDMONEY:
-    case ATM_ADDMONEY20:
-    case ATM_ADDMONEY50:
-    case ATM_ADDMONEY100:
         qDebug() << "Add Money 10 -clicked";
-        showAddMoney10();
+        atmBalances->setDenomination("10");
+        showAddMoneyAmount("10",2);
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -261,11 +229,9 @@ void MainWindow::button3Clicked()
         withdraw->setAmount(QString("40"));
         break;
     case ATM_ADDMONEY:
-    case ATM_ADDMONEY10:
-    case ATM_ADDMONEY50:
-    case ATM_ADDMONEY100:
         qDebug() << "Add Money 20 -clicked";
-        showAddMoney20();
+        showAddMoneyAmount("20",3);
+        atmBalances->setDenomination("20");
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -367,11 +333,9 @@ void MainWindow::button6Clicked()
         withdraw->setAmount(QString("80"));
         break;
     case ATM_ADDMONEY:
-    case ATM_ADDMONEY10:
-    case ATM_ADDMONEY20:
-    case ATM_ADDMONEY100:
         qDebug() << "Add Money 50 -clicked";
-        showAddMoney50();
+        showAddMoneyAmount("50", 6);
+        atmBalances->setDenomination("50");
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -388,11 +352,9 @@ void MainWindow::button7Clicked()
         showInsertAmount();
         break;
     case ATM_ADDMONEY:
-    case ATM_ADDMONEY10:
-    case ATM_ADDMONEY20:
-    case ATM_ADDMONEY50:
         qDebug() << "Add Money 100 -clicked";
-        showAddMoney100();
+        showAddMoneyAmount("100", 7);
+        atmBalances->setDenomination("100");
         break;
     default:
         // "kaikki muut enum-arvot"
