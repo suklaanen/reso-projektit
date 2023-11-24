@@ -143,7 +143,7 @@ router.put('/setATMLimit/', function(request, response) {
         }
         else {
             console.log(data);
-            response.json(data[0]);
+            response.json("success");
         }
     });
 });

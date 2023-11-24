@@ -106,6 +106,9 @@ void MainWindow::clickedGREEN()
     case ATM_ADDMONEY100:
         atmBalances->insertValueOf("100", ui->Content->text());
         break;
+    case AUTOMAT_SET_MAX_WITHDRAWAL:
+        setlimits->setLimit(automatID, ui->Content->text());
+        break;
     default:
         // "kaikki muut enum-arvot"
         break;
