@@ -60,11 +60,12 @@ void AddMoney::parseAtmBalances(const QString &data)
 // Lisää käyttövaroja automaattiin -alkaa tästä
 void AddMoney::insertValueOf(const QString &denomination, QString amount)
 {
+    this->amount = amount;
     QNetworkRequest request;
     QJsonObject body;
     body.insert("id_automat", automatID);
     body.insert("amount", amount);
-    request.setUrl(QUrl("http://localhost:3000/automat/addMoney" + denomination + "/"));
+    request.setUrl(QUrl("http://localhost:3000/automat/addMoney" + denomination));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->put(request, QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handleInsertValues()));
@@ -76,8 +77,8 @@ void AddMoney::handleInsertValues() {
         QByteArray responseData = reply->readAll();
         QString response = QString(responseData).replace("\"", "");
 
-        if (response == "success") {
-            emit atmInsertValuesOk();
+        if (response == "succes") {
+            emit atmInsertValuesOk(this->amount);
         } else {
             qDebug() << "Unexpected response: " << response;
         }
@@ -87,9 +88,3 @@ void AddMoney::handleInsertValues() {
     reply->deleteLater();
 }
 
-void AddMoney::handleAddedMoney()
-{
-    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
-    emit atmAddMoneyOk();
-    reply->deleteLater();
-}

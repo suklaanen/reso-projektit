@@ -96,19 +96,15 @@ void MainWindow::clickedGREEN()
         break;
     case ATM_ADDMONEY10:
         atmBalances->insertValueOf("10", ui->Content->text());
-        showAddedMoney(ui->Content->text());
         break;
     case ATM_ADDMONEY20:
         atmBalances->insertValueOf("20", ui->Content->text());
-        showAddedMoney(ui->Content->text());
         break;
     case ATM_ADDMONEY50:
         atmBalances->insertValueOf("50", ui->Content->text());
-        showAddedMoney(ui->Content->text());
         break;
     case ATM_ADDMONEY100:
         atmBalances->insertValueOf("100", ui->Content->text());
-        showAddedMoney(ui->Content->text());
         break;
     case AUTOMAT_SET_MAX_WITHDRAWAL:
         setlimits->setLimit(automatID, ui->Content->text());
@@ -361,8 +357,8 @@ void MainWindow::button6Clicked()
 {
     switch(state) {
     case ADMIN_MENU:
-        qDebug() << "ATM current limit -clicked";
-        showATMCurrentLimits();
+        qDebug() << "ATM set limit -clicked";
+        setlimits->requestLimit(automatID);
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 80 clicked";
@@ -385,10 +381,6 @@ void MainWindow::button6Clicked()
 void MainWindow::button7Clicked()
 {
     switch(state) {
-    case ADMIN_MENU:
-        qDebug() << "ATM set limit -clicked";
-        setlimits->requestLimit(automatID);
-        break;
     case USER_WITHDRAWAL:
         qDebug() << "Insert amount clicked";
         showInsertAmount();

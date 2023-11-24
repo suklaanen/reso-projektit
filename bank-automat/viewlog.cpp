@@ -76,7 +76,9 @@ void ViewLog::parseEvents(const QString &data)
             if (jsonObject["event_type"].toString()=="withdrawal"){
                 event_type = "Nosto";
             }
-            else if(jsonObject["event_type"].toString()=="withdrawal attempt, not enough bills" || jsonObject["event_type"].toString()=="withdrawal attempt, not enough" ) {
+            else if(jsonObject["event_type"].toString()=="withdrawal attempt, not enough bills" ||
+                    jsonObject["event_type"].toString()=="withdrawal attempt, not enough" ||
+                    jsonObject["event_type"].toString()=="withdrawal attempt") {
                 event_type = "Nostoyritys";
             }
             else if(jsonObject["event_type"].toString()=="login") {

@@ -135,8 +135,7 @@ void MainWindow::connectSlots()
     connect(ui->atm3, SIGNAL(clicked()), this, SLOT(atm3Clicked()));
     connect(ui->atm4, SIGNAL(clicked()), this, SLOT(atm4Clicked()));
     connect(transactions, SIGNAL(balanceTransReady()), this, SLOT(takesBalanceTransactions()));
-    connect(atmBalances, SIGNAL(atmInsertValuesOk()),this, SLOT(handleAddedMoney(QString)));
-    connect(atmBalances, SIGNAL(atmAddedMoneyOk()),this, SLOT(showAddedMoney(QString)));
+    connect(atmBalances, SIGNAL(atmInsertValuesOk(QString)),this, SLOT(showAddedMoney(QString)));
     connect(setlimits, SIGNAL(atmLimitReady()), this, SLOT(showATMSetLimit()));
     connect(setlimits, SIGNAL(atmInsertLimitOk(QString)), setlimits, SLOT(requestLimit(QString)));
 }

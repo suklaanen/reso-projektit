@@ -11,7 +11,6 @@ void Transactions::showTransactions(QString token, QString accountID, int offset
 {
     this->token = token;
     this->accountID = accountID;
-    //this->cardID = cardID;
     this->offset = offset;
     this->type = type;
 
