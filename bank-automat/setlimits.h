@@ -17,6 +17,7 @@ public:
     SetLimits(QObject * parent = nullptr);
     void requestLimit(QString automatID);
     QString getATMLimit();
+    void setLimit(QString automatID);
 public slots:
     void handleGetLimit();
 signals:

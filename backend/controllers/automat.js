@@ -83,7 +83,7 @@ router.get('/getBalances/:id', function(request, response) {
     });
 });
 
-router.put('/addMoney10/', function(request, response) {
+router.put('/addMoney10', function(request, response) {
     automat.addMoney10(request.body, function(err, data) {
         if(err) {
             console.log(err);
@@ -91,12 +91,12 @@ router.put('/addMoney10/', function(request, response) {
         }
         else {
             console.log(data);
-            response.json(data[0]);
+            response.json("succes");
         }
     });
 });
 
-router.put('/addMoney20/', function(request, response) {
+router.put('/addMoney20', function(request, response) {
     automat.addMoney20(request.body, function(err, data) {
         if(err) {
             console.log(err);
@@ -104,12 +104,12 @@ router.put('/addMoney20/', function(request, response) {
         }
         else {
             console.log(data);
-            response.json(data[0]);
+            response.json("succes");
         }
     });
 });
 
-router.put('/addMoney50/', function(request, response) {
+router.put('/addMoney50', function(request, response) {
     automat.addMoney50(request.body, function(err, data) {
         if(err) {
             console.log(err);
@@ -117,12 +117,12 @@ router.put('/addMoney50/', function(request, response) {
         }
         else {
             console.log(data);
-            response.json(data[0]);
+            response.json("succes");
         }
     });
 });
 
-router.put('/addMoney100/', function(request, response) {
+router.put('/addMoney100', function(request, response) {
     automat.addMoney100(request.body, function(err, data) {
         if(err) {
             console.log(err);
@@ -130,7 +130,7 @@ router.put('/addMoney100/', function(request, response) {
         }
         else {
             console.log(data);
-            response.json(data[0]);
+            response.json("succes");
         }
     });
 });

@@ -22,12 +22,12 @@ public:
     QList<QString> getAddedMoney();
 public slots:
     void handleGetAtmBalances();
-    void handleAddedMoney();
+    //void handleAddedMoney();
     void handleInsertValues();
 signals:
     void atmBalancesReady();
-    void atmInsertValuesOk();
-    void atmAddMoneyOk();
+    void atmInsertValuesOk(QString);
+    //void atmAddMoneyOk();
 private:
     void parseAtmBalances(const QString &data);
     int offset;
