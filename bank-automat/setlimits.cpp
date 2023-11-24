@@ -23,13 +23,15 @@ void SetLimits::requestLimit(QString automatID)
 
 void SetLimits::setLimit(QString automatID, QString newLimit)
 {
+    qDebug()<<"Setlimit";
+
     this->automatID = automatID;
     this->limit = newLimit;
     QNetworkRequest request;
     QJsonObject body;
     body.insert("id_automat",this->automatID);
-    body.insert("max_withdrawal",this->limit);
-    request.setUrl(QUrl("http://localhost:3000/automat/setATMLimit/"+automatID));
+    body.insert("ATMlimit",this->limit);
+    request.setUrl(QUrl("http://localhost:3000/automat/setATMLimit/"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->put(request, QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handleGetLimit()));
@@ -48,6 +50,8 @@ void SetLimits::handleGetLimit()
         qDebug() << "handleGetLimit onnistunut vastaus" ;
         QByteArray responseData = reply->readAll();
         parseLimits(responseData);
+    }else{
+        qDebug() << "handleGetLimit epäonnistunut vastaus" ;
     }
     // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();
