@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-// *************************************************************************************
+// **************************************************
 // *** Adminin slotit
 // ****** Sisältää:
 // ********** showAdminMenu(QString token)
@@ -18,7 +18,7 @@
 // ********** showATMLimitSetted()
 // ********** checkAtmLimit()
 // ********** handleAtmLimit(QString limit)
-// *************************************************************************************
+// **************************************************
 
 // Adminin menu
 void MainWindow::showAdminMenu(QString token)
@@ -29,7 +29,7 @@ void MainWindow::showAdminMenu(QString token)
     clearScreen();
     disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton8}, false);
 
-    /****************************************************************
+    /**********************************************************
      ***** Tarvii logiikan paikkailua
      ***** atmBalancet ulos oikeille paikoilleen
                     atmBalances->getAtmBalances().at(0)
@@ -37,7 +37,7 @@ void MainWindow::showAdminMenu(QString token)
                     atmBalances->getAtmBalances().at(2)
                     atmBalances->getAtmBalances().at(3)
      ***** Sekä Nostorajan näkymä oikeana tarvittais
-    ****************************************************************/
+    ***********************************************************/
 
     QString contentText =
         "\t Nostoraja : " + QString::number(atmMaxWithdrawal) + " Euroa \n" +
@@ -132,7 +132,6 @@ void MainWindow::showATMCurrentLimits()
 {
 
 }
-
 
 void MainWindow::showATMSetLimit()
 {
