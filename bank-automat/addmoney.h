@@ -15,6 +15,7 @@ class AddMoney:public QObject
     Q_OBJECT
 public:
     AddMoney(QObject * parent = nullptr);
+    ~AddMoney();
     void requestTransactions(QString token, QString cardID, QString cardType);
     void checkAtmBalances(QString, QString);
     void insertValueOf(const QString &denomination, QString amount);

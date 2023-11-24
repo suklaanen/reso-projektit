@@ -8,10 +8,12 @@
 
 // Tähän tulee kaikki toiminnot, mitä vihreästä OK-napista tapahtuu Caseina
 
-void MainWindow::atm1Clicked()
+void MainWindow::atmClicked()
 {
+    QPushButton * atm_btn = qobject_cast<QPushButton*>(sender());
+    QString atm_id = atm_btn->objectName();
     qDebug()<<"ATM1 button clicked";
-    automatID = "1";
+    automatID = atm_id.last(1);
 
     ui->Mapframe->hide();
 

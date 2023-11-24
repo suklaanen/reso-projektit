@@ -14,6 +14,7 @@
 #include "withdraw.h"
 #include "addmoney.h"
 #include "setlimits.h"
+#include <QVector>
 
 //#include "setlimits.h"
 #include "viewlog.h"
@@ -86,7 +87,7 @@ public slots:
     void button6Clicked();
     void button7Clicked();
     void button8Clicked();
-    void atm1Clicked();
+    void atmClicked();
     void atm2Clicked();
     void atm3Clicked();
     void atm4Clicked();
@@ -134,6 +135,7 @@ private:
     void addMoney20();
     void addMoney50();
     void addMoney100();
+    void disableEnableButtons(QVector<QPushButton*> btns, bool state);
     int offset;
     State state;
     QString saldo;

@@ -17,6 +17,7 @@ void MainWindow::showMapView()
     ui->atm2->setDisabled(false);
     ui->atm3->setDisabled(false);
     ui->atm4->setDisabled(false);
+    disableEnableButtons({ui->atm1,ui->atm2,ui->atm3,ui->atm4}, false);
 }
 
 // Alkutila, jossa on kirjautumiskehoite
@@ -52,10 +53,7 @@ void MainWindow::showMenu(QString token, QString accountID)
     qDebug() << "user token: " << token << " user accountID: " << accountID;
     state = USER_MENU;
     clearScreen();
-    ui->pushButton2->setDisabled(false);
-    ui->pushButton3->setDisabled(false);
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton8}, false);
     ui->Title->setText(QString("Valitse toiminto"));
     ui->PushText2->setText(QString("Saldo"));
     ui->PushText3->setText(QString("Tapahtumat"));
@@ -70,12 +68,7 @@ void MainWindow::showAdminMenu(QString token)
     qDebug() << token << " admin";
     state = ADMIN_MENU;
     clearScreen();
-
-    ui->pushButton2->setDisabled(false);
-    ui->pushButton3->setDisabled(false);
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton6->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton8}, false);
 
     /****************************************************************
      ***** Jos halutaan tää näyttää, niin pitää korjata logiikka
@@ -149,6 +142,7 @@ void MainWindow::showUserBalance(QString formattedBalance, QString formattedCred
     ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
 
 }
 
@@ -162,14 +156,7 @@ void MainWindow::showWithdrawal()
     clearScreen();
     state = USER_WITHDRAWAL;
     withdraw->setInfo(token,accountID,ID,cardType,automatID);
-    ui->pushButton1->setDisabled(false);
-    ui->pushButton2->setDisabled(false);
-    ui->pushButton3->setDisabled(false);
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton5->setDisabled(false);
-    ui->pushButton6->setDisabled(false);
-    ui->pushButton7->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton1,ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton5,ui->pushButton6,ui->pushButton7,ui->pushButton8}, false);
     ui->Title->setText(QString("Valitse nostettava summa"));
     ui->PushText1->setText(QString("10"));
     ui->PushText2->setText(QString("20"));
@@ -187,6 +174,7 @@ void MainWindow::showInsertAmount()
     state = USER_INSERT_AMOUNT;
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
     ui->Title->setText(QString("Syötä nostettava summa"));
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
@@ -256,12 +244,7 @@ void MainWindow::showAddMoney()
 {
     clearScreen();
     state = ATM_ADDMONEY;
-    ui->pushButton2->setDisabled(false);
-    ui->pushButton3->setDisabled(false);
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton6->setDisabled(false);
-    ui->pushButton7->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton7,ui->pushButton8}, false);
     ui->Title->setText(QString("Lisää käyttövaroja automaattiin"));
     ui->SecondTitle->setText(QString("Valitse lisättävät setelit"));
     ui->PushText2->setText(QString("10 €"));
@@ -276,12 +259,7 @@ void MainWindow::showAddMoney10()
 {
     clearScreen();
     state = ATM_ADDMONEY10;
-    ui->pushButton2->setDisabled(false);
-    ui->pushButton3->setDisabled(false);
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton6->setDisabled(false);
-    ui->pushButton7->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton7,ui->pushButton8}, false);
     ui->PushText2->setStyleSheet("color: #7777c7;");
     ui->Title->setText(QString("Lisää käyttövaroja automaattiin"));
     ui->SecondTitle->setText(QString("Syötä lisättävä määrä 10 € seteleinä"));
@@ -297,12 +275,7 @@ void MainWindow::showAddMoney20()
 {
     clearScreen();
     state = ATM_ADDMONEY20;
-    ui->pushButton2->setDisabled(false);
-    ui->pushButton3->setDisabled(false);
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton6->setDisabled(false);
-    ui->pushButton7->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton7,ui->pushButton8}, false);
     ui->PushText3->setStyleSheet("color: #7777c7;");
     ui->Title->setText(QString("Lisää käyttövaroja automaattiin"));
     ui->SecondTitle->setText(QString("Syötä lisättävä määrä 20 € seteleinä"));

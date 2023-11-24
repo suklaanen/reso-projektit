@@ -14,6 +14,7 @@ class Transactions : public QObject
     Q_OBJECT
 public:
     explicit Transactions(QObject *parent = nullptr);
+    ~Transactions();
     void showTransactions(QString, QString, int, QString);
     QList<QString> getTransactions();
     int maxTransactions();

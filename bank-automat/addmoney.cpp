@@ -10,6 +10,10 @@ AddMoney::AddMoney(QObject * parent): QObject(parent)
     reply = nullptr;
 }
 
+AddMoney::~AddMoney()
+{
+}
+
 void AddMoney::checkAtmBalances (QString token, QString automatID)
 {
     this->token = token;
