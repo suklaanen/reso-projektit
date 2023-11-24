@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     showMapView();
 
     login = new Login (this);
-    showLogin();    
+    showLogin();
     balance = new CheckBalance(this);
     transactions = new Transactions(this);
     withdraw = new Withdraw(this);
@@ -124,7 +124,6 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
     connect(transactions, SIGNAL(transactionsReady()), this, SLOT(showTransactions()));
     connect(timer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
-    //connect(balance, SIGNAL(balanceReady(QString)),this, SLOT(showUserBalance(QString)));
     connect(balance, SIGNAL(balanceReady(QString, QString)),this, SLOT(showUserBalance(QString, QString)));
     connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
@@ -139,4 +138,5 @@ void MainWindow::connectSlots()
     connect(atmBalances, SIGNAL(atmInsertValuesOk()),this, SLOT(handleAddedMoney(QString)));
     connect(atmBalances, SIGNAL(atmAddedMoneyOk()),this, SLOT(showAddedMoney(QString)));
     connect(setlimits, SIGNAL(atmLimitReady()), this, SLOT(showATMSetLimit()));
+    connect(setlimits, SIGNAL(atmInsertLimitOk(QString)), setlimits, SLOT(requestLimit(QString)));
 }
