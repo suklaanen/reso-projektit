@@ -83,4 +83,3 @@ void MainWindow::disableEnableButtons(QVector<QPushButton*> btns, bool state)
         btn->setDisabled(state);
     }
 }
-

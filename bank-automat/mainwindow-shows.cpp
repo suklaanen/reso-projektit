@@ -1,3 +1,4 @@
+
 // **** Siirretty kaikki täältä näihin:
 // ******* mainwindow-showLoginSlots.cpp
 // ******* mainwindow-showAdminSlots.cpp
