@@ -111,6 +111,7 @@ public slots:
     void showAddMoney50();
     void showAddMoney100();
     void showAddedMoney(QString amount);
+    void showATMLimitSetted();
 private:
     Ui::MainWindow *ui;
     QNetworkReply * reply;

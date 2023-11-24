@@ -21,9 +21,18 @@ void SetLimits::requestLimit(QString automatID)
     connect(reply, SIGNAL(finished()), this, SLOT(handleGetLimit()));
 }
 
-void SetLimits::setLimit(QString automatID)
+void SetLimits::setLimit(QString automatID, QString newLimit)
 {
-
+    this->automatID = automatID;
+    this->limit = newLimit;
+    QNetworkRequest request;
+    QJsonObject body;
+    body.insert("id_automat",this->automatID);
+    body.insert("max_withdrawal",this->limit);
+    request.setUrl(QUrl("http://localhost:3000/automat/setATMLimit/"+automatID));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    reply = manager->put(request, QJsonDocument(body).toJson());
+    connect(reply, SIGNAL(finished()), this, SLOT(handleGetLimit()));
 }
 
 QString SetLimits::getATMLimit()
@@ -41,6 +50,24 @@ void SetLimits::handleGetLimit()
         parseLimits(responseData);
     }
     // Tyhjennetään vastaus myöhemmin
+    reply->deleteLater();
+}
+
+void SetLimits::handleSetLimit()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+    if (reply->error() == QNetworkReply::NoError) {
+        QByteArray responseData = reply->readAll();
+        QString response = QString(responseData).replace("\"", "");
+
+        if (response == "success") {
+            emit atmInsertLimitOk();
+        } else {
+            qDebug() << "Unexpected response: " << response;
+        }
+    } else {
+        qDebug() << "Could not get response" << reply->errorString();
+    }
     reply->deleteLater();
 }
 
