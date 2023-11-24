@@ -124,7 +124,6 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
     connect(transactions, SIGNAL(transactionsReady()), this, SLOT(showTransactions()));
     connect(timer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
-    //connect(balance, SIGNAL(balanceReady(QString)),this, SLOT(showUserBalance(QString)));
     connect(balance, SIGNAL(balanceReady(QString, QString)),this, SLOT(showUserBalance(QString, QString)));
     connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
