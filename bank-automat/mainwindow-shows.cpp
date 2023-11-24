@@ -116,25 +116,35 @@ void MainWindow::showCardLocked()
     timer->start(4000);
 }
 
-void MainWindow::showUserBalance(QString balance)
+//void MainWindow::showUserBalance(QString balance)
+void MainWindow::showUserBalance(QString formattedBalance, QString formattedCreditLimit)
 {
-    this->saldo = balance;  // Aseta saldo-muuttujan arvo
+    //this->saldo = balance;  // Aseta saldo-muuttujan arvo
+    this->saldo = formattedBalance; // Aseta saldo-muuttujan arvo
+    this->csaldo = formattedCreditLimit;
+
     clearScreen();
     state = USER_BALANCE;
 
-    ui->Title->setText("Tilin saldo " + this->saldo + " €");
-
+    int maxTransactionsToShow = 4;
     QString creditLimitText = "";
+    ui->Title->setText("Tilin saldo:");
+    ui->SecondTitle->setText(this->saldo);
+
     if (cardType == "credit")
     {
-     ui->Title->setText("Luottoa nostettavissa " + this->saldo + " €" + creditLimitText);
+    ui->Title->setText("Luottoa nostettavissa ");
+    ui->SecondTitle->setText(this->csaldo + "" + creditLimitText);
     }
 
-    ui->SecondTitle->setText("Ajankohta | Tapahtuma | Summa (€)");
-    for (int i = 0; i < transactions->getTransactions().size(); i++)
-        {
-        ui->Content2->setText(ui->Content2->text()+transactions->getTransactions().at(i));
+    if (!transactions->getTransactions().isEmpty()) {
+        int transactionsToDisplay = qMin(maxTransactionsToShow, transactions->getTransactions().size());
+
+        ui->Content2->setText("Viimeaikaiset tilitapahtumat \n");
+        for (int i = 0; i < transactionsToDisplay; i++) {
+            ui->Content2->setText(ui->Content2->text() + transactions->getTransactions().at(i));
         }
+    }
 
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));

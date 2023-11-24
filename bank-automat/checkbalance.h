@@ -22,7 +22,8 @@ public:
 public slots:
     void handleGetBalance();
 signals:
-    void balanceReady(QString balance);
+    //void balanceReady(QString balance);
+    void balanceReady(QString formattedBalance, QString formattedCreditLimit);
 
 private:
 
