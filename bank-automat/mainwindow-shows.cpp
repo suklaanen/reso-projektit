@@ -134,7 +134,8 @@ void MainWindow::showUserBalance(QString formattedBalance, QString formattedCred
     if (cardType == "credit")
     {
     ui->Title->setText("Luottoa nostettavissa ");
-    ui->SecondTitle->setText(this->csaldo + "" + creditLimitText);
+    ui->SecondTitle->setText(this->saldo + "" + creditLimitText);
+    // poistettu csaldo ja pelkkä saldo laitettu koska koko luotto tuli näkyviin ei ollenkaan nosto vähennyksiä
     }
 
     if (!transactions->getTransactions().isEmpty()) {

@@ -21,10 +21,10 @@ void SetLimits::requestLimit(QString automatID)
     connect(reply, SIGNAL(finished()), this, SLOT(handleGetLimit()));
 }
 
+
 void SetLimits::setLimit(QString automatID, QString newLimit)
 {
     qDebug()<<"Setlimit";
-
     this->automatID = automatID;
     this->limit = newLimit;
     QNetworkRequest request;
