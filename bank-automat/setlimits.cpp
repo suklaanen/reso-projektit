@@ -11,7 +11,7 @@ SetLimits::SetLimits(QObject * parent): QObject(parent)
 void SetLimits::requestLimit(QString automatID)
 {
     this->automatID = automatID;
-    qDebug() << "Request limit";
+    qDebug() << "Request limit, automatID"<<this->automatID;
     QNetworkRequest request;
     QJsonObject body;
     body.insert("id_automat",this->automatID);
@@ -34,7 +34,7 @@ void SetLimits::setLimit(QString automatID, QString newLimit)
     request.setUrl(QUrl("http://localhost:3000/automat/setATMLimit/"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->put(request, QJsonDocument(body).toJson());
-    connect(reply, SIGNAL(finished()), this, SLOT(handleGetLimit()));
+    connect(reply, SIGNAL(finished()), this, SLOT(handleSetLimit()));
 }
 
 QString SetLimits::getATMLimit()
@@ -65,7 +65,7 @@ void SetLimits::handleSetLimit()
         QString response = QString(responseData).replace("\"", "");
 
         if (response == "success") {
-            emit atmInsertLimitOk();
+            emit atmInsertLimitOk(this->automatID);
         } else {
             qDebug() << "Unexpected response: " << response;
         }

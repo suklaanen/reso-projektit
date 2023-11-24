@@ -15,17 +15,18 @@ class SetLimits:public QObject
     Q_OBJECT
 public:
     SetLimits(QObject * parent = nullptr);
-    void requestLimit(QString automatID);
+
     QString getATMLimit();
-    void setLimit(QString automatID, QString newLimit);
 public slots:
+    void requestLimit(QString automatID);
+    void setLimit(QString automatID, QString newLimit);
     void handleGetLimit();
     void handleSetLimit();
 signals:
     void atmLimitReady();
     void automatCheckLimits();
     void automatSetLimits();
-    void atmInsertLimitOk();
+    void atmInsertLimitOk(QString);
 private:
     QString automatID;
     void parseLimits(const QString &data);
