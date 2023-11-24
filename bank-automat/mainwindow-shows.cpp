@@ -75,7 +75,6 @@ void MainWindow::showAdminMenu(QString token)
     ui->pushButton3->setDisabled(false);
     ui->pushButton4->setDisabled(false);
     ui->pushButton6->setDisabled(false);
-    ui->pushButton7->setDisabled(false);
     ui->pushButton8->setDisabled(false);
 
     /****************************************************************
@@ -102,8 +101,7 @@ void MainWindow::showAdminMenu(QString token)
     ui->PushText2->setText(QString("Lokitiedot"));
     ui->PushText3->setText(QString("Automaatin varat"));
     ui->PushText4->setText(QString("Lisää varoja"));
-    ui->PushText6->setText(QString("Nostoraja"));
-    ui->PushText7->setText(QString("Muuta nostorajaa"));
+    ui->PushText6->setText(QString("Muuta nostorajaa"));
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
