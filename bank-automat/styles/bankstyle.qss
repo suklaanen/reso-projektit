@@ -7,8 +7,8 @@ QStatusBar {
 
 MainWindow {
     background-image: url(:/brushedsteel.jpg);
-    background-repeat: no-repeat;
-    background-position: center center;
+    background-repeat: repeat-xy;
+    background-position: top left;
     background-attachment: fixed;
     background-color: #363636;
 }
