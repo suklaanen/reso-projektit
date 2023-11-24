@@ -188,10 +188,6 @@ void MainWindow::button2Clicked()
         withdraw->setAmount(QString("20"));
         break;
     case ATM_ADDMONEY:
-        qDebug() << "Add Money 10 -clicked";
-        atmBalances->setDenomination("10");
-        showAddMoneyAmount("10",2);
-        break;
     case ATM_ADDMONEY_AMOUNT:
         qDebug() << "Add Money 10 -clicked";
         atmBalances->setDenomination("10");
@@ -222,10 +218,6 @@ void MainWindow::button3Clicked()
         withdraw->setAmount(QString("40"));
         break;
     case ATM_ADDMONEY:
-        qDebug() << "Add Money 20 -clicked";
-        showAddMoneyAmount("20",3);
-        atmBalances->setDenomination("20");
-        break;
     case ATM_ADDMONEY_AMOUNT:
         qDebug() << "Add Money 20 -clicked";
         showAddMoneyAmount("20",3);
@@ -328,10 +320,6 @@ void MainWindow::button6Clicked()
         withdraw->setAmount(QString("80"));
         break;
     case ATM_ADDMONEY:
-        qDebug() << "Add Money 50 -clicked";
-        showAddMoneyAmount("50", 6);
-        atmBalances->setDenomination("50");
-        break;
     case ATM_ADDMONEY_AMOUNT:
         qDebug() << "Add Money 50 -clicked";
         showAddMoneyAmount("50", 6);
@@ -352,10 +340,6 @@ void MainWindow::button7Clicked()
         showInsertAmount();
         break;
     case ATM_ADDMONEY:
-        qDebug() << "Add Money 100 -clicked";
-        showAddMoneyAmount("100", 7);
-        atmBalances->setDenomination("100");
-        break;
     case ATM_ADDMONEY_AMOUNT:
         qDebug() << "Add Money 100 -clicked";
         showAddMoneyAmount("100", 7);
