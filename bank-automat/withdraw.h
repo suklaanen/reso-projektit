@@ -14,6 +14,7 @@ class Withdraw : public QObject
     Q_OBJECT
 public:
     explicit Withdraw(QObject *parent = nullptr);
+    ~Withdraw();
     void setAmount(QString);
     void setInfo(QString, QString, QString, QString,QString);
 public slots:

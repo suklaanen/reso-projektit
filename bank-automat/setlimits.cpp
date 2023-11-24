@@ -8,6 +8,10 @@ SetLimits::SetLimits(QObject * parent): QObject(parent)
     reply = nullptr;
 }
 
+SetLimits::~SetLimits()
+{
+}
+
 void SetLimits::requestLimit(QString automatID)
 {
     this->automatID = automatID;

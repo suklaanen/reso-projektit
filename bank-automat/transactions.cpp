@@ -7,6 +7,10 @@ Transactions::Transactions(QObject *parent)
     reply = nullptr;
 }
 
+Transactions::~Transactions()
+{
+}
+
 void Transactions::showTransactions(QString token, QString accountID, int offset, QString type)
 {
     this->token = token;
@@ -28,6 +32,7 @@ QList<QString> Transactions::getTransactions()
 {
     return parsedTransactions;
 }
+
 
 int Transactions::maxTransactions()
 {

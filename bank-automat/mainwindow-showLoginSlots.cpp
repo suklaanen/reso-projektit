@@ -78,5 +78,3 @@ void MainWindow::showLoginFailure()
     ui->Title->setText(QString("Kirjautuminen epäonnistui"));
     ui->SecondTitle->setText(QString("Syötä pin ja yritä uudelleen"));
 }
-
-

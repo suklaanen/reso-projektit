@@ -14,7 +14,6 @@ Login::Login(QWidget *parent) :
 
 Login::~Login()
 {
-
 }
 
 //Ottaa vastaan kortin ID:n mainwindow:sta

@@ -7,6 +7,10 @@ Withdraw::Withdraw(QObject *parent)
     reply = nullptr;
 }
 
+Withdraw::~Withdraw()
+{
+}
+
 void Withdraw::setAmount(QString amount)
 {
     this->amount = amount;

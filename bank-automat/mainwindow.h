@@ -14,6 +14,7 @@
 #include "withdraw.h"
 #include "addmoney.h"
 #include "setlimits.h"
+#include <QVector>
 
 //#include "setlimits.h"
 #include "viewlog.h"
@@ -47,10 +48,7 @@ class MainWindow : public QMainWindow
         WITHDRAWAL_OK,
         WITHDRAWAL_FAIL,
         ATM_ADDMONEY,
-        ATM_ADDMONEY10,
-        ATM_ADDMONEY20,
-        ATM_ADDMONEY50,
-        ATM_ADDMONEY100,
+        ATM_ADDMONEY_AMOUNT,
         ATM_MONEYSENT,
         ATM_CHECKBALANCES,
         AUTOMAT_CHECK_MAX,
@@ -86,11 +84,7 @@ public slots:
     void button6Clicked();
     void button7Clicked();
     void button8Clicked();
-    void atm1Clicked();
-    void atm2Clicked();
-    void atm3Clicked();
-    void atm4Clicked();
-    //void showUserBalance(QString balance);
+    void atmClicked();
     void showUserBalance(QString formattedBalance, QString formattedCreditLimit);
     void takesBalanceTransactions();
     void showWithdrawal();
@@ -106,10 +100,7 @@ public slots:
     void handleAtmLimit(QString limit);
     void showMapView();
     void showAddMoney();
-    void showAddMoney10();
-    void showAddMoney20();
-    void showAddMoney50();
-    void showAddMoney100();
+    void showAddMoneyAmount(QString, int text_color_shift);
     void showAddedMoney(QString amount);
     void showATMLimitSetted();
 private:
@@ -130,10 +121,7 @@ private:
     QString token;
     void clearScreen();
     void checkAtmLimit();
-    void addMoney10();
-    void addMoney20();
-    void addMoney50();
-    void addMoney100();
+    void disableEnableButtons(QVector<QPushButton*> btns, bool state);
     int offset;
     State state;
     QString saldo;

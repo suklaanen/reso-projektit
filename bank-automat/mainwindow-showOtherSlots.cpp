@@ -23,4 +23,5 @@ void MainWindow::showMapView()
     ui->atm2->setDisabled(false);
     ui->atm3->setDisabled(false);
     ui->atm4->setDisabled(false);
+    disableEnableButtons({ui->atm1,ui->atm2,ui->atm3,ui->atm4}, false);
 }

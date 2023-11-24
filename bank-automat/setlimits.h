@@ -15,7 +15,7 @@ class SetLimits:public QObject
     Q_OBJECT
 public:
     SetLimits(QObject * parent = nullptr);
-
+    ~SetLimits();
     QString getATMLimit();
 public slots:
     void requestLimit(QString automatID);

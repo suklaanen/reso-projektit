@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
     withdraw = new Withdraw(this);
     atmBalances = new AddMoney(this);
     viewlog = new ViewLog(this);
-    //addmoney = new AddMoney(this);
     setlimits = new SetLimits(this);
 
     timer = new QTimer(this);
@@ -46,7 +45,7 @@ MainWindow::~MainWindow()
 
 // ** Käsittelijöitä **
 
-// Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa heti alussa state-julistuksen jälkeen
+// Puhdistaa koko näytön, ja tämä ajetaan useimmissa tiloissa state:n jälkeen
 void MainWindow::clearScreen()
 {
     ui->Content->clear();
@@ -78,4 +77,10 @@ void MainWindow::clearScreen()
     ui->pushButton8->setDisabled(true);
 }
 
+void MainWindow::disableEnableButtons(QVector<QPushButton*> btns, bool state)
+{
+    for(auto btn: btns) {
+        btn->setDisabled(state);
+    }
+}
 
