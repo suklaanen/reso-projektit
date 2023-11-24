@@ -96,19 +96,15 @@ void MainWindow::clickedGREEN()
         break;
     case ATM_ADDMONEY10:
         atmBalances->insertValueOf("10", ui->Content->text());
-        //showAddedMoney(ui->Content->text());
         break;
     case ATM_ADDMONEY20:
         atmBalances->insertValueOf("20", ui->Content->text());
-        //showAddedMoney(ui->Content->text());
         break;
     case ATM_ADDMONEY50:
         atmBalances->insertValueOf("50", ui->Content->text());
-        //showAddedMoney(ui->Content->text());
         break;
     case ATM_ADDMONEY100:
         atmBalances->insertValueOf("100", ui->Content->text());
-        //showAddedMoney(ui->Content->text());
         break;
     default:
         // "kaikki muut enum-arvot"
