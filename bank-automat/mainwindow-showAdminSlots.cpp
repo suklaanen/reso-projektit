@@ -27,28 +27,36 @@ void MainWindow::showAdminMenu(QString token)
     qDebug() << token << " admin";
     state = ADMIN_MENU;
     clearScreen();
-    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton8}, false);
+    disableEnableButtons({ui->pushButton2,ui->pushButton4,ui->pushButton6,ui->pushButton8}, false);
 
     QString content3Text =
-        "\t Automaatin ID : \n"
-        "\t Nostoraja : \n "
-        "\t Setelit ja määrät : \n ";
+        "Automaatin ID : \n"
+        "Nostoraja : \n"
+        "Käyttövarat : \n "
+        "\t    10 €  \n "
+        "\t    20 €  \n "
+        "\t    50 €  \n "
+        "\t    100 € \n ";
+
 
     QString content4Text =
         "" + automatID + "\n"
-        "" + adminMenu->getMaxWithdrawal() + " euroa \n" +
-        "10 € \t  " + atmBalances->getAtmBalances().at(0) + " \n"
-        "20 € \t  " + atmBalances->getAtmBalances().at(1) + " \n"
-        "50 € \t  " + atmBalances->getAtmBalances().at(2) + " \n"
-        "100 € \t  " + atmBalances->getAtmBalances().at(3) + " \n";
+        + adminMenu->getMaxWithdrawal() + "  euroa \n\n"
+        + atmBalances->getAtmBalances().at(0) + "  seteliä \n"
+        + atmBalances->getAtmBalances().at(1) + "  seteliä \n"
+        + atmBalances->getAtmBalances().at(2) + "  seteliä \n"
+        + atmBalances->getAtmBalances().at(3) + "  seteliä \n";
+
 
     ui->Title->setText(QString("Valitse toiminto"));
     ui->SecondTitle->setText("");
     ui->Content3->setText(content3Text);
     ui->Content4->setText(content4Text);
+    //ui->PushText1->setStyleSheet("color: #7777c7;");
+    //ui->PushText1->setText(QString("Automaatin ID: " + automatID));
     ui->PushText2->setText(QString("Aseta nostoraja"));
-    ui->PushText3->setText(QString("Lisää varoja"));
-    ui->PushText4->setText(QString("Lokitiedot"));
+    ui->PushText4->setText(QString("Lisää varoja"));
+    ui->PushText6->setText(QString("Lokitiedot"));
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
