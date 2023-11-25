@@ -52,6 +52,10 @@ void MainWindow::clearScreen()
     ui->Content->clear();
     ui->Content2->clear();
     ui->Content2->setAlignment(Qt::AlignLeft);
+    ui->Content3->clear();
+    ui->Content3->setAlignment(Qt::AlignLeft);
+    ui->Content4->clear();
+    ui->Content4->setAlignment(Qt::AlignLeft);
     ui->Title->clear();
     ui->SecondTitle->clear();
     ui->PushText1->clear();

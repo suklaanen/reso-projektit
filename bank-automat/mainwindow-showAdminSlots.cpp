@@ -27,33 +27,28 @@ void MainWindow::showAdminMenu(QString token)
     qDebug() << token << " admin";
     state = ADMIN_MENU;
     clearScreen();
-    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton6,ui->pushButton8}, false);
+    disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton8}, false);
 
-    /****************************************************************
-     ***** Jos halutaan tää näyttää, niin pitää korjata logiikka
-     ***** HOX : atmBalancet ulos oikeille paikoilleen
-                    atmBalances->getAtmBalances().at(0)
-                    atmBalances->getAtmBalances().at(1)
-                    atmBalances->getAtmBalances().at(2)
-                    atmBalances->getAtmBalances().at(3)
-     ***** Sekä Nostorajan näkymä oikeana, kuten tietokannassa
-    ****************************************************************/
+    QString content3Text =
+        "\t Automaatin ID : \n"
+        "\t Nostoraja : \n "
+        "\t Setelit ja määrät : \n ";
 
-    QString contentText =
-        "\t Nostoraja : " + adminMenu->getMaxWithdrawal() + " Euroa \n" +
-        "\t Setelit ja määrät : \n"
-        "\t 10 €  \t" + atmBalances->getAtmBalances().at(0) + " \n"
-        "\t 20 €  \t" + atmBalances->getAtmBalances().at(1) + " \n"
-        "\t 50 €  \t" + atmBalances->getAtmBalances().at(2) + " \n"
-        "\t 100 €  \t" +atmBalances->getAtmBalances().at(3) + " \n";
+    QString content4Text =
+        "" + automatID + "\n"
+        "" + adminMenu->getMaxWithdrawal() + " euroa \n" +
+        "10 € \t  " + atmBalances->getAtmBalances().at(0) + " \n"
+        "20 € \t  " + atmBalances->getAtmBalances().at(1) + " \n"
+        "50 € \t  " + atmBalances->getAtmBalances().at(2) + " \n"
+        "100 € \t  " + atmBalances->getAtmBalances().at(3) + " \n";
 
     ui->Title->setText(QString("Valitse toiminto"));
-    ui->SecondTitle->setText("Automaatin ID: " + automatID);
-    ui->Content2->setText(contentText);
-    ui->PushText2->setText(QString("Lokitiedot"));
-    ui->PushText3->setText(QString("Automaatin varat"));
-    ui->PushText4->setText(QString("Lisää varoja"));
-    ui->PushText6->setText(QString("Muuta nostorajaa"));
+    ui->SecondTitle->setText("");
+    ui->Content3->setText(content3Text);
+    ui->Content4->setText(content4Text);
+    ui->PushText2->setText(QString("Aseta nostoraja"));
+    ui->PushText3->setText(QString("Lisää varoja"));
+    ui->PushText4->setText(QString("Lokitiedot"));
     ui->PushText8->setText(QString("Keskeytä"));
 }
 
