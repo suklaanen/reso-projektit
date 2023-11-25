@@ -6,10 +6,7 @@
 // ****** Sisältää:
 // ********** showAdminMenu(QString token)
 // ********** showAddMoney()
-// ********** showAddMoney10()
-// ********** showAddMoney20()
-// ********** showAddMoney50()
-// ********** showAddMoney100()
+// ********** showAddMoneyAmount(QString denomination, int text_color_shift)
 // ********** showAtmBalances()
 // ********** showAddedMoney(QString amount)
 // ********** showATMCurrentLimits()
@@ -38,7 +35,6 @@ void MainWindow::showAdminMenu(QString token)
         "\t    50 €  \n "
         "\t    100 € \n ";
 
-
     QString content4Text =
         "" + automatID + "\n"
         + adminMenu->getMaxWithdrawal() + "  euroa \n\n"
@@ -47,13 +43,10 @@ void MainWindow::showAdminMenu(QString token)
         + atmBalances->getAtmBalances().at(2) + "  seteliä \n"
         + atmBalances->getAtmBalances().at(3) + "  seteliä \n";
 
-
     ui->Title->setText(QString("Valitse toiminto"));
     ui->SecondTitle->setText("");
     ui->Content3->setText(content3Text);
     ui->Content4->setText(content4Text);
-    //ui->PushText1->setStyleSheet("color: #7777c7;");
-    //ui->PushText1->setText(QString("Automaatin ID: " + automatID));
     ui->PushText2->setText(QString("Aseta nostoraja"));
     ui->PushText4->setText(QString("Lisää varoja"));
     ui->PushText6->setText(QString("Lokitiedot"));
