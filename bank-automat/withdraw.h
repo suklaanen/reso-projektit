@@ -17,11 +17,13 @@ public:
     ~Withdraw();
     void setAmount(QString);
     void setInfo(QString, QString, QString, QString,QString);
+    void requestAtmLimit(QString, QString);
 public slots:
     void handleAtmLimit();
     void handleWithdrawal();
 signals:
     void atmLimitReady(QString limit);
+    void atmLimitToAdminMenu(QString limit);
     void withdrawFailure(QString reason);
     void withdrawalOk(QString amount);
 private:
@@ -32,9 +34,9 @@ private:
     QString amount;
     QString automatID;
     QString maxWithdrawal;
+    QString callingClass;
     QNetworkAccessManager * manager;
     QNetworkReply * reply;
-    void requestAtmLimit();
     void requestWithdrawal();
 };
 

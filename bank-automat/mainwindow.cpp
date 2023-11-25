@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     atmBalances = new AddMoney(this);
     viewlog = new ViewLog(this);
     setlimits = new SetLimits(this);
+    adminMenu = new AdminMenuInfo(this, withdraw, atmBalances);
 
     timer = new QTimer(this);
     timer->setSingleShot(true);

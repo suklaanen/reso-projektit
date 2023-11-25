@@ -32,7 +32,7 @@ void MainWindow::atmClicked()
     automatID = atm_id.last(1);
 
     ui->Mapframe->hide();
-
+    adminMenu->setAutomatID(automatID);
     showLogin();
     state = SELECT_CARD;
 }
@@ -216,7 +216,7 @@ void MainWindow::button3Clicked()
 
     case ADMIN_MENU:
         qDebug() << "ATM balance -clicked";
-        atmBalances->checkAtmBalances(token, automatID);
+        atmBalances->checkAtmBalances(token, automatID,"main");
         break;
     case USER_MENU:
         qDebug() << "Transactions -clicked";
@@ -283,7 +283,7 @@ void MainWindow::button4Clicked()
     case ATM_MONEYSENT:
     case AUTOMAT_SET_MAX_WITHDRAWAL:
         qDebug() << "Paluu clicked";
-        showAdminMenu(token);
+        adminMenu->getAdminMenuInfo(token);
         break;
     default:
         // "kaikki muut enum-arvot"
