@@ -2,6 +2,7 @@
 #include "login.h"
 #include "ui_mainwindow.h"
 #include <iostream>
+#include <QMovie>
 
 // Tämä setuppaa alkutilan
 MainWindow::MainWindow(QWidget *parent)
@@ -87,4 +88,20 @@ void MainWindow::disableEnableButtons(QVector<QPushButton*> btns, bool state)
     for(auto btn: btns) {
         btn->setDisabled(state);
     }
+}
+
+void MainWindow::showAnimatedGifBeforeLogin()
+{
+    QMovie *movie = new QMovie(":/cardRed.gif");
+    ui->CardGif->setMovie(movie);
+    //ui->CardGif->show();
+    movie->start();
+}
+
+void MainWindow::showAnimatedGifAfterLogin()
+{
+    QMovie *movie = new QMovie(":/cardGreen.gif");
+    ui->CardGif->setMovie(movie);
+    //ui->CardGif->show();
+    movie->start();
 }

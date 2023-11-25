@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 
     w.setWindowTitle("Bankki");
     w.show();
+    //w.showAnimatedGifBeforeLogin();
 
     return a.exec();
 }

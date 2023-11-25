@@ -17,6 +17,7 @@
 void MainWindow::showLogin()
 {
     state = SELECT_CARD;
+    showAnimatedGifBeforeLogin();
     token = "";
     ID = "";
     accountID = "";

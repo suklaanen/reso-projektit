@@ -64,6 +64,21 @@ QLineEdit {
     background-repeat: no-repeat;
 }
 
+
+#MoneyOutput  { 
+    background-image: url(:/money-output.png);
+    background-repeat: no-repeat;
+}
+
+#CardInput  { 
+    background-image: url(:/card-input.png);
+    background-repeat: no-repeat;
+}
+
+#CardGif { 
+
+}
+
 #pushButton1:hover, #pushButton2:hover, #pushButton3:hover, #pushButton4:hover, #pushButton5:hover, #pushButton6:hover, #pushButton7:hover, #pushButton8:hover {
     background-color: #c0bcb8;
 }

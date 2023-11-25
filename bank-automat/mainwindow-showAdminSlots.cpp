@@ -23,6 +23,7 @@ void MainWindow::showAdminMenu(QString token)
     this->token = token;
     qDebug() << token << " admin";
     state = ADMIN_MENU;
+    showAnimatedGifAfterLogin();
     clearScreen();
     disableEnableButtons({ui->pushButton2,ui->pushButton4,ui->pushButton6,ui->pushButton8}, false);
 

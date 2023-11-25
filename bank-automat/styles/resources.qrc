@@ -7,5 +7,9 @@
 		<file>suoja.png</file>
 		<file>numbers.png</file>
         <file>bankstyle.qss</file>
+		<file>cardRed.gif</file>
+		<file>cardGreen.gif</file>
+		<file>money-output.png</file>
+		<file>card-input.png</file>
     </qresource>
 </RCC>
