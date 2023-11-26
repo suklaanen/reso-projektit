@@ -865,6 +865,19 @@
       <height>81</height>
      </rect>
     </property>
+    <widget class="QLabel" name="Withdrawal">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>901</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="Mapframe" native="true">
     <property name="geometry">
