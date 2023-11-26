@@ -63,6 +63,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Login *getLoginView() const;
+    void showAnimatedGifBeforeLogin();
+    void showAnimatedGifAfterLogin();
 public slots:
     void clickedNumberHandler();
     void clickedGREEN();
@@ -131,5 +133,6 @@ private:
     QString automatID;
     QTimer * timer;
     int atmMaxWithdrawal;
+
 };
 #endif // MAINWINDOW_H

@@ -22,6 +22,7 @@ void MainWindow::showMenu(QString token, QString accountID)
     this->accountID = accountID;
     qDebug() << "user token: " << token << " user accountID: " << accountID;
     state = USER_MENU;
+    showAnimatedGifAfterLogin();
     clearScreen();
     disableEnableButtons({ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton8}, false);
     ui->Title->setText(QString("Valitse toiminto"));

@@ -184,9 +184,8 @@ void MainWindow::button2Clicked()
 {
     switch(state) {
     case ADMIN_MENU:
-        qDebug() << "ATM Events -clicked";
-        offset = 0;
-        viewlog->requestEvents(token, automatID, offset);
+        qDebug() << "ATM set limit -clicked";
+        setlimits->requestLimit(automatID);
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
@@ -213,11 +212,6 @@ void MainWindow::button2Clicked()
 void MainWindow::button3Clicked()
 {
     switch(state) {
-
-    case ADMIN_MENU:
-        qDebug() << "ATM balance -clicked";
-        atmBalances->checkAtmBalances(token, automatID,"main");
-        break;
     case USER_MENU:
         qDebug() << "Transactions -clicked";
         offset = 0;
@@ -246,6 +240,10 @@ void MainWindow::button4Clicked()
     case CARD_COMBINATION: showInputPin("debit");
         qDebug() << "debit clicked";
         break;
+    //case ADMIN_MENU:
+        //qDebug() << "ATM balance -clicked";
+        //atmBalances->checkAtmBalances(token, automatID,"main");
+        //break;
     case ADMIN_MENU:
         qDebug() << "ATM Add money -clicked";
         showAddMoney();
@@ -322,8 +320,9 @@ void MainWindow::button6Clicked()
 {
     switch(state) {
     case ADMIN_MENU:
-        qDebug() << "ATM set limit -clicked";
-        setlimits->requestLimit(automatID);
+        qDebug() << "ATM Events -clicked";
+        offset = 0;
+        viewlog->requestEvents(token, automatID, offset);
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 80 clicked";
