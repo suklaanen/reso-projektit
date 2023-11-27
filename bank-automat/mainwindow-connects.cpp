@@ -41,7 +41,7 @@ void MainWindow::connectSlots()
     connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
     connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
-    connect(atmBalances, SIGNAL(atmBalancesReady()),this, SLOT(showAtmBalances()));
+    //connect(atmBalances, SIGNAL(atmBalancesReady()),this, SLOT(showAtmBalances()));
     connect(viewlog, SIGNAL(LogReady()), this, SLOT(showATMEvents()));
     connect(ui->atm1, SIGNAL(clicked()), this, SLOT(atmClicked()));
     connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atmClicked()));
