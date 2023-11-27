@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QMovie>
 
 // *************************************************************************************
 // *** Käyttäjän slotit
@@ -159,6 +160,18 @@ void MainWindow::showWithdrawOk(QString amount)
     state = WITHDRAWAL_OK;
     clearScreen();
     ui->Title->setText("Nosto suoritettu");
-    ui->SecondTitle->setText("Nostettu "+amount+" euroa");
-    timer->start(4000);
+    ui->SecondTitle->setText("Nostettu " + amount + " euroa");
+    timer->start(4800);
+
+    QMovie *movie = new QMovie(":/money-output-withdrawal.gif");
+    ui->Withdrawal->setMovie(movie);
+    ui->Withdrawal->show();
+
+    connect(timer, &QTimer::timeout, [=]() {
+        ui->Withdrawal->setMovie(nullptr);
+        ui->Withdrawal->hide(); // Piilota widget
+    });
+
+    ui->Withdrawal->setMovie(movie);
+    movie->start();
 }

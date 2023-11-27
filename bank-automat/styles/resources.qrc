@@ -10,6 +10,7 @@
 		<file>cardRed.gif</file>
 		<file>cardGreen.gif</file>
 		<file>money-output.png</file>
+		<file>money-output-withdrawal.gif</file>
 		<file>card-input.png</file>
     </qresource>
 </RCC>
