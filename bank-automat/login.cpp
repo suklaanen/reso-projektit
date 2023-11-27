@@ -87,7 +87,7 @@ void Login::handlePin()
         qDebug() << responseData;
         //if(responseData.length()>20) {
         if(responseData != "false") { //Jos vastaus on != "false", niin token on vastaanotettu ja kirjautuminen ok
-            this->token = QString(responseData); //Tallennetaan webtoken myöhempää signaalia varten
+            this->token = "Bearer "+responseData; //Tallennetaan webtoken myöhempää signaalia varten
             clearPinAttempts(); //Kutsutaan metodia, joka tyhjentää pin koodin yritykerrat kortilta tietokannasta
         }
         else {
@@ -260,6 +260,7 @@ void Login::clearPinAttempts()
 void Login::requestAccountID()
 {
     QNetworkRequest request;
+    request.setRawHeader(QByteArray("Authorization"),(token));
     QJsonObject body;
     body.insert("id_card",cardID);
     body.insert("account_type",cardType);

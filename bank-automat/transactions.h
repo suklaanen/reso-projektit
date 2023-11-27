@@ -15,7 +15,7 @@ class Transactions : public QObject
 public:
     explicit Transactions(QObject *parent = nullptr);
     ~Transactions();
-    void showTransactions(QString, QString, int, QString);
+    void showTransactions(QByteArray, QString, int, QString);
     QList<QString> getTransactions();
     int maxTransactions();
 public slots:
@@ -26,7 +26,7 @@ signals:
     //void userTransactions();
 private:
     void parseTransactions(const QString &data);
-    QString token;
+    QByteArray token;
     QString accountID;
     QString cardID;
     int offset;

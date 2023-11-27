@@ -12,13 +12,14 @@ ViewLog::~ViewLog()
 {
 }
 
-void ViewLog::requestEvents(QString token, QString automatID, int offset)
+void ViewLog::requestEvents(QByteArray token, QString automatID, int offset)
 {
     this->token = token;
     this->automatID = automatID;
     this->offset = offset;
 
     QNetworkRequest request;
+    request.setRawHeader(QByteArray("Authorization"),(token));
     request.setUrl(QUrl("http://localhost:3000/frontendEvents/allEvents"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     QJsonObject body;

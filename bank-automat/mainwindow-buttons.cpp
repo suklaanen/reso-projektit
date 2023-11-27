@@ -190,7 +190,7 @@ void MainWindow::button2Clicked()
     switch(state) {
     case ADMIN_MENU:
         qDebug() << "ATM set limit -clicked";
-        setlimits->requestLimit(automatID);
+        setlimits->requestLimit(token,automatID);
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";

@@ -16,8 +16,8 @@ public:
     explicit Withdraw(QObject *parent = nullptr);
     ~Withdraw();
     void setAmount(QString);
-    void setInfo(QString, QString, QString, QString,QString);
-    void requestAtmLimit(QString, QString);
+    void setInfo(QByteArray, QString, QString, QString,QString);
+    void requestAtmLimit(QByteArray,QString, QString);
 public slots:
     void handleAtmLimit();
     void handleWithdrawal();
@@ -27,7 +27,7 @@ signals:
     void withdrawFailure(QString reason);
     void withdrawalOk(QString amount);
 private:
-    QString token;
+    QByteArray token;
     QString accountID;
     QString cardID;
     QString cardType;

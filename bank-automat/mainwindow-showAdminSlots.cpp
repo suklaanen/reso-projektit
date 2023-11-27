@@ -4,7 +4,7 @@
 // **************************************************
 // *** Adminin slotit
 // ****** Sisältää:
-// ********** showAdminMenu(QString token)
+// ********** showAdminMenu(QByteArray token)
 // ********** showAddMoney()
 // ********** showAddMoneyAmount(QString denomination, int text_color_shift)
 // ********** showAddedMoney(QString amount)
@@ -15,7 +15,7 @@
 // **************************************************
 
 // Adminin menu
-void MainWindow::showAdminMenu(QString token)
+void MainWindow::showAdminMenu(QByteArray token)
 {
     this->token = token;
     qDebug() << token << " admin";

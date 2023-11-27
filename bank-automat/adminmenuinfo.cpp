@@ -17,10 +17,10 @@ QString AdminMenuInfo::getMaxWithdrawal()
     return this->atmLimit;
 }
 
-void AdminMenuInfo::getAdminMenuInfo(QString token)
+void AdminMenuInfo::getAdminMenuInfo(QByteArray token)
 {
     this->token = token;
-    withdraw->requestAtmLimit(automatID, "adminMenu");
+    withdraw->requestAtmLimit(this->token,automatID, "adminMenu");
 }
 
 void AdminMenuInfo::handleAtmLimit(QString atmLimit)

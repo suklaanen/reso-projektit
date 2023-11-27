@@ -34,12 +34,12 @@ public slots:
 
  signals:
     void loginFail();
-    void loginOkUser(QString token, QString accountID);
+    void loginOkUser(QByteArray token, QString accountID);
     void cardFail();
     void cardLocked();
     void cardOk(QString cardType);
     void cardOkSelectType();
-    void loginOkAdmin(QString token);
+    void loginOkAdmin(QByteArray token);
 
 private:
     QNetworkAccessManager *manager;
@@ -47,7 +47,7 @@ private:
     QString cardID;
     QString pin;
     QString cardType;
-    QString token;
+    QByteArray token;
     QString accountID;
     QString automatID;
     void requestCardID();

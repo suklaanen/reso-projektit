@@ -12,7 +12,7 @@ CheckBalance::~CheckBalance()
 {
 }
 
-void CheckBalance::displayBalance(QString token, QString accountID, QString cardType)
+void CheckBalance::displayBalance(QByteArray token, QString accountID, QString cardType)
 
 {
     this->token = token;
@@ -20,6 +20,7 @@ void CheckBalance::displayBalance(QString token, QString accountID, QString card
     this->cardType =cardType;
 
     QNetworkRequest request;
+    request.setRawHeader(QByteArray("Authorization"),(token));
     request.setUrl(QUrl("http://localhost:3000/account/getBalance/"+accountID));
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");

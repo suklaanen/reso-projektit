@@ -13,17 +13,17 @@ public:
     void setAutomatID(QString);
     QString getMaxWithdrawal();
 public slots:
-    void getAdminMenuInfo(QString);
+    void getAdminMenuInfo(QByteArray);
     void handleAtmLimit(QString);
     void handleAtmBalances();
 signals:
-    void limitAndBalancesReady(QString);
+    void limitAndBalancesReady(QByteArray);
 private:
     Withdraw * withdraw;
     AddMoney * addmoney;
     QString automatID;
     QString atmLimit;
-    QString token;
+    QByteArray token;
 };
 
 #endif // ADMINMENUINFO_H

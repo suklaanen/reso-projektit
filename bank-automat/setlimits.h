@@ -18,7 +18,7 @@ public:
     ~SetLimits();
     QString getATMLimit();
 public slots:
-    void requestLimit(QString automatID);
+    void requestLimit(QByteArray token, QString automatID);
     void setLimit(QString automatID, QString newLimit);
     void handleGetLimit();
     void handleSetLimit();
@@ -26,7 +26,7 @@ signals:
     void atmLimitReady();
     void automatCheckLimits();
     void automatSetLimits();
-    void atmInsertLimitOk(QString);
+    void atmInsertLimitOk(QByteArray,QString);
 private:
     QString automatID;
     void parseLimits(const QString &data);
@@ -34,6 +34,7 @@ private:
     QNetworkReply *reply;
     QString parsedAtmLimit;
     QString limit;
+    QByteArray token;
 
 };
 

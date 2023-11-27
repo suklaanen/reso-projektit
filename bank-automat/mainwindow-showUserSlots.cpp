@@ -17,7 +17,7 @@
 
 
 // Käyttäjän menu (adminin menu tulee erikseen)
-void MainWindow::showMenu(QString token, QString accountID)
+void MainWindow::showMenu(QByteArray token, QString accountID)
 {
     this->token = token;
     this->accountID = accountID;

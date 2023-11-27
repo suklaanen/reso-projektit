@@ -16,8 +16,8 @@ class AddMoney:public QObject
 public:
     AddMoney(QObject * parent = nullptr);
     ~AddMoney();
-    void requestTransactions(QString token, QString cardID, QString cardType);
-    void checkAtmBalances(QString, QString,QString);
+    void requestTransactions(QByteArray token, QString cardID, QString cardType);
+    void checkAtmBalances(QByteArray, QString,QString);
     void insertValueOf(QString amount);
     QList<QString> getAtmBalances();
     QList<QString> getAddedMoney();
@@ -35,7 +35,7 @@ private:
     int offset;
     QNetworkAccessManager *manager;
     QNetworkReply *reply;
-    QString token;
+    QByteArray token;
     QString automatID;
     QString amount;
     QString denomination;

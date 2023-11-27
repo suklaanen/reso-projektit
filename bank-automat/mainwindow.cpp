@@ -73,14 +73,7 @@ void MainWindow::clearScreen()
     ui->PushText3->setStyleSheet("color: #ffffff");
     ui->PushText6->setStyleSheet("color: #ffffff");
     ui->PushText7->setStyleSheet("color: #ffffff");
-    ui->pushButton1->setDisabled(true);
-    ui->pushButton2->setDisabled(true);
-    ui->pushButton3->setDisabled(true);
-    ui->pushButton4->setDisabled(true);
-    ui->pushButton5->setDisabled(true);
-    ui->pushButton6->setDisabled(true);
-    ui->pushButton7->setDisabled(true);
-    ui->pushButton8->setDisabled(true);
+    disableEnableButtons({ui->pushButton1,ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton5,ui->pushButton6,ui->pushButton7,ui->pushButton8},true);
 }
 
 void MainWindow::disableEnableButtons(QVector<QPushButton*> btns, bool state)
