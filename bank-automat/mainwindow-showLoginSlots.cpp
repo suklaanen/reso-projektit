@@ -33,8 +33,7 @@ void MainWindow::selectDebitCredit()
     this->cardType = "credit/debit";
     state = CARD_COMBINATION;
     clearScreen();
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
     ui->Title->setText(QString("Valitse tili"));
     ui->PushText4->setText(QString("Debit"));
     ui->PushText8->setText(QString("Credit"));

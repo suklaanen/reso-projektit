@@ -87,26 +87,6 @@ void MainWindow::showAddMoneyAmount(QString denomination, int text_color_shift)
     timer->start(30000);
 }
 
-/*void MainWindow::showAtmBalances()
-{
-    clearScreen();
-    state = ATM_CHECKBALANCES;
-
-    ui->Title->setText("Automaatin varat ");
-    ui->SecondTitle->setText("Setelit ja määrät");
-
-    QString contentText = "\t\t10 € \t=\t" + atmBalances->getAtmBalances().at(0) + "\n" +
-    "\t\t20 € \t=\t" + atmBalances->getAtmBalances().at(1) + "\n" +
-    "\t\t50 € \t=\t" + atmBalances->getAtmBalances().at(2) + "\n" +
-    "\t\t100 € \t=\t" + atmBalances->getAtmBalances().at(3);
-
-    ui->Content2->setText(contentText);
-    ui->PushText4->setText(QString("Palaa takaisin"));
-    ui->PushText8->setText(QString("Keskeytä"));
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
-}*/
-
 void MainWindow::showAddedMoney(QString amount)
 {
     QString banknote = atmBalances->getDenomination();
@@ -121,8 +101,7 @@ void MainWindow::showAddedMoney(QString amount)
     ui->Content2->setText(contentText);
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
     timer->start(7000);
 }
 
@@ -134,8 +113,7 @@ void MainWindow::showATMSetLimit()
     ui->SecondTitle->setText("Syötä uusi nostoraja");
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
     timer->start(30000);
 
 }
@@ -177,22 +155,9 @@ void MainWindow::showATMEvents()
         ui->PushText5->setText(QString("Vanhemmat"));
         ui->PushText4->setText(QString("Palaa takaisin"));
         ui->PushText8->setText(QString("Keskeytä"));
-        ui->pushButton4->setDisabled(false);
-        ui->pushButton8->setDisabled(false);
+        disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
         timer->start(30000);
 }
-
-/*void MainWindow::showATMLimitSetted()
-{
-        clearScreen();
-        state = AUTOMAT_SET_MAX_WITHDRAWAL;
-        ui->Title->setText("Uudeksi nostorajaksi asetettu "+setlimits->getATMLimit()+" euroa.");
-        ui->PushText4->setText(QString("Palaa takaisin"));
-        ui->PushText8->setText(QString("Keskeytä"));
-        ui->pushButton4->setDisabled(false);
-        ui->pushButton8->setDisabled(false);
-
-}*/
 
 void MainWindow::checkAtmLimit()
 {

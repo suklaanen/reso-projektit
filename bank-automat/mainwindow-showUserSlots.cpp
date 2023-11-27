@@ -67,8 +67,6 @@ void MainWindow::showUserBalance(QString formattedBalance, QString formattedCred
 
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
-        ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
     disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
     timer->start(10000);
 }
@@ -125,8 +123,7 @@ void MainWindow::showTransactions()
     ui->PushText5->setText(QString("Vanhemmat"));
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
+    disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
     timer->start(10000);
 }
 
