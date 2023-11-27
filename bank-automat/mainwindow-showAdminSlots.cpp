@@ -7,12 +7,9 @@
 // ********** showAdminMenu(QString token)
 // ********** showAddMoney()
 // ********** showAddMoneyAmount(QString denomination, int text_color_shift)
-// ********** showAtmBalances()
 // ********** showAddedMoney(QString amount)
-// ********** showATMCurrentLimits()
 // ********** showATMSetLimit()
 // ********** showATMEvents()
-// ********** showATMLimitSetted()
 // ********** checkAtmLimit()
 // ********** handleAtmLimit(QString limit)
 // **************************************************
@@ -52,6 +49,7 @@ void MainWindow::showAdminMenu(QString token)
     ui->PushText4->setText(QString("Lisää varoja"));
     ui->PushText6->setText(QString("Lokitiedot"));
     ui->PushText8->setText(QString("Keskeytä"));
+    timer->start(60000);
 }
 
 void MainWindow::showAddMoney()
@@ -68,6 +66,7 @@ void MainWindow::showAddMoney()
     ui->PushText7->setText(QString("100 €"));
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
+    timer->start(30000);
 }
 
 void MainWindow::showAddMoneyAmount(QString denomination, int text_color_shift)
@@ -85,9 +84,10 @@ void MainWindow::showAddMoneyAmount(QString denomination, int text_color_shift)
     ui->PushText7->setText(QString("100 €"));
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
+    timer->start(30000);
 }
 
-void MainWindow::showAtmBalances()
+/*void MainWindow::showAtmBalances()
 {
     clearScreen();
     state = ATM_CHECKBALANCES;
@@ -105,7 +105,7 @@ void MainWindow::showAtmBalances()
     ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-}
+}*/
 
 void MainWindow::showAddedMoney(QString amount)
 {
@@ -123,11 +123,7 @@ void MainWindow::showAddedMoney(QString amount)
     ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
-}
-
-void MainWindow::showATMCurrentLimits()
-{
-
+    timer->start(7000);
 }
 
 void MainWindow::showATMSetLimit()
@@ -140,6 +136,7 @@ void MainWindow::showATMSetLimit()
     ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
+    timer->start(30000);
 
 }
 
@@ -182,9 +179,10 @@ void MainWindow::showATMEvents()
         ui->PushText8->setText(QString("Keskeytä"));
         ui->pushButton4->setDisabled(false);
         ui->pushButton8->setDisabled(false);
+        timer->start(30000);
 }
 
-void MainWindow::showATMLimitSetted()
+/*void MainWindow::showATMLimitSetted()
 {
         clearScreen();
         state = AUTOMAT_SET_MAX_WITHDRAWAL;
@@ -193,7 +191,8 @@ void MainWindow::showATMLimitSetted()
         ui->PushText8->setText(QString("Keskeytä"));
         ui->pushButton4->setDisabled(false);
         ui->pushButton8->setDisabled(false);
-}
+
+}*/
 
 void MainWindow::checkAtmLimit()
 {

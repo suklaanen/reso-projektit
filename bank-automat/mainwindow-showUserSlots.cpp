@@ -31,6 +31,7 @@ void MainWindow::showMenu(QString token, QString accountID)
     ui->PushText3->setText(QString("Tapahtumat"));
     ui->PushText4->setText(QString("Nosto"));
     ui->PushText8->setText(QString("Keskeytä"));
+    timer->start(30000);
 }
 
 //void MainWindow::showUserBalance(QString balance)
@@ -69,6 +70,7 @@ void MainWindow::showUserBalance(QString formattedBalance, QString formattedCred
         ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
     disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
+    timer->start(10000);
 }
 
 void MainWindow::takesBalanceTransactions()
@@ -79,12 +81,11 @@ void MainWindow::showInsertAmount()
 {
     clearScreen();
     state = USER_INSERT_AMOUNT;
-    ui->pushButton4->setDisabled(false);
-    ui->pushButton8->setDisabled(false);
     disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
     ui->Title->setText(QString("Syötä nostettava summa"));
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
+    timer->start(10000);
 }
 
 void MainWindow::showTransactions()
@@ -126,6 +127,7 @@ void MainWindow::showTransactions()
     ui->PushText8->setText(QString("Keskeytä"));
     ui->pushButton4->setDisabled(false);
     ui->pushButton8->setDisabled(false);
+    timer->start(10000);
 }
 
 void MainWindow::showWithdrawal()
@@ -143,6 +145,7 @@ void MainWindow::showWithdrawal()
     ui->PushText6->setText(QString("80"));
     ui->PushText7->setText(QString("Muu summa"));
     ui->PushText8->setText(QString("Keskeytä"));
+    timer->start(10000);
 }
 
 void MainWindow::showWithdrawFailure(QString reason)
@@ -153,6 +156,7 @@ void MainWindow::showWithdrawFailure(QString reason)
         ui->SecondTitle->setText(reason);
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->pushButton4->setDisabled(false);
+    timer->start(7000);
 }
 
 void MainWindow::showWithdrawOk(QString amount)

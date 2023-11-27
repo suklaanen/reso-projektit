@@ -95,15 +95,16 @@ void MainWindow::clickedYELLOW()
     ui->Content->clear();
     switch(state) {
     case CARD_OK:
-        timer->stop();
-        timer->start(10000);
-        break;
     case LOGIN_FAIL:
-        timer->stop();
         timer->start(10000);
         break;
     case USER_INSERT_AMOUNT:
         checkAtmLimit();
+        timer->start(10000);
+        break;
+    case AUTOMAT_SET_MAX_WITHDRAWAL:
+    case ATM_ADDMONEY_AMOUNT:
+        timer->start(30000);
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -123,11 +124,15 @@ void MainWindow::clickedGREY()
     switch(state) {
     case CARD_OK:
     case LOGIN_FAIL:
-        timer->stop();
         timer->start(10000);
         break;
     case USER_INSERT_AMOUNT:
         checkAtmLimit();
+        timer->start(10000);
+        break;
+    case AUTOMAT_SET_MAX_WITHDRAWAL:
+    case ATM_ADDMONEY_AMOUNT:
+        timer->start(30000);
         break;
     default:
         // "kaikki muut enum-arvot"

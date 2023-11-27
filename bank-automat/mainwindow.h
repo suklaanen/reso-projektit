@@ -94,9 +94,7 @@ public slots:
     void showInsertAmount();
     void showTransactions();
     void showATMEvents();
-    void showAtmBalances();
     void showATMSetLimit();
-    void showATMCurrentLimits();
     void showWithdrawFailure(QString reason);
     void showWithdrawOk(QString amount);
     void handleTimeout();
@@ -105,7 +103,6 @@ public slots:
     void showAddMoney();
     void showAddMoneyAmount(QString, int text_color_shift);
     void showAddedMoney(QString amount);
-    void showATMLimitSetted();
 private:
     Ui::MainWindow *ui;
     QNetworkReply * reply;

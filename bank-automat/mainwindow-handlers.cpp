@@ -23,10 +23,13 @@ void MainWindow::clickedNumberHandler()
         }
         if(state == USER_INSERT_AMOUNT) {
             checkAtmLimit();
+            timer->start(10000);
+        }
+        if(state == ATM_ADDMONEY_AMOUNT || state == AUTOMAT_SET_MAX_WITHDRAWAL) {
+            timer->start(30000);
         }
         if (state == CARD_OK || state == LOGIN_FAIL) {
             ui->Content->setEchoMode(QLineEdit::Password);
-            timer->stop();
             timer->start(10000);
         } else {
             ui->Content->setEchoMode(QLineEdit::Normal);
@@ -38,17 +41,28 @@ void MainWindow::handleTimeout()
 {
     switch(state) {
     case CARD_OK:
-        showLogin();
-        break;
     case LOGIN_FAIL:
-        showLogin();
-        break;
     case WITHDRAWAL_OK:
-        showLogin();
-        break;
     case CARD_LOCKED:
+    case USER_MENU:
+    case ADMIN_MENU:
         showLogin();
         break;
+    case USER_BALANCE:
+    case USER_TRANSACTIONS:
+    case USER_WITHDRAWAL:
+        showMenu(token,accountID);
+        break;
+    case USER_INSERT_AMOUNT:
+    case WITHDRAWAL_FAIL:
+        showWithdrawal();
+        break;
+    case ATM_ADDMONEY:
+    case ATM_ADDMONEY_AMOUNT:
+    case AUTOMAT_SET_MAX_WITHDRAWAL:
+    case AUTOMAT_VIEW_LOG:
+    case ATM_MONEYSENT:
+        adminMenu->getAdminMenuInfo(token);
     default:
         // "kaikki muut enum-arvot"
         break;
