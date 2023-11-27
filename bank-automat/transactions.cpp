@@ -11,7 +11,7 @@ Transactions::~Transactions()
 {
 }
 
-void Transactions::showTransactions(QString token, QString accountID, int offset, QString type)
+void Transactions::showTransactions(QByteArray token, QString accountID, int offset, QString type)
 {
     this->token = token;
     this->accountID = accountID;
@@ -19,6 +19,7 @@ void Transactions::showTransactions(QString token, QString accountID, int offset
     this->type = type;
 
     QNetworkRequest request;
+    request.setRawHeader(QByteArray("Authorization"),(token));
     QJsonObject body;
     body.insert("id_account",this->accountID);
     body.insert("offset",this->offset);

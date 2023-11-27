@@ -31,9 +31,9 @@ void MainWindow::connectSlots()
     connect(login, SIGNAL(cardFail()), this, SLOT(showCardFailure()));
     connect(login, SIGNAL(cardOk(QString)), this, SLOT(showInputPin(QString)));
     connect(login, SIGNAL(cardOkSelectType()),this, SLOT(selectDebitCredit()));
-    connect(login, SIGNAL(loginOkAdmin(QString)),adminMenu, SLOT(getAdminMenuInfo(QString)));
+    connect(login, SIGNAL(loginOkAdmin(QByteArray)),adminMenu, SLOT(getAdminMenuInfo(QByteArray)));
     connect(login, SIGNAL(loginFail()),this, SLOT(showLoginFailure()));
-    connect(login, SIGNAL(loginOkUser(QString,QString)),this, SLOT(showMenu(QString,QString)));
+    connect(login, SIGNAL(loginOkUser(QByteArray,QString)),this, SLOT(showMenu(QByteArray,QString)));
     connect(login, SIGNAL(cardLocked()),this, SLOT(showCardLocked()));
     connect(transactions, SIGNAL(transactionsReady()), this, SLOT(showTransactions()));
     connect(timer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
@@ -50,8 +50,8 @@ void MainWindow::connectSlots()
     connect(transactions, SIGNAL(balanceTransReady()), this, SLOT(takesBalanceTransactions()));
     connect(atmBalances, SIGNAL(atmInsertValuesOk(QString)),this, SLOT(showAddedMoney(QString)));
     connect(setlimits, SIGNAL(atmLimitReady()), this, SLOT(showATMSetLimit()));
-    connect(setlimits, SIGNAL(atmInsertLimitOk(QString)), setlimits, SLOT(requestLimit(QString)));
-    connect(adminMenu, SIGNAL(limitAndBalancesReady(QString)), this, SLOT(showAdminMenu(QString)));
+    connect(setlimits, SIGNAL(atmInsertLimitOk(QByteArray,QString)), setlimits, SLOT(requestLimit(QByteArray,QString)));
+    connect(adminMenu, SIGNAL(limitAndBalancesReady(QByteArray)), this, SLOT(showAdminMenu(QByteArray)));
     connect(atmBalances, SIGNAL(atmBalancesToAdminMenu()),adminMenu, SLOT(handleAtmBalances()));
     connect(withdraw, SIGNAL(atmLimitToAdminMenu(QString)),adminMenu, SLOT(handleAtmLimit(QString)));
 }

@@ -18,14 +18,14 @@ void Withdraw::setAmount(QString amount)
     requestWithdrawal();
 }
 
-void Withdraw::setInfo(QString token, QString accountID, QString cardID, QString cardType, QString automatID)
+void Withdraw::setInfo(QByteArray token, QString accountID, QString cardID, QString cardType, QString automatID)
 {
     this->token = token;
     this->accountID = accountID;
     this->cardID = cardID;
     this->cardType = cardType;
     this->automatID = automatID;
-    requestAtmLimit(this->automatID, "withdraw");
+    requestAtmLimit(this->token,this->automatID, "withdraw");
 }
 
 void Withdraw::handleAtmLimit()
@@ -79,10 +79,12 @@ void Withdraw::handleWithdrawal()
     reply->deleteLater();
 }
 
-void Withdraw::requestAtmLimit(QString automatID,QString callingclass)
+void Withdraw::requestAtmLimit(QByteArray token,QString automatID,QString callingclass)
 {
     callingClass = callingclass;
+    this->token = token;
     QNetworkRequest request;
+    request.setRawHeader(QByteArray("Authorization"),(this->token));
     request.setUrl(QUrl("http://localhost:3000/automat/getAtmLimit/"+automatID));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->get(request);
@@ -92,6 +94,7 @@ void Withdraw::requestAtmLimit(QString automatID,QString callingclass)
 void Withdraw::requestWithdrawal()
 {
     QNetworkRequest request;
+    request.setRawHeader(QByteArray("Authorization"),(token));
     QJsonObject body;
     body.insert("id_account",accountID);
     body.insert("id_card",cardID);

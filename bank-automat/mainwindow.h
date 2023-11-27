@@ -74,10 +74,10 @@ public slots:
     void showLogin();
     void showInputPin(QString cardType);
     void selectDebitCredit();
-    void showMenu(QString token, QString accountID);
+    void showMenu(QByteArray token, QString accountID);
     void showCardFailure();
     void showLoginFailure();
-    void showAdminMenu(QString token);
+    void showAdminMenu(QByteArray token);
     void showCardLocked();
     void button1Clicked();
     void button2Clicked();
@@ -119,7 +119,7 @@ private:
     AddMoney * atmBalances;
     SetLimits * setlimits;
     AdminMenuInfo * adminMenu;
-    QString token;
+    QByteArray token;
     void clearScreen();
     void checkAtmLimit();
     void disableEnableButtons(QVector<QPushButton*> btns, bool state);

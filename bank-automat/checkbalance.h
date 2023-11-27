@@ -17,7 +17,7 @@ class CheckBalance : public QObject
 public:
     explicit CheckBalance(QObject* parent = nullptr);
     ~CheckBalance();
-    void displayBalance(QString token, QString accountID, QString cardType);
+    void displayBalance(QByteArray token, QString accountID, QString cardType);
     QList<QString> getBalance();
 public slots:
     void handleGetBalance();
@@ -28,7 +28,7 @@ signals:
 private:
 
     void parseBalance(const QString &data);
-    QString token;
+    QByteArray token;
     QString accountID;
     QString cardType;
     int offset;

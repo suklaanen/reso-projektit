@@ -14,13 +14,14 @@ AddMoney::~AddMoney()
 {
 }
 
-void AddMoney::checkAtmBalances (QString token, QString automatID,QString callingclass)
+void AddMoney::checkAtmBalances (QByteArray token, QString automatID,QString callingclass)
 {
     this->token = token;
     this->automatID = automatID;
     this->callingclass = callingclass;
 
     QNetworkRequest request;
+    request.setRawHeader(QByteArray("Authorization"),(token));
     QJsonObject body;
     body.insert("id_automat",this->automatID);
     request.setUrl(QUrl("http://localhost:3000/automat/getBalances/"+automatID));
@@ -82,6 +83,7 @@ void AddMoney::insertValueOf(QString amount)
 {
     this->amount = amount;
     QNetworkRequest request;
+    request.setRawHeader(QByteArray("Authorization"),(token));
     QJsonObject body;
     body.insert("id_automat", automatID);
     body.insert("amount", amount);
