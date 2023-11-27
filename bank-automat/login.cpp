@@ -33,6 +33,16 @@ void Login::setPIN(const QString &inputPin,const QString &cardType)
     requestLogin();// Kutsutaan metodia, josta lähtee login pyyntö REST APIlle
 }
 
+QString Login::getAccountID()
+{
+    return this->accountID;
+}
+
+QString Login::getToken()
+{
+    return this->token;
+}
+
 //Ottaa vastaan ja käsittelee vastauksen kortin tyypin tarkistuksesta REST APIsta
 void Login::handleCard()
 {
@@ -77,7 +87,7 @@ void Login::handlePin()
         qDebug() << responseData;
         //if(responseData.length()>20) {
         if(responseData != "false") { //Jos vastaus on != "false", niin token on vastaanotettu ja kirjautuminen ok
-            token = QString(responseData); //Tallennetaan webtoken myöhempää signaalia varten
+            this->token = QString(responseData); //Tallennetaan webtoken myöhempää signaalia varten
             clearPinAttempts(); //Kutsutaan metodia, joka tyhjentää pin koodin yritykerrat kortilta tietokannasta
         }
         else {

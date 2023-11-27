@@ -22,6 +22,8 @@ public:
     ~Login();
     void setCardID(const QString &inputCardID, const QString &automatID);
     void setPIN(const QString &inputPin,const QString &cardType);
+    QString getAccountID();
+    QString getToken();
 public slots:
     void handleCard();
     void handlePin();
