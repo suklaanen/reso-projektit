@@ -134,9 +134,8 @@ void MainWindow::showATMEvents()
         ui->pushButton5->setDisabled(true);
         ui->PushText5->setStyleSheet("color: #7777c7;");
     } else {
-        ui->pushButton1->setDisabled(false);
+        disableEnableButtons({ui->pushButton1,ui->pushButton5}, false);
         ui->PushText1->setStyleSheet("");
-        ui->pushButton5->setDisabled(false);
         ui->PushText5->setStyleSheet("");
     }
 

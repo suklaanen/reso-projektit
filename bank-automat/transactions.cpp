@@ -33,7 +33,6 @@ QList<QString> Transactions::getTransactions()
     return parsedTransactions;
 }
 
-
 int Transactions::maxTransactions()
 {
     return maximumTransactions;
