@@ -140,15 +140,14 @@ void MainWindow::showATMEvents()
     }
 
     ui->Title->setText("Automaatin tapahtumat");
-    ui->SecondTitle->setAlignment(Qt::AlignLeft);
-    ui->SecondTitle->setText("         Ajankohta | Kortti | Tapahtuma | (€)");
+    ui->FourthTitle->setText("Ajankohta\t Kortti\t Tapahtuma\t Määrä");
         for (int i = 0; i < viewlog->getEvents().size(); i++)
         {
-            ui->Content2->setText(ui->Content2->text()+viewlog->getEvents().at(i));
+            ui->Content6->setText(ui->Content6->text()+viewlog->getEvents().at(i));
         }
 
         if (offset != 0 && viewlog->maxEvents() < offset + 5) {
-            ui->Content2->setText(ui->Content2->text() + "\tEi vanhempia tapahtumia!\n");
+            ui->Content6->setText(ui->Content6->text() + "Ei vanhempia tapahtumia!\n");
         }
 
         ui->PushText1->setText(QString("Uudemmat"));

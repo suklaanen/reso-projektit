@@ -98,12 +98,17 @@ QLineEdit {
     font: 24pt "Segoe UI";
 }
 
+#ThirdTitle, #FourthTitle { 
+    color: #b5a6f2;
+    font: 18pt "Segoe UI";
+}
+
 #Content { 
     color: #ffffff;
     font: 24pt "Segoe UI";
 }
 
-#Content2, #Content4 { 
+#Content2, #Content4, #Content5, #Content6 { 
     color: #ffffff;
     font: 18pt "Segoe UI";
     alignment: top left;

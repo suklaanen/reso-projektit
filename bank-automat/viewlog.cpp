@@ -79,7 +79,7 @@ void ViewLog::parseEvents(const QString &data)
             QJsonObject jsonObject = jsonValue.toObject();
             qDebug() << jsonObject;
             if (jsonObject["event_type"].toString()=="withdrawal"){
-                event_type = "Nosto   ";
+                event_type = "Nostanut";
             }
             else if(jsonObject["event_type"].toString()=="withdrawal attempt, not enough bills" ||
                     jsonObject["event_type"].toString()=="withdrawal attempt, not enough" ||
@@ -87,25 +87,25 @@ void ViewLog::parseEvents(const QString &data)
                 event_type = "Nostoyritys";
             }
             else if(jsonObject["event_type"].toString()=="login") {
-                event_type = "Login";
+                event_type = "Kirjautunut";
             }
             else if(jsonObject["event_type"].toString()=="logout") {
-                event_type = "Logout";
+                event_type = "Keskeyttänyt";
             }
             else if(jsonObject["event_type"].toString()=="login attempt") {
-                event_type = "Login yritys";
+                event_type = "Kirjautumisyritys";
             }
             else if(jsonObject["event_type"].toString()=="added money 10") {
-                event_type = "Lisätty 10€";
+                event_type = "Lisännyt 10€";
             }
             else if(jsonObject["event_type"].toString()=="added money 20") {
-                event_type = "Lisätty 20€";
+                event_type = "Lisännyt 20€";
             }
             else if(jsonObject["event_type"].toString()=="added money 50") {
-                event_type = "Lisätty 50€";
+                event_type = "Lisännyt 50€";
             }
             else if(jsonObject["event_type"].toString()=="added money 100") {
-                event_type = "Lisätty 100€";
+                event_type = "Lisännyt 100€";
             }
             else {
                 event_type = jsonObject["event_type"].toString();
@@ -117,11 +117,17 @@ void ViewLog::parseEvents(const QString &data)
             qDebug() << time;
             QString amount = "-";
             if(jsonObject["amount"].toString()!="NULL") {
+                auto separator = QChar('.');
+                amount = jsonObject["amount"].toString().split(separator)[0];
+            }
+
+            if (event_type.startsWith("Nostanut")) {
                 amount = jsonObject["amount"].toString();
             }
+
             QString card = QString::number(jsonObject["id_card"].toInt());
             qDebug() << "ID CARD: " << card;
-            parsedEvents.append( QString("%1      %2\t  %3\t%4\n").arg(time.toString("dd.MM.yy hh:mm")).arg(card).arg(event_type).arg(amount));
+            parsedEvents.append( QString("%1\t %2\t %3\t%4\n").arg(time.toString("dd.MM.yy hh:mm")).arg(card).arg(event_type).arg(amount));
         }
     }
     emit LogReady();

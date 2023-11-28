@@ -58,9 +58,9 @@ void MainWindow::showUserBalance(QString formattedBalance, QString formattedCred
 
     if (!transactions->getTransactions().isEmpty()) {
         int transactionsToDisplay = qMin(maxTransactionsToShow, transactions->getTransactions().size());
-        ui->Content2->setText("\tViimeaikaiset tilitapahtumat \n");
+        ui->Content5->setText("Viimeaikaiset tilitapahtumat \n");
         for (int i = 0; i < transactionsToDisplay; i++) {
-            ui->Content2->setText(ui->Content2->text() + transactions->getTransactions().at(i));
+            ui->Content5->setText(ui->Content5->text() + transactions->getTransactions().at(i));
         }
     }
 
@@ -107,14 +107,15 @@ void MainWindow::showTransactions()
     }
 
     ui->Title->setText("Tilitapahtumat");
-    ui->SecondTitle->setText("Ajankohta | Tapahtuma | Summa (€)");
+    ui->ThirdTitle->setText("Ajankohta       Tapahtuma   Summa (€)");
+
     for (int i = 0; i < transactions->getTransactions().size(); i++)
     {
-        ui->Content2->setText(ui->Content2->text()+transactions->getTransactions().at(i));
+        ui->Content5->setText(ui->Content5->text()+transactions->getTransactions().at(i));
     }
 
     if (offset != 0 && transactions->maxTransactions() < offset + 5) {
-        ui->Content2->setText(ui->Content2->text() + "\tEi vanhempia tapahtumia!\n");
+        ui->Content5->setText(ui->Content5->text() + "Ei vanhempia tapahtumia!\n");
     }
 
     ui->PushText1->setText(QString("Uudemmat"));
@@ -122,7 +123,7 @@ void MainWindow::showTransactions()
     ui->PushText4->setText(QString("Palaa takaisin"));
     ui->PushText8->setText(QString("Keskeytä"));
     disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
-    timer->start(10000);
+    timer->start(15000);
 }
 
 void MainWindow::showWithdrawal()
