@@ -140,7 +140,8 @@ void MainWindow::showATMEvents()
     }
 
     ui->Title->setText("Automaatin tapahtumat");
-    ui->SecondTitle->setText("Ajankohta | Kortti | Tapahtuma | Summa (€)");
+    ui->SecondTitle->setAlignment(Qt::AlignLeft);
+    ui->SecondTitle->setText("         Ajankohta | Kortti | Tapahtuma | (€)");
         for (int i = 0; i < viewlog->getEvents().size(); i++)
         {
             ui->Content2->setText(ui->Content2->text()+viewlog->getEvents().at(i));

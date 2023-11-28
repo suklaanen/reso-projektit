@@ -58,8 +58,7 @@ void MainWindow::showUserBalance(QString formattedBalance, QString formattedCred
 
     if (!transactions->getTransactions().isEmpty()) {
         int transactionsToDisplay = qMin(maxTransactionsToShow, transactions->getTransactions().size());
-
-        ui->Content2->setText("Viimeaikaiset tilitapahtumat \n");
+        ui->Content2->setText("\tViimeaikaiset tilitapahtumat \n");
         for (int i = 0; i < transactionsToDisplay; i++) {
             ui->Content2->setText(ui->Content2->text() + transactions->getTransactions().at(i));
         }

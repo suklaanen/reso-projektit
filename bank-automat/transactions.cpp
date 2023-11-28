@@ -94,7 +94,7 @@ void Transactions::parseTransactions(const QString &data)
             qDebug() << time;
             QString amount = jsonObject["amount"].toString();
 
-            parsedTransactions.append( QString("%1    %2\t%3\n").arg(time.toString("dd.MM.yyyy hh:mm")).arg(event_type).arg(amount));
+            parsedTransactions.append(QString("%1        %2\t%3\n").arg(time.toString("dd.MM.yy hh:mm")).arg(event_type).arg(amount));
         }
     }
     if (type == "balance"){

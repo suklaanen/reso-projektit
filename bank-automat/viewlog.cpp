@@ -79,7 +79,7 @@ void ViewLog::parseEvents(const QString &data)
             QJsonObject jsonObject = jsonValue.toObject();
             qDebug() << jsonObject;
             if (jsonObject["event_type"].toString()=="withdrawal"){
-                event_type = "Nosto";
+                event_type = "Nosto   ";
             }
             else if(jsonObject["event_type"].toString()=="withdrawal attempt, not enough bills" ||
                     jsonObject["event_type"].toString()=="withdrawal attempt, not enough" ||
@@ -121,7 +121,7 @@ void ViewLog::parseEvents(const QString &data)
             }
             QString card = QString::number(jsonObject["id_card"].toInt());
             qDebug() << "ID CARD: " << card;
-            parsedEvents.append( QString("%1    %2  %3\t%4\n").arg(time.toString("dd.MM.yy hh:mm")).arg(card).arg(event_type).arg(amount));
+            parsedEvents.append( QString("%1      %2\t  %3\t%4\n").arg(time.toString("dd.MM.yy hh:mm")).arg(card).arg(event_type).arg(amount));
         }
     }
     emit LogReady();
