@@ -31,21 +31,6 @@ const automat = {
         [newData.id_automat, newData.id_card ,denomination, newData.amount],
         callback);
     },
-    addMoney20: function(newData, callback) {
-        return db.query("UPDATE automat SET balance_20 = ? + balance_20 WHERE id_automat=?",
-        [newData.amount, newData.id_automat],
-        callback);
-    },
-    addMoney50: function(newData, callback) {
-        return db.query("UPDATE automat SET balance_50 = ? + balance_50 WHERE id_automat=?",
-        [newData.amount, newData.id_automat],
-        callback);
-    },
-    addMoney100: function(newData, callback) {
-        return db.query("UPDATE automat SET balance_100 = ? + balance_100 WHERE id_automat=?",
-        [newData.amount, newData.id_automat],
-        callback);
-    },
     setATMLimit: function(newData, callback) {
         return db.query("UPDATE automat SET max_withdrawal = ? WHERE id_automat=?",
         [newData.ATMlimit, newData.id_automat],

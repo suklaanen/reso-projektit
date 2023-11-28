@@ -96,45 +96,6 @@ router.put('/addMoney/:denomination', function(request, response) {
     });
 });
 
-router.put('/addMoney20', function(request, response) {
-    automat.addMoney20(request.body, function(err, data) {
-        if(err) {
-            console.log(err);
-            response.json(err);
-        }
-        else {
-            console.log(data);
-            response.json("succes");
-        }
-    });
-});
-
-router.put('/addMoney50', function(request, response) {
-    automat.addMoney50(request.body, function(err, data) {
-        if(err) {
-            console.log(err);
-            response.json(err);
-        }
-        else {
-            console.log(data);
-            response.json("succes");
-        }
-    });
-});
-
-router.put('/addMoney100', function(request, response) {
-    automat.addMoney100(request.body, function(err, data) {
-        if(err) {
-            console.log(err);
-            response.json(err);
-        }
-        else {
-            console.log(data);
-            response.json("succes");
-        }
-    });
-});
-
 router.put('/setATMLimit/', function(request, response) {
     automat.setATMLimit(request.body, function(err, data) {
         if(err) {
