@@ -88,3 +88,29 @@ UPDATE card SET attempts = 0 WHERE id_card = cardID;
 INSERT INTO eventlog(id_automat, id_card, event_type, time) VALUES(automatID, cardID, "login", NOW());
 end//
 DELIMITER ;
+
+DELIMITER //
+create procedure logout(IN automatNmbr INT, IN cardID INT)
+begin
+insert into eventlog(id_automat, id_card, event_type, time) values(automatNmbr, cardID, "logout", NOW());
+end//
+DELIMITER ;
+
+DELIMITER //
+create procedure addMoneyAndLog(IN automatNmbr INT, IN cardID INT, IN denomination INT, IN amount INT)
+begin
+IF(denomination = 10) THEN
+	update automat set balance_10 = balance_10 + amount where id_automat = automatNmbr;
+    insert into eventlog(id_automat, id_card, event_type, amount, time) values(automatNmbr, cardID, "added money 10", amount * 10, NOW());
+ELSEIF(denomination = 20) THEN
+	update automat set balance_20 = balance_20 + amount where id_automat = automatNmbr;
+    insert into eventlog(id_automat, id_card, event_type, amount, time) values(automatNmbr, cardID, "added money 20", amount * 20, NOW());
+ELSEIF(denomination = 50) THEN
+	update automat set balance_50 = balance_50 + amount where id_automat = automatNmbr;
+    insert into eventlog(id_automat, id_card, event_type, amount, time) values(automatNmbr, cardID, "added money 50", amount * 50, NOW());
+ELSE
+	update automat set balance_100 = balance_100 + amount where id_automat = automatNmbr;
+    insert into eventlog(id_automat, id_card, event_type, amount, time) values(automatNmbr, cardID, "added money 100", amount * 100, NOW());
+END IF;
+end//
+DELIMITER ;
