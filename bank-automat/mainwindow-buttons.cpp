@@ -46,6 +46,7 @@ void MainWindow::clickedGREEN()
     case SELECT_CARD:
         if(ui->Content->text() != "") {
             ID = ui->Content->text();
+            atmBalances->setCardID(ID);
             login->setCardID(ui->Content->text(),automatID);
         }
         else {
@@ -55,6 +56,7 @@ void MainWindow::clickedGREEN()
     case CARD_FAIL:
         if(ui->Content->text() != "") {
             ID = ui->Content->text();
+            atmBalances->setCardID(ID);
             login->setCardID(ui->Content->text(),automatID);
         }
         else {
@@ -385,7 +387,7 @@ void MainWindow::button8Clicked()
     case ATM_MONEYSENT:
     case AUTOMAT_SET_MAX_WITHDRAWAL:
         qDebug() << "Stop session -clicked";
-        showLogin();
+        login->requestLogout();
         break;
     default:
         // "kaikki muut enum-arvot"

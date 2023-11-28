@@ -22,6 +22,7 @@ public:
     QList<QString> getAtmBalances();
     QList<QString> getAddedMoney();
     void setDenomination(QString);
+    void setCardID(QString);
     QString getDenomination();
 public slots:
     void handleGetAtmBalances();
@@ -37,6 +38,7 @@ private:
     QNetworkReply *reply;
     QByteArray token;
     QString automatID;
+    QString cardID;
     QString amount;
     QString denomination;
     QList<QString> parsedAtmBalances;

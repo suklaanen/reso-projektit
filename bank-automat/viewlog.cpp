@@ -77,7 +77,7 @@ void ViewLog::parseEvents(const QString &data)
         QString event_type;
         if (jsonValue.isObject()) {
             QJsonObject jsonObject = jsonValue.toObject();
-
+            qDebug() << jsonObject;
             if (jsonObject["event_type"].toString()=="withdrawal"){
                 event_type = "Nosto";
             }
@@ -87,10 +87,25 @@ void ViewLog::parseEvents(const QString &data)
                 event_type = "Nostoyritys";
             }
             else if(jsonObject["event_type"].toString()=="login") {
-                event_type = "Kirjautuminen";
+                event_type = "Login";
+            }
+            else if(jsonObject["event_type"].toString()=="logout") {
+                event_type = "Logout";
             }
             else if(jsonObject["event_type"].toString()=="login attempt") {
-                event_type = "Kirjautumisyritys";
+                event_type = "Login yritys";
+            }
+            else if(jsonObject["event_type"].toString()=="added money 10") {
+                event_type = "Lisätty 10€";
+            }
+            else if(jsonObject["event_type"].toString()=="added money 20") {
+                event_type = "Lisätty 20€";
+            }
+            else if(jsonObject["event_type"].toString()=="added money 50") {
+                event_type = "Lisätty 50€";
+            }
+            else if(jsonObject["event_type"].toString()=="added money 100") {
+                event_type = "Lisätty 100€";
             }
             else {
                 event_type = jsonObject["event_type"].toString();
@@ -104,8 +119,9 @@ void ViewLog::parseEvents(const QString &data)
             if(jsonObject["amount"].toString()!="NULL") {
                 amount = jsonObject["amount"].toString();
             }
-
-            parsedEvents.append( QString("%1    %2\t%3\n").arg(time.toString("dd.MM.yyyy hh:mm")).arg(event_type).arg(amount));
+            QString card = QString::number(jsonObject["id_card"].toInt());
+            qDebug() << "ID CARD: " << card;
+            parsedEvents.append( QString("%1    %2  %3\t%4\n").arg(time.toString("dd.MM.yy hh:mm")).arg(card).arg(event_type).arg(amount));
         }
     }
     emit LogReady();

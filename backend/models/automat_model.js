@@ -26,9 +26,9 @@ const automat = {
     getBalances: function(id, callback) {
         return db.query("SELECT balance_10, balance_20, balance_50, balance_100 FROM automat WHERE id_automat=?",[id],callback);
     },
-    addMoney10: function(newData, callback) {
-        return db.query("UPDATE automat SET balance_10 = ? + balance_10 WHERE id_automat=?",
-        [newData.amount, newData.id_automat],
+    addMoney: function(denomination, newData, callback) {
+        return db.query("call addMoneyAndLog(?,?,?,?)",
+        [newData.id_automat, newData.id_card ,denomination, newData.amount],
         callback);
     },
     addMoney20: function(newData, callback) {

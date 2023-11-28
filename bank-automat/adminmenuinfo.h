@@ -23,6 +23,7 @@ private:
     AddMoney * addmoney;
     QString automatID;
     QString atmLimit;
+    QString cardID;
     QByteArray token;
 };
 

@@ -41,6 +41,11 @@ void AddMoney::setDenomination(QString denomination)
     this->denomination = denomination;
 }
 
+void AddMoney::setCardID(QString cardID)
+{
+    this->cardID = cardID;
+}
+
 QString AddMoney::getDenomination()
 {
     return this->denomination;
@@ -86,8 +91,9 @@ void AddMoney::insertValueOf(QString amount)
     request.setRawHeader(QByteArray("Authorization"),(token));
     QJsonObject body;
     body.insert("id_automat", automatID);
+    body.insert("id_card", cardID);
     body.insert("amount", amount);
-    request.setUrl(QUrl("http://localhost:3000/automat/addMoney" + denomination));
+    request.setUrl(QUrl("http://localhost:3000/automat/addMoney/"+denomination));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->put(request, QJsonDocument(body).toJson());
     connect(reply, SIGNAL(finished()), this, SLOT(handleInsertValues()));

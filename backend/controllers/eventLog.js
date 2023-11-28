@@ -30,7 +30,7 @@ router.get('/:id', function(request, response) {
 
 router.post('/', function(request, response) {
     console.log(request.body);
-    eventLog.addEvent(request.body, function(err, data){
+    eventLog.addLogoutEvent(request.body, function(err, data){
         if(err){
             console.log(err);
             response.status(400);
@@ -38,7 +38,7 @@ router.post('/', function(request, response) {
         }
         else{
             console.log(data);
-            response.send(data);
+            response.send("success");
         }
     });
 });

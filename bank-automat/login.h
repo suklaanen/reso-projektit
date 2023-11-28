@@ -31,6 +31,8 @@ public slots:
     void handleAddedAttempt();
     void handleClearAttempts();
     void handleGetAccountID();
+    void requestLogout();
+    void handleLogout();
 
  signals:
     void loginFail();
@@ -40,6 +42,7 @@ public slots:
     void cardOk(QString cardType);
     void cardOkSelectType();
     void loginOkAdmin(QByteArray token);
+    void logoutOk();
 
 private:
     QNetworkAccessManager *manager;
