@@ -14,6 +14,7 @@ Login::Login(QWidget *parent) :
 
 Login::~Login()
 {
+
 }
 
 //Ottaa vastaan kortin ID:n mainwindow:sta
@@ -207,6 +208,37 @@ void Login::handleGetAccountID()
     } else {
         // Käsitellään mahdollinen virhe (verkkovirhe)
         qDebug() << "Could not get account ID" << reply->errorString();
+    }
+    // Tyhjennetään vastaus myöhemmin
+    reply->deleteLater();
+}
+
+void Login::requestLogout()
+{
+    QNetworkRequest request;
+    request.setRawHeader(QByteArray("Authorization"),(token));
+    QJsonObject body;
+    body.insert("id_automat",automatID); //Asetetaan request bodyyn id_automat
+    body.insert("id_card",cardID);       //ja id_card
+    request.setUrl(QUrl("http://localhost:3000/eventLog"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    reply = manager->post(request, QJsonDocument(body).toJson());
+    connect(reply, SIGNAL(finished()), this, SLOT(handleLogout()));
+}
+
+void Login::handleLogout()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
+    if (reply->error() == QNetworkReply::NoError) {
+        // Onnistunut vastaus
+        QByteArray responseData = reply->readAll();
+        // Käsitellään vastaus
+        if(responseData == "success") {
+            emit logoutOk();
+        }
+    } else {
+        // Käsitellään mahdollinen virhe (verkkovirhe)
+        qDebug() << "Could not logout" << reply->errorString();
     }
     // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();

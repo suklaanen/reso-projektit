@@ -46,7 +46,7 @@ void MainWindow::handleTimeout()
     case CARD_LOCKED:
     case USER_MENU:
     case ADMIN_MENU:
-        showLogin();
+        login->requestLogout();
         break;
     case USER_BALANCE:
     case USER_TRANSACTIONS:

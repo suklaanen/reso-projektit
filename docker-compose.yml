@@ -10,7 +10,7 @@ services:
       - MYSQL_DATABASE=bank_automat
       - TZ=Europe/Helsinki
     volumes:
-      # Suoritusjärjestys: bank_automat, testdata, procedures
+      # Suoritusjärjestys: bank_automat, procedures, testdata
       - ./sql/bank_automat.sql:/docker-entrypoint-initdb.d/1-bank_automat.sql
       - ./sql/procedures.sql:/docker-entrypoint-initdb.d/2-procedures.sql
       - ./sql/testdata.sql:/docker-entrypoint-initdb.d/3-testdata.sql

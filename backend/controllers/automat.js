@@ -83,47 +83,8 @@ router.get('/getBalances/:id', function(request, response) {
     });
 });
 
-router.put('/addMoney10', function(request, response) {
-    automat.addMoney10(request.body, function(err, data) {
-        if(err) {
-            console.log(err);
-            response.json(err);
-        }
-        else {
-            console.log(data);
-            response.json("succes");
-        }
-    });
-});
-
-router.put('/addMoney20', function(request, response) {
-    automat.addMoney20(request.body, function(err, data) {
-        if(err) {
-            console.log(err);
-            response.json(err);
-        }
-        else {
-            console.log(data);
-            response.json("succes");
-        }
-    });
-});
-
-router.put('/addMoney50', function(request, response) {
-    automat.addMoney50(request.body, function(err, data) {
-        if(err) {
-            console.log(err);
-            response.json(err);
-        }
-        else {
-            console.log(data);
-            response.json("succes");
-        }
-    });
-});
-
-router.put('/addMoney100', function(request, response) {
-    automat.addMoney100(request.body, function(err, data) {
+router.put('/addMoney/:denomination', function(request, response) {
+    automat.addMoney(request.params.denomination, request.body, function(err, data) {
         if(err) {
             console.log(err);
             response.json(err);

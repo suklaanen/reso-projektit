@@ -27,7 +27,6 @@ void AdminMenuInfo::handleAtmLimit(QString atmLimit)
 {
     this->atmLimit = atmLimit;
     addmoney->checkAtmBalances(token,automatID,"adminmenu");
-
 }
 
 void AdminMenuInfo::handleAtmBalances()

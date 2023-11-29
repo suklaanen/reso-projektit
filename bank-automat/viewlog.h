@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QTimer>
 #include <QByteArray>
+#include <QChar>
 
 
 class ViewLog:public QObject
