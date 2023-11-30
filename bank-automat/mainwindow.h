@@ -46,8 +46,6 @@ class MainWindow : public QMainWindow
         ATM_ADDMONEY,
         ATM_ADDMONEY_AMOUNT,
         ATM_MONEYSENT,
-        //ATM_CHECKBALANCES,
-        //AUTOMAT_CHECK_MAX,
         AUTOMAT_SET_MAX_WITHDRAWAL,
         AUTOMAT_VIEW_LOG,
         MAP_VIEW

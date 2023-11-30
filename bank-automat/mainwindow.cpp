@@ -52,11 +52,8 @@ void MainWindow::clearScreen()
 {
     ui->Content->clear();
     ui->Content2->clear();
-    //ui->Content2->setAlignment(Qt::AlignLeft);
     ui->Content3->clear();
-    //ui->Content3->setAlignment(Qt::AlignLeft);
     ui->Content4->clear();
-   // ui->Content4->setAlignment(Qt::AlignLeft);
     ui->SecondTitle->setAlignment(Qt::AlignCenter);
     ui->Content5->clear();
     ui->Content6->clear();
@@ -81,6 +78,7 @@ void MainWindow::clearScreen()
     disableEnableButtons({ui->pushButton1,ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton5,ui->pushButton6,ui->pushButton7,ui->pushButton8},true);
 }
 
+//Ottaa vastaan QVector objektina enabloitavat/disabloitavat QPushButtonit
 void MainWindow::disableEnableButtons(QVector<QPushButton*> btns, bool state)
 {
     for(auto btn: btns) {
@@ -88,6 +86,7 @@ void MainWindow::disableEnableButtons(QVector<QPushButton*> btns, bool state)
     }
 }
 
+//Näyttää animaation ennen kirjautumista
 void MainWindow::showAnimatedGifBeforeLogin()
 {
     QMovie *movie = new QMovie(":/cardRed.gif");
@@ -96,6 +95,7 @@ void MainWindow::showAnimatedGifBeforeLogin()
     movie->start();
 }
 
+//Näyttää animaation kirjautumisen jälkeen
 void MainWindow::showAnimatedGifAfterLogin()
 {
     QMovie *movie = new QMovie(":/cardGreen.gif");

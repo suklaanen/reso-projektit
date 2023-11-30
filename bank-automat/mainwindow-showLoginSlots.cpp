@@ -52,6 +52,7 @@ void MainWindow::showInputPin(QString cardType)
     ui->SecondTitle->setText(QString("Syötä pin"));
 }
 
+//Näyttää kortti lukittu -tilan
 void MainWindow::showCardLocked()
 {
     clearScreen();

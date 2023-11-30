@@ -16,7 +16,7 @@
 // *************************************************************************************
 
 
-// Käyttäjän menu (adminin menu tulee erikseen)
+// Käyttäjän päävalikko
 void MainWindow::showMenu(QByteArray token, QString accountID)
 {
     this->token = token;
@@ -34,7 +34,7 @@ void MainWindow::showMenu(QByteArray token, QString accountID)
     timer->start(30000);
 }
 
-//void MainWindow::showUserBalance(QString balance)
+//Näyttää tilin saldon sekä neljä viimeistä tilitapahtumaa näytöllä
 void MainWindow::showUserBalance(QString formattedBalance, QString formattedCreditLimit)
 {
     //this->saldo = balance;  // Aseta saldo-muuttujan arvo
@@ -70,10 +70,15 @@ void MainWindow::showUserBalance(QString formattedBalance, QString formattedCred
     timer->start(10000);
 }
 
+//Ottaa vastaan signaalin transactions luokalta, kun tilitapahtumat on noudettu. Aktivoi saldon tarkistuksen
+//Tapahtumaketju saldon tarkasteluun: aktivoidaan tapahtumien nouto -> kun valmis, pyydetään tilin saldo
+//-> kun valmis, näytetään näytöllä tilin saldo + 4 viimeistä tapahtumaa
 void MainWindow::takesBalanceTransactions()
 {
     balance->displayBalance(token, accountID, cardType);
 }
+
+//Pyytää käyttäjää syöttämään nostettavan summan
 void MainWindow::showInsertAmount()
 {
     clearScreen();
@@ -85,6 +90,7 @@ void MainWindow::showInsertAmount()
     timer->start(10000);
 }
 
+//Näyttää tilitapahtumat -tilassa näytöllä viisi valittua (uudemmat/vanhemmat) tilitapahtumaa
 void MainWindow::showTransactions()
 {
     clearScreen();
@@ -126,6 +132,7 @@ void MainWindow::showTransactions()
     timer->start(15000);
 }
 
+//Näyttää nosta rahaa -tilassa nostovaihtoehdot näytöllä
 void MainWindow::showWithdrawal()
 {
     clearScreen();
@@ -144,6 +151,7 @@ void MainWindow::showWithdrawal()
     timer->start(10000);
 }
 
+//Näyttää syyn epäonnistuneelle nostolle
 void MainWindow::showWithdrawFailure(QString reason)
 {
     state = WITHDRAWAL_FAIL;
@@ -155,6 +163,7 @@ void MainWindow::showWithdrawFailure(QString reason)
     timer->start(7000);
 }
 
+//Näyttää onnistuneen noston ja nostetun summan
 void MainWindow::showWithdrawOk(QString amount)
 {
     state = WITHDRAWAL_OK;

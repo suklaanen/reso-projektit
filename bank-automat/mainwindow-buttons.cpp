@@ -253,6 +253,7 @@ void MainWindow::button4Clicked()
     case CARD_COMBINATION: showInputPin("debit"); //Valitaan debit tili
         qDebug() << "debit clicked";
         break;
+    case ATM_MONEYSENT:
     case ADMIN_MENU:
         qDebug() << "ATM Add money -clicked";
         showAddMoney(); //Aktivoidaan ja näytetään lisää varoja tila
@@ -282,7 +283,6 @@ void MainWindow::button4Clicked()
     case AUTOMAT_VIEW_LOG:
     case ATM_ADDMONEY:
     case ATM_ADDMONEY_AMOUNT:
-    case ATM_MONEYSENT:
     case AUTOMAT_SET_MAX_WITHDRAWAL:
         qDebug() << "Paluu clicked";
         adminMenu->getAdminMenuInfo(token); //Noudetaan automaatin tiedot, ja palataan adminin päävalikkoon

@@ -65,8 +65,11 @@ void MainWindow::handleTimeout()
     case ATM_ADDMONEY_AMOUNT:
     case AUTOMAT_SET_MAX_WITHDRAWAL:
     case AUTOMAT_VIEW_LOG:
-    case ATM_MONEYSENT:
         adminMenu->getAdminMenuInfo(token); //Noudetaan automaatin tiedot ja palataan adminin päävalikkoon
+        break;
+    case ATM_MONEYSENT:
+        showAddMoney();
+        break;
     default:
         // "kaikki muut enum-arvot"
         break;
