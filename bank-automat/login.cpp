@@ -252,7 +252,7 @@ void Login::handleLogout()
 void Login::requestCardID()
 {
     QNetworkRequest request;
-    request.setUrl(QUrl("http://localhost:3000/card/"+cardID));
+    request.setUrl(QUrl("http://localhost:3000/cardAttempts/cardType/"+cardID));
     reply = manager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(handleCard()));
 }

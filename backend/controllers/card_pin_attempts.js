@@ -35,4 +35,20 @@ router.post('/clear', function(request, response) {
     });
 });
 
+router.get('/cardType/:id', function(request, response) {
+    card.getOneCard(request.params.id, function(err, data) {
+        if(err) {
+            response.json(err);
+        }
+        else {
+            if(data.length > 0) {
+                response.json(data[0].type);
+            }
+            else {
+                response.json(false);
+            }    
+        }
+    });
+});
+
 module.exports = router;

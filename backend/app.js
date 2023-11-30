@@ -5,7 +5,6 @@ var logger = require('morgan');
 const jwt = require('jsonwebtoken');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var accountRouter = require('./controllers/account');
 var eventLogRouter = require('./controllers/eventLog');
 var userRouter = require('./controllers/user');
@@ -25,12 +24,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/cardAttempts',cardPinAttempts);
 app.use('/login', loginRouter);
-app.use('/card', cardRouter);
 
 app.use(authenticateToken);
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/card', cardRouter);
 app.use('/account',accountRouter);
 app.use('/eventLog', eventLogRouter);
 app.use('/user', userRouter);
