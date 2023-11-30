@@ -21,19 +21,19 @@
 // ********** button8Clicked()
 // *************************************************************************************
 
+//Asetetaan kartalta valittu automaatin ID muuttujaan ja aktivoidaan kirjautumistila
 void MainWindow::atmClicked()
 {
     QPushButton * atm_btn = qobject_cast<QPushButton*>(sender());
     QString atm_id = atm_btn->objectName();
-    qDebug()<<"ATM1 button clicked";
-    automatID = atm_id.last(1);
-
+    qDebug()<<"ATM button clicked";
+    this->automatID = atm_id.last(1);
     ui->Mapframe->hide();
     adminMenu->setAutomatID(automatID);
     showLogin();
-    state = SELECT_CARD;
 }
 
+//Vihreästä napista siirretään käyttäjän syötteet näytöltä tilan mukaisesti eri luokille
 void MainWindow::clickedGREEN()
 {
     qDebug()<<"Green button clicked";
@@ -46,8 +46,8 @@ void MainWindow::clickedGREEN()
             login->setCardID(ui->Content->text(),automatID);
         }
         else {
-            login->setCardID("0",automatID);
-        }
+            login->setCardID("0",automatID); //Tyhjä syöte rekisteröidään nollana.
+        }                                    //Aktivoidaan login luokan korttiin liittyvät tarkistukset
         break;
     case CARD_FAIL:
         if(ui->Content->text() != "") {
@@ -61,7 +61,7 @@ void MainWindow::clickedGREEN()
         break;
     case CARD_OK:
     case LOGIN_FAIL:
-        login->setPIN(ui->Content->text(),cardType);
+        login->setPIN(ui->Content->text(),cardType); //Aktivoidaan login luokassa sisäänkirjautuminen
         timer->stop();
         break;
     case CARD_COMBINATION:
@@ -72,13 +72,13 @@ void MainWindow::clickedGREEN()
         break;
     case USER_INSERT_AMOUNT:
         qDebug() << "Amount inserted, green clicked";
-        withdraw->setAmount(ui->Content->text());
+        withdraw->setAmount(ui->Content->text()); //Siirrettään syötetty rahasumma nosto luokalle
         break;
     case ATM_ADDMONEY_AMOUNT:
-        atmBalances->insertValueOf(ui->Content->text());
+        atmBalances->insertValueOf(ui->Content->text()); //Siirretään syötetty lisättävien setelien määrä addMoney luokalle (atmBalances pointteri)
         break;
     case AUTOMAT_SET_MAX_WITHDRAWAL:
-        setlimits->setLimit(automatID, ui->Content->text());
+        setlimits->setLimit(automatID, ui->Content->text()); //Siirrettään syötetty uusi nostoraja setLimits luokalle
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -86,7 +86,7 @@ void MainWindow::clickedGREEN()
     }
 }
 
-// Keltaisen painikkeen "kumita kaikki merkit" toiminto
+// Keltaisen painikkeen "kumita kaikki merkit" toiminto. Käynnistää myös uudelleen tilojen timeout ajastukset
 void MainWindow::clickedYELLOW()
 {
     qDebug()<<"Yellow button clicked";
@@ -97,7 +97,7 @@ void MainWindow::clickedYELLOW()
         timer->start(10000);
         break;
     case USER_INSERT_AMOUNT:
-        checkAtmLimit();
+        checkAtmLimit(); //Tarkistetaan ylittääkö ruudulle syötetty summa automaatin nostorajan
         timer->start(10000);
         break;
     case AUTOMAT_SET_MAX_WITHDRAWAL:
@@ -110,7 +110,7 @@ void MainWindow::clickedYELLOW()
     }
 }
 
-// Harmaan painikkeen "kumita yksi merkki" toiminto
+// Harmaan painikkeen "kumita yksi merkki" toiminto. Käynnistää myös uudelleen tilojen timeout ajastukset
 void MainWindow::clickedGREY()
 {
     qDebug()<<"Grey button clicked";
@@ -125,7 +125,7 @@ void MainWindow::clickedGREY()
         timer->start(10000);
         break;
     case USER_INSERT_AMOUNT:
-        checkAtmLimit();
+        checkAtmLimit(); //Tarkistetaan ylittääkö ruudulle syötetty summa automaatin nostorajan
         timer->start(10000);
         break;
     case AUTOMAT_SET_MAX_WITHDRAWAL:
@@ -147,9 +147,11 @@ void MainWindow::clickedRED()
     case CARD_FAIL:
     case CARD_COMBINATION:
     case LOGIN_FAIL:
-        showLogin();
+        showLogin(); //Ennen kirjautumista palataan suoraan alkutilaan
+        break;
     default:
-        login->requestLogout();
+        login->requestLogout(); //Kirjautumisen jälkeen palataan alkutilaan uloskirjautumisen kautta
+        break;
     }
 
 }
@@ -161,28 +163,28 @@ void MainWindow::button1Clicked()
     case USER_TRANSACTIONS:
         qDebug() << "Uudemmat clicked";
         if (offset>0){
-            offset=offset-5;
+            offset=offset-5; //Siirrytään uudempiin tapahtumiin -> offset -= 5
         }else
         {
             offset=0;
         }
         qDebug() << "offset: "<< offset;
-        transactions->showTransactions(token, accountID, offset, QString("transactions"));
+        transactions->showTransactions(token, accountID, offset, QString("transactions")); //Pyydetään käyttäjän tapahtumat
         break;
     case AUTOMAT_VIEW_LOG:
         qDebug() << "Uudemmat clicked";
         if (offset>0){
-            offset=offset-5;
+            offset=offset-5; //Siirrytään uudempiin tapahtumiin -> offset -= 5
         }else
         {
             offset=0;
         }
         qDebug() << "offset: "<< offset;
-        viewlog->requestEvents(token, automatID, offset);
+        viewlog->requestEvents(token, automatID, offset); //Pyydetään automaatin tapahtumat
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 10 clicked";
-        withdraw->setAmount(QString("10"));
+        withdraw->setAmount(QString("10")); //Aktivoidaan 10€ nostoyritys
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -196,22 +198,22 @@ void MainWindow::button2Clicked()
     switch(state) {
     case ADMIN_MENU:
         qDebug() << "ATM set limit -clicked";
-        setlimits->requestLimit(token,automatID);
+        setlimits->requestLimit(token,automatID); //Aktivoidaan muuta nostorajaa tila (pyydetään ja näytetään ensin nykyinen raja näytöllä)
         break;
     case USER_MENU:
         qDebug() << "User Balance -clicked";
         offset = 0;
-        transactions->showTransactions(token, accountID, offset, QString("balance"));
+        transactions->showTransactions(token, accountID, offset, QString("balance")); //Pyydetään 5 viimeaikaista tilitapahtumaa (näkyy samassa kuin saldo)
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 20 clicked";
-        withdraw->setAmount(QString("20"));
+        withdraw->setAmount(QString("20")); //Aktivoidaan 20€ nostoyritys
         break;
     case ATM_ADDMONEY:
     case ATM_ADDMONEY_AMOUNT:
         qDebug() << "Add Money 10 -clicked";
-        atmBalances->setDenomination("10");
-        showAddMoneyAmount("10",2);
+        atmBalances->setDenomination("10"); //Asetetaan lisättävän setelin suuruus addMoney luokkaan (atmBalances pointteri)
+        showAddMoneyAmount("10",2); //Näytetään tila, jossa pyydetään syöttämään lisättävien setelien määrä
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -226,17 +228,17 @@ void MainWindow::button3Clicked()
     case USER_MENU:
         qDebug() << "Transactions -clicked";
         offset = 0;
-        transactions->showTransactions(token, accountID, offset, QString("transactions"));
+        transactions->showTransactions(token, accountID, offset, QString("transactions")); //Aktivoidaan tilipahatumat tila. Pyydetään käyttäjän tapahtumat
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 40 -clicked";
-        withdraw->setAmount(QString("40"));
+        withdraw->setAmount(QString("40")); //Aktivoidaan 40€ nostoyritys
         break;
     case ATM_ADDMONEY:
     case ATM_ADDMONEY_AMOUNT:
         qDebug() << "Add Money 20 -clicked";
-        showAddMoneyAmount("20",3);
-        atmBalances->setDenomination("20");
+        atmBalances->setDenomination("20"); //Asetetaan lisättävän setelin suuruus addMoney luokkaan (atmBalances pointteri)
+        showAddMoneyAmount("20",3); //Näytetään tila, jossa pyydetään syöttämään lisättävien setelien määrä
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -248,51 +250,42 @@ void MainWindow::button3Clicked()
 void MainWindow::button4Clicked()
 {
     switch(state) {
-    case CARD_COMBINATION: showInputPin("debit");
+    case CARD_COMBINATION: showInputPin("debit"); //Valitaan debit tili
         qDebug() << "debit clicked";
         break;
-    //case ADMIN_MENU:
-        //qDebug() << "ATM balance -clicked";
-        //atmBalances->checkAtmBalances(token, automatID,"main");
-        //break;
     case ADMIN_MENU:
         qDebug() << "ATM Add money -clicked";
-        showAddMoney();
+        showAddMoney(); //Aktivoidaan ja näytetään lisää varoja tila
         break;
     case USER_MENU:
         qDebug() << "User Withdrawal -clicked";
-        showWithdrawal();  // tai vastaavan niminen slotti
+        showWithdrawal();  //Aktivoidaan ja näytetään rahan nosto tila
         break;
     case USER_BALANCE:
-        qDebug() << "Paluu clicked";
-        offset=0;
-        showMenu(token, accountID);
-        break;
     case USER_WITHDRAWAL:
     case WITHDRAWAL_FAIL:
         qDebug() << "Paluu clicked";
-        showMenu(token, accountID);
+        showMenu(token, accountID); //Palataan käyttäjän päävalikkoon
         break;
     case USER_INSERT_AMOUNT:
         qDebug() << "Return -clicked";
         qDebug() << "user token: " << token << " user accountID: " << accountID;
-        showWithdrawal();
+        showWithdrawal(); //Palataan nosta rahaa tilaan
         break;
     case USER_TRANSACTIONS:
         qDebug() << "Paluu clicked";
         offset=0;
-        ui->PushText1->setStyleSheet("");
+        ui->PushText1->setStyleSheet(""); //Asetetaan tekstin tyylit normaaliksi
         ui->PushText5->setStyleSheet("");
-        showMenu(token, accountID);
+        showMenu(token, accountID); //Palataan käyttäjän päävalikkoon
         break;
-    case ATM_CHECKBALANCES:
     case AUTOMAT_VIEW_LOG:
     case ATM_ADDMONEY:
     case ATM_ADDMONEY_AMOUNT:
     case ATM_MONEYSENT:
     case AUTOMAT_SET_MAX_WITHDRAWAL:
         qDebug() << "Paluu clicked";
-        adminMenu->getAdminMenuInfo(token);
+        adminMenu->getAdminMenuInfo(token); //Noudetaan automaatin tiedot, ja palataan adminin päävalikkoon
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -306,19 +299,19 @@ void MainWindow::button5Clicked()
     switch(state) {
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 60 -clicked";
-        withdraw->setAmount(QString("60"));
+        withdraw->setAmount(QString("60")); //Aktivoidaan 60€ nostoyritys
         break;
     case USER_TRANSACTIONS:
         qDebug() << "Vanhemmat clicked";
-        offset += 5;
+        offset += 5;                       //Korotetaan offset muuttujaa -> viisi vanhempaa tapahtumaa
         qDebug() << "offset: "<< offset;
-        transactions->showTransactions(token, accountID, offset, QString("transactions"));
+        transactions->showTransactions(token, accountID, offset, QString("transactions")); //Pyydetään tapahtumat
         break;
     case AUTOMAT_VIEW_LOG:
         qDebug() << "Vanhemmat clicked";
-        offset += 5;
+        offset += 5;                       //Korotetaan offset muuttujaa -> viisi vanhempaa tapahtumaa
         qDebug() << "offset: "<< offset;
-        viewlog->requestEvents(token,automatID,offset);
+        viewlog->requestEvents(token,automatID,offset); //Pyydetään automaatin tapahtumat
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -333,17 +326,17 @@ void MainWindow::button6Clicked()
     case ADMIN_MENU:
         qDebug() << "ATM Events -clicked";
         offset = 0;
-        viewlog->requestEvents(token, automatID, offset);
+        viewlog->requestEvents(token, automatID, offset); //Aktivoidaan ja näytetään automaatin tapahtumaloki
         break;
     case USER_WITHDRAWAL:
         qDebug() << "Withdraw 80 clicked";
-        withdraw->setAmount(QString("80"));
+        withdraw->setAmount(QString("80")); //Aktivoidaan 80€ nostoyritys
         break;
     case ATM_ADDMONEY:
     case ATM_ADDMONEY_AMOUNT:
         qDebug() << "Add Money 50 -clicked";
-        showAddMoneyAmount("50", 6);
-        atmBalances->setDenomination("50");
+        atmBalances->setDenomination("50"); //Asetetaan lisättävän setelin suuruus addMoney luokkaan (atmBalances pointteri)
+        showAddMoneyAmount("50", 6); //Näytetään tila, jossa pyydetään syöttämään lisättävien setelien määrä
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -357,13 +350,13 @@ void MainWindow::button7Clicked()
     switch(state) {
     case USER_WITHDRAWAL:
         qDebug() << "Insert amount clicked";
-        showInsertAmount();
+        showInsertAmount(); //Aktivoidaan ja näytetään syötä nostettava summa -tila
         break;
     case ATM_ADDMONEY:
     case ATM_ADDMONEY_AMOUNT:
         qDebug() << "Add Money 100 -clicked";
-        showAddMoneyAmount("100", 7);
-        atmBalances->setDenomination("100");
+        atmBalances->setDenomination("100"); //Asetetaan lisättävän setelin suuruus addMoney luokkaan (atmBalances pointteri)
+        showAddMoneyAmount("100", 7); //Näytetään tila, jossa pyydetään syöttämään lisättävien setelien määrä
         break;
     default:
         // "kaikki muut enum-arvot"
@@ -375,7 +368,7 @@ void MainWindow::button7Clicked()
 void MainWindow::button8Clicked()
 {
     switch(state) {
-    case CARD_COMBINATION: showInputPin("credit");
+    case CARD_COMBINATION: showInputPin("credit"); //Valitaan credit tili
         qDebug() << "credit clicked";
         break;
     case ADMIN_MENU:
@@ -383,7 +376,6 @@ void MainWindow::button8Clicked()
     case USER_WITHDRAWAL:
     case USER_TRANSACTIONS:
     case USER_BALANCE:
-    case ATM_CHECKBALANCES:
     case USER_INSERT_AMOUNT:
     case AUTOMAT_VIEW_LOG:
     case ATM_ADDMONEY:
@@ -391,7 +383,7 @@ void MainWindow::button8Clicked()
     case ATM_MONEYSENT:
     case AUTOMAT_SET_MAX_WITHDRAWAL:
         qDebug() << "Stop session -clicked";
-        login->requestLogout();
+        login->requestLogout(); //Siirrytään uloskirjautumisen kautta alkutilaan
         break;
     default:
         // "kaikki muut enum-arvot"
