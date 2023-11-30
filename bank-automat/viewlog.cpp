@@ -100,6 +100,9 @@ void ViewLog::parseEvents(const QString &data)
             else if(jsonObject["event_type"].toString()=="login attempt") {
                 event_type = "Kirjautumisyritys";
             }
+            else if(jsonObject["event_type"].toString()=="card locked") {
+                event_type = "Kortti lukittu";
+            }
             else if(jsonObject["event_type"].toString()=="added money 10") {
                 event_type = "Lisännyt 10€";
             }

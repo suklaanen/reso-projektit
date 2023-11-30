@@ -117,6 +117,7 @@ void Login::handleAttempts()
         }
         else {
             if(!pin_attempted) { //Muussa tapauksessa, tarkistetaan onko piniä yritetty tällä käyttökerralla jo vähintään kerran
+
                 if(cardType == "credit/debit") { //Jos piniä ei vielä oltu yritetty ja kyseessä on yhdistelmäkortti
                     emit cardOkSelectType();     //Lähetetään signaali mainwindow:lle, joka aktivoi valitse tyyppi tilan
                 }

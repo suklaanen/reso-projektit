@@ -76,8 +76,13 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE addAttemptAndLog(IN cardID INT, IN automatID INT)
 begin
+declare cnt_attempts INT default 0;
 UPDATE card SET attempts = attempts+1 WHERE id_card = cardID;
 INSERT INTO eventlog(id_automat, id_card, event_type, time) VALUES(automatID, cardID, "login attempt", NOW());
+select attempts into cnt_attempts from card where id_card = cardID;
+IF(cnt_attempts = 3) THEN
+	INSERT INTO eventlog(id_automat, id_card, event_type, time) VALUES(automatID, cardID, "card locked", NOW());
+END IF;
 end//
 DELIMITER ;
 
