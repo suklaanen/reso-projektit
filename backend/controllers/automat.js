@@ -46,21 +46,6 @@ router.post('/', function(request, response) {
     });
 });
 
-/********************************************************************************************
- *** JOS palautat käyttöön, niin vaihda polku/nimi :) muuten menee addmoney rikki ***********
-
-router.put('/:id', function(request, response) {
-    automat.updateAutomat(request.params.id, request.body, function(err, data) {
-        if(err) {
-            response.json(err);
-        }
-        else {
-            response.json(data);
-        }
-    });
-});
-********************************************************************************************/
-
 router.delete('/:id', function(request, response) {
     automat.deleteAutomat(request.params.id, function(err, data) {
         if(err) {

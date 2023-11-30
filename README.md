@@ -21,8 +21,13 @@
 - Varmista, että tietokantayhteytesi on auki
 - Käytä olemassa olevaa bank_automat -skeemaa ja sen testidataa
 - Aja ne sisään manuaalisesti tai vaihtoehtoisesti docker-compose.yml:in avulla
-- Aseta oma token ( .env -tiedostoon )
-- Suorita npm install /backend -tasoon ja suorita npm start
+- Luot tietokantaan käyttäjä atm_user ja anna luvat tietokantaan komennoilla:
+	- **create user 'atm_user'@'localhost' identified by 'pankkipass';**
+	- **grant all on bank_automat.* to 'atm_user'@'localhost';**
+- Suorita **npm install** /backend -tasossa
+- Luo JSON Web Token komentokehotteessa /backend tasossa komennolla: node create_token
+- Luo **.env** tiedosto /backend tasoon ja aseta oma token ( .env -tiedostoon ) **MY_TOKEN** muuttujaan
+- Suorita **npm start** /backend -tasossa
 
 **Testidataa käyttäessäsi tarvitset seuraavat korttitiedot:**
 
