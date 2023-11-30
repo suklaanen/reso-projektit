@@ -12,6 +12,7 @@ CheckBalance::~CheckBalance()
 {
 }
 
+//Ottaa vastaan tarvittavat tiedot parametreina ja lähettää pyynnön REST API:lle tilin saldon noutamiseksi
 void CheckBalance::displayBalance(QByteArray token, QString accountID, QString cardType)
 
 {
@@ -31,14 +32,16 @@ void CheckBalance::displayBalance(QByteArray token, QString accountID, QString c
     connect(reply, SIGNAL(finished()), this, SLOT(handleGetBalance()));
 }
 
+//Ottaa vastaan ja käsittelee vastauksen tilin saldosta
 void CheckBalance::handleGetBalance()
 {
      QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     if (reply->error() == QNetworkReply::NoError) {
+        //Onnistunut vastaus
         QByteArray responseData = reply->readAll();
         qDebug() << "Response Data:" << responseData;
-
+        //Käsitellään vastaus
         QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
 
         if (!jsonResponse.isNull() && jsonResponse.isObject()) {
@@ -52,9 +55,9 @@ void CheckBalance::handleGetBalance()
                 double balance = balanceString.toDouble(&balanceOk);
                 double creditLimit = creditLimitString.toDouble(&creditLimitOk);
 
-                if (balanceOk && creditLimitOk) {
+                if (balanceOk && creditLimitOk) { //Tarkistetaan, että balance ja credit limit on onnistuuneesti muutettu double muotoon
                     if (cardType == "credit") {
-                        balance += creditLimit;
+                        balance += creditLimit; //Jos kortin tyyppi on credit, esitetään saldo käytettävissä olevana luottona
                     }
 
                     QLocale locale(QLocale::English);
@@ -64,9 +67,8 @@ void CheckBalance::handleGetBalance()
                     formattedBalance.replace(",", " ");
                     formattedCreditLimit.replace(",", " ");
 
-                     emit balanceReady(formattedBalance, formattedCreditLimit);
-                    //emit balanceReady(QString::number(balance, 'f', 2));
-
+                     emit balanceReady(formattedBalance, formattedCreditLimit); //Lähetetään signaalin mukana tiedot mainwindow:lle
+                //Käsitellään mahdolliset virheet
                 } else {
                     qDebug() << "Invalid balance or credit_limit format";
                 }

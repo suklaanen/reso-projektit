@@ -16,7 +16,7 @@ void MainWindow::connectSlots()
             connect(btn, SIGNAL(clicked()),this, SLOT(clickedNumberHandler()));
         }
     }
-    connect(ui->RED, SIGNAL(clicked()),login, SLOT(requestLogout()));
+    connect(ui->RED, SIGNAL(clicked()),this, SLOT(clickedRED()));
     connect(ui->YELLOW, SIGNAL(clicked()),this, SLOT(clickedYELLOW()));
     connect(ui->GREY, SIGNAL(clicked()),this, SLOT(clickedGREY()));
     connect(ui->GREEN, SIGNAL(clicked()),this, SLOT(clickedGREEN()));
@@ -41,7 +41,6 @@ void MainWindow::connectSlots()
     connect(withdraw, SIGNAL(atmLimitReady(QString)),this, SLOT(handleAtmLimit(QString)));
     connect(withdraw, SIGNAL(withdrawFailure(QString)),this, SLOT(showWithdrawFailure(QString)));
     connect(withdraw, SIGNAL(withdrawalOk(QString)),this, SLOT(showWithdrawOk(QString)));
-    //connect(atmBalances, SIGNAL(atmBalancesReady()),this, SLOT(showAtmBalances()));
     connect(viewlog, SIGNAL(LogReady()), this, SLOT(showATMEvents()));
     connect(ui->atm1, SIGNAL(clicked()), this, SLOT(atmClicked()));
     connect(ui->atm2, SIGNAL(clicked()), this, SLOT(atmClicked()));

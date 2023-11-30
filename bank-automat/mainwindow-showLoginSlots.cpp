@@ -34,6 +34,7 @@ void MainWindow::selectDebitCredit()
     state = CARD_COMBINATION;
     clearScreen();
     disableEnableButtons({ui->pushButton4,ui->pushButton8}, false);
+    timer->start(10000);
     ui->Title->setText(QString("Valitse tili"));
     ui->PushText4->setText(QString("Debit"));
     ui->PushText8->setText(QString("Credit"));
@@ -51,6 +52,7 @@ void MainWindow::showInputPin(QString cardType)
     ui->SecondTitle->setText(QString("Syötä pin"));
 }
 
+//Näyttää kortti lukittu -tilan
 void MainWindow::showCardLocked()
 {
     clearScreen();

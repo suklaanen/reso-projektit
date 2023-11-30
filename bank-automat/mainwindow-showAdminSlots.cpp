@@ -14,7 +14,7 @@
 // ********** handleAtmLimit(QString limit)
 // **************************************************
 
-// Adminin menu
+// Näyttää Adminin päävalikon
 void MainWindow::showAdminMenu(QByteArray token)
 {
     this->token = token;
@@ -52,6 +52,7 @@ void MainWindow::showAdminMenu(QByteArray token)
     timer->start(60000);
 }
 
+//Näyttää lisää varoja tilan
 void MainWindow::showAddMoney()
 {
     clearScreen();
@@ -69,6 +70,7 @@ void MainWindow::showAddMoney()
     timer->start(30000);
 }
 
+//Pyytää syöttämään lisättävien setelien määrän
 void MainWindow::showAddMoneyAmount(QString denomination, int text_color_shift)
 {
     clearScreen();
@@ -87,6 +89,7 @@ void MainWindow::showAddMoneyAmount(QString denomination, int text_color_shift)
     timer->start(30000);
 }
 
+//Näyttää onnistuneen varojen lisäämisen (setelin sekä määrän)
 void MainWindow::showAddedMoney(QString amount)
 {
     QString banknote = atmBalances->getDenomination();
@@ -105,6 +108,7 @@ void MainWindow::showAddedMoney(QString amount)
     timer->start(7000);
 }
 
+//Näyttää nykyisen tai päivitetyn automaatin nostorajan näytöllä
 void MainWindow::showATMSetLimit()
 {
     clearScreen();
@@ -118,6 +122,7 @@ void MainWindow::showATMSetLimit()
 
 }
 
+//Näyttää automaatin tapahtumat näytöllä
 void MainWindow::showATMEvents()
 {
     clearScreen();
@@ -158,6 +163,7 @@ void MainWindow::showATMEvents()
         timer->start(30000);
 }
 
+//Tämä metodi tarkistaa ylittääkö ruudulle syötetty summa (nostotilassa) automaatin nostorajan
 void MainWindow::checkAtmLimit()
 {
         if(ui->Content->text().toInt() > atmMaxWithdrawal) {
