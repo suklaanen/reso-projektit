@@ -6,10 +6,7 @@
 // ** case NIMI:   kertoo "nykyisen" vaiheen (state) ja se ilmaistaan tiloissa alempana
 // *************************************************************************************
 // ****** Sisältää:
-// ********** atm1Clicked()
-// ********** atm2Clicked()
-// ********** atm3Clicked()
-// ********** atm4Clicked()
+// ********** atmClicked()
 // ********** clickedGREEN()
 // ********** clickedYELLOW()
 // ********** clickedGREY()
@@ -39,7 +36,6 @@ void MainWindow::atmClicked()
 
 void MainWindow::clickedGREEN()
 {
-    //QString amountToAdd = ui->Content->text();
     qDebug()<<"Green button clicked";
 
     switch (state) {
@@ -146,8 +142,16 @@ void MainWindow::clickedGREY()
 void MainWindow::clickedRED()
 {
     qDebug()<<"Red button clicked";
-    state = SELECT_CARD;
-    showLogin();
+    switch(state) {
+    case CARD_OK:
+    case CARD_FAIL:
+    case CARD_COMBINATION:
+    case LOGIN_FAIL:
+        showLogin();
+    default:
+        login->requestLogout();
+    }
+
 }
 
 // Sivu painike numero 1 , vasemmalla

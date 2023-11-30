@@ -11,12 +11,13 @@ Transactions::~Transactions()
 {
 }
 
+//Ottaa vastaan tarvittavat tiedot parametreina ja lähettää REST API:lle pyynnön noutaa tilitapahtumat
 void Transactions::showTransactions(QByteArray token, QString accountID, int offset, QString type)
 {
     this->token = token;
     this->accountID = accountID;
-    this->offset = offset;
-    this->type = type;
+    this->offset = offset; //Tätä muuttujaa käytetään tapahtumien selaamisessa. Uudemmat -> offset -= 5, Vanhemmat -> offset += 5
+    this->type = type; //Tämä muuttuja kertoo mikä tila pyysi tapahtumia (balance tai transactions)
 
     QNetworkRequest request;
     request.setRawHeader(QByteArray("Authorization"),(token));
@@ -26,19 +27,22 @@ void Transactions::showTransactions(QByteArray token, QString accountID, int off
     request.setUrl(QUrl("http://localhost:3000/frontendEvents"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->post(request,QJsonDocument(body).toJson());
-    connect(reply, SIGNAL(finished()), this, SLOT(handleGetTransaction()));
+    connect(reply, SIGNAL(finished()), this, SLOT(handleGetTransaction())); //Kytketään vastaus slottiin
 }
 
+//Palauttaa tapahtumat formatoituina QStringeinä QList objektissa
 QList<QString> Transactions::getTransactions()
 {
     return parsedTransactions;
 }
 
+//Palauttaa tapahtumien kokonaismäärän
 int Transactions::maxTransactions()
 {
     return maximumTransactions;
 }
 
+//Ottaa vastaan ja käsittelee vastauksen tilitapahtumien noutamisesta
 void Transactions::handleGetTransaction()
 {
     QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
@@ -47,23 +51,21 @@ void Transactions::handleGetTransaction()
         QByteArray responseData = reply->readAll();
         // Käsitellään vastaus
         if(responseData != "false") {
-            //qDebug() << responseData;
-            //returnedTransactions = responseData;
-            //emit transactionsReady(returnedTransactions);
-            maximumTransactions = reply->rawHeader("X-Transactions-Count").toInt();
-            parseTransactions(responseData);
+            maximumTransactions = reply->rawHeader("X-Transactions-Count").toInt(); //Tapahtumien määrä on REST API:ssa asetettu rawHeaderiin
+            parseTransactions(responseData); //Siirretään tapahtumat formatoitavaksi
         }
         else {
-            qDebug() << "No matching account ID";
+            qDebug() << "Unexpected answer: " << responseData;
         }
     } else {
-        // Käsitellään mahdollinen virhe (verkkovirhe)
-        qDebug() << "Could not get account ID" << reply->errorString();
+        // Käsitellään mahdollinen virhe
+        qDebug() << "Could not get transactions: " << reply->errorString();
     }
     // Tyhjennetään vastaus myöhemmin
     reply->deleteLater();
 }
 
+//Formatoi tilitapahtumat oikeaan muotoon QList objektiin
 void Transactions::parseTransactions(const QString &data)
 {
     parsedTransactions.clear();
@@ -98,8 +100,8 @@ void Transactions::parseTransactions(const QString &data)
         }
     }
     if (type == "balance"){
-        emit balanceTransReady();
+        emit balanceTransReady(); //Jos kutsujana on saldon tarkistus, lähetetään signaali balanceTransReady mainwindowlle
     } else {
-        emit transactionsReady();
-    }
+        emit transactionsReady(); //Muussa tapauksessa kutsujana on tilitapahtumien tarkastelu, tämä signaali vie mainwindow:ssa
+    }                             //tapahtumien tarkastelu näkymään
 }

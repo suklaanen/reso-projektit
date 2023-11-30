@@ -11,13 +11,15 @@ Withdraw::~Withdraw()
 {
 }
 
+//Ottaa vastaan nostettavan summan ja kutsuu metodia, joka lähettää nostopyynnön
 void Withdraw::setAmount(QString amount)
 {
     this->amount = amount;
     qDebug() << "Amount received: " << this->amount;
-    requestWithdrawal();
+    requestWithdrawal(); //Lähetetään nostopyyntö
 }
 
+//Ottaa vastaan luokassa tarvittavat tiedot, ja kutsuu metodia, joka tarkistaa automaatin nostorajan
 void Withdraw::setInfo(QByteArray token, QString accountID, QString cardID, QString cardType, QString automatID)
 {
     this->token = token;
@@ -25,9 +27,10 @@ void Withdraw::setInfo(QByteArray token, QString accountID, QString cardID, QStr
     this->cardID = cardID;
     this->cardType = cardType;
     this->automatID = automatID;
-    requestAtmLimit(this->token,this->automatID, "withdraw");
+    requestAtmLimit(this->token,this->automatID, "withdraw"); //Tätä metodia käyttää kaksi luokkaa, tässä kutsujaksi asetetaan withdraw luokka
 }
 
+//Ottaa vastaan ja käsittelee vastauksen automaatin nostorajasta
 void Withdraw::handleAtmLimit()
 {
     QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
@@ -37,10 +40,10 @@ void Withdraw::handleAtmLimit()
         // Käsitellään vastaus
         maxWithdrawal = QString(responseData);
         if(callingClass == "withdraw") {
-            emit atmLimitReady(maxWithdrawal);
+            emit atmLimitReady(maxWithdrawal); //Jos kutsujana on withdraw luokka, lähetetään signaali mainwindow:lle, jossa tieto tallennetaan muuttujaan
         }
         else {
-            emit atmLimitToAdminMenu(maxWithdrawal);
+            emit atmLimitToAdminMenu(maxWithdrawal); //Muussa tapauksessa signaali lähtee kutsujana olevaan adminMenu luokkaan
         }
     } else {
         // Käsitellään mahdollinen virhe (verkkovirhe)
@@ -50,6 +53,7 @@ void Withdraw::handleAtmLimit()
     reply->deleteLater();
 }
 
+//Ottaa vastaan ja käsittelee vastauksen nostopyynnöstä
 void Withdraw::handleWithdrawal()
 {
     QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
@@ -58,6 +62,8 @@ void Withdraw::handleWithdrawal()
         QByteArray responseData = reply->readAll();
         QString response = QString(responseData).replace("\"", "");
         qDebug() << "Withdraw response: " << QString(responseData);
+
+        //Lähetetään tieto noston tuloksesta signaalina mainwindow:lle
         if(response == "account limit exceeded") {
             emit withdrawFailure("Tilin nostorajat ylittyy");
         }
@@ -79,22 +85,24 @@ void Withdraw::handleWithdrawal()
     reply->deleteLater();
 }
 
+//Lähettää REST API:lle pyynnön noutaa automaatin nostoraja
 void Withdraw::requestAtmLimit(QByteArray token,QString automatID,QString callingclass)
 {
     callingClass = callingclass;
     this->token = token;
     QNetworkRequest request;
-    request.setRawHeader(QByteArray("Authorization"),(this->token));
+    request.setRawHeader(QByteArray("Authorization"),(this->token)); //Web tokenin lähetys
     request.setUrl(QUrl("http://localhost:3000/automat/getAtmLimit/"+automatID));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->get(request);
-    connect(reply, SIGNAL(finished()), this, SLOT(handleAtmLimit()));
+    connect(reply, SIGNAL(finished()), this, SLOT(handleAtmLimit())); //Kytketään vastaus slottiin
 }
 
+//Lähettää REST API:lle nostopyynnön
 void Withdraw::requestWithdrawal()
 {
     QNetworkRequest request;
-    request.setRawHeader(QByteArray("Authorization"),(token));
+    request.setRawHeader(QByteArray("Authorization"),(token)); //Web tokenin lähetys
     QJsonObject body;
     body.insert("id_account",accountID);
     body.insert("id_card",cardID);
@@ -103,5 +111,5 @@ void Withdraw::requestWithdrawal()
     request.setUrl(QUrl("http://localhost:3000/account/attemptWithdrawal"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->post(request, QJsonDocument(body).toJson());
-    connect(reply, SIGNAL(finished()), this, SLOT(handleWithdrawal()));
+    connect(reply, SIGNAL(finished()), this, SLOT(handleWithdrawal())); //Kytketään vastaus slottiin
 }
