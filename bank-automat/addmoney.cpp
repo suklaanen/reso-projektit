@@ -50,7 +50,7 @@ void AddMoney::setCardID(QString cardID)
 //Palauttaa lisättävän setelin muuttujasta denomination
 QString AddMoney::getDenomination()
 {
-    return this->denomination;
+    return denomination;
 }
 
 //Ottaa vastaan ja käsittelee vastauksen automaatin varoista
@@ -97,7 +97,7 @@ void AddMoney::insertValueOf(QString amount)
     QJsonObject body;
     body.insert("id_automat", automatID);
     body.insert("id_card", cardID);
-    body.insert("amount", amount);
+    body.insert("amount", this->amount);
     request.setUrl(QUrl("http://localhost:3000/automat/addMoney/"+denomination));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->put(request, QJsonDocument(body).toJson());

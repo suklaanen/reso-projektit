@@ -20,7 +20,7 @@ void ViewLog::requestEvents(QByteArray token, QString automatID, int offset)
     this->offset = offset; //Tätä muuttujaa käytetään tapahtumien selaamisessa. Uudemmat -> offset -= 5, Vanhemmat -> offset += 5
 
     QNetworkRequest request;
-    request.setRawHeader(QByteArray("Authorization"),(token));
+    request.setRawHeader(QByteArray("Authorization"),(this->token));
     request.setUrl(QUrl("http://localhost:3000/frontendEvents/allEvents"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     QJsonObject body;

@@ -19,8 +19,8 @@ void SetLimits::requestLimit(QByteArray token, QString automatID)
     this->token = token;
     qDebug() << "Request limit, automatID"<<this->automatID;
     QNetworkRequest request;
-    request.setRawHeader(QByteArray("Authorization"),(token));
-    request.setUrl(QUrl("http://localhost:3000/automat/getAtmLimit/"+automatID));
+    request.setRawHeader(QByteArray("Authorization"),(this->token));
+    request.setUrl(QUrl("http://localhost:3000/automat/getAtmLimit/"+this->automatID));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(handleGetLimit()));
@@ -31,12 +31,12 @@ void SetLimits::setLimit(QString automatID, QString newLimit)
 {
     qDebug()<<"Setlimit";
     this->automatID = automatID;
-    this->limit = newLimit;
+    limit = newLimit;
     QNetworkRequest request;
     request.setRawHeader(QByteArray("Authorization"),(token));
     QJsonObject body;
     body.insert("id_automat",this->automatID);
-    body.insert("ATMlimit",this->limit);
+    body.insert("ATMlimit",limit);
     request.setUrl(QUrl("http://localhost:3000/automat/setATMLimit/"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->put(request, QJsonDocument(body).toJson());

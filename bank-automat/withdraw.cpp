@@ -65,7 +65,7 @@ void Withdraw::handleWithdrawal()
 
         //Lähetetään tieto noston tuloksesta signaalina mainwindow:lle
         if(response == "account limit exceeded") {
-            emit withdrawFailure("Tilin nostorajat ylittyy");
+            emit withdrawFailure("Tilin nostoraja ylittyy");
         }
         else if(response == "withdrawal ok") {
             emit withdrawalOk(amount);
@@ -90,9 +90,10 @@ void Withdraw::requestAtmLimit(QByteArray token,QString automatID,QString callin
 {
     callingClass = callingclass;
     this->token = token;
+    this->automatID = automatID;
     QNetworkRequest request;
     request.setRawHeader(QByteArray("Authorization"),(this->token)); //Web tokenin lähetys
-    request.setUrl(QUrl("http://localhost:3000/automat/getAtmLimit/"+automatID));
+    request.setUrl(QUrl("http://localhost:3000/automat/getAtmLimit/"+this->automatID));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(handleAtmLimit())); //Kytketään vastaus slottiin

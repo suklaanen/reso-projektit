@@ -20,7 +20,7 @@ void Transactions::showTransactions(QByteArray token, QString accountID, int off
     this->type = type; //Tämä muuttuja kertoo mikä tila pyysi tapahtumia (balance tai transactions)
 
     QNetworkRequest request;
-    request.setRawHeader(QByteArray("Authorization"),(token));
+    request.setRawHeader(QByteArray("Authorization"),(this->token));
     QJsonObject body;
     body.insert("id_account",this->accountID);
     body.insert("offset",this->offset);

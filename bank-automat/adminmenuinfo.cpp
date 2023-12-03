@@ -17,7 +17,7 @@ void AdminMenuInfo::setAutomatID(QString automatID)
 //Palauttaa automaatin nostorajan
 QString AdminMenuInfo::getMaxWithdrawal()
 {
-    return this->atmLimit;
+    return atmLimit;
 }
 
 //Ottaa vastaan Web tokenin signaalilta, ja pyytää withdraw luokan kautta automaatin nostorajaa

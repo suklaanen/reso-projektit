@@ -34,18 +34,6 @@ void Login::setPIN(const QString &inputPin,const QString &cardType)
     requestLogin();// Kutsutaan metodia, josta lähtee login pyyntö REST APIlle
 }
 
-//Palauttaa account ID:n
-QString Login::getAccountID()
-{
-    return this->accountID;
-}
-
-//Palauttaa Web tokenin
-QString Login::getToken()
-{
-    return this->token;
-}
-
 //Ottaa vastaan ja käsittelee vastauksen kortin tyypin tarkistuksesta REST APIsta
 void Login::handleCard()
 {
@@ -89,7 +77,7 @@ void Login::handlePin()
 
         qDebug() << responseData;
         if(responseData != "false") { //Jos vastaus on != "false", niin token on vastaanotettu ja kirjautuminen ok
-            this->token = "Bearer "+responseData; //Tallennetaan webtoken myöhempää signaalia varten
+            token = "Bearer "+responseData; //Tallennetaan webtoken myöhempää signaalia varten
             clearPinAttempts(); //Kutsutaan metodia, joka tyhjentää pin koodin yritykerrat kortilta tietokannasta
         }
         else {
@@ -199,7 +187,7 @@ void Login::handleGetAccountID()
         QByteArray responseData = reply->readAll();
         // Käsitellään vastaus
         if(responseData != "false") {
-            this->accountID = QString(responseData); //Jos account ID:n noutaminen onnistui
+            accountID = QString(responseData); //Jos account ID:n noutaminen onnistui
             emit loginOkUser(token, accountID);      //lähetetään signaali mainwindow:lle käyttäjän päävalikkoon siitymiseksi
             qDebug() << responseData;
         }
@@ -286,8 +274,8 @@ void Login::clearPinAttempts()
 {
     QNetworkRequest request;
     QJsonObject body;
-    body.insert("id_card",this->cardID);
-    body.insert("automat_id",this->automatID);
+    body.insert("id_card",cardID);
+    body.insert("automat_id",automatID);
     request.setUrl(QUrl("http://localhost:3000/cardAttempts/clear"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->post(request,QJsonDocument(body).toJson());
@@ -313,8 +301,8 @@ void Login::addAttempt()
 {
     QNetworkRequest request;
     QJsonObject body;
-    body.insert("id_card",this->cardID);
-    body.insert("automat_id",this->automatID);
+    body.insert("id_card",cardID);
+    body.insert("automat_id",automatID);
     request.setUrl(QUrl("http://localhost:3000/cardAttempts/addAttempt"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->post(request,QJsonDocument(body).toJson());
