@@ -15,12 +15,11 @@ AddMoney::~AddMoney()
 }
 
 //Lähettää pyynnön REST API:lle automaatin varojen noutamiseksi
-void AddMoney::checkAtmBalances (QByteArray token, QString automatID, QString callingclass)
+void AddMoney::checkAtmBalances (QByteArray token, QString automatID)
 {
     //Asetetaan tarvittavat tiedot muuttujiin
     this->token = token;
     this->automatID = automatID;
-    this->callingclass = callingclass;
 
     QNetworkRequest request;
     request.setRawHeader(QByteArray("Authorization"),(this->token)); //Web tokenin lähetys
@@ -51,7 +50,7 @@ void AddMoney::setCardID(QString cardID)
 //Palauttaa lisättävän setelin muuttujasta denomination
 QString AddMoney::getDenomination()
 {
-    return this->denomination;
+    return denomination;
 }
 
 //Ottaa vastaan ja käsittelee vastauksen automaatin varoista
@@ -84,13 +83,7 @@ void AddMoney::parseAtmBalances(const QString &data)
     parsedAtmBalances.append(QString::number(jsonObject["balance_50"].toInt()));
     parsedAtmBalances.append(QString::number(jsonObject["balance_100"].toInt()));
 
-    //Tarkistetaan mikä luokka on pyytänyt tietoa
-    if(callingclass == "main") {
-        emit atmBalancesReady(); //Jos kutsujana on mainwindow, lähtee signaali mainwindow:lle
-    }
-    else {
-        emit atmBalancesToAdminMenu(); //Muussa tapauksessa pyytäjänä on adminMenu, ja signaali lähtee adminMenu:lle
-    }
+    emit atmBalancesToAdminMenu(); //Lähetetään signaali adminMenu:lle
 }
 
 // Lisää käyttövaroja automaattiin -alkaa tästä
@@ -104,7 +97,7 @@ void AddMoney::insertValueOf(QString amount)
     QJsonObject body;
     body.insert("id_automat", automatID);
     body.insert("id_card", cardID);
-    body.insert("amount", amount);
+    body.insert("amount", this->amount);
     request.setUrl(QUrl("http://localhost:3000/automat/addMoney/"+denomination));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     reply = manager->put(request, QJsonDocument(body).toJson());

@@ -17,7 +17,7 @@ public:
     AddMoney(QObject * parent = nullptr);
     ~AddMoney();
     void requestTransactions(QByteArray token, QString cardID, QString cardType);
-    void checkAtmBalances(QByteArray, QString, QString);
+    void checkAtmBalances(QByteArray, QString);
     void insertValueOf(QString amount);
     QList<QString> getAtmBalances();
     QList<QString> getAddedMoney();

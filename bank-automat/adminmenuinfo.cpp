@@ -17,7 +17,7 @@ void AdminMenuInfo::setAutomatID(QString automatID)
 //Palauttaa automaatin nostorajan
 QString AdminMenuInfo::getMaxWithdrawal()
 {
-    return this->atmLimit;
+    return atmLimit;
 }
 
 //Ottaa vastaan Web tokenin signaalilta, ja pyytää withdraw luokan kautta automaatin nostorajaa
@@ -31,7 +31,7 @@ void AdminMenuInfo::getAdminMenuInfo(QByteArray token)
 void AdminMenuInfo::handleAtmLimit(QString atmLimit)
 {
     this->atmLimit = atmLimit;
-    addmoney->checkAtmBalances(token,automatID,"adminmenu"); //Asetetaan tässäkin kutsuvaksi luokaksi adminMenu
+    addmoney->checkAtmBalances(token,automatID); //Asetetaan tässäkin kutsuvaksi luokaksi adminMenu
 }
 
 //Ottaa vastaan signaalin addMoney luokalta, kun automaatin varat on noudettu. Lähettää signaalin mainwindow:lle

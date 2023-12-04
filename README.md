@@ -25,7 +25,7 @@
 	- **create user 'atm_user'@'localhost' identified by 'pankkipass';**
 	- **grant all on bank_automat.* to 'atm_user'@'localhost';**
 - Suorita **npm install** /backend -tasossa
-- Luo JSON Web Token komentokehotteessa /backend tasossa komennolla: node create_token
+- Luo JSON Web Token komentokehotteessa /backend tasossa komennolla: **node create_token**
 - Luo **.env** tiedosto /backend tasoon ja aseta oma token ( .env -tiedostoon ) **MY_TOKEN** muuttujaan
 - Suorita **npm start** /backend -tasossa
 
