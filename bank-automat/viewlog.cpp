@@ -129,7 +129,7 @@ void ViewLog::parseEvents(const QString &data)
                 amount = jsonObject["amount"].toString().split(separator)[0];
             }
 
-            if (event_type.startsWith("Nostanut")) {
+            if (event_type.startsWith("Nostanut")||event_type == "Nostoyritys") {
                 amount = jsonObject["amount"].toString();
             }
 
