@@ -75,7 +75,7 @@ void MainWindow::clearScreen()
     ui->PushText3->setStyleSheet("color: #ffffff");
     ui->PushText6->setStyleSheet("color: #ffffff");
     ui->PushText7->setStyleSheet("color: #ffffff");
-    disableEnableButtons({ui->pushButton1,ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton5,ui->pushButton6,ui->pushButton7,ui->pushButton8},true);
+    disableEnableButtons({ui->GREEN,ui->pushButton1,ui->pushButton2,ui->pushButton3,ui->pushButton4,ui->pushButton5,ui->pushButton6,ui->pushButton7,ui->pushButton8},true);
 }
 
 //Ottaa vastaan QVector objektina enabloitavat/disabloitavat QPushButtonit

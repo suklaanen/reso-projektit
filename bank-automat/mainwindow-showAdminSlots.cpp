@@ -173,7 +173,9 @@ void MainWindow::checkAtmLimit()
         }
         else {
             ui->Content->setStyleSheet("color: #FFFFFF");
-            ui->GREEN->setDisabled(false);
+            if(ui->Content->text() != "") {
+                ui->GREEN->setDisabled(false);
+            }
             ui->SecondTitle->clear();
         }
 }

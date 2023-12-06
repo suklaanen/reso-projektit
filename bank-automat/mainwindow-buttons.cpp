@@ -91,6 +91,7 @@ void MainWindow::clickedYELLOW()
 {
     qDebug()<<"Yellow button clicked";
     ui->Content->clear();
+    disableEnableButtons({ui->GREEN},true);
     switch(state) {
     case CARD_OK:
     case LOGIN_FAIL:
@@ -118,6 +119,9 @@ void MainWindow::clickedGREY()
     QString content = ui->Content->text();
     if (content.size() > 0) {
         ui->Content->setText(content.left(content.size() -1));
+    }
+    if (ui->Content->text() == "") {
+        disableEnableButtons({ui->GREEN}, true);
     }
     switch(state) {
     case CARD_OK:
