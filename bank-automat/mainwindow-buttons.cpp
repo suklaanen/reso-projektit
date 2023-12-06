@@ -40,24 +40,14 @@ void MainWindow::clickedGREEN()
 
     switch (state) {
     case SELECT_CARD:
-        if(ui->Content->text() != "") {
-            ID = ui->Content->text();
-            atmBalances->setCardID(ID);
-            login->setCardID(ui->Content->text(),automatID);
-        }
-        else {
-            login->setCardID("0",automatID); //Tyhjä syöte rekisteröidään nollana.
-        }                                    //Aktivoidaan login luokan korttiin liittyvät tarkistukset
+        ID = ui->Content->text();
+        atmBalances->setCardID(ID);
+        login->setCardID(ui->Content->text(),automatID);                                  //Aktivoidaan login luokan korttiin liittyvät tarkistukset
         break;
     case CARD_FAIL:
-        if(ui->Content->text() != "") {
-            ID = ui->Content->text();
-            atmBalances->setCardID(ID);
-            login->setCardID(ui->Content->text(),automatID);
-        }
-        else {
-            login->setCardID("0",automatID);
-        }
+        ID = ui->Content->text();
+        atmBalances->setCardID(ID);
+        login->setCardID(ui->Content->text(),automatID);
         break;
     case CARD_OK:
     case LOGIN_FAIL:
