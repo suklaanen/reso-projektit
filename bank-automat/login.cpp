@@ -1,7 +1,7 @@
 #include "login.h"
 
-Login::Login(QWidget *parent) :
-    QWidget(parent)
+Login::Login(QObject *parent) :
+    QObject(parent)
 {
     cardID = "";
     pin = "";

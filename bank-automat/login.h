@@ -1,6 +1,6 @@
 #ifndef LOGIN_H
 #define LOGIN_H
-#include <QWidget>
+#include <QObject>
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
@@ -13,12 +13,12 @@ namespace Ui {
 class Login;
 }
 
-class Login : public QWidget
+class Login : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit Login(QWidget *parent = nullptr);
+    explicit Login(QObject *parent = nullptr);
     ~Login();
     void setCardID(const QString &inputCardID, const QString &automatID);
     void setPIN(const QString &inputPin,const QString &cardType);

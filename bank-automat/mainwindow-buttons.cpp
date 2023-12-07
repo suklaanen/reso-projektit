@@ -40,24 +40,14 @@ void MainWindow::clickedGREEN()
 
     switch (state) {
     case SELECT_CARD:
-        if(ui->Content->text() != "") {
-            ID = ui->Content->text();
-            atmBalances->setCardID(ID);
-            login->setCardID(ui->Content->text(),automatID);
-        }
-        else {
-            login->setCardID("0",automatID); //Tyhjä syöte rekisteröidään nollana.
-        }                                    //Aktivoidaan login luokan korttiin liittyvät tarkistukset
+        ID = ui->Content->text();
+        atmBalances->setCardID(ID);
+        login->setCardID(ui->Content->text(),automatID);                                  //Aktivoidaan login luokan korttiin liittyvät tarkistukset
         break;
     case CARD_FAIL:
-        if(ui->Content->text() != "") {
-            ID = ui->Content->text();
-            atmBalances->setCardID(ID);
-            login->setCardID(ui->Content->text(),automatID);
-        }
-        else {
-            login->setCardID("0",automatID);
-        }
+        ID = ui->Content->text();
+        atmBalances->setCardID(ID);
+        login->setCardID(ui->Content->text(),automatID);
         break;
     case CARD_OK:
     case LOGIN_FAIL:
@@ -91,6 +81,7 @@ void MainWindow::clickedYELLOW()
 {
     qDebug()<<"Yellow button clicked";
     ui->Content->clear();
+    disableEnableButtons({ui->GREEN},true);
     switch(state) {
     case CARD_OK:
     case LOGIN_FAIL:
@@ -118,6 +109,9 @@ void MainWindow::clickedGREY()
     QString content = ui->Content->text();
     if (content.size() > 0) {
         ui->Content->setText(content.left(content.size() -1));
+    }
+    if (ui->Content->text() == "") {
+        disableEnableButtons({ui->GREEN}, true);
     }
     switch(state) {
     case CARD_OK:

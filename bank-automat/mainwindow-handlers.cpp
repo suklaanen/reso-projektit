@@ -16,7 +16,7 @@ void MainWindow::clickedNumberHandler()
         qDebug()<< name << " -button clicked";
 
         QString content = ui->Content->text();
-
+        disableEnableButtons({ui->GREEN},false);
         if (content.length() < 4) { //Syötetään enintään neljä merkkiä
             content.append(name.last(1));
             ui->Content->setText(content);
