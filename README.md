@@ -8,4 +8,9 @@
 - Robot Framework kävi mukana REST APIn testauksessa, mutta sovittaminen Qt:hen osoittautui haastavaksi ja jätettiin toteuttamatta. 
 - Kts. video, missä esitellään projektia: https://www.youtube.com/watch?v=Lp9dV-Fh-a4
 
-**Seuraava projekti tulossa Q2/2024** 
+**2024-Q2-Leffaysi**
+- Yhteisöllinen elokuvasivusto leffaharrastajille viiden hengen ryhmissä.
+- Käyttöliittymä React Vite, palvelin Node.js, tietokanta PostgreSQL.
+- Kts. esittelyvideo: https://www.youtube.com/watch?v=4ZlEyXCdmbE
+
+**Seuraava projekti tulossa Q4/2024** 
