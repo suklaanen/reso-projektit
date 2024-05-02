@@ -1,0 +1,43 @@
+.home-container {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.right-container {
+  width: 5%;
+}
+
+.mid-container {
+  width: 80%;
+  position: relative;
+}
+
+.uppercontent,
+.uppermiddlecontent,
+.lowermiddlecontent,
+.lowercontent {
+  overflow: hidden;
+  padding-top: 0%;
+  padding-left: 0%;
+  padding-right: 4%;
+}
+
+.right-container {
+  position: relative;
+  left: 0;
+  width: 15%;
+  z-index: 1;
+  order: 1;
+}
+
+.lowermiddlecontent {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: calc(100% + 30%); 
+  z-index: 1;
+  order: 2;
+}

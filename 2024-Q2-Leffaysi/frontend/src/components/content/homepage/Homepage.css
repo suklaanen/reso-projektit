@@ -1,0 +1,145 @@
+
+.events-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0vmin;
+  margin-bottom: 1vmin;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+.event-item {
+  flex: 1.1;
+  transition: all 1s ease-in-out;
+  height: 40vmin;
+  position: relative;
+}
+
+.arrow {
+  height: 40vmin;
+}
+
+.arrow img{
+  height: 100%;
+  width: auto;
+}
+
+.event-item img {
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover;
+  transition: all 1s ease-in-out;
+  filter: grayscale(30%)
+}
+
+.head {
+  color:black;
+  background-color: white;
+  padding: 0.5em;
+  transform: rotate(-90deg);
+  transform-origin: 0% 0%;
+  transition: all 0.5s ease-in-out;
+  min-width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 1em;
+  white-space: nowrap;
+}
+
+.event-item:hover {
+  flex-grow: 3;
+}
+
+.event-item:hover img {
+  filter: grayscale(0);
+}
+
+.event-item:hover .head {
+  text-align: center;
+  top: calc(100%-2em);
+  color: white;
+  background: black;
+  transform: rotate(0deg);
+}
+
+.reviewmain {
+  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  vertical-align: top;
+}
+
+.review-info {
+  vertical-align: top;
+  align-content: left;
+  text-align: left;
+  width: 300px;
+}
+
+.reviewmain h2 {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.tdimg  {
+  vertical-align: top;
+  padding-right: 20px;
+}
+
+.review-item img {
+  margin: 0 auto 10px; 
+  display: block; 
+  box-shadow: var(--shadow02);
+  height: 200px;
+  width: auto;
+}
+
+.review-item {
+  margin: 10px; 
+  background-color: var(--moviedetails);
+  max-width: 500px;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 15px;
+  padding: 20px;
+  margin-right: 5px;
+  display: flex; 
+  flex-direction: column;
+}
+
+.review-item:hover {
+  color: var(--table-Link);
+  background-color: var(--table-bg);
+  box-shadow: var(--shadow1);
+}
+
+.review-item:hover img {
+  box-shadow: var(--shadow06);
+}
+
+.review-item:hover h2 {
+  color: var(--td-review-hover);
+}
+
+.link-style {
+  color: var(--table-Link);
+}
+
+.link-style:hover {
+  color: var(--section1);
+}
+
+.link-style:hover {
+  color: var(--section1);
+}
+
+.titleHover {
+  color: var(--table-Link);
+}
+
+.titleHover:hover {
+  color: var(--darktext);
+}

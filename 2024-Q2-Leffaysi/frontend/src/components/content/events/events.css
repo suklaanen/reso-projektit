@@ -1,0 +1,228 @@
+/** Yläpalkki **/
+
+.eventItems {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.eventItem {
+    margin-right: 1em;
+    min-height: 20px;
+}
+
+/*** Taulukko ja sen osat ***/
+
+.showTable {
+    width: 100%;
+}
+
+/*.show {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0 1em 0 1em;
+    min-height: 180px;
+    margin-left: 20px;
+}*/
+
+.showContentCellLeft {
+    margin: 0 auto;
+    padding: 0 2em 0 2em;
+    width: 50%;
+    text-align: center;
+    color: var(--darktext);
+}
+
+.showContentCellRight {
+    margin: 0 auto;
+    padding: 0 2em 0 0;
+    width: 30%;
+    text-align: center;
+    color: var(--darktext);
+}
+
+.addButtonTd {
+    padding: 0 1em 0 1em;
+}
+
+.addtogroupbutton {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 8px;
+    border-radius: 8px;
+    border: var(--solid);
+    padding: 0.3em 0.6em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: var(--button-bg);
+    color: white;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+.addtogroupbutton:hover {
+    border: var(--solid);
+    box-shadow: var(--shadow05);
+}
+
+.removefromgroupbutton {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 12px;
+    margin-right: 8px;
+    border-radius: 8px;
+    border: var(--solid);
+    padding: 0.1em 0.4em;
+    font-size: 1.2em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: var(--button-bg);
+    color: red;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+.removefromgroupbutton:hover {
+    border: var(--solid);
+    box-shadow: var(--shadow05);
+}
+
+.showPortrait {
+    margin: 0 auto;
+    width: 20%;
+    text-align: center;
+}
+
+.showRight-inside {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.singleEvent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.eventinfoLeft {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 20%;
+}
+
+.eventinfoCenter {
+    justify-content: center;
+    width: 60%;
+}
+
+.eventinfoRight {
+    justify-content: flex-end;
+    width: 20%;
+}
+
+.geventinfoLeft {
+    align-items: left;
+    min-width: 200px;
+}
+
+.geventinfoCenter {
+    min-width: 250px;
+}
+
+.geventinfoRight {
+    width: 14%;
+}
+
+.geventRightHideable1,
+.geventRightHideable2 {
+    max-width: 200px;
+    text-align: center;
+    padding: 7px;
+}
+
+.geventShowLater {
+    display: none;
+}
+
+.geventShowLater2 {
+    display: block;
+}
+
+.geventShowLater2 img {
+    width: 90%;
+    height: auto;
+}
+
+.singleEvent b,
+.singleEvent p {
+    margin: 0 0em 0 0em;
+}
+
+/*** Tekstit, otsikot, linkit ***/
+
+.eventInfo {
+    font-size: 0.8em;
+    line-height: 2.6em;
+}
+
+.eventInfo2 {
+    font-size: 1.1em;
+}
+
+.eventTitle {
+    font-size: 1.2em;
+    line-height: 1.2em;
+}
+
+.eventTitle2 {
+    font-family: var(--roboto);
+    font-size: 1.8em;
+    line-height: 1.9em;
+}
+
+.showContentCellLeft a {
+    color: var(--darktext);
+}
+
+.showContentCellLeft a:hover {
+    color: var(--profile-link);
+}
+
+.showtimes h2,
+.showtimeH2 {
+    color: var(--profile);
+    padding: 0 1em 0 0;
+}
+
+.ratingImg {
+    width: 50px;
+    height: 50px;
+    padding-left: 0.5em;
+}
+
+.backToTop {
+    display: flex;
+    justify-content: center;
+}
+
+.eventInfoTitle {
+    font-size: 1em;
+    line-height: 1.5em;
+}
+
+
+/*** viivat ***/
+
+.showtimes hr {
+    border-top: var(--dashedGr);
+}
