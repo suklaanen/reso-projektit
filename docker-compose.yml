@@ -1,0 +1,71 @@
+# Docker Desktop is required to run this file 
+## This file is used to run the backend and database in a containerized environment
+### The backend is built from the Dockerfile in the backend directory
+### The database is pulled from the official postgres image
+### The database is initialized with the schema.sql file in the sql directory
+## Be sure that the .env file is in the same directory as this file
+## The .env file should contain variables declared in our Discord channel !!! 
+
+## How to run Docker ? 
+# 1. Open Docker Desktop
+# 2. Open CMD in the same directory as this file
+# 3. Run this command: docker-compose up --build -d
+
+## How to shut down? 
+# 1. Open CMD in the same directory as this file
+# 2. Run this command: docker-compose down
+# OR stop directly from Docker Desktop
+
+
+## Install and open pgAdmin 4 
+# 1. Create new server group
+# 2. Register new server on the group
+# 3. Fill in the connection details as follows:
+#    - Host name/address: localhost
+#    - Port: 5432
+#    - Maintenance database: (DB_NAME from .env)
+#    - Username: (DB_USERNAME from .env)
+#    - Password: (DB_PASSWORD from .env)
+# 4. Click save and connect to the server
+## Now you can use query tool to run SQL commands on the database
+
+# After running the docker-compose up command, the backend will be running on localhost:8080 and database on localhost:5432
+# Then you can start expo server from frontend (npx expo start) and it will be able to communicate with the backend 
+## at this moment you can already use most of the authentication endpoints like login, register etc. 
+
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: kierttis-backend
+    restart: always
+    environment:
+      DATABASE_URL: "postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=${DB_SSL}"
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "8080:8080"
+    networks:
+      - backend-network
+
+  database:
+    image: postgres:17.0
+    container_name: kierttis-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - backend-network
+
+volumes:
+  postgres_data:
+
+networks:
+  backend-network:
