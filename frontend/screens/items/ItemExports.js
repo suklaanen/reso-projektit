@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
-import { ButtonAdd } from '../../components/Buttons';
 
 export const AllItems = () => {
   return (
@@ -15,11 +14,41 @@ export const AllItems = () => {
   );
 };
 
-export const JoinOnQueue = () => {
+export const ItemAdd = () => {
   return (
     <>
       <BasicSection>
-        Tähän tulee puiston tapaaminen ja osallistujat listattuna. {'\n\n'}
+        Tuotteen lisäys palveluun. Tuotetiedot etc. {"\n"}
+      </BasicSection>
+    </>
+  );
+};
+
+export const ItemModify = () => {
+  return (
+    <>
+      <BasicSection>
+        Tuotteen tietojen muokkaus. {"\n"}
+      </BasicSection>
+    </>
+  );
+};
+
+export const ItemDelete = () => {
+  return (
+    <>
+      <BasicSection>
+        Tuotteen poistaminen (ja merkitseminen luovutetuksi) {"\n"}
+      </BasicSection>
+    </>
+  );
+};
+
+export const ItemQueue = () => {
+  return (
+    <>
+      <BasicSection>
+         {'\n\n'}
       </BasicSection>
     </>
   );
@@ -35,30 +64,3 @@ export const NoItemsWhenLoggedOut = () => {
   );
 };
 
-export const NoMeetingsAtSpecificParkWhenLoggedOut = () => {
-  return (
-    <>
-      <Heading title="Tämän puiston tapahtumat" />
-      <BasicSection>
-        Kirjaudu sisään löytääksesi puistokohtaiset tapahtumat. {'\n\n'}
-      </BasicSection>
-    </>
-  );
-};
-
-export const MeetingsWhereThisUserHasJoined = () => {
-  return (
-    <>
-      <Heading title="Ilmoittautumiset" />
-      <BasicSection>
-        Löydät aktiiviset ilmoittautumisesi puistotreffeille täältä.{"\n"}
-        Menneet puistotreffit poistuvat automaattisesti listasta. {"\n\n"}
-        <Text style={{ fontStyle: 'italic' }}>Jos haluat peruuttaa ilmoittautumisen, siirry tapaamisen näkymään ja peruuta ilmoittautumisesi sieltä.</Text>
-      </BasicSection>
-
-      <BasicSection>
-        Tapaaminen ja osallistuva koira {"\n\n"}
-      </BasicSection>
-    </>
-  );
-};
