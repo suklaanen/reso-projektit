@@ -31,8 +31,8 @@ export const AccountLoggedIn = () => {
       <Heading title="Käyttäjäsivu" />
       <BasicSection>
         <Text>
-          Olet kirjautunut käyttäjänä: {authState.username} {"\n\n"}
-          Tämän näkymän kautta löydät omat aktiiviset ilmoituksesi, jonotuksesi ja viestiyhteydet sekä tilisi hallinnointiin liittyvät toiminnot.
+          Tervetuloa, {authState.username} {"\n\n"}
+          Tämän näkymän kautta löytyy toiminnot, jotka liittyvät käyttäjätilin hallinnointiin, käyttäjän omiin ilmoituksiin ja varauksiin sekä tuotteisiin liittyvät aktiiviset viestiketjut.
         </Text>
       </BasicSection>
       <MessagingSystem />

@@ -1,13 +1,14 @@
 import React, { useState, useContext } from 'react';
-import { Text, Alert } from 'react-native';
-import { Heading, AccountSection, CommonText, CommonTitle, BasicSection } from '../../components/CommonComponents';
-import {  ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonAdd } from '../../components/Buttons';
+import { View, Alert } from 'react-native';
+import { Heading, AccountSection, CommonText, BasicSection } from '../../components/CommonComponents';
+import { ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonNavigate } from '../../components/Buttons';
 import { ButtonContinue } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
-import { userDelete, userLogin, userLogout, userRegister, userReset } from '../../services/api.js';
+import { userDelete, userLogin, userRegister, userReset } from '../../services/api.js';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../../services/auth.js'
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
+import globalStyles from '../../assets/styles/Styles.js';
 
 export const UserLogin = () => {
   const [username, setLoginUsername] = useState('');
@@ -15,7 +16,6 @@ export const UserLogin = () => {
   const {authState, setAuthState} = useContext(AuthenticationContext);
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
-
 
   const handleLoginSuccess = async (data) => {
       console.log('Kirjautuminen onnistui käyttäjätiedoilla:', data);
@@ -199,17 +199,21 @@ export const ChangePasswordOfThisUser = () => {
         {!isChangingPassword ? (
           <></>
         ) : (
-          <BasicSection>
-            <CommonText
-              placeholder="Uusi salasana"
-              value={newPassword}
-              onChangeText={setNewPassword}
-              secureTextEntry
-            />{"\n\n"}
-
-            <ButtonSave title="Vahvista" onPress={handlePasswordChangeConfirm} />
-            <ButtonCancel title="Peruuta" onPress={handlePasswordChangeCancel} />
-          </BasicSection>
+          <>
+            <BasicSection>
+              <CommonText
+                placeholder="Uusi salasana"
+                value={newPassword}
+                onChangeText={setNewPassword}
+                secureTextEntry
+              />
+            </BasicSection>
+            
+            <View style={globalStyles.viewButtons}>
+              <ButtonSave title="Vahvista" onPress={handlePasswordChangeConfirm} />
+              <ButtonCancel title="Peruuta" onPress={handlePasswordChangeCancel} />
+            </View>
+          </>
         )}
 
     </>
@@ -267,22 +271,27 @@ export const DeleteAccountOfThisUser = () => {
       {!isDeletingThisAccount ? (
           <></>
         ) : (
-        <BasicSection>
+          <>
+          <BasicSection>
             Mikäli poistat käyttäjätilisi palvelusta, sen kaikki tiedot poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili". {"\n\n"}
-
-        <ButtonDelete title="Poista tili" onPress={handleDoubleCheckWhenDeleting} />
-          <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
           </BasicSection>
+          <View style={globalStyles.viewButtons}>
+            <ButtonDelete title="Poista tili" onPress={handleDoubleCheckWhenDeleting} />
+            <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
+          </View>
+          </>
         )}
 
       {isConfirmed && (
+          <>
           <BasicSection>
             Oletko varma? {"\n\n"}
-
+          </BasicSection>
+          <View style={globalStyles.viewButtons}>
             <ButtonConfirm title="Vahvista" onPress={handleConfirmWhenDeleting}/>
             <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
-
-          </BasicSection>
+          </View>
+          </>
         )}
     </>
   );
@@ -307,48 +316,17 @@ export const LogoutFromThisUser = () => {
 
   return (
     <>
-      <ButtonContinue title="Kirjaudu ulos" onPress={handleLogout}/>
+      <ButtonNavigate title="Kirjaudu ulos" onPress={handleLogout}/>
     </>
   );
-}
+};
 
 export const MessagingSystem = () => {
   const navigation = useNavigation(); 
 
   return (
     <>
-      <ButtonContinue
-        title="Keskustelut"
-        onPress={() => navigation.navigate('MessagesMain')}
-      />
-    </>
-  );
-};
-
-export const NavigateToThisUsersItems = () => {
-  const navigation = useNavigation(); 
-
-  return (
-    <>
-      <ButtonContinue
-        title="Ilmoitukset"
-        onPress={() => navigation.navigate('MessagesMain')}
-        /* navin uudelleen ohjaus oikeille sijoilleen, kun löytyy */
-      />
-    </>
-  );
-};
-
-export const NavigateToThisUsersQueue = () => {
-  const navigation = useNavigation(); 
-
-  return (
-    <>
-      <ButtonContinue
-        title="Varaukset"
-        onPress={() => navigation.navigate('MessagesMain')}
-        /* navin uudelleen ohjaus oikeille sijoilleen, kun löytyy */
-      />
+      <ButtonNavigate title="Keskustelut" onPress={() => navigation.navigate('MessagesMain')}/>
     </>
   );
 };
@@ -358,10 +336,7 @@ export const AccountSystem = () => {
 
   return (
     <>
-      <ButtonContinue
-        title="Tilin hallinta"
-        onPress={() => navigation.navigate('AccountMaintain')}
-      />
+      <ButtonNavigate title="Tilin hallinta" onPress={() => navigation.navigate('AccountMaintain')}/>
     </>
   );
 };

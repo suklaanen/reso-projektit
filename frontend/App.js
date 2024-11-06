@@ -14,7 +14,7 @@ import { AccountLoggedIn, AccountLoggedOut, AccountMaintain } from './screens/ac
 import ItemsMain from './screens/items/ItemsMain';
 import Credits from './screens/credits/Credits';
 import MessagesMain from './screens/messages/MessagesMain';
-import { ItemsFromThisUser, QueuesOfThisUser } from './screens/items/ItemComponents';
+import { ItemsFromThisUser, QueuesOfThisUser, ItemAddView } from './screens/items/ItemComponents';
 
 const Stack = createStackNavigator();
 
@@ -38,6 +38,7 @@ export default function App() {
                 <Stack.Screen name="AccountMaintain" component={AccountMaintain} options={{ headerShown: false }} />
                 <Stack.Screen name="MyItems" component={ItemsFromThisUser} options={{ headerShown: false }} />
                 <Stack.Screen name="MyQueues" component={QueuesOfThisUser} options={{ headerShown: false }} />
+                <Stack.Screen name="ItemAddView" component={ItemAddView} options={{ headerShown: false }} />
               </Stack.Navigator>
             </View>
           <CustomBottomBar />
