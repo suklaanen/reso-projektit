@@ -17,7 +17,6 @@ const CustomBottomBar = () => {
 
       <TouchableOpacity style={globalStyles.iconButton} onPress={() => { navigation.navigate('ItemsMain'); }} >
         <Image source={logo} style={globalStyles.findItems} />
-          {/*<MaterialIcons name="pin-drop" size={30} color="#ffffff" onPress={() => { navigation.navigate('ItemsMain'); }}/>*/}
       </TouchableOpacity>
 
       <TouchableOpacity style={globalStyles.iconButton} >

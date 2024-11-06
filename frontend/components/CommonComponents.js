@@ -44,11 +44,9 @@ export const BasicSection = ({
 }) => {
   return (
     <View style={[globalStyles.sectionContainer, { backgroundColor }]}>
-
       <Text style={[globalStyles.text, textStyle]}>
         {children}
       </Text>
-      
     </View>
   );
 };

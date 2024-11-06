@@ -1,10 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { Image } from 'react-native';
 import { Appbar, Menu } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import globalStyles from '../assets/styles/Styles';
-import logo from '../assets/images/kierttisTitle.png';
 
 import { AuthenticationContext } from '../services/auth';
 
@@ -48,13 +46,11 @@ const CustomTopBar = () => {
         <Menu.Item onPress={() => navigateToScreen('Credits')} title="Sovellustiedot" />
       </Menu>
 
-
       <Appbar.Content 
         title="Kierttis" 
         titleStyle={globalStyles.appBarTitle}
         style={globalStyles.appBarContainer}
       />
-
 
     </Appbar.Header>
   );
