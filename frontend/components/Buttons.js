@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import GlobalButtons from '../assets/styles/GlobalButtons';
 
-export const ButtonContinueOrig = ({ title, onPress }) => {
+export const ButtonContinue = ({ title, onPress }) => {
   return (
     <TouchableOpacity
       style={GlobalButtons.buttonContinue}
@@ -13,10 +13,10 @@ export const ButtonContinueOrig = ({ title, onPress }) => {
   );
 };
 
-export const ButtonContinue = ({ title, onPress }) => {
+export const buttonNavigate = ({ title, onPress }) => {
   return (
     <TouchableOpacity
-      style={GlobalButtons.buttonContinue}
+      style={GlobalButtons.buttonNavigate}
       onPress={onPress}
     >
       <Text style={GlobalButtons.blackBase18}>{title}</Text>
