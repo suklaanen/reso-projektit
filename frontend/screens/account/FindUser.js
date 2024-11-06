@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Text, Alert } from 'react-native';
 import { Heading, AccountSection, CommonText, CommonTitle, BasicSection } from '../../components/CommonComponents';
-import {  ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm } from '../../components/Buttons';
+import {  ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonAdd } from '../../components/Buttons';
 import { ButtonContinue } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
 import { userDelete, userLogin, userLogout, userRegister, userReset } from '../../services/api.js';
@@ -288,7 +288,6 @@ export const DeleteAccountOfThisUser = () => {
   );
 };
 
-
 export const LogoutFromThisUser = () => {
   const {authState, setAuthState} = useContext(AuthenticationContext);
   const {userid, accessToken, refreshToken} = authState;
@@ -308,14 +307,61 @@ export const LogoutFromThisUser = () => {
 
   return (
     <>
-      <Heading title="Kirjaudu ulos" />
-
-      <BasicSection>
-        <Text style={{ color: 'blue', marginTop: 20 }} onPress={handleLogout}> Kirjaudu ulos </Text>
-      </BasicSection>
-
-      
+      <ButtonContinue title="Kirjaudu ulos" onPress={handleLogout}/>
     </>
   );
 }
 
+export const MessagingSystem = () => {
+  const navigation = useNavigation(); 
+
+  return (
+    <>
+      <ButtonContinue
+        title="Keskustelut"
+        onPress={() => navigation.navigate('MessagesMain')}
+      />
+    </>
+  );
+};
+
+export const NavigateToThisUsersItems = () => {
+  const navigation = useNavigation(); 
+
+  return (
+    <>
+      <ButtonContinue
+        title="Ilmoitukset"
+        onPress={() => navigation.navigate('MessagesMain')}
+        /* navin uudelleen ohjaus oikeille sijoilleen, kun löytyy */
+      />
+    </>
+  );
+};
+
+export const NavigateToThisUsersQueue = () => {
+  const navigation = useNavigation(); 
+
+  return (
+    <>
+      <ButtonContinue
+        title="Varaukset"
+        onPress={() => navigation.navigate('MessagesMain')}
+        /* navin uudelleen ohjaus oikeille sijoilleen, kun löytyy */
+      />
+    </>
+  );
+};
+
+export const AccountSystem = () => {
+  const navigation = useNavigation(); 
+
+  return (
+    <>
+      <ButtonContinue
+        title="Tilin hallinta"
+        onPress={() => navigation.navigate('AccountMaintain')}
+      />
+    </>
+  );
+};

@@ -1,9 +1,23 @@
 import React, { useContext } from 'react';
 import { ScrollView,Text} from 'react-native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
-import { ChangePasswordOfThisUser, DeleteAccountOfThisUser, LogoutFromThisUser, UserLogin, UserRegister, UserResetPassword } from './FindUser';
+import { ChangePasswordOfThisUser, DeleteAccountOfThisUser, LogoutFromThisUser, UserLogin, UserRegister, UserResetPassword, MessagingSystem, AccountSystem } from './FindUser';
+import { NavigateToThisUsersItems, NavigateToThisUsersQueue } from '../items/FindItems';
 import { BasicsOfSecuringThisAccount, BasicsOfGettingAnAccount } from '../../components/Textblocks';
 import { AuthenticationContext } from '../../services/auth';
+
+
+export const AccountLoggedOut = () => { 
+
+  return (
+    <ScrollView contentContainerStyle={{ padding: 8 }}>
+      <BasicsOfGettingAnAccount />
+      <UserLogin />
+      <UserRegister />
+      <UserResetPassword />
+    </ScrollView>
+  );
+};
 
 export const AccountLoggedIn = () => {
   const {authState} = useContext(AuthenticationContext);
@@ -21,25 +35,27 @@ export const AccountLoggedIn = () => {
           Tämän näkymän kautta löydät omat aktiiviset ilmoituksesi, jonotuksesi ja viestiyhteydet sekä tilisi hallinnointiin liittyvät toiminnot.
         </Text>
       </BasicSection>
-      {/* <MessagingSystem /> */}
-      {/* <ItemsFromThisUser /> */}
-      {/* <QueuesOfThisUser /> */}
-      <BasicsOfSecuringThisAccount />
-      <ChangePasswordOfThisUser />
-      <DeleteAccountOfThisUser />
+      <MessagingSystem />
+      <NavigateToThisUsersItems />
+      <NavigateToThisUsersQueue />
+      <AccountSystem />
       <LogoutFromThisUser />
     </ScrollView>
   );
 };
 
-export const AccountLoggedOut = () => { 
+export const AccountMaintain = () => {
+  const {authState} = useContext(AuthenticationContext);
+
+  if (!authState) {
+    return <Text>No user data found.</Text>;
+  }
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
-      <BasicsOfGettingAnAccount />
-      <UserLogin />
-      <UserRegister />
-      <UserResetPassword />
+      <BasicsOfSecuringThisAccount />
+      <ChangePasswordOfThisUser />
+      <DeleteAccountOfThisUser />
     </ScrollView>
   );
 };

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Text, ScrollView } from 'react-native';
 import { Heading, BasicSection } from './CommonComponents';
+import { ButtonContinue } from './Buttons';
+import { useNavigation } from '@react-navigation/native';
 import SwitchingBackgrounds from './SwitchingBackgrounds';
 
 export const CreditsOfThisApp = () => {
@@ -104,3 +106,4 @@ export const BasicsOfGettingAnAccount = () => {
       </ScrollView>
     );
   };
+
