@@ -13,7 +13,14 @@ const GlobalButtons = StyleSheet.create({
         padding: 16,
         marginVertical: 8,
         alignItems: 'center',
-        width: '100%',
+        width: '90%',
+        alignSelf: 'center',
+        // Shadow for iOS + android
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 6,
     },
     
     buttonNavigate: {

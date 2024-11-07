@@ -10,11 +10,10 @@ import { AuthenticationContext } from '../../services/auth.js'
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
 import globalStyles from '../../assets/styles/Styles.js';
 
-export const UserLogin = () => {
+export const UserLogin = ({ isVisible, toggleVisible })  => {
   const [username, setLoginUsername] = useState('');
   const [password, setLoginPassword] = useState('');
   const {authState, setAuthState} = useContext(AuthenticationContext);
-  const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
 
   const handleLoginSuccess = async (data) => {
@@ -46,7 +45,7 @@ export const UserLogin = () => {
 
   return (
     <>
-      <Heading title="Kirjaudu sisään" onPress={() => setIsVisible(!isVisible)} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
+      <Heading title="Kirjaudu sisään" onPress={toggleVisible} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
       {isVisible && ( 
         <AccountSection>
           <CommonText value="Kirjaudu sisään omalla käyttäjätunnuksellasi ja salasanallasi." editable={false} />
@@ -70,11 +69,10 @@ export const UserLogin = () => {
   );
 };
 
-export const UserRegister = () => {
+export const UserRegister = ({ isVisible, toggleVisible }) => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
-  const [isVisible, setIsVisible] = useState(false);
 
   const handleRegister = async () => {
     try {
@@ -95,7 +93,7 @@ export const UserRegister = () => {
   return (
     <>
 
-<Heading title="Rekisteröidy" onPress={() => setIsVisible(!isVisible)} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
+<Heading title="Rekisteröidy" onPress={toggleVisible} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
 
     {isVisible && ( 
       <AccountSection>
@@ -127,10 +125,8 @@ export const UserRegister = () => {
   );
 };
 
-export const UserResetPassword = () => {
+export const UserResetPassword = ({ isVisible, toggleVisible }) => {
   const [forgottenEmail, setForgottenEmail] = useState('');
-  const [isVisible, setIsVisible] = useState(false);
-
   const handlePasswordReset = async () => {
     try {
       const data = await userReset(forgottenEmail);
@@ -148,7 +144,7 @@ export const UserResetPassword = () => {
 
   return (
     <>
-      <Heading title="Salasanan palautus" onPress={() => setIsVisible(!isVisible)} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
+      <Heading title="Salasanan palautus" onPress={toggleVisible} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
 
       {isVisible && (
       <AccountSection>
@@ -200,14 +196,15 @@ export const ChangePasswordOfThisUser = () => {
           <></>
         ) : (
           <>
-            <BasicSection>
+            <AccountSection>
               <CommonText
                 placeholder="Uusi salasana"
                 value={newPassword}
                 onChangeText={setNewPassword}
+                trailingIcon={() => <Icon name="lock" />}
                 secureTextEntry
               />
-            </BasicSection>
+            </AccountSection>
             
             <View style={globalStyles.viewButtons}>
               <ButtonSave title="Vahvista" onPress={handlePasswordChangeConfirm} />
