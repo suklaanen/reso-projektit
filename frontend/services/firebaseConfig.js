@@ -2,7 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc } from 'firebase/firestore';
 import { getAuth, initializeAuth, getReactNativePersistence } from "firebase/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FIREBASE_API_KEY, 
+import { 
+  FIREBASE_API_KEY, 
   FIREBASE_AUTH_DOMAIN, 
   FIREBASE_PROJECT_ID, 
   FIREBASE_STORAGE_BUCKET, 
