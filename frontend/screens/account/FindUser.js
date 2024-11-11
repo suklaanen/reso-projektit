@@ -1,51 +1,52 @@
-import React, { useState, useContext } from 'react';
-import { Text, Alert } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { Text, Alert, ToastAndroid, Image, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { Heading, AccountSection, CommonText, CommonTitle, BasicSection } from '../../components/CommonComponents';
-import {  ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonAdd } from '../../components/Buttons';
-import { ButtonContinue } from '../../components/Buttons';
+import { ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonAdd, ButtonContinue } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
 import { userDelete, userLogin, userLogout, userRegister, userReset } from '../../services/api.js';
 import { useNavigation } from '@react-navigation/native';
-import { AuthenticationContext } from '../../services/auth.js'
+import { AuthenticationContext } from '../../services/auth.js';
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { app, auth } from '../../services/firebaseConfig';
 
 export const UserLogin = () => {
   const [username, setLoginUsername] = useState('');
   const [password, setLoginPassword] = useState('');
-  const {authState, setAuthState} = useContext(AuthenticationContext);
+  const { authState, setAuthState } = useContext(AuthenticationContext);
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
-
+  const [loginInfo, setLoginInfo] = useState('');
 
   const handleLoginSuccess = async (data) => {
-      console.log('Kirjautuminen onnistui käyttäjätiedoilla:', data);
-      saveUserData(data);
-      setAuthState(data);
+    console.log('Kirjautuminen onnistui käyttäjätiedoilla:', data);
+    saveUserData(data);
+    setAuthState(data);
   };
 
   const handleLogin = async () => {
     try {
-        const result = await userLogin(username, password);
-        console.log('Login result:', result); 
-        if (result && result.success) {
-          handleLoginSuccess({
-                userId: result.userid,
-                accessToken: result.accessToken,
-                refreshToken: result.refreshToken,
-                username: result.username
-            });
-            navigation.navigate('AccountLoggedIn');
-        } else {
-            Alert.alert('Kirjautuminen epäonnistui', result.message || 'Tuntematon virhe');
-        }
+      const result = await signInWithEmailAndPassword(auth, username, password);
+      console.log('Login result:', result); 
+      if (result) {
+        handleLoginSuccess({
+          userId: result.user.uid,
+          accessToken: result.user.stsTokenManager.accessToken,
+          refreshToken: result.user.stsTokenManager.refreshToken,
+          username: result.user.email
+        });
+        navigation.navigate('AccountLoggedIn');
+      } else {
+        Alert.alert('Kirjautuminen epäonnistui', 'Tuntematon virhe');
+      }
     } catch (error) {
-        console.error('Login error:', error);
-        Alert.alert('Virhe kirjautumisessa', error.message || 'Yhteysvirhe');
+      console.error('Login error:', error);
+      Alert.alert('Virhe kirjautumisessa', error.message || 'Yhteysvirhe');
     }
-};
+  };
 
   return (
-    <>
+    <View>
       <Heading title="Kirjaudu sisään" onPress={() => setIsVisible(!isVisible)} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
       {isVisible && ( 
         <AccountSection>
@@ -66,7 +67,7 @@ export const UserLogin = () => {
           <ButtonContinue title="Kirjaudu" onPress={handleLogin}/>
         </AccountSection>
       )}
-    </>
+    </View>
   );
 };
 
@@ -75,57 +76,71 @@ export const UserRegister = () => {
   const [registerPassword, setRegisterPassword] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
   const [isVisible, setIsVisible] = useState(false);
+  const navigation = useNavigation();
+  const [loginInfo, setLoginInfo] = useState('');
+
+  const createAccount = (email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setLoginInfo("Käyttäjätunnus luotu! Voit nyt kirjautua!");
+        ToastAndroid.show("Käyttäjätunnus luotu! Voit nyt kirjautua!", ToastAndroid.SHORT);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        setLoginInfo(`Käyttäjän luominen epäonnistui.\n\n ${errorMessage}`);
+        ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+      });
+  };
 
   const handleRegister = async () => {
     try {
-      const data = await userRegister(registerUsername, registerEmail, registerPassword);
-      if (data.success) {
+      const data = await createAccount(registerEmail, registerPassword);
+      if (data) {
         Alert.alert('Rekisteröityminen onnistui', 'Voit nyt kirjautua sisään');
         setRegisterEmail('');
         setRegisterUsername('');
         setRegisterPassword('');
         setIsVisible(false);
       } else {
-        Alert.alert('Rekisteröityminen epäonnistui', data.message || 'Virhe rekisteröitymisessä');
+        Alert.alert('Rekisteröityminen epäonnistui', 'Virhe rekisteröitymisessä');
       }
     } catch (error) {
       Alert.alert('Tapahtui virhe', error.message || 'Ei yhteyttä palvelimeen');
     }
   };
+
   return (
     <>
-
-<Heading title="Rekisteröidy" onPress={() => setIsVisible(!isVisible)} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
-
-    {isVisible && ( 
-      <AccountSection>
-        <CommonText value="Rekisteröidy palvelun käyttäjäksi täyttämällä pyydetyt kohdat." editable={false} />
-
-        <CommonText
-          value={registerUsername}
-          onChangeText={setRegisterUsername}
-          editable={true}
-          trailingIcon={() => <Icon name="person" />}
-        />
-        <CommonText
-          value={registerEmail}
-          onChangeText={setRegisterEmail}
-          editable={true}
-          trailingIcon={() => <Icon name="email" />}
-        />
-        <CommonText
-          value={registerPassword}
-          onChangeText={setRegisterPassword}
-          editable={true}
-          trailingIcon={() => <Icon name="lock" />}
-          secureTextEntry
-        />
-        <ButtonContinue title="Rekisteröidy" onPress={handleRegister}/>
-      </AccountSection>
-    )}
+      <Heading title="Rekisteröidy" onPress={() => setIsVisible(!isVisible)} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
+      {isVisible && ( 
+        <AccountSection>
+          <CommonText value="Rekisteröidy palvelun käyttäjäksi täyttämällä pyydetyt kohdat." editable={false} />
+          <CommonText
+            value={registerUsername}
+            onChangeText={setRegisterUsername}
+            editable={true}
+            trailingIcon={() => <Icon name="person" />}
+          />
+          <CommonText
+            value={registerEmail}
+            onChangeText={setRegisterEmail}
+            editable={true}
+            trailingIcon={() => <Icon name="email" />}
+          />
+          <CommonText
+            value={registerPassword}
+            onChangeText={setRegisterPassword}
+            editable={true}
+            trailingIcon={() => <Icon name="lock" />}
+            secureTextEntry
+          />
+          <ButtonContinue title="Rekisteröidy" onPress={handleRegister}/>
+        </AccountSection>
+      )}
     </>
   );
 };
+
 
 export const UserResetPassword = () => {
   const [forgottenEmail, setForgottenEmail] = useState('');

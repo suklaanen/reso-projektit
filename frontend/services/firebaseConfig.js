@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc } from 'firebase/firestore';
+import { getAuth, initializeAuth, getReactNativePersistence } from "firebase/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { APIKEY, AUTHDOMAIN, PROJECTID, STORAGEBUCKET, MESSAGINGSENDERID, APPID } from "@env";
 
 const firebaseConfig = {
@@ -11,9 +13,13 @@ const firebaseConfig = {
   appId: APPID
 };
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const firestore = getFirestore();
+const firestore = getFirestore(app);
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+});
+
 const LISTITEMS = 'listitems';
 
-export { firestore, collection, addDoc, query, onSnapshot, deleteDoc, LISTITEMS };
+export { app, auth, firestore, collection, addDoc, query, onSnapshot, deleteDoc, LISTITEMS };
