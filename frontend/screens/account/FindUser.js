@@ -6,9 +6,11 @@ import { ButtonContinue } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
 import { userDelete, userLogin, userRegister, userReset } from '../../services/api.js';
 import { useNavigation } from '@react-navigation/native';
-import { AuthenticationContext } from '../../services/auth.js'
+import { AuthenticationContext } from '../../services/auth.js';
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
 import globalStyles from '../../assets/styles/Styles.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { app, auth } from '../../services/firebaseConfig';
 
 export const UserLogin = ({ isVisible, toggleVisible })  => {
   const [username, setLoginUsername] = useState('');
@@ -17,34 +19,33 @@ export const UserLogin = ({ isVisible, toggleVisible })  => {
   const navigation = useNavigation();
 
   const handleLoginSuccess = async (data) => {
-      console.log('Kirjautuminen onnistui käyttäjätiedoilla:', data);
-      saveUserData(data);
-      setAuthState(data);
+    console.log('Kirjautuminen onnistui käyttäjätiedoilla:', data);
+    saveUserData(data);
+    setAuthState(data);
   };
 
   const handleLogin = async () => {
     try {
-        const result = await userLogin(username, password);
-        console.log('Login result:', result); 
-        if (result && result.success) {
-          handleLoginSuccess({
-                userId: result.userid,
-                accessToken: result.accessToken,
-                refreshToken: result.refreshToken,
-                username: result.username
-            });
-            navigation.navigate('AccountLoggedIn');
-        } else {
-            Alert.alert('Kirjautuminen epäonnistui', result.message || 'Tuntematon virhe');
-        }
+      const result = await signInWithEmailAndPassword(auth, username, password);
+      console.log('Login result:', result); 
+      if (result) {
+        handleLoginSuccess({
+          userId: result.user.uid,
+          accessToken: result.user.stsTokenManager.accessToken,
+          refreshToken: result.user.stsTokenManager.refreshToken,
+          username: result.user.email
+        });
+        navigation.navigate('AccountLoggedIn');
+      } else {
+        Alert.alert('Kirjautuminen epäonnistui', 'Tuntematon virhe');
+      }
     } catch (error) {
-        console.error('Login error:', error);
-        Alert.alert('Virhe kirjautumisessa', error.message || 'Yhteysvirhe');
+      console.error('Login error:', error);
+      Alert.alert('Virhe kirjautumisessa', error.message || 'Yhteysvirhe');
     }
-};
+  };
 
   return (
-    <>
       <Heading title="Kirjaudu sisään" onPress={toggleVisible} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
       {isVisible && ( 
         <AccountSection>
@@ -65,7 +66,7 @@ export const UserLogin = ({ isVisible, toggleVisible })  => {
           <ButtonContinue title="Kirjaudu" onPress={handleLogin}/>
         </AccountSection>
       )}
-    </>
+    </View>
   );
 };
 
@@ -73,26 +74,42 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
+  const navigation = useNavigation();
+  const [loginInfo, setLoginInfo] = useState('');
+
+  const createAccount = (email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setLoginInfo("Käyttäjätunnus luotu! Voit nyt kirjautua!");
+        ToastAndroid.show("Käyttäjätunnus luotu! Voit nyt kirjautua!", ToastAndroid.SHORT);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        setLoginInfo(`Käyttäjän luominen epäonnistui.\n\n ${errorMessage}`);
+        ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+      });
+  };
 
   const handleRegister = async () => {
     try {
-      const data = await userRegister(registerUsername, registerEmail, registerPassword);
-      if (data.success) {
+      const data = await createAccount(registerEmail, registerPassword);
+      if (data) {
         Alert.alert('Rekisteröityminen onnistui', 'Voit nyt kirjautua sisään');
         setRegisterEmail('');
         setRegisterUsername('');
         setRegisterPassword('');
         setIsVisible(false);
       } else {
-        Alert.alert('Rekisteröityminen epäonnistui', data.message || 'Virhe rekisteröitymisessä');
+        Alert.alert('Rekisteröityminen epäonnistui', 'Virhe rekisteröitymisessä');
       }
     } catch (error) {
       Alert.alert('Tapahtui virhe', error.message || 'Ei yhteyttä palvelimeen');
     }
   };
+
   return (
     <>
-
 <Heading title="Rekisteröidy" onPress={toggleVisible} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
 
     {isVisible && ( 
