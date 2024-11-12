@@ -12,31 +12,33 @@ import globalStyles from '../../assets/styles/Styles.js';
 export const UserLogin = ({ isVisible, toggleVisible }) => {
   const [usermail, setLoginUsername] = useState('');
   const [password, setLoginPassword] = useState('');
-  const { authState, setAuthState } = useContext(AuthenticationContext);
+  const { setAuthState } = useContext(AuthenticationContext);
   const navigation = useNavigation();
 
   const handleLoginSuccess = async (data) => {
     console.log('Kirjautuminen onnistui käyttäjätiedoilla:', data);
-    saveUserData(data);
+    await saveUserData(data);
     setAuthState(data);
   };
 
+  
   const handleLogin = async () => {
     try {
-      const data = await userLogin( usermail, password);
-      console.log('Login result:', data); 
+      const data = await userLogin(usermail, password);
+      
       if (data) {
-        handleLoginSuccess({
-          userId: data.userId,
-          accessToken: data.accessToken,
-        });
-        navigation.navigate('AccountLoggedIn');
+        handleLoginSuccess(data);
       } else {
-        Alert.alert('Kirjautuminen epäonnistui', 'Tuntematon virhe');
+        Alert.alert('Kirjautuminen epäonnistui', 'Virheellinen käyttäjätunnus tai salasana');
       }
     } catch (error) {
       console.error('Login error:', error);
       Alert.alert('Virhe kirjautumisessa', error.message || 'Yhteysvirhe');
+      Toast.show({
+        type: 'error',
+        text1: 'Kirjautuminen epäonnistui',
+        text2: error.message || 'Yhteysvirhe',
+      });
     }
   };
 
@@ -67,16 +69,24 @@ export const UserLogin = ({ isVisible, toggleVisible }) => {
 };
 
 export const UserRegister = ({ isVisible, toggleVisible }) => {
+  const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
 
   const handleRegister = async () => {
+    if (registerPassword !== confirmPassword) {
+      Alert.alert('Virhe', 'Salasanat eivät täsmää');
+      return;
+    }
+
     try {
-      const data = await userRegister(registerEmail, registerPassword);
+      const data = await userRegister(registerEmail, registerPassword, registerUsername);
       if (data) {
         setRegisterEmail('');
         setRegisterPassword('');
-        setIsVisible(false);
+        setRegisterUsername('');
+        setConfirmPassword('');
       } else {
         Alert.alert('Rekisteröityminen epäonnistui', 'Virhe rekisteröitymisessä');
       }
@@ -92,16 +102,32 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
         <AccountSection>
           <CommonText value="Rekisteröidy palvelun käyttäjäksi täyttämällä pyydetyt kohdat." editable={false} />
           <CommonText
+            placeholder='Käyttäjätunnus'
+            value={registerUsername}
+            onChangeText={setRegisterUsername}
+            editable={true}
+            trailingIcon={() => <Icon name="person" />}
+         />
+          <CommonText
+            placeholder='Sähköposti'
             value={registerEmail}
             onChangeText={setRegisterEmail}
             editable={true}
             trailingIcon={() => <Icon name="email" />}
           />
           <CommonText
+            placeholder='Salasana'
             value={registerPassword}
             onChangeText={setRegisterPassword}
             editable={true}
             trailingIcon={() => <Icon name="lock" />}
+            secureTextEntry
+          />
+          <CommonText
+            placeholder='Toista salasana'
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            editable={true}
             secureTextEntry
           />
           <ButtonContinue title="Rekisteröidy" onPress={handleRegister}/>
@@ -112,20 +138,16 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
 };
 
 export const DeleteAccountOfThisUser = () => {
-  const {authState, setAuthState} = useContext(AuthenticationContext);
-  const {userid, accessToken} = authState;
+  const { authState, setAuthState } = useContext(AuthenticationContext);
+  const { userid, accessToken } = authState;
   const [isDeletingThisAccount, setDeletingThisAccount] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const navigation = useNavigation();
-  
+
   const handleDeleteUser = async () => {
     try {
-      const data = await userDelete(userid, accessToken);
-      if (data.success) {
-        Alert.alert('Tilin poisto onnistui');
-      } else {
-        Alert.alert('Tilin poisto epäonnistui', data.message || 'Virhe tilin poistossa');
-      }
+      await userDelete(userid, accessToken, navigation, setAuthState);
+      Alert.alert('Tilin poisto onnistui');
     } catch (error) {
       Alert.alert('Tapahtui virhe', error.message || 'Ei yhteyttä palvelimeen');
     }
@@ -143,10 +165,6 @@ export const DeleteAccountOfThisUser = () => {
 
   const handleConfirmWhenDeleting = () => {
     handleDeleteUser();
-    setAuthState(null);
-    clearUserData();
-    navigation.navigate('Home');
-    console.log(userid, accessToken);
     setDeletingThisAccount(true);
   }
 
@@ -160,30 +178,29 @@ export const DeleteAccountOfThisUser = () => {
       <Heading title="Poista tili" onPress={toggleDeletingThisAccount} />
 
       {!isDeletingThisAccount ? (
-          <></>
+        <></>
         ) : (
         <>
         <BasicSection>
             Mikäli poistat käyttäjätilisi palvelusta, sen kaikki tiedot poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili". {"\n\n"}
-
-          <View style={globalStyles.viewButtons}>
-            <ButtonDelete title="Poista tili" onPress={handleDoubleCheckWhenDeleting} />
-            <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
-          </View>
-          </BasicSection>
-          </>
+        </BasicSection>
+        <View style={globalStyles.viewButtons}>
+          <ButtonDelete title="Poista tili" onPress={handleDoubleCheckWhenDeleting} />
+          <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
+        </View>
+        </>
         )}
 
       {isConfirmed && (
-          <>
-          <BasicSection>
-            Oletko varma? {"\n\n"}
-          <View style={globalStyles.viewButtons}>
-            <ButtonConfirm title="Vahvista" onPress={handleConfirmWhenDeleting}/>
-            <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
-          </View>
-          </BasicSection>
-          </>
+        <>
+        <BasicSection>
+          Oletko varma? {"\n\n"}
+        </BasicSection>
+        <View style={globalStyles.viewButtons}>
+          <ButtonConfirm title="Vahvista" onPress={handleConfirmWhenDeleting}/>
+          <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
+        </View>
+        </>
         )}
     </>
   );
