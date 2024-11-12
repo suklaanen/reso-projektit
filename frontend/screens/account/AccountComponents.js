@@ -1,11 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { ScrollView,Text} from 'react-native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
-import { ChangePasswordOfThisUser, DeleteAccountOfThisUser, LogoutFromThisUser, UserLogin, UserRegister, UserResetPassword, MessagingSystem, AccountSystem } from './FindUser';
+import { DeleteAccountOfThisUser, LogoutFromThisUser, UserLogin, UserRegister, UserResetPassword, MessagingSystem, AccountSystem } from './FindUser';
 import { NavigateToThisUsersItems, NavigateToThisUsersQueue } from '../items/FindItems';
 import { BasicsOfSecuringThisAccount, BasicsOfGettingAnAccount } from '../../components/Textblocks';
 import { AuthenticationContext } from '../../services/auth';
-
 
 export const AccountLoggedOut = () => { 
   const [visibleSection, setVisibleSection] = useState(null);

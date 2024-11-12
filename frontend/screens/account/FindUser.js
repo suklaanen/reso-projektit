@@ -178,7 +178,6 @@ export const DeleteAccountOfThisUser = () => {
           <>
           <BasicSection>
             Oletko varma? {"\n\n"}
-
           <View style={globalStyles.viewButtons}>
             <ButtonConfirm title="Vahvista" onPress={handleConfirmWhenDeleting}/>
             <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
@@ -212,7 +211,7 @@ export const LogoutFromThisUser = () => {
       <ButtonNavigate title="Kirjaudu ulos" onPress={handleLogout}/>
     </>
   );
-}
+};
 
 export const MessagingSystem = () => {
   const navigation = useNavigation(); 

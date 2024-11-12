@@ -30,8 +30,7 @@ export default function App() {
 
     lockOrientation();
   }, []);
- 
- 
+  
   return (
     <Provider>
       <AuthenticationProvider>
@@ -50,6 +49,7 @@ export default function App() {
                 <Stack.Screen name="AccountMaintain" component={AccountMaintain} options={{ headerShown: false }} />
                 <Stack.Screen name="MyItems" component={ItemsFromThisUser} options={{ headerShown: false }} />
                 <Stack.Screen name="MyQueues" component={QueuesOfThisUser} options={{ headerShown: false }} />
+                <Stack.Screen name="ItemAddView" component={ItemAddView} options={{ headerShown: false }} />
               </Stack.Navigator>
             </View>
           <CustomBottomBar />
