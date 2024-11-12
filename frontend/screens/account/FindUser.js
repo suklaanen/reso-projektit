@@ -1,21 +1,21 @@
 import React, { useState, useContext } from 'react';
-import { View, Alert } from 'react-native';
+import { View, Alert, ToastAndroid } from 'react-native';
 import { Heading, AccountSection, CommonText, BasicSection } from '../../components/CommonComponents';
-import { ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonNavigate } from '../../components/Buttons';
-import { ButtonContinue } from '../../components/Buttons';
+import { ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonNavigate, ButtonContinue } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
-import { userDelete, userReset } from '../../services/api.js';
+import { userReset } from '../../services/api.js';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../../services/auth.js';
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
 import globalStyles from '../../assets/styles/Styles.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser} from "firebase/auth";
-import { app, auth } from '../../services/firebaseConfig';
+import { app, auth, firestore, collection, addDoc, getDocs, query, where } from '../../services/firebaseConfig';
+
 
 export const UserLogin = ({ isVisible, toggleVisible })  => {
-  const [username, setLoginUsername] = useState('');
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setLoginPassword] = useState('');
-  const {authState, setAuthState} = useContext(AuthenticationContext);
+  const { authState, setAuthState } = useContext(AuthenticationContext);
   const navigation = useNavigation();
 
   const handleLoginSuccess = async (data) => {
@@ -26,8 +26,9 @@ export const UserLogin = ({ isVisible, toggleVisible })  => {
 
   const handleLogin = async () => {
     try {
-      const result = await signInWithEmailAndPassword(auth, username, password);
-      console.log('Login result:', result); 
+      // Yritetään kirjautua sähköpostilla ja salasanalla
+      let result = await signInWithEmailAndPassword(auth, usernameOrEmail, password);
+      console.log('Login result:', result);
       if (result) {
         handleLoginSuccess({
           userId: result.user.uid,
@@ -36,11 +37,42 @@ export const UserLogin = ({ isVisible, toggleVisible })  => {
           username: result.user.email
         });
         navigation.navigate('AccountLoggedIn');
-      } else {
-        Alert.alert('Kirjautuminen epäonnistui', 'Tuntematon virhe');
+        return;
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Login error with email:', error);
+    }
+
+    try {
+      // Jos sähköposti-salasana kirjautuminen ei onnistu (käyttäjä on syöttänyt käyttäjätunnuksen) 
+      // niin haetaan käyttäjätunnuksen perusteella sähköpostiosoite Firestoresta
+      const usersRef = collection(firestore, 'users');
+      const q = query(usersRef, where('username', '==', usernameOrEmail));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
+        const email = userData.email;
+
+        // Yritetään kirjautua haetulla sähköpostilla
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        console.log('Login result with username:', result);
+        if (result) {
+          handleLoginSuccess({
+            userId: result.user.uid,
+            accessToken: result.user.stsTokenManager.accessToken,
+            refreshToken: result.user.stsTokenManager.refreshToken,
+            username: result.user.email
+          });
+          navigation.navigate('AccountLoggedIn');
+          return;
+        }
+      } else {
+        Alert.alert('Kirjautuminen epäonnistui', 'Käyttäjätunnusta ei löytynyt');
+      }
+    } catch (error) {
+      console.error('Login error with username:', error);
       Alert.alert('Virhe kirjautumisessa', error.message || 'Yhteysvirhe');
     }
   };
@@ -52,8 +84,8 @@ export const UserLogin = ({ isVisible, toggleVisible })  => {
         <AccountSection>
           <CommonText value="Kirjaudu sisään omalla käyttäjätunnuksellasi ja salasanallasi." editable={false} />
           <CommonText
-            value={username}
-            onChangeText={setLoginUsername}
+            value={usernameOrEmail}
+            onChangeText={setUsernameOrEmail}
             editable={true}
             trailingIcon={() => <Icon name="person" />}
           />
@@ -75,31 +107,54 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigation = useNavigation();
   const [loginInfo, setLoginInfo] = useState('');
 
   const createAccount = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password)
+    return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setLoginInfo("Käyttäjätunnus luotu! Voit nyt kirjautua!");
         ToastAndroid.show("Käyttäjätunnus luotu! Voit nyt kirjautua!", ToastAndroid.SHORT);
+        return userCredential;
       })
       .catch((error) => {
         const errorMessage = error.message;
         setLoginInfo(`Käyttäjän luominen epäonnistui.\n\n ${errorMessage}`);
         ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+        return null;
       });
   };
 
+  const saveUserToFirestore = async (user) => {
+    try {
+      await addDoc(collection(firestore, 'users'), {
+        username: registerUsername,
+        email: registerEmail,
+        uid: user.uid
+      });
+      console.log('User added to Firestore');
+    } catch (error) {
+      console.error('Error adding user to Firestore:', error);
+    }
+  };
+
   const handleRegister = async () => {
+    if (registerPassword !== confirmPassword) {
+      Alert.alert('Virhe', 'Salasanat eivät täsmää');
+      return;
+    }
+
     try {
       const data = await createAccount(registerEmail, registerPassword);
       if (data) {
+        await saveUserToFirestore(data.user);
         Alert.alert('Rekisteröityminen onnistui', 'Voit nyt kirjautua sisään');
         setRegisterEmail('');
         setRegisterUsername('');
         setRegisterPassword('');
-        setIsVisible(false);
+        setConfirmPassword('');
+        toggleVisible(false);
       } else {
         Alert.alert('Rekisteröityminen epäonnistui', 'Virhe rekisteröitymisessä');
       }
@@ -117,22 +172,32 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
         <CommonText value="Rekisteröidy palvelun käyttäjäksi täyttämällä pyydetyt kohdat." editable={false} />
 
         <CommonText
+          placeholder='Käyttäjätunnus'
           value={registerUsername}
           onChangeText={setRegisterUsername}
           editable={true}
           trailingIcon={() => <Icon name="person" />}
         />
         <CommonText
+          placeholder='Sähköposti'
           value={registerEmail}
           onChangeText={setRegisterEmail}
           editable={true}
           trailingIcon={() => <Icon name="email" />}
         />
         <CommonText
+          placeholder='Salasana'
           value={registerPassword}
           onChangeText={setRegisterPassword}
           editable={true}
           trailingIcon={() => <Icon name="lock" />}
+          secureTextEntry
+        />
+        <CommonText
+          placeholder='Toista salasana'
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          editable={true}
           secureTextEntry
         />
         <ButtonContinue title="Rekisteröidy" onPress={handleRegister}/>
