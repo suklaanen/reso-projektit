@@ -4,12 +4,12 @@ import { Heading, AccountSection, CommonText, BasicSection } from '../../compone
 import { ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonNavigate } from '../../components/Buttons';
 import { ButtonContinue } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
-import { userDelete, userLogin, userRegister, userReset } from '../../services/api.js';
+import { userDelete, userReset } from '../../services/api.js';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../../services/auth.js';
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
 import globalStyles from '../../assets/styles/Styles.js';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser} from "firebase/auth";
 import { app, auth } from '../../services/firebaseConfig';
 
 export const UserLogin = ({ isVisible, toggleVisible })  => {
@@ -75,7 +75,6 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
-  const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
   const [loginInfo, setLoginInfo] = useState('');
 
@@ -244,11 +243,15 @@ export const DeleteAccountOfThisUser = () => {
   
   const handleDeleteUser = async () => {
     try {
-      const data = await userDelete(userid, accessToken, refreshToken, username);
-      if (data.success) {
+      const user = auth.currentUser;
+      if (user) {
+        await deleteUser(user);
         Alert.alert('Tilin poisto onnistui');
+        setAuthState(null);
+        clearUserData();
+        navigation.navigate('Home');
       } else {
-        Alert.alert('Tilin poisto epäonnistui', data.message || 'Virhe tilin poistossa');
+        Alert.alert('Tilin poisto epäonnistui', 'Käyttäjää ei löytynyt');
       }
     } catch (error) {
       Alert.alert('Tapahtui virhe', error.message || 'Ei yhteyttä palvelimeen');
@@ -267,12 +270,8 @@ export const DeleteAccountOfThisUser = () => {
 
   const handleConfirmWhenDeleting = () => {
     handleDeleteUser();
-    setAuthState(null);
-    clearUserData();
-    navigation.navigate('Home');
-    console.log(userid, accessToken, refreshToken);
     setDeletingThisAccount(true);
-  }
+  };
 
   const handleDeletingThisAccountCancel = () => {
     setDeletingThisAccount(false);
@@ -284,9 +283,9 @@ export const DeleteAccountOfThisUser = () => {
       <Heading title="Poista tili" onPress={toggleDeletingThisAccount} />
 
       {!isDeletingThisAccount ? (
-          <></>
-        ) : (
-          <>
+        <></>
+      ) : (
+        <>
           <BasicSection>
             Mikäli poistat käyttäjätilisi palvelusta, sen kaikki tiedot poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili". {"\n\n"}
           </BasicSection>
@@ -294,20 +293,20 @@ export const DeleteAccountOfThisUser = () => {
             <ButtonDelete title="Poista tili" onPress={handleDoubleCheckWhenDeleting} />
             <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
           </View>
-          </>
-        )}
+        </>
+      )}
 
       {isConfirmed && (
-          <>
+        <>
           <BasicSection>
             Oletko varma? {"\n\n"}
           </BasicSection>
           <View style={globalStyles.viewButtons}>
-            <ButtonConfirm title="Vahvista" onPress={handleConfirmWhenDeleting}/>
+            <ButtonConfirm title="Vahvista" onPress={handleConfirmWhenDeleting} />
             <ButtonCancel title="Peruuta" onPress={handleDeletingThisAccountCancel} />
           </View>
-          </>
-        )}
+        </>
+      )}
     </>
   );
 };
