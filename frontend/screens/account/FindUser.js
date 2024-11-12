@@ -9,7 +9,7 @@ import { AuthenticationContext } from '../../services/auth.js';
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
 import globalStyles from '../../assets/styles/Styles.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser} from "firebase/auth";
-import { app, auth, firestore, collection, addDoc, getDocs, query, where } from '../../services/firebaseConfig';
+import { app, auth, firestore, collection, addDoc, getDocs, deleteDoc, query, where } from '../../services/firebaseConfig';
 
 
 export const UserLogin = ({ isVisible, toggleVisible })  => {
@@ -325,6 +325,21 @@ export const DeleteAccountOfThisUser = () => {
     try {
       const user = auth.currentUser;
       if (user) {
+        // Poistetaan käyttäjään liittyvät tiedot Firestoresta
+        // TÄTÄ PITÄÄ VIELÄ PÄIVITTÄÄ, ETTÄ POISTETAAN KAIKKI KÄYTTÄJÄN UIDHEN LIITTYVÄ MATERIAALI, MYÖS ILMOITUKSET
+        const usersRef = collection(firestore, 'users');
+        const q = query(usersRef, where('uid', '==', user.uid));
+        const querySnapshot = await getDocs(q);
+  
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          await deleteDoc(userDoc.ref);
+          console.log('User document deleted from Firestore');
+        } else {
+          console.log('No user document found in Firestore');
+        }
+  
+        // Poistetaan käyttäjätili Firebase Authenticationista
         await deleteUser(user);
         Alert.alert('Tilin poisto onnistui');
         setAuthState(null);
