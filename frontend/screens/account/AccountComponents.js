@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ScrollView,Text} from 'react-native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
 import { ChangePasswordOfThisUser, DeleteAccountOfThisUser, LogoutFromThisUser, UserLogin, UserRegister, UserResetPassword, MessagingSystem, AccountSystem } from './FindUser';
@@ -8,13 +8,23 @@ import { AuthenticationContext } from '../../services/auth';
 
 
 export const AccountLoggedOut = () => { 
+  const [visibleSection, setVisibleSection] = useState(null);
+
+  const toggleSection = (sectionName) => {
+    setVisibleSection((prevSection) => prevSection === sectionName ? null : sectionName);
+  };
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <BasicsOfGettingAnAccount />
-      <UserLogin />
-      <UserRegister />
-      <UserResetPassword />
+      <UserLogin 
+        isVisible={visibleSection === 'login'} 
+        toggleVisible={() => toggleSection('login')} 
+      />
+      <UserRegister 
+        isVisible={visibleSection === 'register'} 
+        toggleVisible={() => toggleSection('register')} 
+      />
     </ScrollView>
   );
 };
@@ -31,8 +41,8 @@ export const AccountLoggedIn = () => {
       <Heading title="Käyttäjäsivu" />
       <BasicSection>
         <Text>
-          Olet kirjautunut käyttäjänä: {authState.username} {"\n\n"}
-          Tämän näkymän kautta löydät omat aktiiviset ilmoituksesi, jonotuksesi ja viestiyhteydet sekä tilisi hallinnointiin liittyvät toiminnot.
+          Tervetuloa, {authState.username} {"\n\n"}
+          Tämän näkymän kautta löytyy toiminnot, jotka liittyvät käyttäjätilin hallinnointiin, käyttäjän omiin ilmoituksiin ja varauksiin sekä tuotteisiin liittyvät aktiiviset viestiketjut.
         </Text>
       </BasicSection>
       <MessagingSystem />
@@ -54,7 +64,6 @@ export const AccountMaintain = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <BasicsOfSecuringThisAccount />
-      <ChangePasswordOfThisUser />
       <DeleteAccountOfThisUser />
     </ScrollView>
   );

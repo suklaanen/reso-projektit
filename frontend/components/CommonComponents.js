@@ -5,8 +5,8 @@ import globalStyles from '../assets/styles/Styles';
 export const Heading = ({ 
   title, 
   fontSize = 24, 
-  backgroundColor = '#294c22', 
-  textColor = '#ffffff',
+  backgroundColor = '#113859', 
+  textColor = '#C9FFD9',
   onPress,
   style
 }) => {

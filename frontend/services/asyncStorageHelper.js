@@ -1,23 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { refreshAccessToken, userDelete } from './api'; 
+import { refreshAccessToken } from './api'; 
 
 export const fetchUserDataFromStorage = async () => {
     try {
         const userid = await AsyncStorage.getItem('userid');
-        const username = await AsyncStorage.getItem('username');
         const accessToken = await AsyncStorage.getItem('accessToken');
-        const refreshToken = await AsyncStorage.getItem('refreshToken');
-
 
         console.log('userid:', userid);
         console.log('accessToken:', accessToken);
-        console.log('refreshToken:', refreshToken);
-        if (userid && accessToken && refreshToken) {
+
+        if (userid && accessToken) {
             return { 
-                userId: Number(userid), 
-                username,
-                accessToken, 
-                refreshToken 
+                userId: Number(userid), accessToken
             };
         }
         return null; 
@@ -53,8 +47,6 @@ export const saveUserData = async (data) => {
         console.log('Saving user data:', data);
         await AsyncStorage.setItem('userid', String(data.userId));
         await AsyncStorage.setItem('accessToken', data.accessToken);
-        await AsyncStorage.setItem('refreshToken', data.refreshToken);
-        await AsyncStorage.setItem('username', data.username);
     } catch (error) {
         console.error('Failed to write user authentication data:', error);
     }
@@ -76,8 +68,6 @@ export const clearUserData = async () => {
     try {
         await AsyncStorage.removeItem('userid');
         await AsyncStorage.removeItem('accessToken');
-        await AsyncStorage.removeItem('refreshToken');
-        await AsyncStorage.removeItem('username');
     } catch (error) {
         console.error('Failed to clear user data:', error);
     }

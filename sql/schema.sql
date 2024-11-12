@@ -9,8 +9,8 @@ DROP TABLE IF EXISTS threads CASCADE;
 
 CREATE TABLE users (
     userid SERIAL PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-	hashedpassword VARCHAR(255) NOT NULL,
+    firebaseuserid VARCHAR(255) NOT NULL UNIQUE,
+    username VARCHAR(255) UNIQUE,
     usermail VARCHAR(255) NOT NULL UNIQUE
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE items (
     itemdescription TEXT,
     itempicture TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    queretruepickfalse BOOLEAN NOT NULL DEFAULT TRUE,
+    queuetruepickfalse BOOLEAN NOT NULL DEFAULT TRUE,
     expiration_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '1 week'),
     postalcode VARCHAR(20),
     city VARCHAR(255)
@@ -57,7 +57,7 @@ CREATE OR REPLACE FUNCTION check_description()
 RETURNS TRIGGER AS $$
 BEGIN
     -- Tarkistetaan, onko itemin queuetruepickfalse TRUE
-    IF (SELECT queretruepickfalse FROM items WHERE itemid = NEW.itemid) = FALSE THEN
+    IF (SELECT queuetruepickfalse FROM items WHERE itemid = NEW.itemid) = FALSE THEN
         -- Jos queuetruepickfalse on FALSE, description ei saa olla NULL
         IF NEW.description IS NULL THEN
             RAISE EXCEPTION 'Description cannot be NULL when queuetruepickfalse is FALSE';

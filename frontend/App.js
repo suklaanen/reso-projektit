@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-native-paper';
-import { AuthenticationContext } from './services/auth';
+import { AuthenticationContext, AuthenticationProvider } from './services/auth';
 import { fetchUserDataFromStorage } from './services/asyncStorageHelper';
 import globalStyles from './assets/styles/Styles';
 import CustomTopBar from './components/CustomTopBar';
@@ -14,16 +14,27 @@ import { AccountLoggedIn, AccountLoggedOut, AccountMaintain } from './screens/ac
 import ItemsMain from './screens/items/ItemsMain';
 import Credits from './screens/credits/Credits';
 import MessagesMain from './screens/messages/MessagesMain';
-import { ItemsFromThisUser, QueuesOfThisUser } from './screens/items/ItemComponents';
+import { ItemsFromThisUser, QueuesOfThisUser, ItemAddView } from './screens/items/ItemComponents';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import Toast from 'react-native-toast-message';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   const [authState, setAuthState] = useState(fetchUserDataFromStorage());
+
+  useEffect(() => {
+    const lockOrientation = async () => {
+      await ScreenOrientation.unlockAsync();
+    };
+
+    lockOrientation();
+  }, []);
+ 
  
   return (
     <Provider>
-      <AuthenticationContext.Provider value={{ authState, setAuthState}}>
+      <AuthenticationProvider>
         <NavigationContainer>
           <CustomTopBar />
             <View style={globalStyles.container}>
@@ -33,6 +44,7 @@ export default function App() {
                 <Stack.Screen name="AccountLoggedIn" component={AccountLoggedIn} options={{ headerShown: false }} />
                 <Stack.Screen name="AccountLoggedOut" component={AccountLoggedOut} options={{ headerShown: false }} />
                 <Stack.Screen name="ItemsMain" component={ItemsMain} options={{ headerShown: false }} />
+                <Stack.Screen name="ItemAddView" component={ItemAddView} options={{ headerShown: false }} />
                 <Stack.Screen name="Credits" component={Credits} options={{ headerShown: false }} />
                 <Stack.Screen name="MessagesMain" component={MessagesMain} options={{ headerShown: false }} />
                 <Stack.Screen name="AccountMaintain" component={AccountMaintain} options={{ headerShown: false }} />
@@ -41,8 +53,9 @@ export default function App() {
               </Stack.Navigator>
             </View>
           <CustomBottomBar />
+          <Toast /> 
         </NavigationContainer>
-      </AuthenticationContext.Provider>
+      </AuthenticationProvider>
     </Provider>
   );
 }

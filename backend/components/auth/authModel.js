@@ -1,110 +1,61 @@
 const pool = require('../database/db_connection');
+const { get } = require('./authRoutes');
 require('dotenv').config();
-const nodemailer = require('nodemailer');
 
 const AuthModel = {
-    
-    async getUserById(userId) {
-        const query = `
-            SELECT * FROM users
-            WHERE userid = $1;
-        `;
+
+    async getUserById(userbyid) {
+        const query = `SELECT * FROM users WHERE userid = $1;`;
         try {
-            const { rows } = await pool.query(query, [userId]);
+            const { rows } = await pool.query(query, [userbyid]);
             return rows[0];
         } catch (error) {
-            console.error('Virhe haettaessa käyttäjää ID:n perusteella:', error);
+            console.error('Virhe käyttäjää etsittäessä:', error);
             throw error; 
         }
     },
 
-    async getUserByUsername(username) {
-        const query = `
-            SELECT * FROM users
-            WHERE username = $1;
-        `;
+    async setUsername(userid, username) {
+        const query = `UPDATE users SET username = $2 WHERE firebaseuserid = $1;`;
         try {
-            const { rows } = await pool.query(query, [username]);
-            return rows[0];
-        } catch (error) {
-            console.error('Virhe haettaessa käyttäjää usernamen perusteella:', error);
+            await pool.query(query, [userid, username]);
+        }
+        catch (error) {
+            console.error('Virhe nimimerkin asettamisessa:', error);
             throw error; 
         }
     },
 
     async getUserByEmail(email) {
-        const query = `
-            SELECT * FROM users
-            WHERE usermail = $1;
-        `;
+        const query = `SELECT * FROM users WHERE usermail = $1;`;
         try {
             const { rows } = await pool.query(query, [email]);
             return rows[0];
         } catch (error) {
-            console.error('Virhe haettaessa käyttäjää sähköpostin perusteella:', error);
+            console.error('Virhe käyttäjää etsittäessä:', error);
             throw error; 
         }
     },
 
-    async createUser(username, email, password) {
+    async createUser(uid, email) {
         const query = `
-            INSERT INTO users (username, usermail, hashedpassword) 
-            VALUES ($1, $2, $3) 
+            INSERT INTO users (firebaseuserid, usermail) 
+            VALUES ($1, $2) 
             RETURNING *;
         `;
         try {
-            const { rows } = await pool.query(query, [username, email, password]);
-            return rows[0];
+            const { rows } = await pool.query(query, [uid, email]);
+            return rows[0]; 
         } catch (error) {
             console.error('Virhe käyttäjää luotaessa:', error);
             throw error; 
         }
     },
 
-    async updatePassword(userid, newPassword) {
-        const query = `
-            UPDATE users
-            SET hashedpassword = $1
-            WHERE userid = $2
-            RETURNING *;
-        `;
-        try {
-            const { rows } = await pool.query(query, [newPassword, userid]);
-            return rows[0];
-        } catch (error) {
-            console.error('Virhe käyttäjän salasanaa päivittäessä:', error);
-            throw error; 
-        }
-    },
-
-    async sendEmail(email, newPassword) {
-        const transporter = nodemailer.createTransport({
-            service: process.env.EMAIL_SERVICE,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
-
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Uusi salasana',
-            text: `Uusi salasanasi on: ${newPassword}`
-        };
-
-        try {
-            const info = await transporter.sendMail(mailOptions);
-            console.log('Sähköposti lähetetty: ' + info.response);
-        } catch (error) {
-            console.error('Virhe sähköpostin lähetyksessä:', error);
-        }
-    },
-
     async deleteUser(userId) {
         const query = `
             DELETE FROM users
-            WHERE userid = $1
+            WHERE firebaseuserid = $1
             RETURNING *;
         `;
         try {
@@ -115,8 +66,6 @@ const AuthModel = {
             throw error; 
         }
     }
-
 };
-
 
 module.exports = AuthModel;

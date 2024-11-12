@@ -1,174 +1,134 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from './firebaseConfig';
+import Toast from 'react-native-toast-message';
+import { BASE_URL } from "@env";
 
-const BASE_URL = 'http://192.168.101.132:8080/api';
+export const REGISTER = `${BASE_URL}/auth/register`;
+export const SET_USERNAME = `${BASE_URL}/auth/setusername`;
+export const DELETE_USER = `${BASE_URL}/auth/deleteuser`;
+export const HEADERS = { 'Content-Type': 'application/json' };
 
-export const LOGIN = `${BASE_URL}/auth/try/login`;
-export const REGISTER = `${BASE_URL}/auth/try/register`;
-export const RESET_PASSWORD = `${BASE_URL}/auth/try/forgot-password`;
-export const DELETE_USER = `${BASE_URL}/auth/try/delete-user`;
-export const USER = `${BASE_URL}/users`;
-export const HEADERS = {'Content-Type': 'application/json'};
+export const userRegister = async ( email, password) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const uid = userCredential.user.uid;
 
-const isTokenExpired = (token) => {
-    try {
-        const [, payload] = token.split('.');
-        const decodedPayload = JSON.parse(atob(payload));
-        const currentTime = Math.floor(Date.now() / 1000);
-        return decodedPayload.exp < currentTime;
-    } catch (error) {
-        console.error('Error decoding token:', error);
-        return true;
-    }
-};
+    Toast.show({
+      type: 'success',
+      text1: 'Käyttäjätunnus luotu!',
+      text2: 'Voit nyt kirjautua!',
+    });
 
-const getValidAccessToken = async () => {
-    let accessToken = await AsyncStorage.getItem('accessToken');
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
-
-    if (accessToken && !isTokenExpired(accessToken)) {
-        return accessToken;
-    }
-
-    if (!refreshToken) {
-        throw new Error('Refresh token missing or invalid. Please log in again.');
-    }
-
-    const response = await fetch(`${BASE_URL}/auth/refresh-token`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${refreshToken}` }
+  // post user data into database
+    const response = await fetch(REGISTER, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, uid }),
     });
 
     if (!response.ok) {
-        throw new Error('Failed to refresh access token.');
+      throw new Error('Käyttäjän tallentaminen tietokantaan epäonnistui.');
     }
 
-    const data = await response.json();
-    accessToken = data.accessToken;
-
-    await AsyncStorage.setItem('accessToken', accessToken);
-    return accessToken;
-};
-
-const fetchWithAuthorization = async (url, options = {}) => {
-    const token = await getValidAccessToken(); 
-    const headers = HEADERS + { 
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    };
-
-    const response = await fetch(url, { ...options, headers });
-
-    if (!response.ok) {
-        const errorDetail = await response.json();
-        console.error('Error fetching data:', errorDetail);
-        throw new Error(`Network response was not ok: ${errorDetail.message}`);
-    }
-
-    return await response.json(); 
-};
-
-export const userLogin = async (username, password) => {
-  try {
-      console.log('Sending login request for:', username);
-
-      if (!username || !password) {
-          throw new Error('Käyttäjätunnus tai salasana ei voi olla tyhjät.');
-      }
-      
-      const response = await fetch(LOGIN, {
-          method: 'POST',
-          headers: HEADERS,
-          body: JSON.stringify({ username, password }),
-      });
-
-      if (!response.ok) {
-          const errorResponse = await response.json();
-          console.error('Login failed:', errorResponse.message);
-          throw new Error(errorResponse.message || 'Kirjautuminen epäonnistui.');
-      }
-      
-      const result = await response.json();
-      console.log('API response:', result); 
-
-      if (!result || typeof result.userid === 'undefined') { 
-          throw new Error('Käyttäjätunnusta ei löytynyt API-vastauksesta.');
-      }
-
-      await AsyncStorage.setItem('userId', result.userid.toString());
-      await AsyncStorage.setItem('accessToken', result.accessToken);
-      await AsyncStorage.setItem('refreshToken', result.refreshToken);
-      
-      return result; 
+    const result = await response.json();
+    return result;
   } catch (error) {
-      console.error('Login error:', error);
-      throw error; 
+    Toast.show({
+      type: 'error',
+      text1: 'Käyttäjän luominen epäonnistui.',
+      text2: error.message,
+    });
+    console.error('Rekisteröinnissä tapahtui virhe:', error.message);
+    throw error;
   }
 };
 
-export const fetchUserData = async () => {
+export const userLogin = async (email, password) => {
   try {
-    const userid = await AsyncStorage.getItem('userid'); 
-    const accessToken = await AsyncStorage.getItem('accessToken');
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const uid = userCredential.user.uid;
+    const accessToken = await userCredential.user.getIdToken();
 
-    if (userid && accessToken && refreshToken) {
-        return { 
-            userId: Number(userid),
-            accessToken, 
-            refreshToken 
-        };
+    if (accessToken) {
+      await AsyncStorage.setItem('userId', uid);
+      await AsyncStorage.setItem('accessToken', accessToken);
+    } else {
+      console.warn('accessToken was undefined. Skipping storage of access token.');
     }
 
-    return null; 
-} catch (error) {
-    console.error('Failed to retrieve user data from AsyncStorage:', error);
-    throw error; 
-}
-};
-
-export const userRegister = async (username, email, password) => {
-    try {
-        const response = await fetch(REGISTER, {
-            method: 'POST',
-            headers: HEADERS,
-            body: JSON.stringify({ username, email, password }),
-        });
-        return await response.json();
-    } catch (error) {
-        console.error('Register error:', error);
-        throw error;
-    }
-};
-
-export const userReset = async (email) => {
-    try {
-        const response = await fetch(RESET_PASSWORD, {
-            method: 'POST',
-            headers: HEADERS,
-            body: JSON.stringify({ email }),
-        });
-        return await response.json();
-    } catch (error) {
-        console.error('Reset password error:', error);
-        throw error;
-    }
+    return { success: true, userId: uid, accessToken };
+  } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Kirjautuminen epäonnistui',
+      text2: error.message,
+    });
+    console.error('Kirjautuminen epäonnistui:', error.message);
+    throw error;
+  }
 };
 
 export const userDelete = async () => {
-    try {
-        const userid = await AsyncStorage.getItem('userId');
-        const accessToken = await AsyncStorage.getItem('accessToken');
+  try {
+    const userid = await AsyncStorage.getItem('userId');
+    const accessToken = await AsyncStorage.getItem('accessToken');
 
-        const response = await fetch(DELETE_USER, {
-            method: 'DELETE',
-            headers: {
-                ...HEADERS,
-                'Authorization': `Bearer ${accessToken}`
-            },
-            body: JSON.stringify({ userid }),
-        });
-        return await response.json();
-    } catch (error) {
-        console.error('Delete user error:', error);
-        throw error;
-    }
+    const response = await fetch(DELETE_USER, {
+      method: 'DELETE',
+      headers: {
+        ...HEADERS,
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ userid }),
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.error('Delete user error:', error);
+    throw error;
+  }
+};
+
+export const userLogout = async () => {
+  try {
+    await AsyncStorage.removeItem('userId');
+    await AsyncStorage.removeItem('accessToken');
+  } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Virhe uloskirjautumisessa',
+      text2: error.message,
+    });
+    console.error('Logout error:', error);
+    throw error;
+  }
+};
+
+export const setUsername = async (username) => {
+  try {
+    const userid = await AsyncStorage.getItem('userId');
+    const accessToken = await AsyncStorage.getItem('accessToken');
+
+    const response = await fetch(SET_USERNAME, {
+      method: 'POST',
+      headers: {
+        ...HEADERS,
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ userid, username }),
+    });
+
+    return await response.json();
+  } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Virhe asettaessa nimimerkkiä',
+      text2: error.message,
+    });
+    console.error('Set username error:', error);
+    throw error;
+  }
 };

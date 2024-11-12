@@ -39,7 +39,7 @@ const CustomTopBar = () => {
           />
         }
       >
-        
+         
         <Menu.Item onPress={() => navigateToScreen('Home')} title="Aloitus" />
         <Menu.Item onPress={() => navigateToScreen(authState ? 'AccountLoggedIn' : 'AccountLoggedOut')} title="Tilin hallinta" />
         <Menu.Item onPress={() => navigateToScreen('ItemsMain')} title="Julkaisut" />

@@ -1,11 +1,11 @@
-import React, { useRef, useContext } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native';
 import { NoItemsWhenLoggedOut, AllItems, NavigateToThisUsersItems, NavigateToThisUsersQueue, ItemAddNew, ItemModify, ItemDelete, ItemJoinOnQueue } from './FindItems';
-import { BasicSection } from '../../components/CommonComponents';
+import { Heading, BasicSection } from '../../components/CommonComponents';
+import { ButtonAdd } from '../../components/Buttons';
+import { useNavigation } from '@react-navigation/native';
 
 export const ItemsLoggedOut = () => {
-  const scrollViewRef = useRef(null);
-
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
         <NoItemsWhenLoggedOut />
@@ -14,20 +14,30 @@ export const ItemsLoggedOut = () => {
 };
 
 export const ItemsLoggedIn = () => {
-  const scrollViewRef = useRef(null);
+  const navigation = useNavigation(); 
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
+        <Heading title="Ilmoitukset" />
+        <ButtonAdd title="Uusi ilmoitus" onPress={() => navigation.navigate('ItemAddView')}></ButtonAdd>
         <AllItems />
-        <ItemAddNew />
+        <Heading title="Omat listaukset" />
         <NavigateToThisUsersItems />
         <NavigateToThisUsersQueue />
     </ScrollView>
   );
 };
 
+export const ItemAddView = () => {
+
+  return (
+    <ScrollView contentContainerStyle={{ padding: 8 }}>
+      <ItemAddNew />
+    </ScrollView>
+  );
+}
+
 export const ItemsFromThisUser = () => {
-  const scrollViewRef = useRef(null);
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
@@ -39,7 +49,6 @@ export const ItemsFromThisUser = () => {
 }
 
 export const QueuesOfThisUser = () => {
-  const scrollViewRef = useRef(null);
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
