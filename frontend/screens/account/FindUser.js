@@ -46,6 +46,7 @@ export const UserLogin = ({ isVisible, toggleVisible })  => {
   };
 
   return (
+    <View>
       <Heading title="Kirjaudu sisään" onPress={toggleVisible} style={{ backgroundColor: isVisible ? 'rgba(25, 26, 30, 0.7)' : 'rgba(18, 18, 18, 0.9)' }}/>
       {isVisible && ( 
         <AccountSection>
