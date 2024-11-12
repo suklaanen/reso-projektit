@@ -26,53 +26,64 @@ export const UserLogin = ({ isVisible, toggleVisible })  => {
 
   const handleLogin = async () => {
     try {
-      // Yritetään kirjautua sähköpostilla ja salasanalla
-      let result = await signInWithEmailAndPassword(auth, usernameOrEmail, password);
+      let result;
+      let email;
+      
+      // Normalisoidaan syötetty teksti pieniksi kirjaimiksi
+      const normalizedInput = usernameOrEmail.toLowerCase();
+
+      // Tarkistetaan, että onko kirjautumisessa käytetty tunnus sähköpostiosoite
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(usernameOrEmail);
+  
+      if (isValidEmail) {
+        // Yritetään kirjautua sähköpostiosoitteella 
+        result = await signInWithEmailAndPassword(auth, usernameOrEmail, password);
+        email = usernameOrEmail;
+      } else {
+        // Muussa tapauksessa käyttäjätunnuksen perusteella firestoresta sähköpostitunnus
+        const usersRef = collection(firestore, 'users');
+        const q = query(usersRef, where('username', '==', usernameOrEmail));
+        const querySnapshot = await getDocs(q);
+  
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          const userData = userDoc.data();
+          email = userData.email;
+  
+          // Yritetään kirjautua noudetulla sähköpostilla ja salasanalla
+          result = await signInWithEmailAndPassword(auth, email, password);
+        } else {
+          Alert.alert('Kirjautuminen epäonnistui', 'Käyttäjätunnusta ei löytynyt');
+          return;
+        }
+      }
+  
       console.log('Login result:', result);
       if (result) {
-        handleLoginSuccess({
-          userId: result.user.uid,
-          accessToken: result.user.stsTokenManager.accessToken,
-          refreshToken: result.user.stsTokenManager.refreshToken,
-          username: result.user.email
-        });
-        navigation.navigate('AccountLoggedIn');
-        return;
-      }
-    } catch (error) {
-      console.error('Login error with email:', error);
-    }
-
-    try {
-      // Jos sähköposti-salasana kirjautuminen ei onnistu (käyttäjä on syöttänyt käyttäjätunnuksen) 
-      // niin haetaan käyttäjätunnuksen perusteella sähköpostiosoite Firestoresta
-      const usersRef = collection(firestore, 'users');
-      const q = query(usersRef, where('username', '==', usernameOrEmail));
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0];
-        const userData = userDoc.data();
-        const email = userData.email;
-
-        // Yritetään kirjautua haetulla sähköpostilla
-        const result = await signInWithEmailAndPassword(auth, email, password);
-        console.log('Login result with username:', result);
-        if (result) {
+        // Noudetaan käyttäjätunnus Firestoresta jos sitä ei ole jo tehty.
+        const usersRef = collection(firestore, 'users');
+        const q = query(usersRef, where('email', '==', email));
+        const querySnapshot = await getDocs(q);
+  
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          const userData = userDoc.data();
+          const username = userData.username;
+  
           handleLoginSuccess({
             userId: result.user.uid,
             accessToken: result.user.stsTokenManager.accessToken,
             refreshToken: result.user.stsTokenManager.refreshToken,
-            username: result.user.email
+            username: username,
+            email: result.user.email
           });
-          navigation.navigate('AccountLoggedIn');
-          return;
+        } else {
+          Alert.alert('Kirjautuminen epäonnistui', 'Käyttäjätunnusta ei löytynyt');
         }
-      } else {
-        Alert.alert('Kirjautuminen epäonnistui', 'Käyttäjätunnusta ei löytynyt');
+        navigation.navigate('AccountLoggedIn');
       }
     } catch (error) {
-      console.error('Login error with username:', error);
+      console.error('Login error:', error);
       Alert.alert('Virhe kirjautumisessa', error.message || 'Yhteysvirhe');
     }
   };
@@ -126,11 +137,12 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
       });
   };
 
+  // Tallennetaan käyttäjätunnus Firestoreen
   const saveUserToFirestore = async (user) => {
     try {
       await addDoc(collection(firestore, 'users'), {
         username: registerUsername,
-        email: registerEmail,
+        email: registerEmail.toLowerCase(),
         uid: user.uid
       });
       console.log('User added to Firestore');
@@ -139,14 +151,17 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
     }
   };
 
+  // Tarkistetaanko, että täsmäävätkö reskisteröintin kirjoitetut salasanat
   const handleRegister = async () => {
     if (registerPassword !== confirmPassword) {
       Alert.alert('Virhe', 'Salasanat eivät täsmää');
       return;
     }
 
+    // Jos salasanat täsmäävät niin rekisteröidytään ja tyhjennetään rekisteröintilomake.
     try {
-      const data = await createAccount(registerEmail, registerPassword);
+      const normalizedEmail = registerEmail.toLowerCase();
+      const data = await createAccount(normalizedEmail, registerPassword);
       if (data) {
         await saveUserToFirestore(data.user);
         Alert.alert('Rekisteröityminen onnistui', 'Voit nyt kirjautua sisään');
