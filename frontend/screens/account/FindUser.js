@@ -83,7 +83,7 @@ export const UserLogin = ({ isVisible, toggleVisible })  => {
         navigation.navigate('AccountLoggedIn');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Virhe kirjautumisessa:', error);
       Alert.alert('Virhe kirjautumisessa', error.message || 'Yhteysvirhe');
     }
   };
@@ -145,9 +145,9 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
         email: registerEmail.toLowerCase(),
         uid: user.uid
       });
-      console.log('User added to Firestore');
+      console.log('Käyttäjä lisätty Firestoreen');
     } catch (error) {
-      console.error('Error adding user to Firestore:', error);
+      console.error('Virhe lisättäessä käyttäjää Firestoreen:', error);
     }
   };
 
@@ -334,9 +334,9 @@ export const DeleteAccountOfThisUser = () => {
         if (!querySnapshot.empty) {
           const userDoc = querySnapshot.docs[0];
           await deleteDoc(userDoc.ref);
-          console.log('User document deleted from Firestore');
+          console.log('Käyttäjän tiedot poistettu Firestoresta');
         } else {
-          console.log('No user document found in Firestore');
+          console.log('Käyttäjän tietoja ei löytynyt Firestoresta');
         }
   
         // Poistetaan käyttäjätili Firebase Authenticationista
