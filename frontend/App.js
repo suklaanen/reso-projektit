@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,12 +14,21 @@ import { AccountLoggedIn, AccountLoggedOut, AccountMaintain } from './screens/ac
 import ItemsMain from './screens/items/ItemsMain';
 import Credits from './screens/credits/Credits';
 import MessagesMain from './screens/messages/MessagesMain';
-import { ItemsFromThisUser, QueuesOfThisUser } from './screens/items/ItemComponents';
+import { ItemsFromThisUser, QueuesOfThisUser, ItemAddView } from './screens/items/ItemComponents';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   const [authState, setAuthState] = useState(fetchUserDataFromStorage());
+
+  useEffect(() => {
+    const lockOrientation = async () => {
+      await ScreenOrientation.unlockAsync();
+    };
+
+    lockOrientation();
+  }, []);
  
   return (
     <Provider>
@@ -38,6 +47,7 @@ export default function App() {
                 <Stack.Screen name="AccountMaintain" component={AccountMaintain} options={{ headerShown: false }} />
                 <Stack.Screen name="MyItems" component={ItemsFromThisUser} options={{ headerShown: false }} />
                 <Stack.Screen name="MyQueues" component={QueuesOfThisUser} options={{ headerShown: false }} />
+                <Stack.Screen name="ItemAddView" component={ItemAddView} options={{ headerShown: false }} />
               </Stack.Navigator>
             </View>
           <CustomBottomBar />

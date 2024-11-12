@@ -1,6 +1,6 @@
 import React from 'react';
-import { ButtonContinue } from '../../components/Buttons';
-import { View, Text } from 'react-native';
+import { ButtonNavigate } from '../../components/Buttons';
+import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
 
@@ -19,10 +19,9 @@ export const NavigateToThisUsersItems = () => {
 
   return (
     <>
-      <ButtonContinue
+      <ButtonNavigate
         title="Ilmoitukset"
         onPress={() => navigation.navigate('MyItems')}
-        /* navin uudelleen ohjaus oikeille sijoilleen, kun löytyy */
       />
     </>
   );
@@ -33,10 +32,9 @@ export const NavigateToThisUsersQueue = () => {
 
   return (
     <>
-      <ButtonContinue
+      <ButtonNavigate
         title="Varaukset"
         onPress={() => navigation.navigate('MyQueues')}
-        /* navin uudelleen ohjaus oikeille sijoilleen, kun löytyy */
       />
     </>
   );
@@ -45,10 +43,9 @@ export const NavigateToThisUsersQueue = () => {
 export const AllItems = () => {
   return (
     <>
-      <Heading title="Ilmoitukset" />
       <BasicSection>
-        <Text style={{ fontWeight: 'bold' }}>Dindin</Text>{"\n\n"}
-        Tähän tulee haku ja sivutus kaikista ilmoituksista{"\n\n"}
+        <Text style={{ fontWeight: 'bold' }}>Kaikki ilmoitukset</Text>{"\n"}
+        Tähän tulee haku ja sivutus kaikista ilmoituksista
       </BasicSection>
     </>
   );
@@ -59,7 +56,7 @@ export const ItemAddNew = () => {
     <>
       <Heading title="Lisää uusi ilmoitus" />
       <BasicSection>
-        X{"\n\n"}
+        Tähän täytettävä ilmoituskaavake ja "julkaise" sekä "peruuta" {"\n\n"}
       </BasicSection>
     </>
   );

@@ -2,13 +2,25 @@ import { StyleSheet } from 'react-native';
 
 const GlobalButtons = StyleSheet.create({
 
+  buttonMargin: {
+    marginVertical: 12, 
+    marginHorizontal: 6,
+  },
+
     buttonContinue: {
         backgroundColor: '#003366', 
         borderRadius: 22,
         padding: 16,
         marginVertical: 8,
         alignItems: 'center',
-        width: '100%',
+        width: '90%',
+        alignSelf: 'center',
+        // Shadow for iOS + android
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 6,
     },
     
     buttonNavigate: {
@@ -19,9 +31,10 @@ const GlobalButtons = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         marginVertical: 5,
-        marginHorizontal: 22,
+        //marginHorizontal: 22,
         alignItems: 'center',
         width: '60%',
+        alignSelf: 'center',
     },
     
     buttonDelete: {
@@ -31,9 +44,9 @@ const GlobalButtons = StyleSheet.create({
         borderWidth: 3,
         borderStyle: 'solid',
         padding: 16,
-        marginVertical: 8,
-        alignItems: 'center',
-        width: '45%',
+        marginRight: 8,
+        //margin: 8,
+        width: '35%',
     },
     
       buttonConfirm: {
@@ -43,9 +56,9 @@ const GlobalButtons = StyleSheet.create({
         borderWidth: 1,
         borderStyle: 'dashed',
         padding: 16,
-        marginVertical: 8,
-        alignItems: 'center',
-        width: '45%',
+        marginRight: 8,
+        //margin: 8,
+        width: '35%',
       },
     
       buttonCancel: {
@@ -55,9 +68,8 @@ const GlobalButtons = StyleSheet.create({
         borderWidth: 1,
         borderStyle: 'dashed',
         padding: 16,
-        marginVertical: 8,
-        alignItems: 'center',
-        width: '45%',
+        width: '35%',
+        position: 'relative',
       },
     
       buttonEdit: {
@@ -73,13 +85,23 @@ const GlobalButtons = StyleSheet.create({
       },
     
       buttonAdd: {
-        backgroundColor: '#003366', 
+        backgroundColor: '#cdfdde', 
         borderRadius: 22,
+        borderColor: '#bbbbbb',
+        borderWidth: 1,
+        borderStyle: 'dotted',
         padding: 16,
         marginVertical: 8,
         alignItems: 'center',
-        width: '100%',
-      },
+        width: '55%',
+        alignSelf: 'center',
+        // Shadow for iOS + android
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 6,
+    },
 
       buttonSave: {
         backgroundColor: '#186b11', 
@@ -88,9 +110,9 @@ const GlobalButtons = StyleSheet.create({
         borderWidth: 1,
         borderStyle: 'dashed',
         padding: 16,
-        marginVertical: 8,
-        alignItems: 'center',
-        width: '45%',
+        marginRight: 8,
+        //margin: 8,
+        width: '35%',
       },
 
       buttonPage: {
@@ -138,6 +160,12 @@ const GlobalButtons = StyleSheet.create({
         textAlign: 'center',
     },
 
+    whiteBase20: {
+      color: '#ffffff',
+      fontSize: 20,
+      textAlign: 'center',
+  },
+
     whiteBase24: {
         color: '#ffffff',
         fontSize: 24,
@@ -161,6 +189,12 @@ const GlobalButtons = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
     },
+
+    blackBase20: {
+      color: '#000000',
+      fontSize: 20,
+      textAlign: 'center',
+  },
 
     blackBase24: {
         color: '#000000',

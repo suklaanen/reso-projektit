@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import GlobalButtons from '../assets/styles/GlobalButtons';
 
 export const ButtonContinue = ({ title, onPress }) => {
@@ -13,7 +13,7 @@ export const ButtonContinue = ({ title, onPress }) => {
   );
 };
 
-export const buttonNavigate = ({ title, onPress }) => {
+export const ButtonNavigate = ({ title, onPress }) => {
   return (
     <TouchableOpacity
       style={GlobalButtons.buttonNavigate}
@@ -23,7 +23,6 @@ export const buttonNavigate = ({ title, onPress }) => {
     </TouchableOpacity>
   );
 };
-
 
 export const ButtonDelete = ({ title, onPress }) => {
   return (
@@ -75,7 +74,7 @@ export const ButtonAdd = ({ title, onPress}) => {
       style={GlobalButtons.buttonAdd}
       onPress={onPress}
     >
-      <Text style={GlobalButtons.whiteBase24}>{title}</Text>
+      <Text style={GlobalButtons.blackBase20}>{title}</Text>
     </TouchableOpacity>
   );
 }

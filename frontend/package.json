@@ -17,6 +17,7 @@
     "emulator": "^0.1.0",
     "expo": "~51.0.28",
     "expo-location": "~17.0.1",
+    "expo-screen-orientation": "^7.0.5",
     "expo-status-bar": "~1.12.1",
     "firebase": "^10.13.1",
     "he": "^1.2.0",

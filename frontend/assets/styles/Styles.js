@@ -1,4 +1,6 @@
+import { pad } from 'lodash';
 import { StyleSheet } from 'react-native';
+import { AccountSection } from '../../components/CommonComponents';
 
 const globalStyles = StyleSheet.create({
 
@@ -18,7 +20,8 @@ const globalStyles = StyleSheet.create({
 
     headingContainer: {
         padding: 16,
-        margin: 3,
+        marginTop: 14,
+        marginBottom: 12,
         borderRadius: 3,
     },
 
@@ -27,10 +30,10 @@ const globalStyles = StyleSheet.create({
     },
 
     sectionContainer: {
-        margin: 8,
-        padding: 8,
-        borderRadius: 8,
-    },
+      padding: 8,
+      borderRadius: 8,
+      //alignItems: 'center',
+  },
 
     textContainer: {
         padding: 8,
@@ -53,7 +56,7 @@ const globalStyles = StyleSheet.create({
     appBarTitle: {
         fontFamily: 'Chewy',
         fontSize: 40,
-        color: '#83e3a2',
+        color: '#98F9B9',
         paddingVertical: 15,
       },
 
@@ -146,6 +149,12 @@ const globalStyles = StyleSheet.create({
     findItems: {
       width: 44,
       height: 44,
+    },
+
+    viewButtons: {
+      flexDirection: 'row', 
+      justifyContent: 'center', 
+      marginVertical: 8,
     }
 
 });
