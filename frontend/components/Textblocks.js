@@ -85,7 +85,7 @@ export const BasicsOfGettingAnAccount = () => {
       <ScrollView contentContainerStyle={{ padding: 8 }}>
         <Heading title="Tilin hallinta" />
         <BasicSection>
-          Täällä voisit luoda käyttäjätunnuksen palveluun, kirjautua sisään käyttäjänä tai palauttaa unohtuneen salasanan rekisteröimääsi sähköpostiin.{"\n\n"}
+          Täällä voisit luoda käyttäjätunnuksen palveluun ja kirjautua sisään.{"\n\n"}
         </BasicSection>
       </ScrollView>
     );

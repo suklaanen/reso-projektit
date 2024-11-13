@@ -6,13 +6,13 @@ const AccountMain = () => {
     const {authState} = useContext(AuthenticationContext);
 
     return (
-        <>
-            {authState !== null ? (
-                <AccountLoggedIn />
-            ) : (
-                <AccountLoggedOut/>
-            )}
-        </>
+    <>
+        {authState ? (
+            <AccountLoggedIn />
+        ) : (
+            <AccountLoggedOut/>
+        )}
+    </>
     );
 };
 

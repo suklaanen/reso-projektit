@@ -1,105 +1,41 @@
 const AuthModel = require('./authModel');
-const bcrypt = require('bcryptjs');
-const { createAccessToken, createRefreshToken } = require('../middleware/auth');
 
 class AuthService {
 
-    static async getUserById(userId) {
-        return AuthModel.getUserById(userId); 
-    }
+    static async getUserById(userbyid) {
 
-    static async getUserByUsername(username) {
-        return AuthModel.getUserByUsername(username);
-    }
-
-    static async getUserByEmail(email) {
-        return AuthModel.getUserByEmail(email);
-    }
-
-    static async createUser(username, email, password) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        return AuthModel.createUser(username, email, hashedPassword);
-    }
-
-    static async updatePassword(userId, newPassword) {
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        return AuthModel.updatePassword(userId, hashedPassword);
-    }
-
-    static async forgotPassword(email) {
         try {
-            const user = await AuthModel.getUserByEmail(email);
-            if (!user) {
-                return { success: false, message: 'Sähköpostia ei löydy' };
-            }
-            const newPassword = Math.random().toString(36).substring(2, 15);
-            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            return await AuthModel.getUserById(userbyid);
+        }
+        catch (error) {
+            console.error('Virhe käyttäjää etsittäessä:', error);
+            throw error;
+        }
+    }
+    
 
-            await AuthModel.updatePassword(user.userid, hashedPassword);
-            await AuthModel.sendEmail(email, newPassword);
-
-            return { success: true, message: 'Salasanan vaihto onnistui', newPassword };
+    static async setUsername(userid, username) { 
+        try {
+            await AuthModel.setUsername(userid, username);
+            return { success: true, message: 'Nimimerkki asetettu' };
         } catch (error) {
-            console.error('Virhe salasanan vaihdossa:', error);
-            return { success: false, message: 'Salasanan vaihto epäonnistui', error };
+            console.error('Virhe luodessa nimimerkkiä:', error);
+            return { success: false, message: 'Käyttäjän nimimerkin asetus epäonnistui', error };
         }
     }
 
-    static async registerUser(username, password, email) {
+    static async registerUser(userid, email) {
         try {
-            const existingUser = await AuthModel.getUserByUsername(username);
+            const existingUser = await AuthModel.getUserByEmail(email);
             if (existingUser) {
-                return { success: false, message: 'Käyttäjätunnus varattu' };
+                return { success: false, message: 'Sähköpostiosoite varattu' };
             }
-            if (password.length < 4) {
-                return { success: false, message: 'Salasanan tulee olla vähintään 4 merkkiä pitkä' };
-            }
-
-            const hashedPassword = await bcrypt.hash(password, 10);
-            await AuthModel.createUser(username, email, hashedPassword);
+            await AuthModel.createUser(userid, email);
 
             return { success: true, message: 'Rekisteröinti onnistui' };
         } catch (error) {
             console.error('Virhe rekisteröinnissä:', error);
             return { success: false, message: 'Rekisteröinti epäonnistui', error };
-        }
-    }
-
-    static async loginUser(username, password) {
-        try {
-            const user = await AuthModel.getUserByUsername(username);
-            if (!user) {
-                return { success: false, message: 'Käyttäjätunnusta ei löydy' };
-            }
-
-            const passwordMatch = await bcrypt.compare(password, user.hashedpassword);
-            if (!passwordMatch) {
-                return { success: false, message: 'Kirjautuminen epäonnistui' };
-            }
-
-            const accessToken = createAccessToken(user);
-            const refreshToken = createRefreshToken(user);
-            return { 
-                success: true, 
-                message: 'Kirjautuminen onnistui', 
-                accessToken, 
-                refreshToken, 
-                userid: user.userid,
-                username: user.username
-            };
-        } catch (error) {
-            console.error('Virhe kirjautumisessa:', error);
-            return { success: false, message: 'Kirjautumisvirhe', error };
-        }
-    }
-    
-    static async logoutUser(userId) {
-        try {
-            await AuthModel.deleteRefreshToken(userId);
-            return { success: true, message: 'Uloskirjautuminen onnistui' };
-        } catch (error) {
-            console.error('Virhe uloskirjautumisessa:', error);
-            return { success: false, message: 'Uloskirjautuminen epäonnistui', error };
         }
     }
 

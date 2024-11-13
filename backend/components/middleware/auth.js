@@ -1,50 +1,29 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();  
 
-if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
-    console.error('Ympäristömuuttujat eivät ole asetettu oikein!');
-    process.exit(1); 
+const { initializeApp } = require('firebase-admin/app');
+const { getAuth } = require('firebase-admin/auth'); 
+
+const { FIREBASE_ADMIN_APIKEY, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID, FIREBASE_APP_ID } = process.env;
+
+const firebaseConfig = {
+  apiKey: FIREBASE_ADMIN_APIKEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+  appId: FIREBASE_APP_ID
+};
+
+const app = initializeApp(firebaseConfig);
+
+async function decodeToken(token) {
+    //return app.getAuth().verifyIdToken(token);
+    const auth = getAuth();
+    return auth.verifyIdToken(token);
 }
 
-function createAccessToken(user) {
-    return jwt.sign(
-        { userid: user.id, username: user.username, type: 'access' },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-    );
-}
-
-function createRefreshToken(user) {
-    return jwt.sign(
-        { userid: user.id, username: user.username, type: 'refresh' },
-        process.env.JWT_REFRESH_SECRET,
-        { expiresIn: '3y' }
-    );
-}
-
-function decodeToken(token, isRefreshToken = false) {
-    const secret = isRefreshToken ? process.env.JWT_REFRESH_SECRET : process.env.JWT_SECRET;
-    return jwt.verify(token, secret);
-}
-
-function refreshToken(req, res) {
-    const token = req.headers.authorization?.split(' ')[1];
-
-    if (!token) {
-        return res.status(401).json({ message: 'Refresh token vaaditaan' });
-    }
-
-    try {
-        const decoded = decodeToken(token, true);
-        const newAccessToken = createAccessToken({ id: decoded.userid, username: decoded.username });
-        res.json({ accessToken: newAccessToken });
-    } catch (error) {
-        console.error('Virhe refresh tokenin tarkastuksessa:', error);
-        return res.status(403).json({ message: 'Virheellinen refresh token' });
-    }
-}
-
-function auth(req, res, next) {
+async function auth(req, res, next) {
     const token = req.headers.authorization?.split(' ')[1];        
 
     if (!token) {
@@ -52,9 +31,8 @@ function auth(req, res, next) {
     }
 
     try {
-        const { userid, username } = decodeToken(token);
-        res.locals.userid = userid;
-        res.locals.username = username;
+        const { uid } = decodeToken(token);
+        res.locals.userid = uid;
         next();
     } catch (error) {
         console.error('Virhe tokenin tarkastuksessa:', error);
@@ -62,4 +40,4 @@ function auth(req, res, next) {
     }
 }
 
-module.exports = { createAccessToken, createRefreshToken, decodeToken, refreshToken, auth };
+module.exports = { auth };

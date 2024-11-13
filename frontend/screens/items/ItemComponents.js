@@ -1,5 +1,5 @@
-import React, { useRef, useContext } from 'react';
-import { ScrollView, Text } from 'react-native';
+import React from 'react';
+import { ScrollView } from 'react-native';
 import { NoItemsWhenLoggedOut, AllItems, NavigateToThisUsersItems, NavigateToThisUsersQueue, ItemAddNew, ItemModify, ItemDelete, ItemJoinOnQueue } from './FindItems';
 import { Heading, BasicSection } from '../../components/CommonComponents';
 import { ButtonAdd } from '../../components/Buttons';
@@ -19,8 +19,8 @@ export const ItemsLoggedIn = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
         <Heading title="Ilmoitukset" />
-        <AllItems />
         <ButtonAdd title="Uusi ilmoitus" onPress={() => navigation.navigate('ItemAddView')}></ButtonAdd>
+        <AllItems />
         <Heading title="Omat listaukset" />
         <NavigateToThisUsersItems />
         <NavigateToThisUsersQueue />

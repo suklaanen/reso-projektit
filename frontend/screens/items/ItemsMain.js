@@ -7,7 +7,7 @@ const ItemsMain = () => {
 
     return (
     <>
-        {authState !== null ? (
+        {authState ? (
             <ItemsLoggedIn />
         ) : (
             <ItemsLoggedOut />

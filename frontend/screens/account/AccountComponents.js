@@ -1,11 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { ScrollView,Text} from 'react-native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
-import { ChangePasswordOfThisUser, DeleteAccountOfThisUser, LogoutFromThisUser, UserLogin, UserRegister, UserResetPassword, MessagingSystem, AccountSystem } from './FindUser';
+import { DeleteAccountOfThisUser, LogoutFromThisUser, UserLogin, UserRegister, UserResetPassword, MessagingSystem, AccountSystem } from './FindUser';
 import { NavigateToThisUsersItems, NavigateToThisUsersQueue } from '../items/FindItems';
 import { BasicsOfSecuringThisAccount, BasicsOfGettingAnAccount } from '../../components/Textblocks';
 import { AuthenticationContext } from '../../services/auth';
-
 
 export const AccountLoggedOut = () => { 
   const [visibleSection, setVisibleSection] = useState(null);
@@ -24,10 +23,6 @@ export const AccountLoggedOut = () => {
       <UserRegister 
         isVisible={visibleSection === 'register'} 
         toggleVisible={() => toggleSection('register')} 
-      />
-      <UserResetPassword 
-        isVisible={visibleSection === 'resetPassword'} 
-        toggleVisible={() => toggleSection('resetPassword')} 
       />
     </ScrollView>
   );
@@ -68,7 +63,6 @@ export const AccountMaintain = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <BasicsOfSecuringThisAccount />
-      <ChangePasswordOfThisUser />
       <DeleteAccountOfThisUser />
     </ScrollView>
   );
