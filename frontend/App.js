@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-native-paper';
@@ -21,7 +21,8 @@ import Toast from 'react-native-toast-message';
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [authState, setAuthState] = useState(fetchUserDataFromStorage());
+  const [authState, setAuthState] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -29,8 +30,20 @@ export default function App() {
     };
 
     lockOrientation();
+
+    const loadUserData = async () => {
+      const userData = await fetchUserDataFromStorage();
+      setAuthState(userData);
+      setIsLoading(false);
+    };
+
+    loadUserData();
   }, []);
-  
+
+  if (isLoading) {
+    return <View style={globalStyles.container}><Text>Loading...</Text></View>;
+  }
+
   return (
     <Provider>
       <AuthenticationProvider>
