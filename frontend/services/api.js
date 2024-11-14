@@ -130,6 +130,9 @@ export const userDelete = async (userid, accessToken, navigation, setAuthState) 
       console.log('Käyttäjän tietoja ei löytynyt Firestoresta');
     }
     
+    await user.delete();
+    console.log('Käyttäjän autentikointitili poistettu');
+
     setAuthState(null);
     clearUserData();
     } catch (error) {
