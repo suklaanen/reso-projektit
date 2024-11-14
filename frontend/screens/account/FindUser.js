@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, Alert, ToastAndroid, Image, TouchableOpacity, View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { Heading, AccountSection, CommonText, CommonTitle, BasicSection } from '../../components/CommonComponents';
-import { ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonAdd, ButtonContinue, ButtonNavigate } from '../../components/Buttons';
+import { ButtonCancel, ButtonDelete, ButtonConfirm, ButtonContinue, ButtonNavigate } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
 import { userDelete, userLogin, userLogout, userRegister } from '../../services/api.js';
 import { useNavigation } from '@react-navigation/native';
@@ -149,7 +149,7 @@ export const DeleteAccountOfThisUser = () => {
       await userDelete(userid, accessToken, navigation, setAuthState);
       Alert.alert('Tilin poisto onnistui');
     } catch (error) {
-      Alert.alert('Tapahtui virhe', error.message || 'Ei yhteyttä palvelimeen');
+      Alert.alert('Tapahtui virhe', error.message);
     }
   };
 
@@ -166,6 +166,7 @@ export const DeleteAccountOfThisUser = () => {
   const handleConfirmWhenDeleting = () => {
     handleDeleteUser();
     setDeletingThisAccount(true);
+    navigation.navigate('Home');
   }
 
   const handleDeletingThisAccountCancel = () => {

@@ -4,7 +4,6 @@ import { auth, firestore, collection, addDoc } from './firebaseConfig';
 import { deleteDoc, query, where, getDocs } from 'firebase/firestore';
 import Toast from 'react-native-toast-message';
 import { BASE_URL } from "@env";
-import { useNavigation } from '@react-navigation/native';
 
 export const REGISTER = `${BASE_URL}/auth/register`;
 export const SET_USERNAME = `${BASE_URL}/auth/setusername`;
@@ -33,11 +32,15 @@ export const userRegister = async ( email, password, registerUsername ) => {
       console.log('Käyttäjä lisätty Firestoreen');
     } catch (error) {
       console.error('Virhe lisättäessä käyttäjää Firestoreen:', error);
+      throw error;
     }
   };
 
   await saveUserToFirestore(uid, registerUsername, email);
 
+  return { success: true, uid, username: registerUsername, email };
+
+  /*
   // post user data into database
     const response = await fetch(REGISTER, {
       method: 'POST',
@@ -52,7 +55,9 @@ export const userRegister = async ( email, password, registerUsername ) => {
     }
 
     const result = await response.json();
-    return result;
+    return result;*/
+
+
   } catch (error) {
     Toast.show({
       type: 'error',
@@ -105,6 +110,7 @@ export const userLogin = async (credential, password) => {
 };
 
 export const userDelete = async (userid, accessToken, navigation, setAuthState) => {
+
   try {
     const user = auth.currentUser;
 
@@ -112,10 +118,9 @@ export const userDelete = async (userid, accessToken, navigation, setAuthState) 
       throw new Error('Käyttäjää ei löytynyt');
     }
 
-    // 1. poistetaan user data firestoresta
     const usersRef = collection(firestore, 'users');
-    const userQuery = query(usersRef, where('uid', '==', user.uid));
-    const querySnapshot = await getDocs(userQuery);
+    const q = query(usersRef, where('uid', '==', user.uid));
+    const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
       const userDoc = querySnapshot.docs[0];
@@ -124,7 +129,19 @@ export const userDelete = async (userid, accessToken, navigation, setAuthState) 
     } else {
       console.log('Käyttäjän tietoja ei löytynyt Firestoresta');
     }
+    
+    setAuthState(null);
+    clearUserData();
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Poistovirhe',
+        text2: error.message,
+      });
+  }
+};
 
+/*
     // 2. poistetaan (DELETE) user data serverin puolelta kannasta
     const response = await fetch(DELETE_USER, {
       method: 'DELETE',
@@ -138,31 +155,7 @@ export const userDelete = async (userid, accessToken, navigation, setAuthState) 
     if (!response.ok) {
       throw new Error('Palvelimen pyyntö epäonnistui');
     }
-
-    // 3. poistetaan firebase authentication käyttäjä
-    await deleteUser(user);
-
-    // 4. clearataan kaikki ja palataan kotinäkymään
-    await AsyncStorage.removeItem('userId');
-    await AsyncStorage.removeItem('accessToken');
-    setAuthState(null);
-
-    Toast.show({
-      type: 'success',
-      text1: 'Tili poistettu onnistuneesti',
-    });
-    navigation.navigate('Home');
-
-  } catch (error) {
-    console.error('Delete user error:', error);
-    Toast.show({
-      type: 'error',
-      text1: 'Tapahtui virhe',
-      text2: error.message || 'Ei yhteyttä palvelimeen',
-    });
-    throw error;
-  }
-};
+*/
 
 export const userLogout = async () => {
   try {
