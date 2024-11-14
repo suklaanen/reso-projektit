@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, deleteUser, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore, collection, addDoc } from './firebaseConfig';
 import { deleteDoc, query, where, getDocs } from 'firebase/firestore';
 import Toast from 'react-native-toast-message';
 import { BASE_URL } from "@env";
+import { postUserToBackend, deleteUserFromBackend } from './backendController';
 
+// siirrän näitä reittejä vähitellen backendControlleriin : 
 export const REGISTER = `${BASE_URL}/auth/register`;
 export const SET_USERNAME = `${BASE_URL}/auth/setusername`;
 export const DELETE_USER = `${BASE_URL}/auth/deleteuser`;
@@ -38,26 +40,10 @@ export const userRegister = async ( email, password, registerUsername ) => {
 
   await saveUserToFirestore(uid, registerUsername, email);
 
+  postUserToBackend(email, uid, registerUsername);
+
   return { success: true, uid, username: registerUsername, email };
-
-  /*
-  // post user data into database
-    const response = await fetch(REGISTER, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, uid, username: registerUsername }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Käyttäjän tallentaminen tietokantaan epäonnistui.');
-    }
-
-    const result = await response.json();
-    return result;*/
-
-
+  
   } catch (error) {
     Toast.show({
       type: 'error',
@@ -129,12 +115,15 @@ export const userDelete = async (userid, accessToken, navigation, setAuthState) 
     } else {
       console.log('Käyttäjän tietoja ei löytynyt Firestoresta');
     }
+
+    deleteUserFromBackend();
     
     await user.delete();
     console.log('Käyttäjän autentikointitili poistettu');
 
     setAuthState(null);
     clearUserData();
+    
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -144,21 +133,6 @@ export const userDelete = async (userid, accessToken, navigation, setAuthState) 
   }
 };
 
-/*
-    // 2. poistetaan (DELETE) user data serverin puolelta kannasta
-    const response = await fetch(DELETE_USER, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ userid }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Palvelimen pyyntö epäonnistui');
-    }
-*/
 
 export const userLogout = async () => {
   try {

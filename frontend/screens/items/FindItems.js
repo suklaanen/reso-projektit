@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonNavigate } from '../../components/Buttons';
-import { FlatList, Text, View, ActivityIndicator, StyleSheet, TextInput, Button } from 'react-native';
+import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
-import { addItem, getItems, getItemById, deleteItem, updateItem } from '../../services/items.js';
+import { addItem, getItems } from '../../services/backendController.js';
 import Toast from 'react-native-toast-message';
-import { collection, getDocs } from 'firebase/firestore';
-import { firestore } from '../../services/firebaseConfig.js'; 
 
 /*const itemsCollection = collection(firestore, 'items'); 
 
