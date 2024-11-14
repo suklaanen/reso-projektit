@@ -7,7 +7,7 @@ INSERT INTO users (firebaseuserid, username, usermail) VALUES
 ('OMhagDA6eVgpok70Z2ywj39yAMz1', 'Kan-Joni', 'rusina@munkki.net');
 
 -- Insert test items
-INSERT INTO items (giverid, itemname, itemdescription, itempicture, queretruepickfalse, postalcode, city) VALUES 
+INSERT INTO items (giverid, itemname, itemdescription, itempicture, queuetruepickfalse, postalcode, city) VALUES 
 (1, 'Hamsu -kirja', 'Käytetyssä kunnossa, kirja hamsterin hoidosta', 'book.jpg', TRUE, '00100', 'Helsinki'),
 (2, 'Tuolit 6kpl', 'Keittiön pöydät, 6kpl, pinta rispaantunut muutamassa, muuten hyvä kunto!', 'chair.jpg', FALSE, '00200', 'Espoo'),
 (3, 'Työpöytä', 'Pienikokoinen työpöytä, koko 60x100 cm, tästä vaikka etätyöskentelyyn. Näppärä, ei keiku', 'table.jpg', TRUE, '00300', 'Tampere');
