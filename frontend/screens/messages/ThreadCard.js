@@ -4,12 +4,14 @@ import { Heading, BasicSection } from '../../components/CommonComponents';
 import { AuthenticationContext } from '../../services/auth';
 import { firestore } from '../../services/firebaseConfig';
 import { doc, query, where, collection, getDoc, getDocs, orderBy, limit } from 'firebase/firestore';
+import { formatDistanceToNow } from 'date-fns';
 
 const ThreadCard = ({ thread }) => {
   const [itemName, setItemName] = useState('');
   const [participants, setParticipants] = useState([]);
   const [latestMessage, setLatestMessage] = useState('');
 
+  // sample authState for testing
   const authState = {
     user: {
       id: "CzmNeYO7av152mqA9SHY",
@@ -27,7 +29,7 @@ const ThreadCard = ({ thread }) => {
       }
     };
 
-    // fetch participant usernames
+    // fetch participants
     const fetchParticipants = async () => {
       const participants = await Promise.all(
         thread.participants.map(async (participantRef) => {
@@ -42,13 +44,11 @@ const ThreadCard = ({ thread }) => {
       
     };
 
-    // fetch latest message from the "messages" subcollection
+    // fetch latest message from "messages" subcollection
     const fetchLatestMessage = async () => {
       const messagesRef = collection(firestore, 'threadstest', thread.id, 'messages');
-      
       const q = query(messagesRef, orderBy('createdAt', 'desc'), limit(1));
       const querySnapshot = await getDocs(q);
-      
       
       if (!querySnapshot.empty) {
         const latestMessageData = querySnapshot.docs[0].data();
@@ -60,6 +60,10 @@ const ThreadCard = ({ thread }) => {
     fetchParticipants();
     fetchLatestMessage();
   }, []);
+
+  const formatTimestamp = (timestamp) => {
+        return formatDistanceToNow(timestamp.toDate(), { addSuffix: true });
+  };
   
   return (
     <View style={styles.card}>
@@ -67,10 +71,20 @@ const ThreadCard = ({ thread }) => {
         <Text style={styles.itemName}>{itemName}</Text>
         <Text style={styles.participants}>{participants.find(p => p.id !== authState.user.id)?.username}</Text>
       </View>
-      <Text style={styles.latestMessage}>
-        {latestMessage.sender?.id === authState.user.id ? 'You: ' : participants.find(p => p.id === latestMessage.sender.id)?.username + ': '}
-        {latestMessage.content || 'Ei viestejä'}
-      </Text>
+      <View style={styles.messageContainer}>
+        <Text style={styles.latestMessage}>
+          {latestMessage?.sender?.id === authState.user.id
+            ? 'Sinä: '
+            : participants.find(p => p.id === latestMessage?.sender.id)?.username + ': '}
+          {latestMessage?.content || 'Ei viestejä'}
+        </Text>
+
+        {latestMessage && latestMessage.createdAt && (
+          <Text style={styles.timestamp}>
+            {formatTimestamp(latestMessage.createdAt)}
+          </Text>
+        )}
+      </View>
     </View>
   );
 };
@@ -100,11 +114,22 @@ const styles = StyleSheet.create({
     color: '#777',
     marginTop: 4,
   },
+    messageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+  },
   latestMessage: {
     fontSize: 14,
     color: '#888',
-    marginTop: 8,
+    flex: 1,
     fontStyle: 'italic',
+  },
+  timestamp: {
+    fontSize: 12,
+    color: '#aaa',
+    marginLeft: 8,
   },
 });
 
