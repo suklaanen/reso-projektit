@@ -1,6 +1,9 @@
-// Tänne firestore -koodit 
+// Sijoite tänne Firestoreen liittyvät operaatiot
 // Käytä jokaisen funktion alussa CHECK_BASE_URL() !!
-/* Voit kopioida sen alta: ********************************************
+// Koska halutaan tarkistaa, onko käyttäjälle asetettu BASE_URLia:
+// Jos BASE_URL on asetettu, niin ei tehdä Firestore-operaatioita
+// Jos BASE_URLia ei ole asetettu, niin Firestore-operaatiot tehdään
+/* Voit kopioida tarkistuksen käyttöön alta: **************************
 
     if (CHECK_BASE_URL()) {
         FOUND_BASE_URL();
