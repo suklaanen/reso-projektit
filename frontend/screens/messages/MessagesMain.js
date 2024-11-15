@@ -1,14 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { ScrollView, Text} from 'react-native';
+import { ScrollView, Text, StyleSheet, View } from 'react-native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
 import { AuthenticationContext } from '../../services/auth';
 import { firestore } from '../../services/firebaseConfig';
-import { doc, onSnapshot, query, where, collection } from 'firebase/firestore';
+import { doc, onSnapshot, query, where, collection, getDoc, getDocs, orderBy, limit } from 'firebase/firestore';
+import ThreadCard from './ThreadCard';
 
 const MessagesMain = () => {
     // const {authState} = useContext(AuthenticationContext);
     const [threads, setThreads] = useState([]);
-    const sampleUserId = "2vpqcqFcuHNJvhJOldR2"
+    const sampleUserId = "CzmNeYO7av152mqA9SHY"
 
     useEffect(() => {
         const threadsRef = collection(firestore, "threadstest");
@@ -27,26 +28,40 @@ const MessagesMain = () => {
         return () => unsubscribe();
     }, []);
 
-    useEffect(() => {
-        console.log(threads);
-    }, [threads]);
-
     return (
-        <ScrollView contentContainerStyle={{ padding: 8 }}>
-            <Heading title="Omat keskustelut" />
+        <View style={styles.container}>
+        <Heading title="Omat keskustelut" />
 
-            <BasicSection>
-                {threads.length > 0 ? (
-                    threads.map(thread => (
-                        <Text key={thread.id}>{thread.id}{"\n"}</Text>
-                    ))
-                ) : (
-                    <Text>Aktiivisia keskusteluja ei löytynyt</Text>
-                )}
-            </BasicSection>
+        <ScrollView style={styles.scrollContainer}>
+        {threads.length > 0 ? (
+          threads.map(thread => (
+            <ThreadCard key={thread.id} thread={thread} />
+          ))
+        ) : (
+          <Text style={styles.noThreadsText}>Aktiivisia keskusteluja ei löytynyt</Text>
+        )}
+      </ScrollView>
 
-        </ScrollView>
+    </View>
     );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 20,
+    backgroundColor: '#f0f0f0',
+  },
+  scrollContainer: {
+    paddingHorizontal: 8,
+    paddingBottom: 16,
+  },
+  noThreadsText: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#888',
+    fontSize: 16,
+  },
+});
 
 export default MessagesMain;
