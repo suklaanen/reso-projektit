@@ -1,16 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createUserWithEmailAndPassword, deleteUser, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore, collection, addDoc } from './firebaseConfig';
 import { deleteDoc, query, where, getDocs } from 'firebase/firestore';
 import Toast from 'react-native-toast-message';
-import { BASE_URL } from "@env";
 import { postUserToBackend, deleteUserFromBackend } from './backendController';
+import { deleteUserDataFromFirestore, saveUserToFirestore } from './firebaseController';
 
-// siirrän näitä reittejä vähitellen backendControlleriin : 
-export const REGISTER = `${BASE_URL}/auth/register`;
-export const SET_USERNAME = `${BASE_URL}/auth/setusername`;
-export const DELETE_USER = `${BASE_URL}/auth/deleteuser`;
-export const HEADERS = { 'Content-Type': 'application/json' };
+// Sijoitetaan operaatiot omiin kontrollereihin: 
+// backendController.js: jos käyttää databasea
+// firebaseController.js: jos käyttää firestorea
+// ja kutsutaan niitä esim. täältä
 
 export const userRegister = async ( email, password, registerUsername ) => {
   try {
@@ -23,24 +22,8 @@ export const userRegister = async ( email, password, registerUsername ) => {
       text2: 'Voit nyt kirjautua!',
     });
 
-  // Tallennetaan käyttäjätunnus Firestoreen
-  const saveUserToFirestore = async (uid, username, email) => {
-    try {
-      await addDoc(collection(firestore, 'users'), {
-        username,
-        email: email.toLowerCase(),
-        uid,
-      });
-      console.log('Käyttäjä lisätty Firestoreen');
-    } catch (error) {
-      console.error('Virhe lisättäessä käyttäjää Firestoreen:', error);
-      throw error;
-    }
-  };
-
   await saveUserToFirestore(uid, registerUsername, email);
-
-  postUserToBackend(email, uid, registerUsername);
+  await postUserToBackend(email, uid, registerUsername);
 
   return { success: true, uid, username: registerUsername, email };
   
@@ -95,34 +78,16 @@ export const userLogin = async (credential, password) => {
   }
 };
 
-export const userDelete = async (userid, accessToken, navigation, setAuthState) => {
+export const userDelete = async () => {
 
   try {
     const user = auth.currentUser;
 
-    if (!user) {
-      throw new Error('Käyttäjää ei löytynyt');
-    }
+    await deleteUserDataFromFirestore(user.uid);
+    await deleteUserFromBackend();
 
-    const usersRef = collection(firestore, 'users');
-    const q = query(usersRef, where('uid', '==', user.uid));
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      const userDoc = querySnapshot.docs[0];
-      await deleteDoc(userDoc.ref);
-      console.log('Käyttäjän tiedot poistettu Firestoresta');
-    } else {
-      console.log('Käyttäjän tietoja ei löytynyt Firestoresta');
-    }
-
-    deleteUserFromBackend();
-    
     await user.delete();
     console.log('Käyttäjän autentikointitili poistettu');
-
-    setAuthState(null);
-    clearUserData();
     
     } catch (error) {
       Toast.show({
@@ -132,7 +97,6 @@ export const userDelete = async (userid, accessToken, navigation, setAuthState) 
       });
   }
 };
-
 
 export const userLogout = async () => {
   try {
@@ -145,32 +109,6 @@ export const userLogout = async () => {
       text2: error.message,
     });
     console.error('Logout error:', error);
-    throw error;
-  }
-};
-
-export const setUsername = async (username) => {
-  try {
-    const userid = await AsyncStorage.getItem('userId');
-    const accessToken = await AsyncStorage.getItem('accessToken');
-
-    const response = await fetch(SET_USERNAME, {
-      method: 'POST',
-      headers: {
-        ...HEADERS,
-        'Authorization': `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ userid, username }),
-    });
-
-    return await response.json();
-  } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Virhe asettaessa nimimerkkiä',
-      text2: error.message,
-    });
-    console.error('Set username error:', error);
     throw error;
   }
 };

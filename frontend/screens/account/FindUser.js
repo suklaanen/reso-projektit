@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Alert, View } from 'react-native';
-import { Heading, AccountSection, CommonText, CommonTitle, BasicSection } from '../../components/CommonComponents';
+import { Heading, AccountSection, CommonText, BasicSection } from '../../components/CommonComponents';
 import { ButtonCancel, ButtonDelete, ButtonConfirm, ButtonContinue, ButtonNavigate } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
-import { userDelete, userLogin, userLogout, userRegister } from '../../services/api.js';
+import { userDelete, userLogin, userRegister } from '../../services/api.js';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../../services/auth.js';
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
 import globalStyles from '../../assets/styles/Styles.js';
+import { set } from 'lodash';
 
 export const UserLogin = ({ isVisible, toggleVisible }) => {
   const [usermail, setLoginUsername] = useState('');
@@ -138,15 +139,15 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
 };
 
 export const DeleteAccountOfThisUser = () => {
-  const { authState, setAuthState } = useContext(AuthenticationContext);
-  const { userid, accessToken } = authState;
+  const { setAuthState } = useContext(AuthenticationContext);
   const [isDeletingThisAccount, setDeletingThisAccount] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const navigation = useNavigation();
 
   const handleDeleteUser = async () => {
     try {
-      await userDelete(userid, accessToken, navigation, setAuthState);
+      await userDelete();
+      setAuthState(null);
       Alert.alert('Tilin poisto onnistui');
     } catch (error) {
       Alert.alert('Tapahtui virhe', error.message);

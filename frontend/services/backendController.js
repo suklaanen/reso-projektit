@@ -15,7 +15,7 @@ export const DELETE_ITEM = `${BASE_URL}/items/deleteitem`;
 export const UPDATE_ITEM = `${BASE_URL}/items/updateitem`;
 
 // check if dev has set the environment variables set
-const CHECK_BASE_URL = () => !!BASE_URL;
+export const CHECK_BASE_URL = () => !!BASE_URL;
 const NO_BASE_URL = () => {
   console.warn('BASE_URL ei ole määritetty. Ohitetaan backend-kutsu.');
 }
@@ -72,6 +72,40 @@ export const deleteUserFromBackend = async () => {
   }
 }
 
+
+export const setUsernameToBackend = async (username) => {
+  if (!CHECK_BASE_URL()) {
+    NO_BASE_URL();
+    return;
+  }
+
+  try {
+    const userid = await AsyncStorage.getItem('userId');
+    const accessToken = await AsyncStorage.getItem('accessToken');
+
+    const response = await fetch(SET_USERNAME, {
+      method: 'POST',
+      headers: {
+        ...HEADERS,
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ userid, username }),
+    });
+
+    return await response.json();
+  } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Virhe asettaessa nimimerkkiä',
+      text2: error.message,
+    });
+    console.error('Set username error:', error);
+    throw error;
+  }
+};
+
+
+
 export const addItem = async (itemname, itemdescription, itempicture, postalcode, city, queuetruepickfalse) => {
   if (!CHECK_BASE_URL()) {
     NO_BASE_URL();
@@ -107,8 +141,6 @@ try {
   }
 
   const accessToken = await AsyncStorage.getItem('accessToken');
-
-  console.log('accessToken:', accessToken);
 
   const response = await fetch(GET_ITEMS, {
   method: 'GET',
