@@ -3,8 +3,7 @@ import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-native-paper';
-import { AuthenticationContext, AuthenticationProvider } from './services/auth';
-import { fetchUserDataFromStorage } from './services/asyncStorageHelper';
+import { AuthenticationProvider } from './services/auth';
 import globalStyles from './assets/styles/Styles';
 import CustomTopBar from './components/CustomTopBar';
 import CustomBottomBar from './components/CustomBottomBar';
@@ -30,14 +29,8 @@ export default function App() {
     };
 
     lockOrientation();
+    setIsLoading(false);
 
-    const loadUserData = async () => {
-      const userData = await fetchUserDataFromStorage();
-      setAuthState(userData);
-      setIsLoading(false);
-    };
-
-    loadUserData();
   }, []);
 
   if (isLoading) {
