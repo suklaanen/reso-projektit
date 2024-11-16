@@ -17,6 +17,7 @@ import MessagesMain from './screens/messages/MessagesMain';
 import { ItemsFromThisUser, QueuesOfThisUser, ItemAddView } from './screens/items/ItemComponents';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import Toast from 'react-native-toast-message';
+import ChatView from './screens/chat/ChatView';
 
 const Stack = createStackNavigator();
 
@@ -62,6 +63,7 @@ export default function App() {
                 <Stack.Screen name="AccountMaintain" component={AccountMaintain} options={{ headerShown: false }} />
                 <Stack.Screen name="MyItems" component={ItemsFromThisUser} options={{ headerShown: false }} />
                 <Stack.Screen name="MyQueues" component={QueuesOfThisUser} options={{ headerShown: false }} />
+                <Stack.Screen name="Chat" component={ChatView} options={{ headerShown: false }}/>
               </Stack.Navigator>
             </View>
           <CustomBottomBar />
