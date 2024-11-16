@@ -6,26 +6,29 @@ INSERT INTO users (firebaseuserid, username, usermail) VALUES
 ('Iz1NMQyy8zawJNrKbJzBA792Txk1', 'Jenna', 'nappi@nappi.fi'),
 ('OMhagDA6eVgpok70Z2ywj39yAMz1', 'Kan-Joni', 'rusina@munkki.net');
 
--- Insert test items
-INSERT INTO items (giverid, itemname, itemdescription, itempicture, queuetruepickfalse, postalcode, city) VALUES 
-(1, 'Hamsu -kirja', 'Käytetyssä kunnossa, kirja hamsterin hoidosta', 'book.jpg', TRUE, '00100', 'Helsinki'),
-(2, 'Tuolit 6kpl', 'Keittiön pöydät, 6kpl, pinta rispaantunut muutamassa, muuten hyvä kunto!', 'chair.jpg', FALSE, '00200', 'Espoo'),
-(3, 'Työpöytä', 'Pienikokoinen työpöytä, koko 60x100 cm, tästä vaikka etätyöskentelyyn. Näppärä, ei keiku', 'table.jpg', TRUE, '00300', 'Tampere');
+-- Lisää esineitä (items), jotka on liitetty antajiin (giverid viittaa users.userid)
+INSERT INTO items (giverid, itemname, itemdescription, itempicture, postalcode, city)
+VALUES 
+    (1, 'Bicycle', 'A good mountain bike.', 'bicycle.jpg', '00100', 'Helsinki'),
+    (3, 'Laptop', 'A working laptop with some scratches.', 'laptop.jpg', '02100', 'Espoo'),
+    (1, 'Books', 'A collection of mystery novels.', 'books.jpg', '00100', 'Helsinki');
 
--- Insert takers
-INSERT INTO takers (userid, itemid, description) VALUES 
-(2, 1, 'Voisin hakea vaikka heti tänään, klo 19 jälkeen illalla!'),
-(3, 1, 'Tyttärelle voisin tämän hakea. Käykö haku huomenna?'),
-(1, 3, 'Kiinnostunut työpöydästä, haku koska vaan');
+-- Lisää ottajia (takers), jotka ovat kiinnostuneita esineistä
+INSERT INTO takers (userid, itemid, description)
+VALUES 
+    (2, 1, 'Interested in the bike for daily commute.'),
+    (4, 2, 'Looking for a laptop for schoolwork.');
 
--- Insert threads
-INSERT INTO threads (itemid, takerid, created_at) VALUES 
-(1, 2, CURRENT_TIMESTAMP),
-(2, 3, CURRENT_TIMESTAMP),
-(3, 1, CURRENT_TIMESTAMP);
+-- Lisää keskusteluketjuja (threads) ottajien ja esineiden välille
+INSERT INTO threads (itemid, takerid)
+VALUES 
+    (1, 1),
+    (2, 2);
 
--- Insert messages
-INSERT INTO messages (threadid, senderid, message, created_at) VALUES 
-(1, 1, 'Message from giver to Alice', CURRENT_TIMESTAMP),
-(2, 3, 'Message from taker Charlie', CURRENT_TIMESTAMP),
-(3, 2, 'Question from Bob', CURRENT_TIMESTAMP);
+-- Lisää viestejä (messages) keskusteluketjuihin
+INSERT INTO messages (threadid, senderid, message)
+VALUES 
+    (1, 1, 'Hi, I am interested in your bike. Is it still available?'),
+    (1, 2, 'Yes, it is. Can you pick it up tomorrow?'),
+    (2, 3, 'Hello, I need the laptop urgently.'),
+    (2, 4, 'Sure, let us discuss the details.');

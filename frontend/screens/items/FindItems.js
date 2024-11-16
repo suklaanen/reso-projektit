@@ -1,24 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonNavigate } from '../../components/Buttons';
-import { FlatList, Text, View, ActivityIndicator, StyleSheet, TextInput, Button } from 'react-native';
+import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Heading, BasicSection } from '../../components/CommonComponents';
-import { addItem, getItems, getItemById, deleteItem, updateItem } from '../../services/items.js';
-import Toast from 'react-native-toast-message';
+import { BasicSection, Heading } from '../../components/CommonComponents';
+import { addItemToFirestore, fetchUsername } from '../../services/firebaseController.js';
+import { firestore } from '../../services/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
-import { firestore } from '../../services/firebaseConfig.js'; 
+import Toast from 'react-native-toast-message';
 
-/*const itemsCollection = collection(firestore, 'items'); 
+const itemsCollection = collection(firestore, 'items');
 
-const getItemsFromFirestore = async () => {
+export const fetchItems = async () => {
   try {
     const querySnapshot = await getDocs(itemsCollection);
-    const items = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const items = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+
+      const createdAt = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString() : 'No date available';
+      const expirationAt = data.expirationAt ? new Date(data.expirationAt.seconds * 1000).toLocaleString() : 'No expiration date';
+
+      return {
+        id: doc.id,
+        ...data,
+        createdAt,
+        expirationAt,
+      };
+    });
+    console.log(items);
     return items;
   } catch (error) {
-    throw new Error('Error fetching items from Firestore: ' + error.message);
+    console.error('Virhe tavaroiden hakemisessa:', error);
   }
-*/
+};
 
 export const NoItemsWhenLoggedOut = () => {
   return (
@@ -62,15 +75,12 @@ export const AllItems = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const getItemsFromFirestore = async () => {
       try {
-        //relaatiokannasta haku:
-        const fetchedItems = await getItems();
-        // firebase cloud storagesta haku:
-        //const fetchedItems = await getItemsFromFirestore();
+        const fetchedItems = await fetchItems();
         console.log('Fetched items:', fetchedItems);  
-        setItems(fetchedItems.items); 
-        //setItems(fetchedItems);
+        setItems(fetchedItems);
+
       } catch (error) {
         setError(error);
       } finally {
@@ -78,7 +88,7 @@ export const AllItems = () => {
       }
     };
 
-    fetchItems();
+    getItemsFromFirestore();
   }, []);
 
   if (loading) {
@@ -100,18 +110,16 @@ export const AllItems = () => {
   
   return (
     <>
-      {items.map((item) => (
-        <View key={item.itemid} style={styles.itemContainer}>
-          <Text style={styles.itemName}>{item.itemname}</Text>
-          <Text>{item.itemdescription}</Text>
-          <Text>{item.city}</Text>
-          <Text>{item.postalcode}</Text>
-          <Text>{item.giverid}</Text>
-          <Text>{item.created_at}</Text>
-          <Text>{item.expiration_at}</Text>
-          <Text>{item.queuetruepickfalse}</Text>
-        </View>
-      ))}
+    {items.map((item) => (
+      <View key={item.id} style={styles.itemContainer}>
+        <Text style={styles.itemName}>{item.itemname}</Text>
+        <Text>{item.itemdescription}</Text>
+        <Text>Sijainti: {item.postalcode}, {item.city}</Text>
+        <Text>Julkaisija: {item.giverid || 'Ei saatavilla'} , {item.username || 'Ei saatavilla'}</Text>
+        <Text>Julkaistu: {item.createdAt}</Text>
+        <Text>Vanhenee: {item.expirationAt}</Text>
+      </View>
+    ))}
     </>
   );
 };
@@ -119,23 +127,14 @@ export const AllItems = () => {
 export const ItemAddNew = () => {
   const [itemname, setItemname] = useState('');
   const [itemdescription, setItemdescription] = useState('');
-  const [itempicture, setItempicture] = useState('');
   const [postalcode, setPostalcode] = useState('');
   const [city, setCity] = useState('');
-  const [queuetruepickfalse, setQueuetruepickfalse] = useState(false); 
   const navigation = useNavigation();
 
   const handleAddItem = async () => {
-    if (!itemname || !itemdescription || !itempicture || !postalcode || !city) {
-      Toast.show({
-        type: 'error',
-        text1: 'Kaikki kentät ovat pakollisia!',
-      });
-      return;
-    }
 
     try {
-      const response = await addItem(itemname, itemdescription, itempicture, postalcode, city, queuetruepickfalse);
+      const response = await addItemToFirestore(itemname, itemdescription, postalcode, city);
       console.log('Add item response:', response);
       Toast.show({
         type: 'success',
@@ -143,8 +142,7 @@ export const ItemAddNew = () => {
       });
 
       navigation.navigate('ItemsMain');
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Add item error:', error);
       Toast.show({
         type: 'error',
@@ -152,76 +150,40 @@ export const ItemAddNew = () => {
         text2: error.message,
       });
     }
-  }
-  
+  };
+
   return (
     <View style={styles.container}>
       <Heading title="Lisää uusi ilmoitus" />
-      <>
-        <TextInput
-          style={styles.input}
-          placeholder="Otsikko (tuotteen nimi)"
-          value={itemname}
-          onChangeText={setItemname}
-        />
+      <TextInput
+        style={styles.input}
+        placeholder="Otsikko (tuotteen nimi)"
+        value={itemname}
+        onChangeText={setItemname}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Kuvaus tuotteesta"
+        value={itemdescription}
+        onChangeText={setItemdescription}
+        multiline
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Postinumero"
+        keyboardType="numeric"
+        value={postalcode}
+        onChangeText={setPostalcode}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Kaupunki"
+        value={city}
+        onChangeText={setCity}
+      />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Kuvaus tuotteesta"
-          value={itemdescription}
-          onChangeText={setItemdescription}
-          multiline
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Kuva URL"
-          value={itempicture}
-          onChangeText={setItempicture}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Postinumero"
-          keyboardType="numeric"
-          value={postalcode}
-          onChangeText={setPostalcode}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Kaupunki"
-          value={city}
-          onChangeText={setCity}
-        />
-        
-        <View style={styles.queueContainer}>
-          <Text>Valitse ilmoituksen tyyppi:</Text>
-          <View style={styles.radioGroup}>
-            <Button
-              title="Jonotus"
-              onPress={() => setQueuetruepickfalse(true)}
-              color={queuetruepickfalse ? 'blue' : 'gray'}
-            />
-            <Button
-              title="Poiminta"
-              onPress={() => setQueuetruepickfalse(false)}
-              color={!queuetruepickfalse ? 'blue' : 'gray'}
-            />
-          </View>
-        </View>
-
-        <Button title="Julkaise" onPress={handleAddItem} color="#4CAF50" />
-      </>
+      <Button title="Julkaise" onPress={handleAddItem} color="#4CAF50" />
     </View>
-  );
-};
-
-export const ItemModify = () => {
-  return (
-    <>
-      <Heading title="Muokkaa" />
-      <BasicSection>
-        X{"\n\n"}
-      </BasicSection>
-    </>
   );
 };
 
@@ -246,6 +208,61 @@ export const ItemJoinOnQueue = () => {
     </>
   );
 };
+
+export const MyItems = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUserItems = async () => {
+      try {
+        const fetchedItems = await getItemsByUser();
+        setItems(fetchedItems.items);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserItems();
+  }, []);
+
+  if (loading) {
+    return (
+      <BasicSection>
+        <Text>Ladataan...</Text>
+      </BasicSection>
+    );
+  }
+
+  if (error) {
+    return (
+      <BasicSection>
+        <Toast type="error" text1="Virhe omien julkaisujen hakemisessa" text2={error.message} />
+        <Text>Virhe: {error.message}</Text>
+      </BasicSection>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <Heading title="Omat ilmoitukset" />
+      
+      {items.map((item) => (
+        <View key={item.id} style={styles.itemContainer}>
+          <Text style={styles.itemName}>{item.itemname}</Text>
+          <Text>{item.itemdescription}</Text>
+          <Text>{item.city}</Text>
+          <Text>{item.postalcode}</Text>
+        </View>
+      ))}
+      
+    </View>
+  );
+}; 
+
 
 const styles = StyleSheet.create({
   container: {

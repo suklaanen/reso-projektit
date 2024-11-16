@@ -1,6 +1,7 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc, getDocs, where } from 'firebase/firestore';
-import { getAuth, initializeAuth, getReactNativePersistence } from "firebase/auth";
+import { initializeApp } from 'firebase/app';
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
   FIREBASE_API_KEY, 
@@ -19,13 +20,12 @@ import {
     appId: FIREBASE_APP_ID
   };
 
-const app = initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
 
-const firestore = getFirestore(app);
-const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage)
-});
-
-const LISTITEMS = 'listitems';
-
-export { app, auth, firestore, collection, addDoc, query, where, getDocs, onSnapshot, deleteDoc, LISTITEMS };
+  const firestore = getFirestore(app);
+  const auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(AsyncStorage)
+  });
+  
+  
+  export { app, auth, firestore };

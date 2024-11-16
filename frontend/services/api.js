@@ -3,13 +3,13 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "fire
 import { auth, firestore, collection, addDoc } from './firebaseConfig';
 import { deleteDoc, query, where, getDocs } from 'firebase/firestore';
 import Toast from 'react-native-toast-message';
-import { BASE_URL } from "@env";
-import { useNavigation } from '@react-navigation/native';
+import { postUserToBackend, deleteUserFromBackend } from './backendController';
+import { deleteUserDataFromFirestore, saveUserToFirestore } from './firebaseController';
 
-export const REGISTER = `${BASE_URL}/auth/register`;
-export const SET_USERNAME = `${BASE_URL}/auth/setusername`;
-export const DELETE_USER = `${BASE_URL}/auth/deleteuser`;
-export const HEADERS = { 'Content-Type': 'application/json' };
+// Sijoitetaan operaatiot omiin kontrollereihin: 
+// backendController.js: jos käyttää databasea
+// firebaseController.js: jos käyttää firestorea
+// ja kutsutaan niitä esim. täältä
 
 export const userRegister = async ( email, password, registerUsername ) => {
   try {
@@ -22,37 +22,11 @@ export const userRegister = async ( email, password, registerUsername ) => {
       text2: 'Voit nyt kirjautua!',
     });
 
-  // Tallennetaan käyttäjätunnus Firestoreen
-  const saveUserToFirestore = async (uid, username, email) => {
-    try {
-      await addDoc(collection(firestore, 'users'), {
-        username,
-        email: email.toLowerCase(),
-        uid,
-      });
-      console.log('Käyttäjä lisätty Firestoreen');
-    } catch (error) {
-      console.error('Virhe lisättäessä käyttäjää Firestoreen:', error);
-    }
-  };
-
   await saveUserToFirestore(uid, registerUsername, email);
+  await postUserToBackend(email, uid, registerUsername);
 
-  // post user data into database
-    const response = await fetch(REGISTER, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, uid, username: registerUsername }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Käyttäjän tallentaminen tietokantaan epäonnistui.');
-    }
-
-    const result = await response.json();
-    return result;
+  return { success: true, uid, username: registerUsername, email };
+  
   } catch (error) {
     Toast.show({
       type: 'error',
@@ -104,63 +78,23 @@ export const userLogin = async (credential, password) => {
   }
 };
 
-export const userDelete = async (userid, accessToken, navigation, setAuthState) => {
+export const userDelete = async () => {
+
   try {
     const user = auth.currentUser;
 
-    if (!user) {
-      throw new Error('Käyttäjää ei löytynyt');
-    }
+    await deleteUserDataFromFirestore(user.uid);
+    await deleteUserFromBackend();
 
-    // 1. poistetaan user data firestoresta
-    const usersRef = collection(firestore, 'users');
-    const userQuery = query(usersRef, where('uid', '==', user.uid));
-    const querySnapshot = await getDocs(userQuery);
-
-    if (!querySnapshot.empty) {
-      const userDoc = querySnapshot.docs[0];
-      await deleteDoc(userDoc.ref);
-      console.log('Käyttäjän tiedot poistettu Firestoresta');
-    } else {
-      console.log('Käyttäjän tietoja ei löytynyt Firestoresta');
-    }
-
-    // 2. poistetaan (DELETE) user data serverin puolelta kannasta
-    const response = await fetch(DELETE_USER, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ userid }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Palvelimen pyyntö epäonnistui');
-    }
-
-    // 3. poistetaan firebase authentication käyttäjä
-    await deleteUser(user);
-
-    // 4. clearataan kaikki ja palataan kotinäkymään
-    await AsyncStorage.removeItem('userId');
-    await AsyncStorage.removeItem('accessToken');
-    setAuthState(null);
-
-    Toast.show({
-      type: 'success',
-      text1: 'Tili poistettu onnistuneesti',
-    });
-    navigation.navigate('Home');
-
-  } catch (error) {
-    console.error('Delete user error:', error);
-    Toast.show({
-      type: 'error',
-      text1: 'Tapahtui virhe',
-      text2: error.message || 'Ei yhteyttä palvelimeen',
-    });
-    throw error;
+    await user.delete();
+    console.log('Käyttäjän autentikointitili poistettu');
+    
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Poistovirhe',
+        text2: error.message,
+      });
   }
 };
 
@@ -175,32 +109,6 @@ export const userLogout = async () => {
       text2: error.message,
     });
     console.error('Logout error:', error);
-    throw error;
-  }
-};
-
-export const setUsername = async (username) => {
-  try {
-    const userid = await AsyncStorage.getItem('userId');
-    const accessToken = await AsyncStorage.getItem('accessToken');
-
-    const response = await fetch(SET_USERNAME, {
-      method: 'POST',
-      headers: {
-        ...HEADERS,
-        'Authorization': `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ userid, username }),
-    });
-
-    return await response.json();
-  } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Virhe asettaessa nimimerkkiä',
-      text2: error.message,
-    });
-    console.error('Set username error:', error);
     throw error;
   }
 };

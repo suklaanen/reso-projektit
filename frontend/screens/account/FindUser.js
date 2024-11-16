@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Text, Alert, ToastAndroid, Image, TouchableOpacity, View } from 'react-native';
-import { Heading, AccountSection, CommonText, CommonTitle, BasicSection } from '../../components/CommonComponents';
-import { ButtonSave, ButtonCancel, ButtonDelete, ButtonConfirm, ButtonAdd, ButtonContinue, ButtonNavigate } from '../../components/Buttons';
+import React, { useState, useContext } from 'react';
+import { Alert, View } from 'react-native';
+import { Heading, AccountSection, CommonText, BasicSection } from '../../components/CommonComponents';
+import { ButtonCancel, ButtonDelete, ButtonConfirm, ButtonContinue, ButtonNavigate } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
-import { userDelete, userLogin, userLogout, userRegister } from '../../services/api.js';
+import { userDelete, userLogin, userRegister } from '../../services/api.js';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../../services/auth.js';
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
 import globalStyles from '../../assets/styles/Styles.js';
+import { set } from 'lodash';
 
 export const UserLogin = ({ isVisible, toggleVisible }) => {
   const [usermail, setLoginUsername] = useState('');
@@ -71,14 +72,15 @@ export const UserLogin = ({ isVisible, toggleVisible }) => {
 export const UserRegister = ({ isVisible, toggleVisible }) => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // tässävaiheessa ei käytössä confirmi, niin käsin testailu nopeutuu
+  //const [confirmPassword, setConfirmPassword] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
 
   const handleRegister = async () => {
-    if (registerPassword !== confirmPassword) {
-      Alert.alert('Virhe', 'Salasanat eivät täsmää');
-      return;
-    }
+    //if (registerPassword !== confirmPassword) {
+    //  Alert.alert('Virhe', 'Salasanat eivät täsmää');
+    //  return;
+    //}
 
     try {
       const data = await userRegister(registerEmail, registerPassword, registerUsername);
@@ -86,7 +88,7 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
         setRegisterEmail('');
         setRegisterPassword('');
         setRegisterUsername('');
-        setConfirmPassword('');
+      //  setConfirmPassword('');
       } else {
         Alert.alert('Rekisteröityminen epäonnistui', 'Virhe rekisteröitymisessä');
       }
@@ -123,13 +125,14 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
             trailingIcon={() => <Icon name="lock" />}
             secureTextEntry
           />
-          <CommonText
+          
+         {/* <CommonText
             placeholder='Toista salasana'
             value={confirmPassword}
             onChangeText={setConfirmPassword}
             editable={true}
             secureTextEntry
-          />
+          />*/}
           <ButtonContinue title="Rekisteröidy" onPress={handleRegister}/>
         </AccountSection>
       )}
@@ -138,18 +141,18 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
 };
 
 export const DeleteAccountOfThisUser = () => {
-  const { authState, setAuthState } = useContext(AuthenticationContext);
-  const { userid, accessToken } = authState;
+  const { setAuthState } = useContext(AuthenticationContext);
   const [isDeletingThisAccount, setDeletingThisAccount] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const navigation = useNavigation();
 
   const handleDeleteUser = async () => {
     try {
-      await userDelete(userid, accessToken, navigation, setAuthState);
+      await userDelete();
+      setAuthState(null);
       Alert.alert('Tilin poisto onnistui');
     } catch (error) {
-      Alert.alert('Tapahtui virhe', error.message || 'Ei yhteyttä palvelimeen');
+      Alert.alert('Tapahtui virhe', error.message);
     }
   };
 
@@ -166,6 +169,7 @@ export const DeleteAccountOfThisUser = () => {
   const handleConfirmWhenDeleting = () => {
     handleDeleteUser();
     setDeletingThisAccount(true);
+    navigation.navigate('Home');
   }
 
   const handleDeletingThisAccountCancel = () => {
@@ -215,7 +219,7 @@ export const LogoutFromThisUser = () => {
     try {
         clearUserData();
         setAuthState(null);
-        console.log(userid, accessToken);
+        //console.log(userid, accessToken);
         navigation.navigate('AccountMain');
     } catch (error) {
         console.error('Virhe uloskirjautumisessa:', error);

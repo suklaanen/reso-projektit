@@ -35,7 +35,7 @@ export const loadUserData = async (setUserData) => {
                 await AsyncStorage.setItem('accessToken', validAccessToken);
             }
 
-            setUserData({ userId: data.userId, accessToken: validAccessToken });
+            setUserData({ userId: data.userId, accessToken: validAccessToken.r });
         }
     } catch (error) {
         console.error('Error fetching user data:', error);
