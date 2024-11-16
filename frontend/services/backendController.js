@@ -7,10 +7,12 @@ export const HEADERS = { 'Content-Type': 'application/json' };
 export const REGISTER = `${BASE_URL}/auth/register`;
 export const SET_USERNAME = `${BASE_URL}/auth/setusername`;
 export const DELETE_USER = `${BASE_URL}/auth/deleteuser`;
+export const GET_USER_BY_UID = `${BASE_URL}/auth/getuserbyuid`;
 // item routes
 export const ADD_ITEM = `${BASE_URL}/items/additem`;
 export const GET_ITEMS = `${BASE_URL}/items/getitems`;
 export const GET_ITEM_BY_ID = `${BASE_URL}/items/getitembyid`;
+export const GET_ITEMS_BY_USER = `${BASE_URL}/items/getitemsbyuser`;
 export const DELETE_ITEM = `${BASE_URL}/items/deleteitem`;
 export const UPDATE_ITEM = `${BASE_URL}/items/updateitem`;
 
@@ -19,6 +21,28 @@ export const CHECK_BASE_URL = () => !!BASE_URL;
 const NO_BASE_URL = () => {
   console.warn('BASE_URL ei ole määritetty. Ohitetaan backend-kutsu.');
 }
+
+export const getUserByUid = async () => {
+  if (!CHECK_BASE_URL()) {
+    NO_BASE_URL();
+    return;
+
+  }
+
+  try {
+    const response = await fetch(GET_USER_BY_UID, {
+      method: 'GET',
+      headers: HEADERS,
+      
+    });
+    
+
+    return await response.json();
+  } catch (error) {
+    console.error('Get user by uid error:', error);
+    throw error;
+  }
+};
 
 export const postUserToBackend = async (email, uid, registerUsername) => {
 
@@ -72,7 +96,6 @@ export const deleteUserFromBackend = async () => {
   }
 }
 
-
 export const setUsernameToBackend = async (username) => {
   if (!CHECK_BASE_URL()) {
     NO_BASE_URL();
@@ -106,7 +129,7 @@ export const setUsernameToBackend = async (username) => {
 
 
 
-export const addItem = async (itemname, itemdescription, itempicture, postalcode, city, queuetruepickfalse) => {
+export const addItem = async (itemname, giverid, itemdescription, itempicture, postalcode, city, queuetruepickfalse) => {
   if (!CHECK_BASE_URL()) {
     NO_BASE_URL();
     return;
@@ -122,7 +145,7 @@ export const addItem = async (itemname, itemdescription, itempicture, postalcode
         ...HEADERS,
         'Authorization': `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ itemname, itemdescription, itempicture, postalcode, city, queuetruepickfalse, userid }),
+      body: JSON.stringify({ itemname, giverid, itemdescription, itempicture, postalcode, city, queuetruepickfalse, userid }),
     });
 
     return await response.json();
@@ -188,7 +211,7 @@ export const deleteItem = async (itemId) => {
   }
 };
 
-export const updateItem = async (itemId, itemname, itemdescription, itempicture, postalcode, city, queuetruepickfalse) => {
+export const getItemById = async (itemId) => {
   try {
     if (!CHECK_BASE_URL()) {
       NO_BASE_URL();
@@ -197,18 +220,43 @@ export const updateItem = async (itemId, itemname, itemdescription, itempicture,
 
     const accessToken = await AsyncStorage.getItem('accessToken');
 
-    const response = await fetch(UPDATE_ITEM, {
-      method: 'PUT',
+    const response = await fetch(GET_ITEM_BY_ID, {
+      method: 'POST',
       headers: {
         ...HEADERS,
         'Authorization': `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ itemId, itemname, itemdescription, itempicture, postalcode, city, queuetruepickfalse }),
+      body: JSON.stringify({ itemId }),
+    });
+
+    return await response.json();
+  }
+  catch (error) {
+    console.error('Get item by id error:', error);
+    throw error;
+  }
+};
+
+export const getItemsByUser = async () => {
+  try {
+    if (!CHECK_BASE_URL()) {
+      NO_BASE_URL();
+      return;
+    }
+
+    const accessToken = await AsyncStorage.getItem('accessToken');
+
+    const response = await fetch(GET_ITEMS_BY_USER, {
+      method: 'GET',
+      headers: {
+        ...HEADERS,
+        'Authorization': `Bearer ${accessToken}`,
+      },
     });
 
     return await response.json();
   } catch (error) {
-    console.error('Update item error:', error);
+    console.error('Get items by user error:', error);
     throw error;
   }
 };

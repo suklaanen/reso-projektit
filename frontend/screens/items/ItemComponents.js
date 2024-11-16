@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { NoItemsWhenLoggedOut, AllItems, NavigateToThisUsersItems, NavigateToThisUsersQueue, ItemAddNew, ItemModify, ItemDelete, ItemJoinOnQueue } from './FindItems';
+import { NoItemsWhenLoggedOut, AllItems, NavigateToThisUsersItems, NavigateToThisUsersQueue, ItemAddNew, ItemModify, ItemDelete, ItemJoinOnQueue, MyItems } from './FindItems';
 import { Heading, BasicSection } from '../../components/CommonComponents';
 import { ButtonAdd } from '../../components/Buttons';
 import { useNavigation } from '@react-navigation/native';
@@ -44,6 +44,8 @@ export const ItemsFromThisUser = () => {
       <BasicSection>
         Käyttäjän omat julkaisut tänne ja niiden muokkaus / poisto / merkintä noudetuksi
       </BasicSection>
+
+      <MyItems />
     </ScrollView>
   );
 }

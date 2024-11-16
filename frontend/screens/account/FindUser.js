@@ -72,14 +72,15 @@ export const UserLogin = ({ isVisible, toggleVisible }) => {
 export const UserRegister = ({ isVisible, toggleVisible }) => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // tässävaiheessa ei käytössä confirmi, niin käsin testailu nopeutuu
+  //const [confirmPassword, setConfirmPassword] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
 
   const handleRegister = async () => {
-    if (registerPassword !== confirmPassword) {
-      Alert.alert('Virhe', 'Salasanat eivät täsmää');
-      return;
-    }
+    //if (registerPassword !== confirmPassword) {
+    //  Alert.alert('Virhe', 'Salasanat eivät täsmää');
+    //  return;
+    //}
 
     try {
       const data = await userRegister(registerEmail, registerPassword, registerUsername);
@@ -87,7 +88,7 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
         setRegisterEmail('');
         setRegisterPassword('');
         setRegisterUsername('');
-        setConfirmPassword('');
+      //  setConfirmPassword('');
       } else {
         Alert.alert('Rekisteröityminen epäonnistui', 'Virhe rekisteröitymisessä');
       }
@@ -124,13 +125,14 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
             trailingIcon={() => <Icon name="lock" />}
             secureTextEntry
           />
-          <CommonText
+          
+         {/* <CommonText
             placeholder='Toista salasana'
             value={confirmPassword}
             onChangeText={setConfirmPassword}
             editable={true}
             secureTextEntry
-          />
+          />*/}
           <ButtonContinue title="Rekisteröidy" onPress={handleRegister}/>
         </AccountSection>
       )}
@@ -217,7 +219,7 @@ export const LogoutFromThisUser = () => {
     try {
         clearUserData();
         setAuthState(null);
-        console.log(userid, accessToken);
+        //console.log(userid, accessToken);
         navigation.navigate('AccountMain');
     } catch (error) {
         console.error('Virhe uloskirjautumisessa:', error);
