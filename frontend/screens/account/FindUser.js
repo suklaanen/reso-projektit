@@ -1,14 +1,17 @@
 import React, { useState, useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, firestore } from '../../services/firebaseConfig';
+import { query, where, getDocs, collection } from 'firebase/firestore';
 import { Alert, View } from 'react-native';
 import { Heading, AccountSection, CommonText, BasicSection } from '../../components/CommonComponents';
 import { ButtonCancel, ButtonDelete, ButtonConfirm, ButtonContinue, ButtonNavigate } from '../../components/Buttons';
 import { Icon } from 'react-native-elements';
-import { userDelete, userLogin, userRegister } from '../../services/api.js';
 import { useNavigation } from '@react-navigation/native';
 import { AuthenticationContext } from '../../services/auth.js';
 import { clearUserData, saveUserData } from '../../services/asyncStorageHelper';
 import globalStyles from '../../assets/styles/Styles.js';
-import { set } from 'lodash';
+import Toast from 'react-native-toast-message';
 
 export const UserLogin = ({ isVisible, toggleVisible }) => {
   const [usermail, setLoginUsername] = useState('');
@@ -22,8 +25,48 @@ export const UserLogin = ({ isVisible, toggleVisible }) => {
     setAuthState(data);
   };
 
+  const userLogin = async (credential, password) => {
+    try {
+      let email = credential;
+  
+      if (!credential.includes('@')) {
+        const usersRef = collection(firestore, 'users');
+        const usernameQuery = query(usersRef, where('username', '==', credential));
+        const querySnapshot = await getDocs(usernameQuery);
+  
+        if (querySnapshot.empty) {
+          throw new Error('Käyttäjätunnusta ei löytynyt');
+        }
+  
+        const userDoc = querySnapshot.docs[0];
+        email = userDoc.data().email;
+      }
+  
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
+      const accessToken = await userCredential.user.getIdToken();
+  
+      if (accessToken) {
+        await AsyncStorage.setItem('userId', uid);
+        await AsyncStorage.setItem('accessToken', accessToken);
+      } else {
+        console.warn('accessToken was undefined. Skipping storage of access token.');
+      }
+  
+      return { success: true, userId: uid, accessToken };
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Kirjautuminen epäonnistui',
+        text2: error.message,
+      });
+      console.error('Kirjautuminen epäonnistui:', error.message);
+      throw error;
+    }
+  };
   
   const handleLogin = async () => {
+
     try {
       const data = await userLogin(usermail, password);
       
@@ -72,23 +115,41 @@ export const UserLogin = ({ isVisible, toggleVisible }) => {
 export const UserRegister = ({ isVisible, toggleVisible }) => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
-  // tässävaiheessa ei käytössä confirmi, niin käsin testailu nopeutuu
-  //const [confirmPassword, setConfirmPassword] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
 
+  const userRegister = async ( email, password, registerUsername ) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
+  
+      Toast.show({
+        type: 'success',
+        text1: 'Käyttäjätunnus luotu!',
+        text2: 'Voit nyt kirjautua!',
+      });
+  
+    await saveUserToFirestore(uid, registerUsername, email);
+  
+    return { success: true, uid, username: registerUsername, email };
+    
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Käyttäjän luominen epäonnistui.',
+        text2: error.message,
+      });
+      console.error('Rekisteröinnissä tapahtui virhe:', error.message);
+      throw error;
+    }
+  };
+  
   const handleRegister = async () => {
-    //if (registerPassword !== confirmPassword) {
-    //  Alert.alert('Virhe', 'Salasanat eivät täsmää');
-    //  return;
-    //}
-
     try {
       const data = await userRegister(registerEmail, registerPassword, registerUsername);
       if (data) {
         setRegisterEmail('');
         setRegisterPassword('');
         setRegisterUsername('');
-      //  setConfirmPassword('');
       } else {
         Alert.alert('Rekisteröityminen epäonnistui', 'Virhe rekisteröitymisessä');
       }
@@ -125,14 +186,6 @@ export const UserRegister = ({ isVisible, toggleVisible }) => {
             trailingIcon={() => <Icon name="lock" />}
             secureTextEntry
           />
-          
-         {/* <CommonText
-            placeholder='Toista salasana'
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            editable={true}
-            secureTextEntry
-          />*/}
           <ButtonContinue title="Rekisteröidy" onPress={handleRegister}/>
         </AccountSection>
       )}
@@ -145,6 +198,25 @@ export const DeleteAccountOfThisUser = () => {
   const [isDeletingThisAccount, setDeletingThisAccount] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const navigation = useNavigation();
+
+  const userDelete = async () => {
+
+    try {
+      const user = auth.currentUser;
+
+      await deleteUserDataFromFirestore(user.uid);
+
+      await user.delete();
+      console.log('Käyttäjän autentikointitili poistettu');
+      
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Poistovirhe',
+          text2: error.message,
+        });
+    }
+  };
 
   const handleDeleteUser = async () => {
     try {
@@ -214,12 +286,11 @@ export const LogoutFromThisUser = () => {
   const {authState, setAuthState} = useContext(AuthenticationContext);
   const {userid, accessToken} = authState;
   const navigation = useNavigation();
-
+  
   const handleLogout = async () => {
     try {
         clearUserData();
         setAuthState(null);
-        //console.log(userid, accessToken);
         navigation.navigate('AccountMain');
     } catch (error) {
         console.error('Virhe uloskirjautumisessa:', error);

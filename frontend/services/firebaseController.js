@@ -1,15 +1,3 @@
-// Sijoite tänne Firestoreen liittyvät operaatiot
-// Käytä jokaisen funktion alussa CHECK_BASE_URL() !!
-// Koska halutaan tarkistaa, onko käyttäjälle asetettu BASE_URLia:
-// Jos BASE_URL on asetettu, niin ei tehdä Firestore-operaatioita
-// Jos BASE_URLia ei ole asetettu, niin Firestore-operaatiot tehdään
-/***************************
-    if (CHECK_BASE_URL()) {
-        FOUND_BASE_URL();
-        return;
-      }
-**********************************************************************/
-
 import { 
   collection, 
   addDoc, 
@@ -22,14 +10,8 @@ import {
 } from 'firebase/firestore';
 
 import { getAuth } from 'firebase/auth';
-
-import { CHECK_BASE_URL } from './backendController';
 import { firestore } from './firebaseConfig'; 
 import { serverTimestamp } from 'firebase/firestore';
-
-const FOUND_BASE_URL = () => {
-  console.log('BASE_URL on määritetty. Ohitetaan firestore. ');
-}
 
 // Tallennetaan käyttäjätunnus Firestoreen
 export const  saveUserToFirestore = async (uid, username, email) => {
@@ -47,14 +29,8 @@ export const  saveUserToFirestore = async (uid, username, email) => {
     }
   };
 
-
 // Poistetaan käyttäjän tiedot Firestoresta
 export const deleteUserDataFromFirestore = async (uid) => {
-
-    if (CHECK_BASE_URL()) {
-        FOUND_BASE_URL();
-        return;
-      }
 
     try {
         const collectionsToClean = ["users", "items"];
@@ -120,30 +96,3 @@ export const addItemToFirestore = async (itemname, itemdescription, postalcode, 
     throw error;
   }
 };
-
-// kesken :) 
-// Poistetaan vanhat ilmoitukset Firestoresta
-export const deleteExpiredItems = async () => {
-    try {
-      const now = Date.now();
-      const itemsRef = collection(firestore, 'items');
-      const q = query(itemsRef, where('expirationAt', '<', now)); 
-  
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(async (doc) => {
-        await deleteDoc(doc.ref);  
-        console.log(`Tavara ${doc.id} poistettu Firestoresta.`);
-      });
-    } catch (error) {
-      console.error('Virhe vanhentuneiden tavaroiden poistossa:', error);
-      throw error;
-    }
-  };
-
-  /*
-  // Ajastettu / vanhojen ilmojen poisto vielä pittää miettii
-export const scheduledDeleteExpiredItems = functions.pubsub.schedule('every 10 minutes').onRun(async (context) => {
-    console.log('Poistetaan vanhentuneet tavarat...');
-    await deleteExpiredItems();
-  }); */
-  

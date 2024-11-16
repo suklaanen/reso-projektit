@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { refreshAccessToken } from './api'; 
 
 export const fetchUserDataFromStorage = async () => {
     try {
