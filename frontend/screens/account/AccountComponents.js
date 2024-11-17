@@ -4,7 +4,7 @@ import { Heading, BasicSection } from '../../components/CommonComponents';
 import { DeleteAccountOfThisUser, LogoutFromThisUser, UserLogin, UserRegister, MessagingSystem, AccountSystem } from './FindUser';
 import { NavigateToThisUsersItems, NavigateToThisUsersQueue } from '../items/FindItems';
 import { BasicsOfSecuringThisAccount, BasicsOfGettingAnAccount } from '../../components/Textblocks';
-import { AuthenticationContext } from '../../services/auth';
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 export const AccountLoggedOut = () => { 
   const [visibleSection, setVisibleSection] = useState(null);

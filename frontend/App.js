@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-native-paper';
-import { AuthenticationProvider } from './services/auth';
+import { AuthenticationProvider } from "./context/AuthenticationContext";
 import globalStyles from './assets/styles/Styles';
 import CustomTopBar from './components/CustomTopBar';
 import CustomBottomBar from './components/CustomBottomBar';

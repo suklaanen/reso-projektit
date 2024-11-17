@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import globalStyles from '../assets/styles/Styles';
 
-import { AuthenticationContext } from '../services/auth';
+import { AuthenticationContext } from "../context/AuthenticationContext";
 
 const CustomTopBar = () => {
   const navigation = useNavigation();
