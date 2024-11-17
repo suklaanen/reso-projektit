@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { ScrollView, Text, StyleSheet, View } from "react-native";
 import { Heading, BasicSection } from "../../components/CommonComponents";
-import { AuthenticationContext } from "../../services/auth";
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { firestore } from "../../services/firebaseConfig";
 import {
   doc,
@@ -22,7 +22,7 @@ const MessagesMain = () => {
   const sampleUserId = "CzmNeYO7av152mqA9SHY";
 
   useEffect(() => {
-    const threadsRef = collection(firestore, "threadstest");
+    const threadsRef = collection(firestore, "threads");
     const userRef = doc(firestore, "users", sampleUserId);
 
     const q = query(
@@ -37,7 +37,7 @@ const MessagesMain = () => {
 
           const messagesRef = collection(
             firestore,
-            "threadstest",
+            "threads",
             threadId,
             "messages"
           );

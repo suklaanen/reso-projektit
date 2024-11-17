@@ -12,7 +12,7 @@ const ChatView = ({ route }) => {
   const sampleUserId = "CzmNeYO7av152mqA9SHY";
 
   useEffect(() => {
-    const messagesRef = collection(firestore, 'threadstest', threadId, 'messages');
+    const messagesRef = collection(firestore, 'threads', threadId, 'messages');
     const q = query(messagesRef, orderBy('createdAt', 'asc'));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -30,7 +30,7 @@ const ChatView = ({ route }) => {
     if (newMessage.trim() === '') return;
 
     try {
-      const messagesRef = collection(firestore, 'threadstest', threadId, 'messages');
+      const messagesRef = collection(firestore, 'threads', threadId, 'messages');
       const userRef = doc(firestore, 'users', sampleUserId);
       
       await addDoc(messagesRef, {
