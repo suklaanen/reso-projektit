@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Heading, BasicSection } from "../../components/CommonComponents";
-import { AuthenticationContext } from "../../services/auth";
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { firestore } from "../../services/firebaseConfig";
 import {
   doc,
