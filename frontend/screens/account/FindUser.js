@@ -23,7 +23,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import globalStyles from "../../assets/styles/Styles.js";
 import Toast from "react-native-toast-message";
-import { saveUserToFirestore } from "../../services/firebaseController.js";
+import { saveUserToFirestore, deleteUserDataFromFirestore  } from "../../services/firebaseController.js";
 
 export const UserLogin = ({ isVisible, toggleVisible }) => {
   const [usermail, setLoginUsername] = useState("");
@@ -237,7 +237,6 @@ export const DeleteAccountOfThisUser = () => {
 
   const handleConfirmWhenDeleting = () => {
     handleDeleteUser();
-    setDeletingThisAccount(true);
     navigation.navigate("Home");
   };
 
@@ -256,7 +255,7 @@ export const DeleteAccountOfThisUser = () => {
         <>
           <BasicSection>
             Mikäli poistat käyttäjätilisi palvelusta, sen kaikki tiedot
-            poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili".{" "}
+            poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili".
             {"\n\n"}
           </BasicSection>
           <View style={globalStyles.viewButtons}>
