@@ -3,8 +3,8 @@ import { ButtonNavigate } from '../../components/Buttons';
 import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BasicSection, Heading } from '../../components/CommonComponents';
-import { addItemToFirestore, fetchUsername } from '../../services/firebaseController.js';
-import { firestore,} from '../../services/firebaseConfig';
+import { addItemToFirestore } from '../../services/firebaseController.js';
+import { firestore } from '../../services/firebaseConfig';
 import { collection, getDocs, getDoc } from 'firebase/firestore';
 import Toast from 'react-native-toast-message';
 
