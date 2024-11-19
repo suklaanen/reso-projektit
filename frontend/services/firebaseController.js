@@ -115,3 +115,31 @@ export const addItemToFirestore = async (itemname, itemdescription, postalcode, 
   }
 
 };
+
+// Haetaan käyttäjän itemit
+export const getItemsByUser = async (uid) => {
+  try {
+    const userRef = doc(firestore, 'users', uid);
+    const querySnapshot = await getDocs(query(collection(firestore, 'items'), where('giverid', '==', userRef)));
+    const items = [];
+    querySnapshot.forEach((doc) => {
+      items.push({ id: doc.id, ...doc.data() });
+    });
+    return { items };
+  } catch (error) {
+    console.error('Virhe haettaessa käyttäjän tavaroita Firestoresta:', error);
+    throw error;
+  }
+};
+
+// Poistetaan käyttäjän julkaisu
+export const deleteItemFromFirestore = async (itemId) => {
+  try {
+    const itemRef = doc(firestore, 'items', itemId);
+    await deleteDoc(itemRef);
+    console.log(`Item ${itemId} poistettu Firestoresta.`);
+  } catch (error) {
+    console.error('Virhe poistettaessa itemiä Firestoresta:', error);
+    throw error;
+  }
+};

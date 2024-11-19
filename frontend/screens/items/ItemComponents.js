@@ -41,10 +41,7 @@ export const ItemsFromThisUser = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
-      <BasicSection>
-        Käyttäjän omat julkaisut tänne ja niiden muokkaus / poisto / merkintä noudetuksi
-      </BasicSection>
-
+      <Heading title="Omat ilmoitukset" />
       <MyItems />
     </ScrollView>
   );
