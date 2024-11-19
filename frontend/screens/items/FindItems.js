@@ -3,12 +3,27 @@ import { ButtonNavigate } from '../../components/Buttons';
 import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BasicSection, Heading } from '../../components/CommonComponents';
-import { addItemToFirestore, fetchUsername } from '../../services/firebaseController.js';
+import { addItemToFirestore } from '../../services/firebaseController.js';
 import { firestore } from '../../services/firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, getDoc } from 'firebase/firestore';
 import Toast from 'react-native-toast-message';
 
 const itemsCollection = collection(firestore, 'items');
+
+const fetchGiverData = async (giverRef) => {
+  try {
+    if (!giverRef) return null;
+    const giverDoc = await getDoc(giverRef);
+    if (giverDoc.exists()) {
+      return giverDoc.data();
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Virhe haettaessa julkaisijaa', error);
+    return null;
+  }
+};
 
 export const fetchItems = async () => {
   try {
@@ -73,6 +88,7 @@ export const AllItems = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [giverData, setGiverData] = useState({});
 
   useEffect(() => {
     const getItemsFromFirestore = async () => {
@@ -80,6 +96,12 @@ export const AllItems = () => {
         const fetchedItems = await fetchItems();
         console.log('Fetched items:', fetchedItems);  
         setItems(fetchedItems);
+
+        if (fetchedItems.length > 0) {
+          const giverRef = fetchedItems[0].giverid; 
+          const giverDetails = await fetchGiverData(giverRef);
+          setGiverData(giverDetails);
+        }
 
       } catch (error) {
         setError(error);
@@ -115,7 +137,7 @@ export const AllItems = () => {
         <Text style={styles.itemName}>{item.itemname}</Text>
         <Text>{item.itemdescription}</Text>
         <Text>Sijainti: {item.postalcode}, {item.city}</Text>
-        <Text>Julkaisija: {item.giverid || 'Ei saatavilla'} , {item.username || 'Ei saatavilla'}</Text>
+        <Text>Julkaisija: {giverData ? giverData.username : 'Ei saatavilla'} </Text>
         <Text>Julkaistu: {item.createdAt}</Text>
         <Text>Vanhenee: {item.expirationAt}</Text>
       </View>
