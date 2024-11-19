@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { ButtonNavigate } from '../../components/Buttons';
-import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
+import { ButtonAdd, ButtonCancel, ButtonConfirm, ButtonDelete, ButtonNavigate } from '../../components/Buttons';
+import { Text, View, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BasicSection, Heading } from '../../components/CommonComponents';
-import { addItemToFirestore } from '../../services/firebaseController.js';
+import { addItemToFirestore, getItemsByUser, deleteItemFromFirestore } from '../../services/firebaseController.js';
 import { firestore } from '../../services/firebaseConfig';
-import { collection, getDocs, getDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { collection, getDocs, getDoc, query, orderBy, limit, startAfter, } from 'firebase/firestore';
+import globalStyles from "../../assets/styles/Styles.js";
 import Toast from 'react-native-toast-message';
 
 const itemsCollection = collection(firestore, 'items');
 
-const fetchGiverData = async (giverRef) => {
+export const fetchPaginatedItems = async (collectionRef, lastDoc = null, pageSize = 10) => {
   try {
-    if (!giverRef) return null;
-    const giverDoc = await getDoc(giverRef);
-    if (giverDoc.exists()) {
-      return giverDoc.data();
-    } else {
-      return null;
+    let q = query(collectionRef, orderBy('createdAt', 'desc'), limit(pageSize));
+    if (lastDoc) {
+      q = query(q, startAfter(lastDoc));
     }
+
+    const querySnapshot = await getDocs(q);
+    const items = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return {
+      items,
+      lastVisible: querySnapshot.docs[querySnapshot.docs.length - 1],
+    };
   } catch (error) {
-    console.error('Virhe haettaessa julkaisijaa', error);
-    return null;
+    console.error('Virhe sivutuksen aikana:', error);
+    throw error;
   }
 };
 
@@ -31,14 +41,9 @@ export const fetchItems = async () => {
     const items = querySnapshot.docs.map(doc => {
       const data = doc.data();
 
-      const createdAt = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString() : 'No date available';
-      const expirationAt = data.expirationAt ? new Date(data.expirationAt.seconds * 1000).toLocaleString() : 'No expiration date';
-
       return {
         id: doc.id,
-        ...data,
-        createdAt,
-        expirationAt,
+        ...data
       };
     });
     console.log(items);
@@ -86,34 +91,37 @@ export const NavigateToThisUsersQueue = () => {
 
 export const AllItems = () => {
   const [items, setItems] = useState([]);
+  const [lastDoc, setLastDoc] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [giverData, setGiverData] = useState({});
+  const [hasMore, setHasMore] = useState(true);
+
+  const pageSize = 4;
+
+  const loadItems = async () => {
+
+    setLoading(true);
+    try {
+      const { items: newItems, lastVisible } = await fetchPaginatedItems(itemsCollection, lastDoc, pageSize);
+
+      setItems(prevItems => [...prevItems, ...newItems]);
+      setLastDoc(lastVisible);
+
+      if (!lastVisible || newItems.length < pageSize) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const getItemsFromFirestore = async () => {
-      try {
-        const fetchedItems = await fetchItems();
-        console.log('Fetched items:', fetchedItems);  
-        setItems(fetchedItems);
-
-        if (fetchedItems.length > 0) {
-          const giverRef = fetchedItems[0].giverid; 
-          const giverDetails = await fetchGiverData(giverRef);
-          setGiverData(giverDetails);
-        }
-
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getItemsFromFirestore();
+    loadItems();
   }, []);
 
-  if (loading) {
+  if (loading && items.length === 0) {
     return (
       <BasicSection>
         <Text>Ladataan...</Text>
@@ -131,18 +139,20 @@ export const AllItems = () => {
   }
   
   return (
-    <>
+    <View>
     {items.map((item) => (
-      <View key={item.id} style={styles.itemContainer}>
-        <Text style={styles.itemName}>{item.itemname}</Text>
+      <View key={item.id} style={globalStyles.itemContainer}>
+        <Text style={globalStyles.itemName}>{item.itemname}</Text>
         <Text>{item.itemdescription}</Text>
         <Text>Sijainti: {item.postalcode}, {item.city}</Text>
-        <Text>Julkaisija: {giverData ? giverData.username : 'Ei saatavilla'} </Text>
-        <Text>Julkaistu: {item.createdAt}</Text>
-        <Text>Vanhenee: {item.expirationAt}</Text>
+        <Text>Julkaisija: -- </Text>
       </View>
     ))}
-    </>
+
+      {hasMore && ( <Button title="Näytä lisää" onPress={loadItems} disabled={loading} /> )}
+
+      {!hasMore && <Text style={{ textAlign: 'center', marginTop: 16 }}>Ei enempää kohteita</Text>}
+    </View>
   );
 };
 
@@ -158,53 +168,46 @@ export const ItemAddNew = () => {
     try {
       const response = await addItemToFirestore(itemname, itemdescription, postalcode, city);
       console.log('Add item response:', response);
-      Toast.show({
-        type: 'success',
-        text1: 'Julkaisu lisätty!',
-      });
+      Toast.show({ type: 'success', text1: 'Julkaisu lisätty!',  });
 
       navigation.navigate('ItemsMain');
     } catch (error) {
       console.error('Add item error:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Virhe julkaisua lisättäessä',
-        text2: error.message,
-      });
+      Toast.show({ type: 'error', text1: 'Virhe julkaisua lisättäessä', text2: error.message, });
     }
   };
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <Heading title="Lisää uusi ilmoitus" />
       <TextInput
-        style={styles.input}
+        style={globalStyles.textInput}
         placeholder="Otsikko (tuotteen nimi)"
         value={itemname}
         onChangeText={setItemname}
       />
       <TextInput
-        style={styles.input}
+        style={globalStyles.textInput}
         placeholder="Kuvaus tuotteesta"
         value={itemdescription}
         onChangeText={setItemdescription}
         multiline
       />
       <TextInput
-        style={styles.input}
+        style={globalStyles.textInput}
         placeholder="Postinumero"
         keyboardType="numeric"
         value={postalcode}
         onChangeText={setPostalcode}
       />
       <TextInput
-        style={styles.input}
+        style={globalStyles.textInput}
         placeholder="Kaupunki"
         value={city}
         onChangeText={setCity}
       />
 
-      <Button title="Julkaise" onPress={handleAddItem} color="#4CAF50" />
+      <ButtonAdd title="Julkaise" onPress={handleAddItem} color="#4CAF50" />
     </View>
   );
 };
@@ -235,11 +238,19 @@ export const MyItems = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeToggleId, setActiveToggleId] = useState(null);
 
   useEffect(() => {
     const fetchUserItems = async () => {
       try {
-        const fetchedItems = await getItemsByUser();
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (!user) {
+          throw new Error('Käyttäjä ei ole kirjautunut sisään.');
+        }
+
+        const fetchedItems = await getItemsByUser(user.uid);
         setItems(fetchedItems.items);
       } catch (error) {
         setError(error);
@@ -251,75 +262,63 @@ export const MyItems = () => {
     fetchUserItems();
   }, []);
 
+  const handleDelete = async (itemId) => {
+    try {
+      await deleteItemFromFirestore(itemId); 
+      setItems((prevItems) => prevItems.filter((item) => item.id !== itemId)); 
+      console.log(`Item ${itemId} poistettu.`);
+    } catch (error) {
+      console.error('Virhe poistettaessa itemiä:', error);
+      setError(error);
+    }
+  };
+
+  const toggleItem = (itemId) => {
+    setActiveToggleId((prevId) => (prevId === itemId ? null : itemId)); 
+  };
+
   if (loading) {
     return (
-      <BasicSection>
-        <Text>Ladataan...</Text>
-      </BasicSection>
+      <BasicSection> <Text>Ladataan...</Text> </BasicSection>
     );
   }
 
   if (error) {
     return (
-      <BasicSection>
-        <Toast type="error" text1="Virhe omien julkaisujen hakemisessa" text2={error.message} />
-        <Text>Virhe: {error.message}</Text>
-      </BasicSection>
+        <Toast type="error" text1="Virhe omien julkaisujen hakemisessa" text2={error.message} /> 
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Heading title="Omat ilmoitukset" />
-      
-      {items.map((item) => (
-        <View key={item.id} style={styles.itemContainer}>
-          <Text style={styles.itemName}>{item.itemname}</Text>
-          <Text>{item.itemdescription}</Text>
-          <Text>{item.city}</Text>
-          <Text>{item.postalcode}</Text>
-        </View>
-      ))}
-      
+    <View style={globalStyles.container}>
+
+      {items.length > 0 ? (
+        items.map((item) => (
+          <View key={item.id} style={globalStyles.itemContainer}>
+            <Text style={globalStyles.itemName}>{item.itemname}</Text>
+            <Text>{item.itemdescription}</Text>
+            <Text>{item.city}</Text>
+            <Text>{item.postalcode}</Text>
+
+            {activeToggleId !== item.id && (
+              <View style={globalStyles.viewButtons}>
+                <ButtonDelete title="Poista" onPress={() => toggleItem(item.id)} />
+              </View>
+            )}
+
+            {activeToggleId === item.id && (
+              <View style={globalStyles.viewButtons}>
+                <ButtonConfirm title="Vahvista" onPress={() => handleDelete(item.id)} />
+                <ButtonCancel title="Peruuta" onPress={() => toggleItem(null)} />
+              </View>
+            )}
+            
+          </View>
+        ))
+      ) : (
+        <Text>Julkaisuja ei löytynyt.</Text>
+      )}
+
     </View>
   );
 }; 
-
-
-const styles = StyleSheet.create({
-  container: {
-      flex: 1,
-      padding: 16,
-  },
-  itemContainer: {
-      marginBottom: 16,
-      padding: 12,
-      backgroundColor: '#f9f9f9',
-      borderRadius: 8,
-  },
-  itemName: {
-      fontSize: 18,
-      fontWeight: 'bold',
-  },
-  errorText: {
-      color: 'red',
-      fontSize: 16,
-  },
-
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 16,
-    paddingLeft: 8,
-  },
-  queueContainer: {
-    marginBottom: 16,
-  },
-  radioGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 8,
-  },
-});
