@@ -11,40 +11,21 @@ import {
   NavigateToThisUsersItems,
   NavigateToThisUsersQueue,
 } from "../items/FindItems";
-import {
-  BasicsOfSecuringThisAccount,
-  BasicsOfGettingAnAccount,
-} from "../../components/Textblocks";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
-import { Login } from "../login/Login";
-import { Register } from "../login/Register";
 
-export const AccountLoggedOut = () => {
-  const [visibleSection, setVisibleSection] = useState(null);
-
-  const toggleSection = (sectionName) => {
-    setVisibleSection((prevSection) =>
-      prevSection === sectionName ? null : sectionName
-    );
-  };
+export const AccountLoggedOut = () => { 
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
-      <BasicsOfGettingAnAccount />
-      <Login
-        isVisible={visibleSection === "login"}
-        toggleVisible={() => toggleSection("login")}
-      />
-      <Register
-        isVisible={visibleSection === "register"}
-        toggleVisible={() => toggleSection("register")}
-      />
+      <BasicSection>
+          Täältä löydät tilisi näkymän, kun olet kirjautunut. {"\n"}
+      </BasicSection>
     </ScrollView>
   );
 };
 
 export const AccountLoggedIn = () => {
-  const { authState } = useContext(AuthenticationContext);
+  const {authState} = useContext(AuthenticationContext);
 
   if (!authState) {
     return <Text>No user data found.</Text>;
@@ -52,18 +33,11 @@ export const AccountLoggedIn = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
-      <Heading title="Käyttäjäsivu" />
-      <BasicSection>
-        <Text>
-          Tervetuloa, {authState.username} {"\n\n"}
-          Tämän näkymän kautta löytyy toiminnot, jotka liittyvät käyttäjätilin
-          hallinnointiin, käyttäjän omiin ilmoituksiin ja varauksiin sekä
-          tuotteisiin liittyvät aktiiviset viestiketjut.
-        </Text>
-      </BasicSection>
+      <Heading title="Käyttäjän omat" />
       <MessagingSystem />
       <NavigateToThisUsersItems />
       <NavigateToThisUsersQueue />
+      <Heading title="Tilin hallinta" />
       <AccountSystem />
       <LogoutFromThisUser />
     </ScrollView>
@@ -71,7 +45,7 @@ export const AccountLoggedIn = () => {
 };
 
 export const AccountMaintain = () => {
-  const { authState } = useContext(AuthenticationContext);
+  const {authState} = useContext(AuthenticationContext);
 
   if (!authState) {
     return <Text>No user data found.</Text>;
@@ -79,7 +53,6 @@ export const AccountMaintain = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
-      <BasicsOfSecuringThisAccount />
       <DeleteAccountOfThisUser />
     </ScrollView>
   );
