@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { ScrollView,Text} from 'react-native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
-import { DeleteAccountOfThisUser, LogoutFromThisUser, UserLogin, UserRegister, MessagingSystem, AccountSystem } from './FindUser';
+import { DeleteAccountOfThisUser, LogoutFromThisUser, UserRegister, MessagingSystem, AccountSystem } from './FindUser';
 import { NavigateToThisUsersItems, NavigateToThisUsersQueue } from '../items/FindItems';
 import { BasicsOfSecuringThisAccount, BasicsOfGettingAnAccount } from '../../components/Textblocks';
 import { AuthenticationContext } from "../../context/AuthenticationContext";
+import { Login } from "../login/Login";
 
 export const AccountLoggedOut = () => { 
   const [visibleSection, setVisibleSection] = useState(null);
@@ -16,7 +17,7 @@ export const AccountLoggedOut = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <BasicsOfGettingAnAccount />
-      <UserLogin 
+      <Login
         isVisible={visibleSection === 'login'} 
         toggleVisible={() => toggleSection('login')} 
       />
