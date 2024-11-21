@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { AuthenticationContext } from "../../context/AuthenticationContext";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../services/firebaseConfig";
@@ -16,14 +15,13 @@ import { ButtonContinue } from "../../components/Buttons";
 export const Login = ({ isVisible, toggleVisible }) => {
   const [usermail, setLoginUsername] = useState("");
   const [password, setLoginPassword] = useState("");
-  const { setAuthState } = useContext(AuthenticationContext);
   const navigation = useNavigation();
 
   const handleLogin = async () => {
     try {
       const data = await signInWithEmailAndPassword(auth, usermail, password);
       if (data) {
-        setAuthState(data);
+        // konteksti hoitaa tilan päivityksen automaattisesti
       } else {
         Alert.alert(
           "Kirjautuminen epäonnistui",
