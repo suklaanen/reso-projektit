@@ -1,22 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-import { firestore } from '../../services/firebaseConfig';
-import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc } from 'firebase/firestore';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { firestore } from "../../services/firebaseConfig";
+import {
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
+  doc,
+} from "firebase/firestore";
+import { useAuth } from "../../context/AuthenticationContext";
 
 const ChatView = ({ route }) => {
   const { threadId } = route.params;
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
-
-  // replace with actual user id
-  const sampleUserId = "CzmNeYO7av152mqA9SHY";
+  const [newMessage, setNewMessage] = useState("");
+  const { user } = useAuth();
 
   useEffect(() => {
-    const messagesRef = collection(firestore, 'threads', threadId, 'messages');
-    const q = query(messagesRef, orderBy('createdAt', 'asc'));
+    const messagesRef = collection(firestore, "threads", threadId, "messages");
+    const q = query(messagesRef, orderBy("createdAt", "asc"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const messagesData = snapshot.docs.map(doc => ({
+      const messagesData = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
@@ -27,27 +43,37 @@ const ChatView = ({ route }) => {
   }, [threadId]);
 
   const sendMessage = async () => {
-    if (newMessage.trim() === '') return;
+    if (newMessage.trim() === "") return;
 
     try {
-      const messagesRef = collection(firestore, 'threads', threadId, 'messages');
-      const userRef = doc(firestore, 'users', sampleUserId);
-      
+      const messagesRef = collection(
+        firestore,
+        "threads",
+        threadId,
+        "messages"
+      );
+      const userRef = doc(firestore, "users", user.uid);
+
       await addDoc(messagesRef, {
         content: newMessage,
         sender: userRef,
         createdAt: serverTimestamp(),
       });
-      setNewMessage('');
+      setNewMessage("");
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
   };
 
   const renderItem = ({ item }) => {
-    const isCurrentUser = item.sender.id === sampleUserId;
+    const isCurrentUser = item.sender.id === user.uid;
     return (
-      <View style={[styles.messageContainer, isCurrentUser ? styles.currentUser : styles.otherUser]}>
+      <View
+        style={[
+          styles.messageContainer,
+          isCurrentUser ? styles.currentUser : styles.otherUser,
+        ]}
+      >
         <Text style={styles.messageText}>{item.content}</Text>
       </View>
     );
@@ -56,7 +82,7 @@ const ChatView = ({ route }) => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={80}
     >
       <FlatList
@@ -91,45 +117,45 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     padding: 10,
     borderRadius: 10,
-    maxWidth: '75%',
+    maxWidth: "75%",
   },
   currentUser: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#DCF8C6',
+    alignSelf: "flex-end",
+    backgroundColor: "#DCF8C6",
   },
   otherUser: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#E4E6EB',
+    alignSelf: "flex-start",
+    backgroundColor: "#E4E6EB",
   },
   messageText: {
     fontSize: 16,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
     borderTopWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
     marginBottom: 8,
   },
   textInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 25,
     padding: 10,
     fontSize: 16,
     marginRight: 10,
   },
   sendButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: "#007BFF",
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   sendButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
 });
