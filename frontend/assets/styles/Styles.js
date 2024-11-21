@@ -8,6 +8,69 @@ const globalStyles = StyleSheet.create({
     padding: 16,
   },
 
+  separatorThin: {
+    height: 1,
+    backgroundColor: '#ccc', 
+    marginVertical: 16,
+  },
+
+  separatorBold: {
+    height: 3,
+    backgroundColor: '#ddd', 
+    marginVertical: 16,
+    marginBottom: 18,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 90,
+  },
+
+  iconContainer: {
+    marginTop: 10,
+    marginBottom: 16,
+    marginLeft: 7,
+    flexDirection: 'row',  
+    alignItems: 'center', 
+  },
+
+  iconTextContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center',
+  },
+
+  iconText: {
+    fontSize: 12,
+    color: "#000",
+    marginLeft: 4,
+  },
+
+  iconsOnUse: {
+    fontSize: 40,
+    marginHorizontal: 5,
+  },
+
+  defText: {
+    fontSize: 18,
+    color: "#000",
+    marginLeft: 4,
+  },
+
+  defTitle: {
+    fontSize: 34,
+    color: "#000",
+    marginLeft: 8,
+    fontFamily: "Chewy",
+  },
+
+  betwTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#0f6b0d",
+    textAlign: "center",
+    marginVertical: 16,
+  },
+
   scrollViewContainer: {
     flexGrow: 1,
     padding: 12,
@@ -57,6 +120,36 @@ const globalStyles = StyleSheet.create({
     backgroundColor: "#0f3e5b",
     height: 98,
   },
+
+  appBarAuthUndef: {
+    backgroundColor: "#0f3e5b",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',   
+    height: 111,
+  },
+
+  appBarContainerAuthUndef: {
+    flex: 1,
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "left",
+    paddingTop: 27,
+    alignItems: "center",
+    marginLeft: -60,
+    zIndex: 2,
+  },
+
+  appBarTitleAuthUndef: {
+    fontFamily: "Chewy",
+    fontSize: 40,
+    color: "#87ffca",
+    paddingVertical: 15,
+    textShadowColor: "#000", 
+    textShadowOffset: { width: 1, height: 1 }, 
+    textShadowRadius: 11,  
+  },
+
 
   appBarTitle: {
     fontFamily: "Chewy",
@@ -147,8 +240,9 @@ const globalStyles = StyleSheet.create({
   },
 
   logo: {
-    width: 76,
-    height: 76,
+    width: 160,
+    height: 160,
+    zIndex: 2,  
   },
 
   findItems: {

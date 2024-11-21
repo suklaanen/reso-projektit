@@ -22,7 +22,8 @@ import {
   ItemsFromThisUser,
   QueuesOfThisUser,
   ItemAddView,
-} from "./screens/items/ItemComponents";
+} from "./screens/items/ItemsMain";
+import ItemsMain from "./screens/items/ItemsMain";
 import Toast from "react-native-toast-message";
 import ChatView from "./screens/chat/ChatView";
 import AuthScreen from "./screens/auth/AuthScreen";
@@ -71,6 +72,11 @@ const AppNavigator = () => {
           <Stack.Screen
             name="AccountMaintain"
             component={AccountMaintain}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ItemsMain"
+            component={ItemsMain}
             options={{ headerShown: false }}
           />
           <Stack.Screen
