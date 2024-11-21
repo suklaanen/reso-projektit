@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { ScrollView, Text } from "react-native";
-import { Heading, BasicSection } from "../../components/CommonComponents";
+import { Heading } from "../../components/CommonComponents";
 import {
   DeleteAccountOfThisUser,
   LogoutFromThisUser,
@@ -13,19 +13,8 @@ import {
 } from "../items/FindItems";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
-export const AccountLoggedOut = () => { 
-
-  return (
-    <ScrollView contentContainerStyle={{ padding: 8 }}>
-      <BasicSection>
-          Täältä löydät tilisi näkymän, kun olet kirjautunut. {"\n"}
-      </BasicSection>
-    </ScrollView>
-  );
-};
-
 export const AccountLoggedIn = () => {
-  const {authState} = useContext(AuthenticationContext);
+  const authState = useContext(AuthenticationContext);
 
   if (!authState) {
     return <Text>No user data found.</Text>;
@@ -45,12 +34,6 @@ export const AccountLoggedIn = () => {
 };
 
 export const AccountMaintain = () => {
-  const {authState} = useContext(AuthenticationContext);
-
-  if (!authState) {
-    return <Text>No user data found.</Text>;
-  }
-
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <DeleteAccountOfThisUser />

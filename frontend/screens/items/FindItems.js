@@ -1,26 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { ButtonAdd, ButtonCancel, ButtonConfirm, ButtonDelete, ButtonNavigate } from '../../components/Buttons';
-import { Text, View, TextInput, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { BasicSection, Heading } from '../../components/CommonComponents';
-import { addItemToFirestore, getItemsByUser, deleteItemFromFirestore } from '../../services/firebaseController.js';
-import { firestore } from '../../services/firebaseConfig';
-import { getAuth } from 'firebase/auth';
-import { collection, getDocs, getDoc, query, orderBy, limit, startAfter, } from 'firebase/firestore';
+import React, { useState, useEffect } from "react";
+import {
+  ButtonAdd,
+  ButtonCancel,
+  ButtonConfirm,
+  ButtonDelete,
+  ButtonNavigate,
+} from "../../components/Buttons";
+import { Text, View, TextInput, Button } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { BasicSection, Heading } from "../../components/CommonComponents";
+import {
+  addItemToFirestore,
+  getItemsByUser,
+  deleteItemFromFirestore,
+} from "../../services/firebaseController.js";
+import { firestore } from "../../services/firebaseConfig";
+import { getAuth } from "firebase/auth";
+import {
+  collection,
+  getDocs,
+  getDoc,
+  query,
+  orderBy,
+  limit,
+  startAfter,
+} from "firebase/firestore";
 import globalStyles from "../../assets/styles/Styles.js";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
 
-const itemsCollection = collection(firestore, 'items');
+const itemsCollection = collection(firestore, "items");
 
-export const fetchPaginatedItems = async (collectionRef, lastDoc = null, pageSize = 10) => {
+export const fetchPaginatedItems = async (
+  collectionRef,
+  lastDoc = null,
+  pageSize = 10
+) => {
   try {
-    let q = query(collectionRef, orderBy('createdAt', 'desc'), limit(pageSize));
+    let q = query(collectionRef, orderBy("createdAt", "desc"), limit(pageSize));
     if (lastDoc) {
       q = query(q, startAfter(lastDoc));
     }
 
     const querySnapshot = await getDocs(q);
-    const items = querySnapshot.docs.map(doc => ({
+    const items = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
@@ -30,7 +52,7 @@ export const fetchPaginatedItems = async (collectionRef, lastDoc = null, pageSiz
       lastVisible: querySnapshot.docs[querySnapshot.docs.length - 1],
     };
   } catch (error) {
-    console.error('Virhe sivutuksen aikana:', error);
+    console.error("Virhe sivutuksen aikana:", error);
     throw error;
   }
 };
@@ -38,52 +60,42 @@ export const fetchPaginatedItems = async (collectionRef, lastDoc = null, pageSiz
 export const fetchItems = async () => {
   try {
     const querySnapshot = await getDocs(itemsCollection);
-    const items = querySnapshot.docs.map(doc => {
+    const items = querySnapshot.docs.map((doc) => {
       const data = doc.data();
 
       return {
         id: doc.id,
-        ...data
+        ...data,
       };
     });
     console.log(items);
     return items;
   } catch (error) {
-    console.error('Virhe tavaroiden hakemisessa:', error);
+    console.error("Virhe tavaroiden hakemisessa:", error);
   }
 };
 
-export const NoItemsWhenLoggedOut = () => {
-  return (
-    <>
-      <BasicSection>
-        Kirjaudu sisään palvelun käyttäjänä päästäksesi tekemään löytöjä ja julkaisemaan omia ilmoituksia! {"\n"}
-      </BasicSection>
-    </>
-  );
-};
-
 export const NavigateToThisUsersItems = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
 
   return (
     <>
       <ButtonNavigate
         title="Ilmoitukset"
-        onPress={() => navigation.navigate('MyItems')}
+        onPress={() => navigation.navigate("MyItems")}
       />
     </>
   );
 };
 
 export const NavigateToThisUsersQueue = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
 
   return (
     <>
       <ButtonNavigate
         title="Varaukset"
-        onPress={() => navigation.navigate('MyQueues')}
+        onPress={() => navigation.navigate("MyQueues")}
       />
     </>
   );
@@ -99,12 +111,15 @@ export const AllItems = () => {
   const pageSize = 4;
 
   const loadItems = async () => {
-
     setLoading(true);
     try {
-      const { items: newItems, lastVisible } = await fetchPaginatedItems(itemsCollection, lastDoc, pageSize);
+      const { items: newItems, lastVisible } = await fetchPaginatedItems(
+        itemsCollection,
+        lastDoc,
+        pageSize
+      );
 
-      setItems(prevItems => [...prevItems, ...newItems]);
+      setItems((prevItems) => [...prevItems, ...newItems]);
       setLastDoc(lastVisible);
 
       if (!lastVisible || newItems.length < pageSize) {
@@ -132,48 +147,68 @@ export const AllItems = () => {
   if (error) {
     return (
       <BasicSection>
-        <Toast type="error" text1="Virhe julkaisujen hakemisessa" text2={error.message} />
+        <Toast
+          type="error"
+          text1="Virhe julkaisujen hakemisessa"
+          text2={error.message}
+        />
         <Text>Virhe: {error.message}</Text>
       </BasicSection>
     );
   }
-  
+
   return (
     <View>
-    {items.map((item) => (
-      <View key={item.id} style={globalStyles.itemContainer}>
-        <Text style={globalStyles.itemName}>{item.itemname}</Text>
-        <Text>{item.itemdescription}</Text>
-        <Text>Sijainti: {item.postalcode}, {item.city}</Text>
-        <Text>Julkaisija: -- </Text>
-      </View>
-    ))}
+      {items.map((item) => (
+        <View key={item.id} style={globalStyles.itemContainer}>
+          <Text style={globalStyles.itemName}>{item.itemname}</Text>
+          <Text>{item.itemdescription}</Text>
+          <Text>
+            Sijainti: {item.postalcode}, {item.city}
+          </Text>
+          <Text>Julkaisija: -- </Text>
+        </View>
+      ))}
 
-      {hasMore && ( <Button title="Näytä lisää" onPress={loadItems} disabled={loading} /> )}
+      {hasMore && (
+        <Button title="Näytä lisää" onPress={loadItems} disabled={loading} />
+      )}
 
-      {!hasMore && <Text style={{ textAlign: 'center', marginTop: 16 }}>Ei enempää kohteita</Text>}
+      {!hasMore && (
+        <Text style={{ textAlign: "center", marginTop: 16 }}>
+          Ei enempää kohteita
+        </Text>
+      )}
     </View>
   );
 };
 
 export const ItemAddNew = () => {
-  const [itemname, setItemname] = useState('');
-  const [itemdescription, setItemdescription] = useState('');
-  const [postalcode, setPostalcode] = useState('');
-  const [city, setCity] = useState('');
+  const [itemname, setItemname] = useState("");
+  const [itemdescription, setItemdescription] = useState("");
+  const [postalcode, setPostalcode] = useState("");
+  const [city, setCity] = useState("");
   const navigation = useNavigation();
 
   const handleAddItem = async () => {
-
     try {
-      const response = await addItemToFirestore(itemname, itemdescription, postalcode, city);
-      console.log('Add item response:', response);
-      Toast.show({ type: 'success', text1: 'Julkaisu lisätty!',  });
+      const response = await addItemToFirestore(
+        itemname,
+        itemdescription,
+        postalcode,
+        city
+      );
+      console.log("Add item response:", response);
+      Toast.show({ type: "success", text1: "Julkaisu lisätty!" });
 
-      navigation.navigate('ItemsMain');
+      navigation.navigate("ItemsMain");
     } catch (error) {
-      console.error('Add item error:', error);
-      Toast.show({ type: 'error', text1: 'Virhe julkaisua lisättäessä', text2: error.message, });
+      console.error("Add item error:", error);
+      Toast.show({
+        type: "error",
+        text1: "Virhe julkaisua lisättäessä",
+        text2: error.message,
+      });
     }
   };
 
@@ -216,9 +251,7 @@ export const ItemDelete = () => {
   return (
     <>
       <Heading title="Delete" />
-      <BasicSection>
-        X{"\n\n"}
-      </BasicSection>
+      <BasicSection>X{"\n\n"}</BasicSection>
     </>
   );
 };
@@ -227,9 +260,7 @@ export const ItemJoinOnQueue = () => {
   return (
     <>
       <Heading title="Join" />
-      <BasicSection>
-        X{"\n\n"}
-      </BasicSection>
+      <BasicSection>X{"\n\n"}</BasicSection>
     </>
   );
 };
@@ -247,7 +278,7 @@ export const MyItems = () => {
         const user = auth.currentUser;
 
         if (!user) {
-          throw new Error('Käyttäjä ei ole kirjautunut sisään.');
+          throw new Error("Käyttäjä ei ole kirjautunut sisään.");
         }
 
         const fetchedItems = await getItemsByUser(user.uid);
@@ -264,34 +295,40 @@ export const MyItems = () => {
 
   const handleDelete = async (itemId) => {
     try {
-      await deleteItemFromFirestore(itemId); 
-      setItems((prevItems) => prevItems.filter((item) => item.id !== itemId)); 
+      await deleteItemFromFirestore(itemId);
+      setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
       console.log(`Item ${itemId} poistettu.`);
     } catch (error) {
-      console.error('Virhe poistettaessa itemiä:', error);
+      console.error("Virhe poistettaessa itemiä:", error);
       setError(error);
     }
   };
 
   const toggleItem = (itemId) => {
-    setActiveToggleId((prevId) => (prevId === itemId ? null : itemId)); 
+    setActiveToggleId((prevId) => (prevId === itemId ? null : itemId));
   };
 
   if (loading) {
     return (
-      <BasicSection> <Text>Ladataan...</Text> </BasicSection>
+      <BasicSection>
+        {" "}
+        <Text>Ladataan...</Text>{" "}
+      </BasicSection>
     );
   }
 
   if (error) {
     return (
-        <Toast type="error" text1="Virhe omien julkaisujen hakemisessa" text2={error.message} /> 
+      <Toast
+        type="error"
+        text1="Virhe omien julkaisujen hakemisessa"
+        text2={error.message}
+      />
     );
   }
 
   return (
     <View style={globalStyles.container}>
-
       {items.length > 0 ? (
         items.map((item) => (
           <View key={item.id} style={globalStyles.itemContainer}>
@@ -302,23 +339,30 @@ export const MyItems = () => {
 
             {activeToggleId !== item.id && (
               <View style={globalStyles.viewButtons}>
-                <ButtonDelete title="Poista" onPress={() => toggleItem(item.id)} />
+                <ButtonDelete
+                  title="Poista"
+                  onPress={() => toggleItem(item.id)}
+                />
               </View>
             )}
 
             {activeToggleId === item.id && (
               <View style={globalStyles.viewButtons}>
-                <ButtonConfirm title="Vahvista" onPress={() => handleDelete(item.id)} />
-                <ButtonCancel title="Peruuta" onPress={() => toggleItem(null)} />
+                <ButtonConfirm
+                  title="Vahvista"
+                  onPress={() => handleDelete(item.id)}
+                />
+                <ButtonCancel
+                  title="Peruuta"
+                  onPress={() => toggleItem(null)}
+                />
               </View>
             )}
-            
           </View>
         ))
       ) : (
         <Text>Julkaisuja ei löytynyt.</Text>
       )}
-
     </View>
   );
-}; 
+};
