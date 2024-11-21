@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { auth } from "../../services/firebaseConfig";
 import { Alert, View } from "react-native";
 import { BasicSection, Heading } from "../../components/CommonComponents";
@@ -9,22 +9,18 @@ import {
   ButtonNavigate,
 } from "../../components/Buttons";
 import { useNavigation } from "@react-navigation/native";
-import { AuthenticationContext } from "../../context/AuthenticationContext";
 import globalStyles from "../../assets/styles/Styles.js";
 import Toast from "react-native-toast-message";
 import { deleteUserDataFromFirestore } from "../../services/firebaseController.js";
 
-export const DeleteAccountOfThisUser = () => {
-  const { setAuthState } = useContext(AuthenticationContext);
-  const [isDeletingThisAccount, setIsDeletingThisAccount ] = useState(false);
+const DeleteAccountOfThisUser = () => {
+  const [isDeleting, setIsDeleting] = useState(false);
   const navigation = useNavigation();
 
   const userDelete = async () => {
     try {
       const user = auth.currentUser;
-
       await deleteUserDataFromFirestore(user.uid);
-
       await user.delete();
       console.log("Käyttäjän autentikointitili poistettu");
     } catch (error) {
@@ -36,10 +32,9 @@ export const DeleteAccountOfThisUser = () => {
     }
   };
 
-  const handleDeleteUser = async () => {
+  const handleDelete = async () => {
     try {
       await userDelete();
-      setAuthState(null);
       navigation.navigate("Home");
       Alert.alert("Tilin poisto onnistui");
     } catch (error) {
@@ -47,52 +42,31 @@ export const DeleteAccountOfThisUser = () => {
     }
   };
 
-  const handleDoubleCheckWhenDeleting = () => {
-    setIsDeletingThisAccount(true);
-  };
-
-  const handleConfirmWhenDeleting = () => {
-    handleDeleteUser();
-  };
-
-  const handleDeletingThisAccountCancel = () => {
-    setIsDeletingThisAccount(false);
-  };
+  const showDoubleCheck = () => setIsDeleting(true);
+  const confirmDelete = () => handleDelete();
+  const cancelDelete = () => setIsDeleting(false);
 
   return (
     <>
       <Heading title="Poista tili" />
-
-      {!isDeletingThisAccount ? (
-         <>
-         <BasicSection>
-           Mikäli poistat käyttäjätilisi palvelusta, sen kaikki tiedot
-           poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili".
-           {"\n\n"}
-         </BasicSection>
-         <View style={globalStyles.viewButtons}>
-           <ButtonDelete
-             title="Poista"
-             onPress={handleDoubleCheckWhenDeleting}
-           />
-            <ButtonCancel
-              title="Peruuta"
-              onPress={navigation.goBack}
-            />
-         </View>
-       </>
+      {!isDeleting ? (
+        <>
+          <BasicSection>
+            Mikäli poistat käyttäjätilisi palvelusta, sen kaikki tiedot
+            poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili".
+            {"\n\n"}
+          </BasicSection>
+          <View style={globalStyles.viewButtons}>
+            <ButtonDelete title="Poista" onPress={showDoubleCheck} />
+            <ButtonCancel title="Peruuta" onPress={navigation.goBack} />
+          </View>
+        </>
       ) : (
         <>
           <BasicSection>Oletko varma? {"\n\n"}</BasicSection>
           <View style={globalStyles.viewButtons}>
-            <ButtonConfirm
-              title="Vahvista"
-              onPress={handleConfirmWhenDeleting}
-            />
-            <ButtonCancel
-              title="Peruuta"
-              onPress={navigation.goBack}
-            />
+            <ButtonConfirm title="Vahvista" onPress={confirmDelete} />
+            <ButtonCancel title="Peruuta" onPress={cancelDelete} />
           </View>
         </>
       )}
@@ -100,14 +74,11 @@ export const DeleteAccountOfThisUser = () => {
   );
 };
 
-export const LogoutFromThisUser = () => {
-  const { authState, setAuthState } = useContext(AuthenticationContext);
-  const { userid, accessToken } = authState;
+const LogoutFromThisUser = () => {
   const navigation = useNavigation();
 
   const handleLogout = async () => {
     try {
-      setAuthState(null);
       await auth.signOut();
       navigation.navigate("AccountMain");
     } catch (error) {
@@ -119,61 +90,54 @@ export const LogoutFromThisUser = () => {
     }
   };
 
+  return <ButtonNavigate title="Kirjaudu ulos" onPress={handleLogout} />;
+};
+
+const MessagingSystem = () => {
+  const navigation = useNavigation();
   return (
-    <>
-      <ButtonNavigate title="Kirjaudu ulos" onPress={handleLogout} />
-    </>
+    <ButtonNavigate
+      title="Keskustelut"
+      onPress={() => navigation.navigate("MessagesMain")}
+    />
   );
 };
 
-export const MessagingSystem = () => {
+const NavigateToThisUsersItems = () => {
   const navigation = useNavigation();
-
   return (
-    <>
-      <ButtonNavigate
-        title="Keskustelut"
-        onPress={() => navigation.navigate("MessagesMain")}
-      />
-    </>
+    <ButtonNavigate
+      title="Ilmoitukset"
+      onPress={() => navigation.navigate("MessagesMain")}
+    />
   );
 };
 
-export const NavigateToThisUsersItems = () => {
+const NavigateToThisUsersQueue = () => {
   const navigation = useNavigation();
-
   return (
-    <>
-      <ButtonNavigate
-        title="Ilmoitukset"
-        onPress={() => navigation.navigate("MessagesMain")}
-      />
-    </>
+    <ButtonNavigate
+      title="Varaukset"
+      onPress={() => navigation.navigate("MessagesMain")}
+    />
   );
 };
 
-export const NavigateToThisUsersQueue = () => {
+const AccountSystem = () => {
   const navigation = useNavigation();
-
   return (
-    <>
-      <ButtonNavigate
-        title="Varaukset"
-        onPress={() => navigation.navigate("MessagesMain")}
-      />
-    </>
+    <ButtonNavigate
+      title="Poista tili"
+      onPress={() => navigation.navigate("AccountMaintain")}
+    />
   );
 };
 
-export const AccountSystem = () => {
-  const navigation = useNavigation();
-
-  return (
-    <>
-      <ButtonNavigate
-        title="Poista tili"
-        onPress={() => navigation.navigate("AccountMaintain")}
-      />
-    </>
-  );
+export {
+  DeleteAccountOfThisUser,
+  LogoutFromThisUser,
+  MessagingSystem,
+  NavigateToThisUsersItems,
+  NavigateToThisUsersQueue,
+  AccountSystem,
 };

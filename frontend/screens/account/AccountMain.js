@@ -1,19 +1,8 @@
-import React, { useContext } from 'react';
-import { AccountLoggedIn, AccountLoggedOut } from './AccountComponents';
-import { AuthenticationContext } from "../../context/AuthenticationContext";
+import React from "react";
+import { AccountLoggedIn } from "./AccountComponents";
 
 const AccountMain = () => {
-    const {authState} = useContext(AuthenticationContext);
-
-    return (
-    <>
-        {authState ? (
-            <AccountLoggedIn />
-        ) : (
-            <AccountLoggedOut/>
-        )}
-    </>
-    );
+  return <AccountLoggedIn />;
 };
 
 export default AccountMain;
