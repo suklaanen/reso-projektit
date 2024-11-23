@@ -1,42 +1,32 @@
-import React, { useEffect } from "react";
-import { useAuth } from "../../context/AuthenticationContext";
-import { ScrollView, View } from "react-native";
-import { Heading } from "../../components/CommonComponents";
-import { ButtonAdd } from "../../components/Buttons";
-import {
-  AllItems,
-  NavigateToThisUsersItems,
-  NavigateToThisUsersQueue,
-} from "../items/FindItems";
-import { useNavigation } from "@react-navigation/native";
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthenticationContext } from "../../context/AuthenticationContext";
+import { ScrollView, Text, View } from 'react-native';
+import { Heading } from '../../components/CommonComponents';
+import AuthScreen from "../auth/AuthScreen";
+import globalStyles from "../../assets/styles/Styles";
 
 const Home = () => {
-  const auth = useAuth();
-  const navigation = useNavigation();
+    const  authState  = useContext(AuthenticationContext);
 
-  useEffect(() => {
-    const user = auth.currentUser;
-    console.log("Current user in Home.js: ", user);
-    console.log("Auth state in Home.js: ", auth);
-  }, [auth, auth.currentUser]);
+    return (
+      <ScrollView contentContainerStyle={{ padding: 8 }}>
+          {authState ? (
+            <ScrollView contentContainerStyle={{ padding: 8 }}>
 
-  return (
-    <ScrollView contentContainerStyle={{ padding: 8 }}>
-      <View>
-        <ScrollView contentContainerStyle={{ padding: 8 }}>
-          <Heading title="Ilmoitukset" />
-          <ButtonAdd
-            title="Uusi ilmoitus"
-            onPress={() => navigation.navigate("ItemAddView")}
-          ></ButtonAdd>
-          <AllItems />
-          <Heading title="Omat listaukset" />
-          <NavigateToThisUsersItems />
-          <NavigateToThisUsersQueue />
-        </ScrollView>
-      </View>
+              <View style={globalStyles.separatorThin} />
+                <Text style={globalStyles.defText}>{`Olet kirjautunut käyttäjänä:`}</Text>
+                <Text style={globalStyles.defTitle}>{`${authState.user.username}`}</Text>
+              <View style={globalStyles.separatorBold} />
+
+              <Text style={globalStyles.betwTitle}>{`Uusimmat ilmoitukset`} </Text>
+              <Text style={globalStyles.defText}>{`Palvelun uudet julkaisut Here.. tai lähelläsi tai jotain`}</Text>
+
+           </ScrollView>
+        ) : (
+            <AuthScreen />
+        )}
     </ScrollView>
-  );
+    );
 };
 
 export default Home;

@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../services/firebaseConfig";
 import Toast from "react-native-toast-message";
-import { saveUserToFirestore } from "../../services/firebaseController";
+import { saveUserToFirestore } from "../../services/firestoreUsers";
 import {
   View,
   StyleSheet,

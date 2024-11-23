@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { auth } from "../../services/firebaseConfig";
 import { Alert, View } from "react-native";
 import { BasicSection, Heading } from "../../components/CommonComponents";
@@ -11,17 +11,20 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../assets/styles/Styles.js";
 import Toast from "react-native-toast-message";
-import { deleteUserDataFromFirestore } from "../../services/firebaseController.js";
+import { deleteUserDataFromFirestore } from "../../services/firestoreUsers.js";
+import { signOut, deleteUser } from "firebase/auth";
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 const DeleteAccountOfThisUser = () => {
+  const authState = useContext(AuthenticationContext);
   const [isDeleting, setIsDeleting] = useState(false);
   const navigation = useNavigation();
 
   const userDelete = async () => {
     try {
-      const user = auth.currentUser;
-      await deleteUserDataFromFirestore(user.uid);
-      await user.delete();
+      await deleteUserDataFromFirestore(authState.user.id);
+      const currentUser = auth.currentUser;
+      await deleteUser(currentUser);
       console.log("Käyttäjän autentikointitili poistettu");
     } catch (error) {
       Toast.show({
@@ -44,7 +47,6 @@ const DeleteAccountOfThisUser = () => {
 
   const showDoubleCheck = () => setIsDeleting(true);
   const confirmDelete = () => handleDelete();
-  const cancelDelete = () => setIsDeleting(false);
 
   return (
     <>
@@ -66,7 +68,7 @@ const DeleteAccountOfThisUser = () => {
           <BasicSection>Oletko varma? {"\n\n"}</BasicSection>
           <View style={globalStyles.viewButtons}>
             <ButtonConfirm title="Vahvista" onPress={confirmDelete} />
-            <ButtonCancel title="Peruuta" onPress={cancelDelete} />
+            <ButtonCancel title="Peruuta"onPress={navigation.goBack} />
           </View>
         </>
       )}
@@ -76,10 +78,12 @@ const DeleteAccountOfThisUser = () => {
 
 const LogoutFromThisUser = () => {
   const navigation = useNavigation();
+  const authState = useContext(AuthenticationContext);
 
   const handleLogout = async () => {
     try {
-      await auth.signOut();
+      await signOut(auth); 
+      console.log(`UID: ${authState.user.id} uloskirjautui`);
       navigation.navigate("AccountMain");
     } catch (error) {
       console.error("Virhe uloskirjautumisessa:", error);
@@ -103,26 +107,6 @@ const MessagingSystem = () => {
   );
 };
 
-const NavigateToThisUsersItems = () => {
-  const navigation = useNavigation();
-  return (
-    <ButtonNavigate
-      title="Ilmoitukset"
-      onPress={() => navigation.navigate("MessagesMain")}
-    />
-  );
-};
-
-const NavigateToThisUsersQueue = () => {
-  const navigation = useNavigation();
-  return (
-    <ButtonNavigate
-      title="Varaukset"
-      onPress={() => navigation.navigate("MessagesMain")}
-    />
-  );
-};
-
 const AccountSystem = () => {
   const navigation = useNavigation();
   return (
@@ -137,7 +121,5 @@ export {
   DeleteAccountOfThisUser,
   LogoutFromThisUser,
   MessagingSystem,
-  NavigateToThisUsersItems,
-  NavigateToThisUsersQueue,
   AccountSystem,
 };

@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState, useContext } from "react";
 import { auth } from "../services/firebaseConfig";
-import { getUserData } from "../services/firebaseController";
+import { getUserData } from "../services/firestoreUsers";
 
 export const AuthenticationContext = createContext();
 

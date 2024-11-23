@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, TouchableOpacity, Image, Keyboard } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from '../assets/styles/Styles';
 import logo from '../assets/images/kierttisTitle.png';
+import { AuthenticationContext } from "../context/AuthenticationContext";
 
 const CustomBottomBar = () => {
   const navigation = useNavigation(); 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const authState = useContext(AuthenticationContext);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -26,7 +28,7 @@ const CustomBottomBar = () => {
   const shouldShowBottomBar = !isKeyboardVisible;
 
   return (
-    shouldShowBottomBar && (
+    authState && shouldShowBottomBar && (
       <View style={globalStyles.bottomBar}>
         <TouchableOpacity style={globalStyles.iconButton}>
           <MaterialIcons name="home" size={40} color="#ffffff" onPress={() => { navigation.navigate('Home'); }}/>
@@ -37,7 +39,7 @@ const CustomBottomBar = () => {
         </TouchableOpacity>
 
         <TouchableOpacity style={globalStyles.iconButton}>
-          <MaterialIcons name="person" size={40} color="#ffffff" onPress={() => { navigation.navigate('AccountMain'); }}/>
+          <MaterialIcons name="person" size={40} color="#ffffff" onPress={() => { navigation.navigate('AccountLoggedIn'); }}/>
         </TouchableOpacity>
       </View>
     )
