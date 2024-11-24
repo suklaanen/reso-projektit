@@ -7,11 +7,12 @@ import {
     deleteDoc, 
     doc,
     getDoc,
-    serverTimestamp,
     orderBy,
+    collectionGroup,
 } from 'firebase/firestore';
 import { firestore } from './firebaseConfig'; 
 import { get, last, take } from 'lodash';
+import { Timestamp } from 'firebase/firestore';
 
     export const addTakerToItem = async (uid, itemId) => {
         try {
@@ -32,10 +33,12 @@ import { get, last, take } from 'lodash';
         }
 
         const takersRef = collection(itemRef, 'takers');
-
+        const now = Timestamp.now(); 
+        const expiresIn6Hours = new Timestamp(now.seconds + 6 * 60 * 60, now.nanoseconds); 
         const takerData = {
             takerId: doc(firestore, "users", uid), 
-            createdAt: serverTimestamp(), 
+            createdAt: now,
+            expiration: expiresIn6Hours,
         };
 
         await addDoc(takersRef, takerData);
@@ -46,6 +49,30 @@ import { get, last, take } from 'lodash';
         throw error;
         }
     };
+
+    export const deleteExpiredStuff = async () => {
+        try {
+            const takersRef = collectionGroup(firestore, 'takers');
+            const q = query(takersRef, orderBy('createdAt'));
+            const snapshot = await getDocs(q);
+
+            snapshot.docs.forEach(async (docSnapshot) => {
+                const takerData = docSnapshot.data();
+                console.log("5")
+                console.log("takerData.expiration", takerData.expiration)
+                console.log("Timestamp.now()", Timestamp.now())
+                console.log(takerData.expiration < Timestamp.now())
+                if (takerData.expiration < Timestamp.now()) {
+                    await deleteDoc(docSnapshot.ref);
+                    console.log(`Poistettu vanhentunut varaus:`, docSnapshot.id);
+                }
+            });
+
+        } catch (error) {
+            console.error('Poistovirhe:', error);
+            throw error;
+        }
+    }
 
     export const itemQueuesForUser = async (uid, itemId) => {
         try {
