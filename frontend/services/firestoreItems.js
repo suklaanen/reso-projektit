@@ -11,11 +11,11 @@ import {
     orderBy,
     limit,
     startAfter,
+    collectionGroup,
+    documentId
 } from 'firebase/firestore';
 
-import { auth, firestore } from './firebaseConfig'; 
-import { get, last, take } from 'lodash';
-import { getAuth } from 'firebase/auth';
+import { firestore } from './firebaseConfig'; 
 
     export const addItemToFirestore = async (uid, itemname, itemdescription, postalcode, city ) => {
 
@@ -25,7 +25,6 @@ import { getAuth } from 'firebase/auth';
         }
 
         try {;
-            //const giverRef = doc(firestore, 'users', uid);
             const giverRef = doc(firestore, 'users', uid);
             const userDoc = await getDoc(giverRef); 
             const giverUsername = userDoc.data().username;
@@ -72,9 +71,12 @@ import { getAuth } from 'firebase/auth';
         }
     };
 
-    export const paginateItems = async (lastDoc, pageSize, filter = undefined) => {
+    export const paginateItems = async (lastDoc, pageSize,
+        filter = undefined,
+        refToCollection = () => collection(firestore, 'items'),
+        idFieldHandler = (item) => item.id  ) => {
         try {
-            const itemsRef = collection(firestore, 'items');
+            const itemsRef = refToCollection();
             let q;
 
             if (lastDoc) {
@@ -91,7 +93,8 @@ import { getAuth } from 'firebase/auth';
             const items = [];
 
             itemsSnapshot.forEach((doc) => {
-                items.push({ id: doc.id, ...doc.data() });
+                console.log(doc.data());
+                items.push({ id: idFieldHandler(doc), ...doc.data() });
             });
 
             const lastVisibleDoc = itemsSnapshot.docs[itemsSnapshot.docs.length - 1];
@@ -105,6 +108,17 @@ import { getAuth } from 'firebase/auth';
     export const getCurrentUserItems = async (uid, lastDoc, pageSize) => {
         return paginateItems(lastDoc, pageSize, () => where('giverid', '==', doc(firestore, 'users', uid)));
     };
+
+    export const getCurrentUserItemQueues = async (uid, lastDoc, pageSize) => {
+        const {items: itemIdRefs, lastDoc: newLastDoc} = await paginateItems(lastDoc, pageSize,
+            () => where('takerId', '==', doc(firestore, 'users', uid)),
+            () => collectionGroup(firestore, 'takers'),
+            (doc) => doc.ref.parent.parent.id);
+
+            const itemIds = itemIdRefs.map((doc) => doc.id);
+            const {items} = await paginateItems(null, itemIds.length, () => where(documentId(), 'in', itemIds));
+            return {items, lastDoc: newLastDoc};
+    }
 
     export const getItemFromFirestore = async (itemId) => {
         try {
@@ -167,7 +181,7 @@ import { getAuth } from 'firebase/auth';
         try {
             const takersRef = collection(firestore, `items/${itemId}/takers`);
             const snapshot = await getDocs(takersRef);
-            return snapshot.size;
+            return snapshot.size -1;
         } catch (error) {
             console.error('Virhe jonottajien määrän hakemisessa:', error);
         }

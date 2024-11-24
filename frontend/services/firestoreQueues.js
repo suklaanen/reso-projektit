@@ -11,13 +11,7 @@ import {
     orderBy,
 } from 'firebase/firestore';
 import { firestore } from './firebaseConfig'; 
-import { checkIfMyItem, paginateItems } from './firestoreItems';
 import { get, last, take } from 'lodash';
-
-    export const getCurrentUserQueuesForItems = async (lastDoc, pageSize) => {
-        await checkIfMyItem();
-        return paginateItems(lastDoc, pageSize, () => where('takerId', '==', doc(firestore, 'users', uid)));
-    };
 
     export const addTakerToItem = async (uid, itemId) => {
         try {
@@ -53,66 +47,72 @@ import { get, last, take } from 'lodash';
         }
     };
 
-    export const deleteTakerFromItem = async (uid, itemId) => {
+    export const itemQueuesForUser = async (uid, itemId) => {
         try {
             const userRef = doc(firestore, "users", uid); 
             const itemRef = doc(firestore, "items", itemId); 
             const takersRef = collection(itemRef, "takers"); 
 
             const q = query(takersRef, where("takerId", "==", userRef));
+
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
-                console.log("Käyttäjää ei löydy jonosta.");
-                return; 
+                return false;
             }
+
+            return querySnapshot;
+        } catch (error) {
+            console.error("Hakuvirhe:", error);
+            throw error;
+        }
+    };
+
+    export const deleteTakerFromItem = async (uid, itemId) => {
+        try {
+            const querySnapshot = await itemQueuesForUser(uid, itemId);
 
             for (const takerDoc of querySnapshot.docs) {
                 await deleteDoc(takerDoc.ref);
                 console.log(`UID: ${uid} poistanut varauksen:`, takerDoc.id);
             }
         } catch (error) {
-            console.error("Virhe poistettaessa varausta:", error);
+            console.error("Poistovirhe:", error);
             throw error;
         }
     };
 
     export const getCurrentUserQueues = async (uid, itemId) => {
         try {
-            const itemRef = doc(firestore, "items", itemId);
-            const takersRef = collection(itemRef, "takers");
 
-            const userRef = doc(firestore, "users", uid);
-            const q = query(takersRef, where("takerId", "==", userRef));
-            const querySnapshot = await getDocs(q);
+            const querySnapshot = await itemQueuesForUser(uid, itemId);
 
-            if (!querySnapshot.empty) {
+            if (querySnapshot) {
                 console.log(`UID: ${uid} varannut: ${itemId}`);
                 return true;
             }
 
-            return false; 
         } catch (error) {
-            console.error("Virhe jonotiedon tarkistuksessa:", error);
+            console.error("Tarkistusvirhe:", error);
             return false; 
         }
     };
     
     export const getUserPositionInQueue = async (uid, itemId) => {
         try {
-            const itemRef = doc(firestore, "items", itemId); 
-            const takersRef = collection(itemRef, "takers"); 
+            const takersRef = collection(firestore, `items/${itemId}/takers`);
 
             const q = query(takersRef, orderBy("createdAt"));
             const snapshot = await getDocs(q);
     
             let position = 0;
-            snapshot.forEach((doc, index) => {
-                if (doc.data().takerId.id === uid) { 
-                    position = index + 1; 
+
+            snapshot.docs.forEach((docSnapshot, index) => {
+                const takerData = docSnapshot.data();
+                if (takerData.takerId.id === uid) { 
+                    position = index + 1;
                 }
-            });
-    
+             });
             if (position === 0) {
                 throw new Error("Käyttäjää ei löytynyt jonosta."); 
             }

@@ -7,13 +7,25 @@ import {
   addTakerToItem,
   deleteTakerFromItem,
   getCurrentUserQueues,
-  getCurrentUserQueuesForItems,
   getUserPositionInQueue,
 } from '../../services/firestoreQueues.js';
-import { checkIfMyItem, fetchQueueCount } from '../../services/firestoreItems.js';
+import { 
+    checkIfMyItem, 
+    fetchQueueCount,
+    getCurrentUserItemQueues,
+ } from '../../services/firestoreItems.js';
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { set } from 'lodash';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Timestamp } from 'firebase/firestore';
+
+const formatTimestamp = (timestamp) => {
+    if (timestamp instanceof Timestamp) {
+        const date = timestamp.toDate(); 
+        return date.toLocaleString(); 
+    }
+    return timestamp;
+};
 
 export const ItemJoinOnQueue = ({ itemId }) => {
   const [isOnQueue, setIsOnQueue] = useState(false);
@@ -27,7 +39,9 @@ export const ItemJoinOnQueue = ({ itemId }) => {
           await addTakerToItem(authState.user.id, itemId);
           setIsOnQueue(true);
           const updatedCount = await fetchQueueCount(itemId);
+          const updatedPosition = await getUserPositionInQueue(authState.user.id, itemId);
           setQueueCount(updatedCount);
+          setQueuePosition(updatedPosition);
       } catch (error) {
           Toast.show({ type: 'error', text1: 'Virhe varausta tehdessä', text2: error.message });
       }
@@ -108,80 +122,44 @@ export const ItemJoinOnQueue = ({ itemId }) => {
 };
 
 export const ItemQueues = () => {
-  const [queue, setQueue] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [lastDoc, setLastDoc] = useState(null);
-  const pageSize = 4;
-  const authState = useContext(AuthenticationContext);
+    const [items, setItems] = useState([]);
+    const [lastDoc, setLastDoc] = useState(null);
+    const authState = useContext(AuthenticationContext);
+    const pageSize = 4;
 
-  useEffect(() => {
-      const fetchQueues = async () => {
-          if (!hasMore) return;
+    useEffect(() => {
 
-          try {
-              const { queues: newQueue, lastDoc: newLastDoc } = await getCurrentUserQueuesForItems(authState.user.id, lastDoc, pageSize);
-              if (newQueue) {
-                  setQueue((prevQueue) => [...prevQueue, ...newQueue]);
-                  setLastDoc(newLastDoc);
-                  setHasMore(newQueue.length === pageSize);
-              } else {
-                  setQueue([]);
-                  setHasMore(false);
-              }
-          } catch (error) {
-              console.error('Virhe jonon hakemisessa:', error);
-              setError(error);
-          } finally {
-              setLoading(false);
-          }
-      };
-
-      fetchQueues();
-  }, [lastDoc]);
-
-  if (loading) {
-      return (
-          <BasicSection>
-              <Text>Ladataan...</Text>
-          </BasicSection>
-      );
-  }
-
-  if (error) {
-      return (
-          <BasicSection>
-              <Toast type="error" text1="Virhe jonon hakemisessa" text2={error.message} />
-              <Button title="Yritä uudelleen" onPress={() => setError(null) || setLoading(true)} />
-          </BasicSection>
-      );
-  }
-
-  return (
-      <View style={globalStyles.container}>
-          {queue.length > 0 ? (
-              queue.map((item) => (
-                  <View key={item.id} style={globalStyles.itemContainer}>
-                      <Text style={globalStyles.itemName}>{item.itemname}</Text>
-                      <Text>{item.itemdescription}</Text>
-                      <Text>Sijainti: {item.postalcode}, {item.city}</Text>
-                      <Text>Julkaisija: {item.giverid.id}</Text>
-                      <ItemJoinOnQueue itemId={item.id} />
-                  </View>
-              ))
-          ) : (
-              <BasicSection style={{ alignItems: 'center', padding: 20 }}>
-                  <Text style={{ fontSize: 16, color: '#555' }}>Ei varauksia.</Text>
-              </BasicSection>
-          )}
-          {hasMore && (
-              <Button
-                  title="Lataa lisää"
-                  onPress={() => setLoading(true) || setLastDoc(lastDoc)}
-                  disabled={loading}
-              />
-          )}
-      </View>
-  );
-};
+        const fetchData = async () => {
+            try {
+                const { items: newItems, lastDoc: newLastDoc } = await getCurrentUserItemQueues(authState.user.id, lastDoc, pageSize);
+                setItems((prevItems) => [...prevItems, ...newItems]);
+                setLastDoc(newLastDoc);
+            } catch (error) {
+                console.error('Virhe jonotietojen hakemisessa:', error);
+            }
+        };
+    
+        fetchData();
+    }, []);
+    
+    return (
+        <View style={globalStyles.container}>
+            {items.length > 0 ? (
+                items.map((item) => (
+                    <View key={item.id} style={globalStyles.itemContainer}>
+                        <Text style={globalStyles.itemName}>{item.itemname}</Text>
+                        <Text>{item.itemdescription}</Text>
+                        <Text>Sijainti: {item.city}, {item.postalcode}</Text>
+                        <Text>Julkaisija: {item.givername}</Text>
+                        <Text>{formatTimestamp(item.createdAt)}</Text>
+                        <ItemJoinOnQueue itemId={item.id} />
+                    </View>
+                ))
+            ) : (
+                <BasicSection>
+                    <Text>Ei varauksia</Text>
+                </BasicSection>
+            )}
+        </View>
+    );
+}

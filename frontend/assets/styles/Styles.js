@@ -126,31 +126,28 @@ const globalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',   
-    height: 111,
+    height: 181,
   },
 
   appBarContainerAuthUndef: {
     flex: 1,
     position: "absolute",
-    justifyContent: "center",
-    alignItems: "left",
     paddingTop: 27,
     alignItems: "center",
-    marginLeft: -60,
     zIndex: 2,
   },
 
   appBarTitleAuthUndef: {
     fontFamily: "Chewy",
     fontSize: 40,
-    color: "#87ffca",
+    color: "#000444",
     paddingVertical: 15,
-    textShadowColor: "#000", 
+    textShadowColor: "#fff", 
     textShadowOffset: { width: 1, height: 1 }, 
-    textShadowRadius: 11,  
+    textShadowRadius: 6,
+
   },
-
-
+  
   appBarTitle: {
     fontFamily: "Chewy",
     fontSize: 40,
