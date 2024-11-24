@@ -100,7 +100,6 @@ import { firestore } from './firebaseConfig';
             const lastVisibleDoc = itemsSnapshot.docs[itemsSnapshot.docs.length - 1];
             return { items, lastDoc: lastVisibleDoc };
         } catch (error) {
-            console.error('Paginointivirhe:', error);
             throw error;
         }
     };
@@ -159,7 +158,7 @@ import { firestore } from './firebaseConfig';
             throw error;
         }
       };
-      
+
     export const checkIfMyItem = async (uid, itemId) => {
         try {
             const itemData = await getItemFromFirestore(itemId); 
