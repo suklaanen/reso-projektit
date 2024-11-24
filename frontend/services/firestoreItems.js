@@ -159,8 +159,8 @@ import { firestore } from './firebaseConfig';
             throw error;
         }
       };
-
-      export const checkIfMyItem = async (uid, itemId) => {
+      
+    export const checkIfMyItem = async (uid, itemId) => {
         try {
             const itemData = await getItemFromFirestore(itemId); 
             const { giverRef } = itemData; 

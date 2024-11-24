@@ -17,15 +17,7 @@ import {
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { set } from 'lodash';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Timestamp } from 'firebase/firestore';
-
-const formatTimestamp = (timestamp) => {
-    if (timestamp instanceof Timestamp) {
-        const date = timestamp.toDate(); 
-        return date.toLocaleString(); 
-    }
-    return timestamp;
-};
+import { formatTimestamp } from '../../services/firestoreGlobal.js';
 
 export const ItemJoinOnQueue = ({ itemId }) => {
   const [isOnQueue, setIsOnQueue] = useState(false);
