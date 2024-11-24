@@ -262,6 +262,16 @@ const globalStyles = StyleSheet.create({
     color: "red",
     fontSize: 16,
   },
+
+  image: {
+    width: '98%',
+    height: undefined, 
+    aspectRatio: 1 / 1,
+    borderRadius: 8, 
+    marginVertical: 20,
+    alignSelf: 'center',
+  },
+
 });
 
 export default globalStyles;
