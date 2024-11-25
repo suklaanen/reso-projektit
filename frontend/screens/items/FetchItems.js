@@ -4,15 +4,8 @@ import { BasicSection, Heading } from '../../components/CommonComponents';
 import { paginateItems } from '../../services/firestoreItems.js';
 import { ItemJoinOnQueue } from './ItemQueues.js';
 import globalStyles from '../../assets/styles/Styles.js';
-import { Timestamp } from 'firebase/firestore';
+import { formatTimestamp } from '../../services/firestoreGlobal.js';
 
-const formatTimestamp = (timestamp) => {
-    if (timestamp instanceof Timestamp) {
-        const date = timestamp.toDate(); 
-        return date.toLocaleString(); 
-    }
-    return timestamp;
-};
 
 export const AllItems = () => {
     const [items, setItems] = useState([]);

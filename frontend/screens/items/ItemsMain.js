@@ -9,8 +9,11 @@ import { AddItem } from './AddItem';
 import { ItemQueues } from './ItemQueues';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '../../assets/styles/Styles';
+import { deleteExpiredStuff } from '../../services/firestoreQueues';
 
 const ItemsMain = () => {
+  deleteExpiredStuff();
+
   const navigation = useNavigation(); 
 
   return (
