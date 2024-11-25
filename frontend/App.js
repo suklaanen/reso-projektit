@@ -28,6 +28,7 @@ import Toast from "react-native-toast-message";
 import ChatView from "./screens/chat/ChatView";
 import AuthScreen from "./screens/auth/AuthScreen";
 import { ThreadsProvider } from "./context/ThreadsContext";
+import { LoadingProvider } from "./context/LoadingContext";
 
 const Stack = createStackNavigator();
 
@@ -117,7 +118,9 @@ const App = () => {
           <NavigationContainer>
             <CustomTopBar />
             <View style={globalStyles.container}>
-              <AppNavigator />
+              <LoadingProvider>
+                <AppNavigator />
+              </LoadingProvider>
             </View>
             <CustomBottomBar />
             <Toast />

@@ -5,27 +5,29 @@ import { paginateItems } from '../../services/firestoreItems.js';
 import { ItemJoinOnQueue } from './ItemQueues.js';
 import globalStyles from '../../assets/styles/Styles.js';
 import { formatTimestamp } from '../../services/firestoreGlobal.js';
-
+import { useLoading } from '../../context/LoadingContext.js';
+import { set } from 'lodash';
 
 export const AllItems = () => {
     const [items, setItems] = useState([]);
     const [lastDoc, setLastDoc] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const { isLoading, setLoading } = useLoading();
     const [error, setError] = useState(null);
     const [hasMore, setHasMore] = useState(true);
 
     const pageSize = 4;
 
     useEffect(() => {
-        loadItems();
+        const initialize = async () => {
+            setLoading(true);
+            await loadItems();
+            setLoading(false);
+        };
+        initialize();
     }, []);
 
     const loadItems = async () => {
-        if (loading || !hasMore) return;
-
-        setLoading(true);
         setError(null);
-
         try {
             const { items: newItems, lastDoc: newLastDoc } = await paginateItems(lastDoc, pageSize);
             setItems((prevItems) => [...prevItems, ...newItems]);
@@ -37,45 +39,44 @@ export const AllItems = () => {
         } catch (err) {
             console.error('Virhe ladattaessa kohteita:', err);
             setError(err);
-        } finally {
-            setLoading(false);
         }
     };
 
-    if (loading && items.length === 0) {
+    if (error) {
         return (
-          <BasicSection> <Text>Ladataan...</Text> </BasicSection>
+            <BasicSection> <Text>Virhe: {error.message}</Text> </BasicSection>
         );
-      }
-
-      if (error) {
-        return (
-          <BasicSection> <Text>Virhe: {error.message}</Text> </BasicSection>
-        );
-      }
+    }
 
     return (
         <View style={{ flex: 1, padding: 8 }}>
 
-            {items.map((item) => (
-                <View key={item.id} style={globalStyles.itemContainer}>
-                <Text style={globalStyles.itemName}>{item.itemname}</Text>
-                <Text>{item.itemdescription}</Text>
-                <Text>Sijainti: {item.postalcode}, {item.city}</Text>
-                <Text>Julkaisija: {item.givername}</Text>
-                <Text>{formatTimestamp(item.createdAt)}</Text>
-                <ItemJoinOnQueue itemId={item.id} />
-                </View>
-            ))}
+            {isLoading ? (
+                <BasicSection> <Text>Ladataan...</Text> </BasicSection>
+            ) : (
+                <>
+                    {items.map((item) => (
+                        <View key={item.id} style={globalStyles.itemContainer}>
+                            <Text style={globalStyles.itemName}>{item.itemname}</Text>
+                            <Text>{item.itemdescription}</Text>
+                            <Text>Sijainti: {item.postalcode}, {item.city}</Text>
+                            <Text>Julkaisija: {item.givername}</Text>
+                            <Text>{formatTimestamp(item.createdAt)}</Text>
+                            <ItemJoinOnQueue itemId={item.id} />
+                        </View>
+                    ))}
 
-        {hasMore && (
-            <Button title="Näytä lisää" onPress={loadItems} disabled={loading} />
-        )}
+                    {hasMore && (
+                        <Button title="Näytä lisää" onPress={async () => {
+                            await loadItems();
+                        }} disabled={isLoading} />
+                    )}
 
-        {!hasMore && (
-            <Text style={{ textAlign: 'center', marginTop: 16 }}>Ei enempää kohteita</Text>
-        )}
-
+                    {!hasMore && (
+                        <Text style={{ textAlign: 'center', marginTop: 16 }}>Ei enempää kohteita</Text>
+                    )}
+                </>
+            )}
         </View>
     );
 };

@@ -6,12 +6,13 @@ import globalStyles from "../../assets/styles/Styles.js";
 import Toast from 'react-native-toast-message';
 import { deleteItemFromFirestore, getCurrentUserItems } from '../../services/firestoreItems.js';
 import { AuthenticationContext } from "../../context/AuthenticationContext";
+import { useLoading } from '../../context/LoadingContext.js';
 import { get, last } from 'lodash';
 
 export const MyItems = () => {
     const [items, setItems] = useState([]);
     const [lastDoc, setLastDoc] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { isLoading, setLoading } = useLoading();
     const [error, setError] = useState(null);
     const [activeToggleId, setActiveToggleId] = useState(null);
     const authState = useContext(AuthenticationContext);
@@ -32,7 +33,12 @@ export const MyItems = () => {
             }
         };
 
-        fetchItems();
+        const initialize = async () => {
+            setLoading(true);
+            await fetchItems();
+            setLoading(false);
+        };
+        initialize();
     }, []);
 
     const handleDelete = async (itemId) => {
@@ -50,12 +56,6 @@ export const MyItems = () => {
         setActiveToggleId((prevId) => (prevId === itemId ? null : itemId)); 
       };
 
-      if (loading) {
-        return (
-          <BasicSection> <Text>Ladataan...</Text> </BasicSection>
-        );
-      }
-
       if (error) {
         return (
             <Toast type="error" text1="Virhe omien julkaisujen hakemisessa" text2={error.message} /> 
@@ -63,35 +63,37 @@ export const MyItems = () => {
       }
 
       return (
+
         <View style={globalStyles.container}>
-
-          {items.length > 0 ? (
+        {isLoading ? ( 
+            <BasicSection>
+                <Text>Ladataan...</Text>
+            </BasicSection>
+        ) : items.length > 0 ? (
             items.map((item) => (
-              <View key={item.id} style={globalStyles.itemContainer}>
-                <Text style={globalStyles.itemName}>{item.itemname}</Text>
-                <Text>{item.itemdescription}</Text>
-                <Text>{item.city}</Text>
-                <Text>{item.postalcode}</Text>
+                <View key={item.id} style={globalStyles.itemContainer}>
+                    <Text style={globalStyles.itemName}>{item.itemname}</Text>
+                    <Text>{item.itemdescription}</Text>
+                    <Text>{item.city}</Text>
+                    <Text>{item.postalcode}</Text>
 
-                {activeToggleId !== item.id && (
-                  <View style={globalStyles.viewButtons}>
-                    <ButtonDelete title="Poista" onPress={() => toggleItem(item.id)} />
-                  </View>
-                )}
+                    {activeToggleId !== item.id && (
+                        <View style={globalStyles.viewButtons}>
+                            <ButtonDelete title="Poista" onPress={() => toggleItem(item.id)} />
+                        </View>
+                    )}
 
-                {activeToggleId === item.id && (
-                  <View style={globalStyles.viewButtons}>
-                    <ButtonConfirm title="Vahvista" onPress={() => handleDelete(item.id)} />
-                    <ButtonCancel title="Peruuta" onPress={() => toggleItem(null)} />
-                  </View>
-                )}
-
-              </View>
+                    {activeToggleId === item.id && (
+                        <View style={globalStyles.viewButtons}>
+                            <ButtonConfirm title="Vahvista" onPress={() => handleDelete(item.id)} />
+                            <ButtonCancel title="Peruuta" onPress={() => toggleItem(null)} />
+                        </View>
+                    )}
+                </View>
             ))
-          ) : (
+        ) : (
             <Text>Julkaisuja ei löytynyt.</Text>
-          )}
-
-        </View>
+        )}
+      </View>
       );
     }; 

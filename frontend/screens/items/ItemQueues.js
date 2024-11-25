@@ -15,9 +15,10 @@ import {
     getCurrentUserItemQueues,
  } from '../../services/firestoreItems.js';
 import { AuthenticationContext } from "../../context/AuthenticationContext";
-import { set } from 'lodash';
+import { get, set } from 'lodash';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { formatTimestamp } from '../../services/firestoreGlobal.js';
+import { useLoading } from '../../context/LoadingContext.js';
 
 export const ItemJoinOnQueue = ({ itemId }) => {
     const [isOnQueue, setIsOnQueue] = useState(false);
@@ -25,6 +26,7 @@ export const ItemJoinOnQueue = ({ itemId }) => {
     const [queueCount, setQueueCount] = useState(0);
     const [queuePosition, setQueuePosition] = useState(null);
     const authState = useContext(AuthenticationContext);
+    const [loadingQueue, setLoadingQueue] = useState(true);
 
     const saveForQueue = async (itemId) => {
         try {
@@ -52,6 +54,7 @@ export const ItemJoinOnQueue = ({ itemId }) => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoadingQueue(true);
             try {
                 const isOwner = await checkIfMyItem(authState.user.id, itemId);
                 setIsMyItem(isOwner);
@@ -68,14 +71,21 @@ export const ItemJoinOnQueue = ({ itemId }) => {
                 }
             } catch (error) {
                 console.error('Virhe tietojen hakemisessa:', error);
+            } finally {
+                setLoadingQueue(false); 
             }
         };
 
         fetchData();
     }, [itemId]);
 
+    if (loadingQueue) {
+        return <Text>Ladataan...</Text>; 
+    }
+
     return (
-        <>
+
+            <>
             {isMyItem ? (
                 <Text>Oma ilmoitus: Jonottajia: {queueCount}</Text>
             ) : (
@@ -109,7 +119,8 @@ export const ItemJoinOnQueue = ({ itemId }) => {
                     )}
                 </View>
             )}
-        </>
+            </>
+
     );
     };
 
