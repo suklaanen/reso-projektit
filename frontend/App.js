@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from "react-native-paper";
 import {
-  AuthenticationContext,
   AuthenticationProvider,
+  useAuth,
 } from "./context/AuthenticationContext";
 import globalStyles from "./assets/styles/Styles";
 import CustomTopBar from "./components/CustomTopBar";
@@ -27,13 +27,12 @@ import ItemsMain from "./screens/items/ItemsMain";
 import Toast from "react-native-toast-message";
 import ChatView from "./screens/chat/ChatView";
 import AuthScreen from "./screens/auth/AuthScreen";
-import { ThreadsProvider } from "./context/ThreadsContext";
 import { LoadingProvider } from "./context/LoadingContext";
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
-  const authState = useContext(AuthenticationContext);
+  const authState = useAuth();
 
   return (
     <Stack.Navigator initialRouteName="Home">
@@ -114,18 +113,16 @@ const App = () => {
   return (
     <Provider>
       <AuthenticationProvider>
-        <ThreadsProvider>
-          <NavigationContainer>
-            <CustomTopBar />
-            <View style={globalStyles.container}>
-              <LoadingProvider>
-                <AppNavigator />
-              </LoadingProvider>
-            </View>
-            <CustomBottomBar />
-            <Toast />
-          </NavigationContainer>
-        </ThreadsProvider>
+        <NavigationContainer>
+          <CustomTopBar />
+          <View style={globalStyles.container}>
+            <LoadingProvider>
+              <AppNavigator />
+            </LoadingProvider>
+          </View>
+          <CustomBottomBar />
+          <Toast />
+        </NavigationContainer>
       </AuthenticationProvider>
     </Provider>
   );
