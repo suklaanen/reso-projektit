@@ -30,7 +30,8 @@
 - Kaunis visuaalinen toteutus, kartooninen ja pehmeä tyylittely 48:lla värillä.
 - Tarinallisuus tuotu esiin animaatioilla pelin alussa ja lopussa.
 - Pelihahmolla liikutaan 3. persoonassa ja pelimaailma on selkeästi rajattu, mutta sisällöllinen.
-- Assetteina käytetty pääasiassa CC0 -lisensioitua materiaalia, osa pelin tekstuureista, malleista ja äänistä tehty itse. 
+- Assetteina käytetty pääasiassa CC0 -lisensioitua materiaalia, osa pelin tekstuureista, malleista ja äänistä tehty itse.
+- Pelin gitti &#x1F512;.
 - Pelin exe on julkaistu itch.iossa: [LittleBit - itch.io](https://lejdi.itch.io/littlebit)
 
 ![image](https://github.com/user-attachments/assets/3d5d6de8-a6d5-4771-a928-95876df9430e)
