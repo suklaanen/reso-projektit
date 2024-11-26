@@ -9,7 +9,7 @@
   - Tarkastella tilinsä saldoa.
   - Selata tilitapahtumia.
   - Nostaa virtuaalirahaa, jos tilin saldo riittää nostoon ja automaatissa on sopivan suuruisia seteleitä nostoon.
-  - Lisäksi simulaattorissa on eri käyttäjätasot, _mm. admin pystyy muuttamaan automaattien nostorajaa sekä lisäämään niihin varoja haluaminaan seteleinä._
+  - Lisäksi simulaattorissa on eri käyttäjätasot, _mm. admin pystyy muuttamaan automaattien nostorajoja sekä lisäämään niihin varoja haluaminaan seteleinä._
 - Ohjelman käyttöliittymä Qt, palvelin Node.js, tietokanta MySql. 
 - Robot Framework kävi mukana REST APIn testauksessa.
 - Kts. video, missä esitellään projektia: https://www.youtube.com/watch?v=Lp9dV-Fh-a4
@@ -51,10 +51,17 @@
 
 ## 2024-Q4-Kierttis
 
-- Kierrätyssovellus perustuen somen roskalavaryhmiin.
-- Toteutus Androidille React nativella.
+- Kierrätyssovellus perustuen somen roskalavaryhmiin. 
+- Kierttiksen ominaisuuksia lyhyesti:
+  - Käyttäjä voi julkaista tavaroita annettavaksi sekä hallinnoida julkaisujaan.
+  - Käyttäjä voi listautua jonoon / varaajaksi tuotteeseen sekä poistaa varauksiaan.
+  - Julkaisija ja käyttäjä näkee jonottajien määrän tuotteessa sekä jonottajalle saa jonotussijan.
+  - Jonotus etenee ja pinosta vanhentuneet varaukset poistuvat, _varaus on voimassa edellisen sijan päättymisestä 6h._
+  - Ilmoitus on voimassa kunnes julkaisija merkitsee tuotteen luovutetuksi / poistaa sen, ja silti enintään viikon verran julkaisusta.
+  - Julkaisijan ja 1. sijalla olevan varaajan välille avataan viestiketju, jossa he voivat sopia tuotteen luovutuksesta.
+  - Viestiketjut lähtevät vanhentuneiden ja peruuntuneiden varausten mukana.
+- Android-toteutus React nativella.
 - Tietokannaksi valikoitui Firestore ja autentikointi Firebasea käyttäen.
-
  -- Toteutus meneillään
  
 ----------------------------------------------------------
@@ -63,7 +70,6 @@
 
 - Puistotreffit koirille -mobiilisovellus Androidille.
 - Tavoitteena on tarjota helppokäyttöinen alusta puistotreffien sopimiselle ja leikkiseuran löytämiseksi paikallisiin koirapuistoihin.
-
   -- Toteutus meneillään, lisää infoa tulossa
 
 ----------------------------------------------------------
