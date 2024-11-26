@@ -38,9 +38,10 @@
 ## 2024-Q2Q3-LittleBit
 
 - Unreal Enginellä tehty puzzle peli, jossa 16 toiminnallista tehtävää sekä easter egginä ankkojen etsimistä.
-- Kaunis visuaalinen toteutus, kartooninen ja pehmeä tyylittely 48:lla värillä.
-- Tarinallisuus tuotu esiin animaatioilla pelin alussa ja lopussa.
-- Pelihahmolla liikutaan 3. persoonassa ja pelimaailma on selkeästi rajattu, mutta sisällöllinen.
+  - Kaunis visuaalinen toteutus, kartooninen ja pehmeä tyylittely 48:lla värillä.
+  - Tarinallisuus tuotu esiin animaatioilla pelin alussa ja lopussa.
+  - Pelihahmolla liikutaan 3. persoonassa ja pelimaailma on selkeästi rajattu, mutta sisällöllinen.
+  - Pelaaja voi valita, ohjaako hahmoa ohjaimella vai näppäimistön ja hiiren yhdistelmällä.
 - Assetteina käytetty pääasiassa CC0 -lisensioitua materiaalia, osa pelin tekstuureista, malleista ja äänistä tehty itse.
 - Pelin gitti &#x1F512;.
 - Pelin exe on julkaistu itch.iossa: [LittleBit - itch.io](https://lejdi.itch.io/littlebit)
@@ -55,7 +56,7 @@
 - Kierttiksen ominaisuuksia lyhyesti:
   - Käyttäjä voi julkaista tavaroita annettavaksi sekä hallinnoida julkaisujaan.
   - Käyttäjä voi listautua jonoon / varaajaksi tuotteeseen sekä poistaa varauksiaan.
-  - Julkaisija ja käyttäjä näkee jonottajien määrän tuotteessa sekä jonottajalle saa jonotussijan.
+  - Julkaisija ja käyttäjä näkee jonottajien määrän tuotteessa sekä jonottaja saa jonotussijansa.
   - Jonotus etenee ja pinosta vanhentuneet varaukset poistuvat, _varaus on voimassa edellisen sijan päättymisestä 6h._
   - Ilmoitus on voimassa kunnes julkaisija merkitsee tuotteen luovutetuksi / poistaa sen, ja silti enintään viikon verran julkaisusta.
   - Julkaisijan ja 1. sijalla olevan varaajan välille avataan viestiketju, jossa he voivat sopia tuotteen luovutuksesta.
