@@ -27,10 +27,14 @@
 ## 2024-Q2Q3-LittleBit
 
 - Unreal Enginellä tehty puzzle peli, jossa 16 toiminnallista tehtävää sekä easter egginä ankkojen etsimistä.
+- Kaunis visuaalinen toteutus, kartooninen ja pehmeä tyylittely 48:lla värillä.
+- Tarinallisuus tuotu esiin animaatioilla pelin alussa ja lopussa.
 - Pelihahmolla liikutaan 3. persoonassa ja pelimaailma on selkeästi rajattu, mutta sisällöllinen.
-- Assetteina käytetty pääasiassa CC0 -lisensioitua materiaalia, osa pelin tekstuureista ja malleista tehty itse.
+- Assetteina käytetty pääasiassa CC0 -lisensioitua materiaalia, osa pelin tekstuureista, malleista ja äänistä tehty itse. 
 - Pelin exe on julkaistu itch.iossa: [LittleBit - itch.io](https://lejdi.itch.io/littlebit)
-  
+
+![image](https://github.com/user-attachments/assets/3d5d6de8-a6d5-4771-a928-95876df9430e)
+
 ----------------------------------------------------------
 
 ## 2024-Q4-Kierttis
