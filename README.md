@@ -4,10 +4,14 @@
 
 ## 2023-Q4-ATM-pankkiautomaatti
 
-- Käyttöliittymä toteutettiin Qt:lla, joka haki tiedot node.js -pohjaiselta REST API:lta.
-- Tieto säilöttiin MySQL -tietokantaan.
-- Harjoiteltiin GitHubin käyttöä sekä Dockeria.
-- Robot Framework kävi mukana REST APIn testauksessa, mutta sovittaminen Qt:hen osoittautui haastavaksi ja jätettiin toteuttamatta. 
+- Suloinen pankkiautomaattisimulaattori, jossa käyttäjä voi tilinsä varoihin ja tyyppiin perustuen esimerkiksi
+  - Valita automaatin kartalta, _automaateilla on mm. erisuuruiset varat ja setelit sekä nostorajat._
+  - Tarkastella tilinsä saldoa.
+  - Selata tilitapahtumia.
+  - Nostaa virtuaalirahaa, jos tilin saldo riittää nostoon ja automaatissa on sopivan suuruisia seteleitä nostoon.
+  - Lisäksi simulaattorissa on eri käyttäjätasot, _mm. admin pystyy muuttamaan automaattien nostorajaa sekä lisäämään niihin varoja haluaminaan seteleinä._
+- Ohjelman käyttöliittymä Qt, palvelin Node.js, tietokanta MySql. 
+- Robot Framework kävi mukana REST APIn testauksessa.
 - Kts. video, missä esitellään projektia: https://www.youtube.com/watch?v=Lp9dV-Fh-a4
 
 ![image](https://github.com/user-attachments/assets/da5c2eaa-752d-4dc4-aa3b-17fec4c88d0a)
@@ -17,6 +21,13 @@
 ## 2024-Q2-Leffaysi
 
 - Yhteisöllinen elokuvasivusto leffaharrastajille.
+- Palvelun käyttäjät voivat mm.
+  - Hakea elokuvia ja sarjoja eri suodatuksilla (IMDB).
+  - Arvostella elokuvia/sarjoja ja muuttaa tai poistaa arvosteluitaan.
+  - Lisätä elokuvia/sarjoja suosikkilistalleen ja poistaa sieltä.
+  - Luoda ryhmiä ja hallinnoida ryhmiä, liittyä ryhmiin ja chattailla niissä.
+  - Muuttaa profiilinsa yksityisyysasetusta sekä sallitun sisällön määritystä.
+  - Eri käyttäjätasoina _user_ ja _admin_ sekä adminille mm. hallinnointipaneeli. 
 - Käyttöliittymä React Vite, palvelin Node.js, tietokanta PostgreSQL.
 - Kts. esittelyvideo: https://www.youtube.com/watch?v=4ZlEyXCdmbE
 
