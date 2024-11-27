@@ -12,10 +12,12 @@ import {
     limit,
     startAfter,
     collectionGroup,
-    documentId
+    documentId,
 } from 'firebase/firestore';
 
 import { firestore } from './firebaseConfig'; 
+import { now } from 'lodash';
+import { Timestamp } from 'firebase/firestore';
 
     export const addItemToFirestore = async (uid, itemname, itemdescription, postalcode, city ) => {
 
@@ -28,6 +30,13 @@ import { firestore } from './firebaseConfig';
             const giverRef = doc(firestore, 'users', uid);
             const userDoc = await getDoc(giverRef); 
             const giverUsername = userDoc.data().username;
+            const now = Timestamp.now();
+
+            const expiresInOneWeekSeconds = now.seconds + (7 * 24 * 60 * 60);
+            const expiresInOneWeek = new Timestamp(expiresInOneWeekSeconds, 0); // nanosekunnit = 0
+            
+           // for testing: 2 minutes
+           //const expiresInOneWeek = new Timestamp(now.seconds + 2 * 60, now.nanoseconds);
 
             const itemData = {
             itemname,
@@ -37,7 +46,7 @@ import { firestore } from './firebaseConfig';
             giverid: giverRef,
             givername: giverUsername,
             createdAt: serverTimestamp(),
-            expirationAt: serverTimestamp(),
+            expiration: expiresInOneWeek,
             };
 
             const docRef = await addDoc(collection(firestore, 'items'), itemData);
@@ -150,6 +159,7 @@ import { firestore } from './firebaseConfig';
                 throw new Error('Et voi poistaa toisten tuotteita.');
             }
 
+            await deleteSubcollection(itemRef, 'takers');
             await deleteDoc(itemRef);
             console.log(`UID: ${uid} poistanut: ${itemId}`);
 
@@ -158,6 +168,41 @@ import { firestore } from './firebaseConfig';
             throw error;
         }
       };
+
+    export const deleteExpiredItems = async () => {
+        try {
+            const itemsRef = collection(firestore, 'items');
+            const q = query(itemsRef, where('expiration', '<=', Timestamp.now()));
+            const snapshot = await getDocs(q);
+
+            for (const docSnapshot of snapshot.docs) {
+                const itemId = docSnapshot.id;
+
+                await deleteSubcollection(docSnapshot.ref, 'takers');
+                await deleteDoc(docSnapshot.ref);
+                console.log(`Poistettu vanhentunut itemi ja sen takers: ${itemId}`);
+            }
+
+        } catch (error) {
+            console.error('Virhe poistettaessa vanhentuneita itemeitä:', error);
+            throw error;
+        }
+    }
+    
+    const deleteSubcollection = async (parentRef, subcollectionName) => {
+        try {
+            const subcollectionRef = collection(parentRef, subcollectionName);
+            const snapshot = await getDocs(subcollectionRef);
+    
+            for (const docSnapshot of snapshot.docs) {
+                await deleteDoc(docSnapshot.ref);
+                console.log(`Poistettu dokumentti ${subcollectionName} alikokoelmasta: ${docSnapshot.id}`);
+            }
+        } catch (error) {
+            console.error(`Virhe poistettaessa ${subcollectionName} alikokoelmaa:`, error);
+            throw error;
+        }
+    }
 
     export const checkIfMyItem = async (uid, itemId) => {
         try {
