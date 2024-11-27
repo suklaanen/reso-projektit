@@ -188,15 +188,15 @@ import { Timestamp } from 'firebase/firestore';
             throw error;
         }
     }
-    
+        
     const deleteSubcollection = async (parentRef, subcollectionName) => {
         try {
             const subcollectionRef = collection(parentRef, subcollectionName);
             const snapshot = await getDocs(subcollectionRef);
-    
+
             for (const docSnapshot of snapshot.docs) {
                 await deleteDoc(docSnapshot.ref);
-                console.log(`Poistettu dokumentti ${subcollectionName} alikokoelmasta: ${docSnapshot.id}`);
+                console.log(`Poistettu ${subcollectionName} alikokoelmasta: ${docSnapshot.id}`);
             }
         } catch (error) {
             console.error(`Virhe poistettaessa ${subcollectionName} alikokoelmaa:`, error);
