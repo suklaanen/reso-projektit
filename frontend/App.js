@@ -36,7 +36,7 @@ const AppNavigator = () => {
   const authState = useContext(AuthenticationContext);
 
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="AuthScreen">
       {authState ? (
         // User authenticated
         <>

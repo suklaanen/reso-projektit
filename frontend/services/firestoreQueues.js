@@ -9,9 +9,10 @@ import {
     getDoc,
     orderBy,
     collectionGroup,
+    updateDoc,
 } from 'firebase/firestore';
 import { firestore } from './firebaseConfig'; 
-import { get, last, take } from 'lodash';
+import { get, last, set, take } from 'lodash';
 import { Timestamp } from 'firebase/firestore';
 
     export const addTakerToItem = async (uid, itemId) => {
@@ -32,9 +33,10 @@ import { Timestamp } from 'firebase/firestore';
             throw new Error('Et voi varata omaa tuotettasi.');
         }
 
+        const expiresIn6Hours = await setExpirationTime(itemId);
         const takersRef = collection(itemRef, 'takers');
-        const now = Timestamp.now(); 
-        const expiresIn6Hours = new Timestamp(now.seconds + 6 * 60 * 60, now.nanoseconds); 
+        const now = Timestamp.now();
+
         const takerData = {
             takerId: doc(firestore, "users", uid), 
             createdAt: now,
@@ -49,6 +51,39 @@ import { Timestamp } from 'firebase/firestore';
         throw error;
         }
     };
+
+    export const setExpirationTime = async (itemId) => {
+
+        try {
+            const itemRef = collection(firestore, `items/${itemId}/takers`);
+            const q = query(itemRef, orderBy("expiration", "desc")); 
+            const snapshot = await getDocs(q);
+
+            let expiresIn6Hours;
+
+            const now = Timestamp.now(); 
+
+            if (!snapshot.empty) {
+                const latestTaker = snapshot.docs[0].data();
+                console.log("Vimeisin exp.", latestTaker.expiration);
+
+                expiresIn6Hours = new Timestamp(
+                    latestTaker.expiration.seconds + 6 * 60 * 60,
+                    latestTaker.expiration.nanoseconds
+                );
+            } else {
+                console.log("Eka varaaja, Exp 6h");
+                expiresIn6Hours = new Timestamp(now.seconds + 6 * 60 * 60, now.nanoseconds);
+            }
+
+            return expiresIn6Hours; 
+
+        } catch (error) {
+            console.error("Virhe expiration-ajan asettamisessa:", error);
+            throw error;
+        }
+
+    }
 
     export const deleteExpiredStuff = async () => {
         try {
