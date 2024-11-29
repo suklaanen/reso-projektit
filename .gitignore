@@ -29,4 +29,7 @@ dist-ssr
 # expo dir
 .expo/
 
+# kuntadataa
+dataa/
+
 run-all.bat
