@@ -18,13 +18,22 @@ import {
 import { firestore } from './firebaseConfig'; 
 import { now } from 'lodash';
 import { Timestamp } from 'firebase/firestore';
+import regionsAndCities from '../components/Sorted-maakunnat.json'; 
 
-    export const addItemToFirestore = async (uid, itemname, itemdescription, postalcode, city ) => {
+    export const addItemToFirestore = async (uid, itemname, itemdescription, city ) => {
 
-        if (!itemname || !itemdescription || !postalcode || !city) {
+        if (!itemname || !itemdescription || !city) {
             console.error('Virhe: Yksi tai useampi kenttä on tyhjä!');
             throw new Error('Täytä puuttuvat kentät.');
         }
+
+        const allCities = Object.values(regionsAndCities).flat(); 
+        const isCityValid = allCities.includes(city.trim());
+
+        if (!isCityValid) {
+            throw new Error('Tarkista kaupungin oikeinkirjoitus.');
+        }
+
 
         try {;
             const giverRef = doc(firestore, 'users', uid);
@@ -41,7 +50,6 @@ import { Timestamp } from 'firebase/firestore';
             const itemData = {
             itemname,
             itemdescription,
-            postalcode,
             city,
             giverid: giverRef,
             givername: giverUsername,

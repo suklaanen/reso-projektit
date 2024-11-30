@@ -112,6 +112,26 @@ const globalStyles = StyleSheet.create({
     flex: 1,
   },
 
+  textItemTitle: {
+    height: 60,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    marginVertical: 4,
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+
+  textDescription: {
+    height: 200,
+    textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+  
   text: {
     flex: 1,
   },
@@ -145,7 +165,6 @@ const globalStyles = StyleSheet.create({
     textShadowColor: "#fff", 
     textShadowOffset: { width: 1, height: 1 }, 
     textShadowRadius: 6,
-
   },
   
   appBarTitle: {
@@ -270,6 +289,18 @@ const globalStyles = StyleSheet.create({
     borderRadius: 8, 
     marginVertical: 20,
     alignSelf: 'center',
+  },
+
+  suggestionsList: {
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    marginVertical: 2,
+  },
+
+  autocompleteItem: {
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    marginVertical: 2,
   },
 
 });

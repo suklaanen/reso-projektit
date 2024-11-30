@@ -59,7 +59,7 @@ export const AllItems = () => {
                         <View key={item.id} style={globalStyles.itemContainer}>
                             <Text style={globalStyles.itemName}>{item.itemname}</Text>
                             <Text>{item.itemdescription}</Text>
-                            <Text>Sijainti: {item.postalcode}, {item.city}</Text>
+                            <Text>Paikkakunta: {item.city}</Text>
                             <Text>Julkaisija: {item.givername}</Text>
                             <Text>{formatTimestamp(item.createdAt)}</Text>
                             <ItemJoinOnQueue itemId={item.id} />
