@@ -8,7 +8,7 @@ export const ButtonContinue = ({ title, onPress }) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonContinue]} 
       onPress={onPress}
     >
-      <Text style={GlobalButtons.whiteBase24}>{title}</Text>
+      <Text style={[GlobalButtons.whiteBase, GlobalButtons.size24]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -19,7 +19,7 @@ export const ButtonNavigate = ({ title, onPress }) => {
       style={[GlobalButtons.buttonNavigate]} 
       onPress={onPress}
     >
-      <Text style={GlobalButtons.blackBase18}>{title}</Text>
+      <Text style={[GlobalButtons.blackBase, GlobalButtons.size18]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -30,7 +30,7 @@ export const ButtonDelete = ({ title, onPress }) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonDelete]}
       onPress={onPress}
     >
-      <Text style={GlobalButtons.whiteBase16}>{title}</Text>
+      <Text style={[GlobalButtons.whiteBase, GlobalButtons.size16]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -41,7 +41,7 @@ export const ButtonConfirm = ({ title, onPress}) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonConfirm]} 
       onPress={onPress} 
     >
-      <Text style={GlobalButtons.whiteBase16}>{title}</Text>
+      <Text style={[GlobalButtons.whiteBase, GlobalButtons.size16]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -52,7 +52,7 @@ export const ButtonCancel = ({ title, onPress}) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonCancel]} 
       onPress={onPress} 
     >
-      <Text style={GlobalButtons.blackBase16}>{title}</Text>
+      <Text style={[GlobalButtons.blackBase, GlobalButtons.size16]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -63,7 +63,7 @@ export const ButtonEdit = ({ title, onPress}) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonEdit]}
       onPress={onPress} 
     >
-      <Text style={GlobalButtons.whiteBase16}>{title}</Text>
+      <Text style={[GlobalButtons.whiteBase, GlobalButtons.size16]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -74,7 +74,7 @@ export const ButtonAdd = ({ title, onPress}) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonAdd]} 
       onPress={onPress}
     >
-      <Text style={GlobalButtons.whiteBase16}>{title}</Text>
+      <Text style={[GlobalButtons.whiteBase, GlobalButtons.size16]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -85,7 +85,7 @@ export const ButtonSave = ({ title, onPress}) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonSave]} 
       onPress={onPress} 
     >
-      <Text style={GlobalButtons.whiteBase16}>{title}</Text>
+      <Text style={[GlobalButtons.whiteBase, GlobalButtons.size16]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -96,7 +96,7 @@ export const ButtonPage = ({ title, onPress}) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonPage]}
       onPress={onPress}
     >
-      <Text style={GlobalButtons.blackBase14}>{title}</Text>
+      <Text style={[GlobalButtons.blackBase, GlobalButtons.size16]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -107,7 +107,7 @@ export const ButtonSetup = ({ title, onPress}) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonSetup]} 
       onPress={onPress} 
     >
-      <Text style={GlobalButtons.blackBase14}>{title}</Text>
+      <Text style={[GlobalButtons.blackBase, GlobalButtons.size16]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -118,7 +118,7 @@ export const ButtonReset = ({ title, onPress}) => {
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonReset]} 
       onPress={onPress} 
     >
-      <Text style={GlobalButtons.blackBase14}>{title}</Text>
+      <Text style={[GlobalButtons.blackBase, GlobalButtons.size16]}>{title}</Text>
     </TouchableOpacity>
   );
 };

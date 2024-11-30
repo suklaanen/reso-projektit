@@ -77,90 +77,49 @@ const GlobalButtons = StyleSheet.create({
 
   buttonPage: {
     backgroundColor: "#d0d0d0",
-    borderRadius: 22,
-    padding: 12,
-    marginVertical: 8,
-    alignItems: "center",
     width: "30%",
   },
 
   buttonSetup: {
     backgroundColor: "#8bb1e7",
-    borderRadius: 22,
-    padding: 12,
-    borderColor: "#0f4f1a",
-    borderWidth: 1,
-    borderStyle: "dashed",
-    marginHorizontal: 8,
-    alignItems: "center",
     width: "100%",
   },
 
   buttonReset: {
     backgroundColor: "#d0d0d0",
-    borderRadius: 22,
-    padding: 12,
-    borderColor: "#0f4f1a",
-    borderWidth: 1,
-    borderStyle: "dashed",
-    marginHorizontal: 8,
-    alignItems: "center",
     width: "100%",
   },
 
-  whiteBase14: {
+  whiteBase: {
     color: "#ffffff",
-    fontSize: 14,
     textAlign: "center",
   },
 
-  whiteBase16: {
-    color: "#ffffff",
-    fontSize: 16,
-    alignSelf: "center",
+  blackBase: {
+    color: "#000000",
+    textAlign: "center",
   },
 
-  whiteBase20: {
-    color: "#ffffff",
+  size14: {
+    fontSize: 14,
+  },
+
+  size16: {
+    fontSize: 16,
+  },
+
+  size20: {
     fontSize: 20,
-    textAlign: "center",
   },
 
-  whiteBase24: {
-    color: "#ffffff",
+  size24: {
     fontSize: 24,
-    textAlign: "center",
   },
 
-  blackBase14: {
-    color: "#000000",
-    fontSize: 14,
-    textAlign: "center",
-  },
-
-  blackBase16: {
-    color: "#000000",
-    fontSize: 16,
-    textAlign: "center",
-  },
-
-  blackBase18: {
-    color: "#000000",
+  size18: {
     fontSize: 18,
-    textAlign: "center",
   },
 
-  blackBase20: {
-    color: "#000000",
-    fontSize: 20,
-    textAlign: "center",
-  },
-
-  blackBase24: {
-    color: "#000000",
-    fontSize: 24,
-    textAlign: "center",
-  },
 });
 
 export default GlobalButtons;
