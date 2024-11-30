@@ -99,10 +99,10 @@ const AuthScreen = () => {
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={GlobalButtons.buttonContinue}
+          style={[GlobalButtons.buttonBase, GlobalButtons.buttonContinue]}
           onPress={isLogin ? handleLogin : handleRegister}
         >
-          <Text style={GlobalButtons.whiteBase16}>{authButtonText}</Text>
+          <Text style={[GlobalButtons.whiteBase, GlobalButtons.size16]}>{authButtonText}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.switchContainer}>

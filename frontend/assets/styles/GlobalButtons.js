@@ -24,6 +24,7 @@ const GlobalButtons = StyleSheet.create({
 
   buttonContinue: {
     backgroundColor: "#003366",
+    width: "100%",
   },
 
   buttonNavigate: {
