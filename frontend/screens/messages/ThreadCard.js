@@ -16,6 +16,7 @@ import {
   collection,
   getDoc,
   getDocs,
+  deleteDoc,
   orderBy,
   limit,
 } from "firebase/firestore";
@@ -35,16 +36,20 @@ const ThreadCard = ({ thread }) => {
     },
   };
 
+  //Lisätty kasa tarkistuksia, jotka tulostavat konsoliin tavaraa. Ne on poistettavissa tai kommmentoitavissa pois.
   useEffect(() => {
     const fetchItemName = async () => {
       const itemRef = doc(firestore, "items", thread.item.id);
       const itemSnap = await getDoc(itemRef);
       if (itemSnap.exists()) {
+        console.log("Esine löytyy:", itemSnap.data().itemname); //Konsoliin tulostettava viesti jos esine on olemassa
         setItemName(itemSnap.data().itemname);
+      } else { //Lisätty tarkistus, että onko esine yhä olemassa
+        console.log("Esinettä ei löydy, poistetaan viestiketju:", thread.id); //Konsoliin tulostettavat viesti jos esinettä ei ole
+        await deleteDoc(doc(firestore, "threads", thread.id));
       }
     };
 
-    // fetch participants
     const fetchParticipants = async () => {
       const participants = await Promise.all(
         thread.participants.map(async (participantRef) => {
@@ -57,11 +62,25 @@ const ThreadCard = ({ thread }) => {
             : {};
         })
       );
+      console.log("Osallistujat haettu:", participants); //Konsoliin tulostettava viesti, jos osallistujat löytyvät
       setParticipants(participants);
+    };
+
+    //Funktio, joka tarkistaa, että onko viestiketjun vaatima varaus olemassa
+    const checkReservationStatus = async () => {
+      const reservationRef = doc(firestore, "reservations", thread.reservation.id);
+      const reservationSnap = await getDoc(reservationRef);
+      if (reservationSnap.exists()) {
+        console.log("Varaus löytyy:", reservationSnap.data()); //Konsoliin tulostettava viesti, jos varaus löytyy
+      } else {
+        console.log("Varausta ei löydy, poistetaan viestiketju:", thread.id); //Konsoliin tulostettava viesti jos varausta ei löydy  
+        await deleteDoc(doc(firestore, "threads", thread.id));
+      }
     };
 
     fetchItemName();
     fetchParticipants();
+    checkReservationStatus();
   }, []);
 
   const formatTimestamp = (timestamp) => {
