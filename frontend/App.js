@@ -18,13 +18,14 @@ import {
 } from "./screens/account/AccountComponents";
 import Credits from "./screens/credits/Credits";
 import MessagesMain from "./screens/messages/MessagesMain";
-import { ItemsFromThisUser, QueuesOfThisUser } from "./screens/items/ItemsMain";
 import ItemsMain from "./screens/items/ItemsMain";
 import Toast from "react-native-toast-message";
 import ChatView from "./screens/chat/ChatView";
 import AuthScreen from "./screens/auth/AuthScreen";
 import { LoadingProvider } from "./context/LoadingContext";
 import { AddItemView } from "./screens/items/AddItemView";
+import { UserItemsView } from "./screens/items/UserItemsView";
+import { UserQueues } from "./screens/items/UserQueues";
 
 const Stack = createStackNavigator();
 
@@ -78,12 +79,12 @@ const AppNavigator = () => {
           />
           <Stack.Screen
             name="MyItems"
-            component={ItemsFromThisUser}
+            component={UserItemsView}
             options={{ headerShown: false }}
           />
           <Stack.Screen
             name="MyQueues"
-            component={QueuesOfThisUser}
+            component={UserQueues}
             options={{ headerShown: false }}
           />
           <Stack.Screen
