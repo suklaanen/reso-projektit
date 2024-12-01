@@ -90,18 +90,24 @@ export const ButtonSave = ({ title, onPress}) => {
   );
 };
 
-export const ButtonPage = ({ title, onPress}) => {
+export const ButtonPage = ({ title, onPress, disabled }) => {
   return (
     <TouchableOpacity
-      style={[GlobalButtons.buttonBase, GlobalButtons.buttonPage]}
+      style={[
+        GlobalButtons.buttonPage, 
+        disabled ? { opacity: 0.5 } : {}
+      ]}
       onPress={onPress}
+      disabled={disabled}  
     >
-      <Text style={[GlobalButtons.blackBase, GlobalButtons.size16]}>{title}</Text>
+      <Text style={[GlobalButtons.blackBase, GlobalButtons.size14]}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
 
-export const ButtonSetup = ({ title, onPress}) => {
+export const ButtonSetup = ({ title, onPress }) => {
   return (
     <TouchableOpacity
       style={[GlobalButtons.buttonBase, GlobalButtons.buttonSetup]} 

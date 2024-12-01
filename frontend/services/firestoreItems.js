@@ -16,7 +16,7 @@ import {
 } from 'firebase/firestore';
 
 import { firestore } from './firebaseConfig'; 
-import { now } from 'lodash';
+import { get, now } from 'lodash';
 import { Timestamp } from 'firebase/firestore';
 import regionsAndCities from '../components/Sorted-maakunnat.json'; 
 
@@ -123,6 +123,15 @@ import regionsAndCities from '../components/Sorted-maakunnat.json';
 
     export const getCurrentUserItems = async (uid, lastDoc, pageSize) => {
         return paginateItems(lastDoc, pageSize, () => where('giverid', '==', doc(firestore, 'users', uid)));
+    };
+
+    export const getTotalItems = async () => {
+
+        const count = getDocs(collection(firestore, 'items')).then((snapshot) => {
+            return snapshot.size;
+        }
+        );
+        return count;
     };
 
     export const getCurrentUserItemQueues = async (uid, lastDoc, pageSize) => {
