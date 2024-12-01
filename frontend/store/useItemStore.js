@@ -1,10 +1,8 @@
 import { create } from "zustand";
 import {
   addItemToFirestore,
-  checkIfMyItem,
   deleteItemFromFirestore,
   fetchQueueCount,
-  getCurrentUserItems,
   paginateItems,
 } from "../services/firestoreItems";
 import {
@@ -18,38 +16,29 @@ import { firestore } from "../services/firebaseConfig";
 const useItemStore = create((set, get) => {
   const setLoading = (loading) => set({ loading });
   const setError = (error) => set({ error });
-  const updatePaginatedState = (key, newItems, lastDoc, pageSize) => {
+  const updatePaginatedState = (items, lastDoc, pageSize) => {
     set((state) => ({
-      [key]: {
-        ...state[key],
-        items: [...state[key].items, ...newItems],
-        lastDoc,
-        hasMore: newItems.length === pageSize,
-      },
+      items: [...state.items, ...items],
+      lastDoc,
+      hasMore: items.length === pageSize,
     }));
   };
-  return ({
+  return {
+    items: [],
     loading: false,
     error: null,
-
-    itemsState: {
-      items: [],
-      lastDoc: null,
-      hasMore: true,
-    },
-
-    userItemsState: {
-      items: [],
-      lastDoc: null,
-      hasMore: true,
-    },
+    lastDoc: null,
+    hasMore: true,
 
     fetchItems: async (pageSize) => {
       setLoading(true);
       setError(null);
       try {
-        const {items, lastDoc} = await paginateItems(get().itemsState.lastDoc, pageSize);
-        updatePaginatedState("itemsState", items, lastDoc, pageSize);
+        const { items, lastDoc } = await paginateItems(get().lastDoc, pageSize);
+        const newItems = items.filter(
+          (item) => !get().items.some((i) => i.id === item.id)
+        );
+        updatePaginatedState(newItems, lastDoc, pageSize);
       } catch (error) {
         setError(error);
         console.error("Error fetching items:", error);
@@ -57,25 +46,6 @@ const useItemStore = create((set, get) => {
         setLoading(false);
       }
     },
-
-    fetchUserItems: async (userId, pageSize) => {
-      setLoading(true);
-      setError(null);
-      try {
-        const { items, lastDoc } = await getCurrentUserItems(
-            userId,
-            get().userItemsState.lastDoc,
-            pageSize
-        );
-        updatePaginatedState("userItemsState", items, lastDoc, pageSize);
-      } catch (error) {
-        setError(error);
-        console.error("Error fetching user items:", error);
-      } finally {
-        setLoading(false);
-      }
-    },
-
     addUserToQueue: async (userId, itemId) => {
       try {
         await addTakerToItem(userId, itemId);
@@ -97,18 +67,14 @@ const useItemStore = create((set, get) => {
       }
     },
 
-    checkItemOwnership: async (userId, itemId) => {
-      return await checkIfMyItem(userId, itemId);
-    },
-
     addItem: async (userId, itemname, itemdescription, postalcode, city) => {
       try {
         const id = await addItemToFirestore(
-            userId,
-            itemname,
-            itemdescription,
-            postalcode,
-            city
+          userId,
+          itemname,
+          itemdescription,
+          postalcode,
+          city
         );
         const itemCollectionRef = collection(firestore, "items");
         const itemSnap = await getDoc(doc(itemCollectionRef, id));
@@ -116,25 +82,26 @@ const useItemStore = create((set, get) => {
           ...itemSnap.data(),
           id: itemSnap.id,
         };
-        set((state) => ({
-          itemsState: { ...state.itemsState, items: [...state.itemsState.items, item] },
-          userItemsState: { ...state.userItemsState, items: [...state.userItemsState.items, item] },
+
+        const items = get().items.filter((i) => i.id !== item.id);
+        set(() => ({
+          items: [...items, item],
         }));
+        return item;
       } catch (error) {
         console.error("Virhe lisättäessä tuotetta:", error);
         throw error;
       }
     },
 
-    deleteUserItem: async (userId, itemId) => {
-      try {
-        return await deleteItemFromFirestore(userId, itemId);
-      } catch (error) {
-        console.error("Virhe poistettaessa itemiä Firestoresta:", error);
-        throw error;
-      }
+    removeItem: async (userId, itemId) => {
+      const items = get().items.filter((i) => i.id !== itemId);
+      set(() => ({
+        items,
+      }));
+      await deleteItemFromFirestore(userId, itemId);
     },
-  });
+  };
 });
 
 export default useItemStore;
