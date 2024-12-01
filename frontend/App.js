@@ -32,7 +32,7 @@ const AppNavigator = () => {
   const authState = useAuth();
 
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="AuthScreen">
       {authState ? (
         // User authenticated
         <>

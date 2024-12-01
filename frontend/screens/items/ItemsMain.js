@@ -18,6 +18,8 @@ import { useAuth } from "../../context/AuthenticationContext";
 import { deleteItemFromFirestore } from "../../services/firestoreItems";
 import Toast from "react-native-toast-message";
 import { LoadingIndicator } from "../../components/LoadingIndicator";
+import { deleteExpiredStuff } from '../../services/firestoreQueues';
+import { deleteExpiredItems } from '../../services/firestoreItems';
 
 const ItemList = memo(({ items, fetchItems, hasMore }) => {
   const loading = useItemStore((state) => state.loading);
@@ -53,7 +55,9 @@ const ItemList = memo(({ items, fetchItems, hasMore }) => {
 });
 
 const ItemsMain = () => {
-  // deleteExpiredStuff();
+  deleteExpiredItems();
+  deleteExpiredStuff();
+
   const navigation = useNavigation();
   const items = useItemStore((state) => state.items);
   const fetchItems = useItemStore((state) => state.fetchItems);
