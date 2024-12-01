@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../context/AuthenticationContext";
-import { addItemToFirestore } from "../../services/firestoreItems";
 import Toast from "react-native-toast-message";
 import { ScrollView, TextInput, View } from "react-native";
 import globalStyles from "../../assets/styles/Styles";
@@ -64,19 +63,10 @@ export const AddItemView = () => {
         itemData.postcode,
         itemData.city
       );
-      const response = await addItemToFirestore(
-        user.id,
-        itemData.name,
-        itemData.description,
-        itemData.postcode,
-        itemData.city
-      );
-      console.log("Add item response:", response);
       Toast.show({ type: "success", text1: "Julkaisu lisätty!" });
 
       navigation.navigate("ItemsMain");
     } catch (error) {
-      console.error("Add item error:", error);
       Toast.show({
         type: "error",
         text1: "Virhe julkaisua lisättäessä",

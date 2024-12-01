@@ -59,10 +59,10 @@ const ItemsMain = () => {
   deleteExpiredStuff();
 
   const navigation = useNavigation();
-  const items = useItemStore((state) => state.items);
+  const items = useItemStore((state) => state.itemsState.items);
   const fetchItems = useItemStore((state) => state.fetchItems);
   const error = useItemStore((state) => state.error);
-  const hasMore = useItemStore((state) => state.hasMore);
+  const hasMore = useItemStore((state) => state.itemsState.hasMore);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -113,7 +113,7 @@ export const ItemsFromThisUser = () => {
   const [activeToggleId, setActiveToggleId] = useState(null);
   const authState = useAuth();
   const pageSize = 4;
-  const userItems = useItemStore((state) => state.userItems);
+  const userItems = useItemStore((state) => state.userItemsState.items);
   const fetchUserItems = useItemStore((state) => state.fetchUserItems);
   const deleteUserItem = useItemStore((state) => state.deleteUserItem);
   const loading = useItemStore((state) => state.loading);
