@@ -16,6 +16,7 @@ import {
   collection,
   getDoc,
   getDocs,
+  deleteDoc,
   orderBy,
   limit,
 } from "firebase/firestore";
@@ -44,7 +45,7 @@ const ThreadCard = ({ thread }) => {
       }
     };
 
-    // fetch participants
+    //Haetaan viestiketjuun osallistuvat
     const fetchParticipants = async () => {
       const participants = await Promise.all(
         thread.participants.map(async (participantRef) => {
