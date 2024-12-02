@@ -45,6 +45,7 @@ const ThreadCard = ({ thread }) => {
       }
     };
 
+    //Haetaan viestiketjuun osallistuvat
     const fetchParticipants = async () => {
       const participants = await Promise.all(
         thread.participants.map(async (participantRef) => {
@@ -57,25 +58,11 @@ const ThreadCard = ({ thread }) => {
             : {};
         })
       );
-      console.log("Osallistujat haettu:", participants); //Konsoliin tulostettava viesti, jos osallistujat löytyvät
       setParticipants(participants);
-    };
-
-    
-    const checkReservationStatus = async () => {
-      const reservationRef = doc(firestore, "reservations", thread.reservation.id);
-      const reservationSnap = await getDoc(reservationRef);
-      if (reservationSnap.exists()) {
-        console.log("Varaus löytyy:", reservationSnap.data()); //Konsoliin tulostettava viesti, jos varaus löytyy
-      } else {
-        console.log("Varausta ei löydy, poistetaan viestiketju:", thread.id); //Konsoliin tulostettava viesti jos varausta ei löydy  
-        await deleteDoc(doc(firestore, "threads", thread.id));
-      }
     };
 
     fetchItemName();
     fetchParticipants();
-    checkReservationStatus();
   }, []);
 
   const formatTimestamp = (timestamp) => {
