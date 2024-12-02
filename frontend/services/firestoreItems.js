@@ -141,15 +141,33 @@ import regionsAndCities from '../components/Sorted-maakunnat.json';
     };
 
     export const getCurrentUserItemQueues = async (uid, lastDoc, pageSize) => {
-        const {items: itemIdRefs, lastDoc: newLastDoc} = await paginateItems(lastDoc, pageSize,
-            () => where('takerId', '==', doc(firestore, 'users', uid)),
-            () => collectionGroup(firestore, 'takers'),
-            (doc) => doc.ref.parent.parent.id);
+        try {
+            const { items: takerDocs, lastDoc: newLastDoc } = await paginateItems(
+                lastDoc,
+                pageSize,
+                () => where('takerId', '==', doc(firestore, 'users', uid)),
+                undefined,
+                () => collectionGroup(firestore, 'takers'),
+                (doc) => doc.ref.parent.parent 
+            );
 
-            const itemIds = itemIdRefs.map((doc) => doc.id);
-            const {items} = await paginateItems(null, itemIds.length, () => where(documentId(), 'in', itemIds));
-            return {items, lastDoc: newLastDoc};
-    }
+            if (takerDocs.length === 0) {
+                return { items: [], lastDoc: null };
+            }
+
+            const itemIds = takerDocs.map((ref) => ref.id);
+            const { items } = await paginateItems(
+                null,
+                itemIds.length,
+                () => where(documentId(), 'in', itemIds)
+            );
+    
+            return { items, lastDoc: newLastDoc };
+        } catch (error) {
+            console.error('getCurrentUserItemQueues error:', error);
+            throw error;
+        }
+    };
 
     export const getItemFromFirestore = async (itemId) => {
         try {

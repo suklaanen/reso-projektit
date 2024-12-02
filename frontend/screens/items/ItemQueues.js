@@ -84,42 +84,41 @@ export const ItemJoinOnQueue = ({ itemId }) => {
     }
 
     return (
+        <>
+        {isMyItem ? (
+            <Text>Oma ilmoitus: Jonottajia: {queueCount}</Text>
+        ) : (
+            <View style={globalStyles.iconContainer}>
+                <TouchableOpacity 
+                    onPress={() => saveForQueue(itemId)} 
+                    disabled={isOnQueue} 
+                    style={[globalStyles.iconButton]}>
+                    <Icon 
+                        name="checkmark-circle" 
+                        color={isOnQueue ? '#bdbdbd' : '#195010'} 
+                        style={globalStyles.iconsOnUse} 
+                    />
+                </TouchableOpacity>
 
-            <>
-            {isMyItem ? (
-                <Text>Oma ilmoitus: Jonottajia: {queueCount}</Text>
-            ) : (
-                <View style={globalStyles.iconContainer}>
-                    <TouchableOpacity 
-                        onPress={() => saveForQueue(itemId)} 
-                        disabled={isOnQueue} 
-                        style={[globalStyles.iconButton]}>
-                        <Icon 
-                            name="checkmark-circle" 
-                            color={isOnQueue ? '#bdbdbd' : '#195010'} 
-                            style={globalStyles.iconsOnUse} 
-                        />
-                    </TouchableOpacity>
+                <TouchableOpacity 
+                    onPress={() => deleteFromQueue(itemId)} 
+                    disabled={!isOnQueue} 
+                    style={[globalStyles.iconButton]}>
+                    <Icon 
+                        name="close-circle" 
+                        color={!isOnQueue ? '#bdbdbd' : '#790809'} 
+                        style={globalStyles.iconsOnUse} 
+                    />
+                </TouchableOpacity>
 
-                    <TouchableOpacity 
-                        onPress={() => deleteFromQueue(itemId)} 
-                        disabled={!isOnQueue} 
-                        style={[globalStyles.iconButton]}>
-                        <Icon 
-                            name="close-circle" 
-                            color={!isOnQueue ? '#bdbdbd' : '#790809'} 
-                            style={globalStyles.iconsOnUse} 
-                        />
-                    </TouchableOpacity>
-
-                    {isOnQueue ? (
-                        <Text style={globalStyles.iconText}>Varauksen sija: {queuePosition}</Text>
-                    ) : (
-                        <Text style={globalStyles.iconText}>Jonottajia: {queueCount}</Text>
-                    )}
-                </View>
-            )}
-            </>
+                {isOnQueue ? (
+                    <Text style={globalStyles.iconText}>Varauksen sija: {queuePosition}</Text>
+                ) : (
+                    <Text style={globalStyles.iconText}>Jonottajia: {queueCount}</Text>
+                )}
+            </View>
+        )}
+        </>
 
     );
     };
@@ -171,6 +170,7 @@ export const ItemJoinOnQueue = ({ itemId }) => {
                 <BasicSection> <Text>Virhe: {error.message}</Text> </BasicSection>
             );
         }
+        
         
     return (
         <View style={globalStyles.container}>
