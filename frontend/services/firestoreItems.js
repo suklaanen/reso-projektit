@@ -88,39 +88,45 @@ import regionsAndCities from '../components/Sorted-maakunnat.json';
         }
     };
 
-    export const paginateItems = async (lastDoc, pageSize,
+    export const paginateItems = async (
+        lastDoc,
+        pageSize,
         filter = undefined,
+        city = undefined, 
         refToCollection = () => collection(firestore, 'items'),
-        idFieldHandler = (item) => item.id  ) => {
+        idFieldHandler = (item) => item.id
+    ) => {
         try {
-            const itemsRef = refToCollection();
+            let itemsRef = refToCollection();
             let q;
-
+    
             if (lastDoc) {
                 q = query(itemsRef, orderBy('createdAt'), startAfter(lastDoc), limit(pageSize));
             } else {
                 q = query(itemsRef, orderBy('createdAt'), limit(pageSize));
             }
-
+            if (city) {
+                q = query(q, where('city', '==', city));
+            }
+    
             if (filter) {
                 q = query(q, filter());
             }
-
+    
             const itemsSnapshot = await getDocs(q);
             const items = [];
-
+    
             itemsSnapshot.forEach((doc) => {
-                console.log(doc.data());
                 items.push({ id: idFieldHandler(doc), ...doc.data() });
             });
-
+    
             const lastVisibleDoc = itemsSnapshot.docs[itemsSnapshot.docs.length - 1];
             return { items, lastDoc: lastVisibleDoc };
         } catch (error) {
             throw error;
         }
     };
-
+    
     export const getCurrentUserItems = async (uid, lastDoc, pageSize) => {
         return paginateItems(lastDoc, pageSize, () => where('giverid', '==', doc(firestore, 'users', uid)));
     };
