@@ -16,9 +16,10 @@ import {
 } from 'firebase/firestore';
 
 import { firestore } from './firebaseConfig'; 
-import { get, now } from 'lodash';
+import { first, get, now } from 'lodash';
 import { Timestamp } from 'firebase/firestore';
 import regionsAndCities from '../components/Sorted-maakunnat.json'; 
+import { getUserData } from './firestoreUsers';
 
     export const addItemToFirestore = async (uid, itemname, itemdescription, city ) => {
 
@@ -267,7 +268,39 @@ import regionsAndCities from '../components/Sorted-maakunnat.json';
             const takersRef = collection(firestore, `items/${itemId}/takers`);
             const snapshot = await getDocs(takersRef);
             return snapshot.size -1;
+
         } catch (error) {
             console.error('Virhe jonottajien määrän hakemisessa:', error);
         }
       };
+
+      export const fetchFirstInQueue = async (itemId) => {
+        try {
+            const takersRef = collection(firestore, `items/${itemId}/takers`);
+            const snapshot = await getDocs(takersRef);
+    
+            if (snapshot.empty) {
+                return null;
+            }
+    
+            const firstInQueueDoc = snapshot.docs[0]; 
+            const userRef = firstInQueueDoc.data().takerId;
+    
+            if (!userRef) {
+                return null; 
+            }
+            
+            const userSnapshot = await getDoc(userRef); 
+            if (!userSnapshot.exists()) {
+                return null; 
+            }
+    
+            const username = userSnapshot.data().username; 
+            return username; 
+    
+        } catch (error) {
+            console.error('Virhe jonossa ensimmäisen hakemisessa:', error);
+            return null;
+        }
+    };
+    

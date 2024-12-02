@@ -50,6 +50,11 @@ const globalStyles = StyleSheet.create({
     marginHorizontal: 5,
   },
 
+  iconStyle: {
+    fontSize: 55,
+    color: "#000",
+  },
+
   defText: {
     fontSize: 18,
     color: "#000",
@@ -101,6 +106,14 @@ const globalStyles = StyleSheet.create({
     padding: 11,
     backgroundColor: "#f9f9f9",
     borderRadius: 8,
+    borderBottom: 2,
+    borderStyle: "solid",
+    borderColor: "#000",
+  },
+
+  items: {
+    padding: 8,
+    marginBottom: 12,
   },
 
   textContainer: {
@@ -236,7 +249,8 @@ const globalStyles = StyleSheet.create({
   },
 
   disabledButton: {
-    backgroundColor: "#a0a0a0",
+    fontSize: 55,
+    color: "#ccc",
   },
 
   mapContainer: {
@@ -269,7 +283,6 @@ const globalStyles = StyleSheet.create({
   viewButtons: {
     flexDirection: "row",
     justifyContent: "center",
-    marginVertical: 8,
   },
 
   itemName: {
