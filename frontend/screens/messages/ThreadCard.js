@@ -36,17 +36,12 @@ const ThreadCard = ({ thread }) => {
     },
   };
 
-  //Lisätty kasa tarkistuksia, jotka tulostavat konsoliin tavaraa. Ne on poistettavissa tai kommmentoitavissa pois.
   useEffect(() => {
     const fetchItemName = async () => {
       const itemRef = doc(firestore, "items", thread.item.id);
       const itemSnap = await getDoc(itemRef);
       if (itemSnap.exists()) {
-        console.log("Esine löytyy:", itemSnap.data().itemname); //Konsoliin tulostettava viesti jos esine on olemassa
         setItemName(itemSnap.data().itemname);
-      } else { //Lisätty tarkistus, että onko esine yhä olemassa
-        console.log("Esinettä ei löydy, poistetaan viestiketju:", thread.id); //Konsoliin tulostettavat viesti jos esinettä ei ole
-        await deleteDoc(doc(firestore, "threads", thread.id));
       }
     };
 
@@ -66,7 +61,7 @@ const ThreadCard = ({ thread }) => {
       setParticipants(participants);
     };
 
-    //Funktio, joka tarkistaa, että onko viestiketjun vaatima varaus olemassa
+    
     const checkReservationStatus = async () => {
       const reservationRef = doc(firestore, "reservations", thread.reservation.id);
       const reservationSnap = await getDoc(reservationRef);

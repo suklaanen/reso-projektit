@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Heading } from "../../components/CommonComponents";
 import ThreadCard from "./ThreadCard";
 import { useThreads } from "../../context/ThreadsContext";
 import Toast from "react-native-toast-message";
+import { firestore } from "../../services/firebaseConfig";
+import {  doc, getDoc, deleteDoc, collection, query, where, getDocs  } from "firebase/firestore";
 
 const MessagesMain = () => {
   const threads = useThreads();
+  const [filteredThreads, setFilteredThreads] = useState([]);
 
   useEffect(() => {
     if (threads.length > 0) {
@@ -16,6 +19,59 @@ const MessagesMain = () => {
         text2: "Sait viestin yhteen keskusteluun",
       });
     }
+
+    //Funktio, joka tarkistaa, että onko varattu esine olemassa
+    const checkItemExistence = async (thread) => {
+      try {
+        const itemRef = doc(firestore, thread.item.path);
+        const itemSnap = await getDoc(itemRef);
+        if (itemSnap.exists()) {
+          return true;
+        } else {
+          console.log("Esinettä ei löydy, poistetaan viestiketju:", thread.id);
+          await deleteDoc(doc(firestore, "threads", thread.id));
+          return false;
+        }
+      } catch (error) {
+        console.error("Error checking item existence:", error);
+        return false;
+      }
+    };
+
+    //Funktio, joka tarkistaa, että onko viestiketjun vaatima varaus olemassa
+    const checkReservationInTakers = async (thread) => {
+      try {
+        const itemRef = doc(firestore, thread.item.path);
+        const takersCollectionRef = collection(itemRef, "takers");
+        const q = query(takersCollectionRef, where("takerId", "in", thread.participants));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          console.log("Varaus löytyy takers-alikokoelmasta:", thread.id);
+          return true;
+        } else {
+          console.log("Varausta ei löydy takers-alikokoelmasta, poistetaan viestiketju:", thread.id);
+          await deleteDoc(doc(firestore, "threads", thread.id));
+          return false;
+        }
+      } catch (error) {
+        console.error("Error checking reservation in takers subcollection:", error);
+        return false;
+      }
+    };
+
+    const filterThreads = async () => {
+      const validThreads = [];
+      for (const thread of threads) {
+        const itemExists = await checkItemExistence(thread);
+        const reservationStatus = await checkReservationInTakers(thread);
+        if (itemExists && reservationStatus) {
+          validThreads.push(thread);
+        }
+      }
+      setFilteredThreads(validThreads);
+    };
+
+    filterThreads();
   }, [threads]);
 
   return (
