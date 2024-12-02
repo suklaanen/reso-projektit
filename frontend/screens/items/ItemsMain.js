@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '../../assets/styles/Styles';
 import { deleteExpiredStuff } from '../../services/firestoreQueues';
 import { deleteExpiredItems } from '../../services/firestoreItems';
+import { IconChat, IconMyItemList, IconNewDocument, IconMyQueueList } from '../../components/Icons';
 
 const ItemsMain = () => {
   deleteExpiredItems();
@@ -20,18 +21,16 @@ const ItemsMain = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
+
         <Heading title="Ilmoitukset" />
-        <ButtonAdd title="Uusi ilmoitus" onPress={() => navigation.navigate('ItemAddView')}></ButtonAdd>
+        <View style={globalStyles.viewIcons}>
+          <IconNewDocument onPress={() => navigation.navigate('ItemAddView')} />
+          <IconMyItemList onPress={() => navigation.navigate('MyItems')} />
+          <IconMyQueueList onPress={() => navigation.navigate('MyQueues')} />
+        </View>
+
         <AllItems />
-        <Heading title="Omat listaukset" />
-        <ButtonNavigate
-          title="Ilmoitukset"
-          onPress={() => navigation.navigate('MyItems')}
-        />
-        <ButtonNavigate
-          title="Varaukset"
-          onPress={() => navigation.navigate('MyQueues')}
-        />
+
     </ScrollView>
   );
 };
@@ -82,4 +81,6 @@ export const QueuesOfThisUser = () => {
     </ScrollView>
   );
 }
+
+
 

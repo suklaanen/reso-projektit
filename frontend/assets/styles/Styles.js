@@ -5,7 +5,7 @@ const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgba(255, 255, 255, 0.3)",
-    padding: 16,
+    padding: 2,
   },
 
   separatorThin: {
@@ -50,6 +50,14 @@ const globalStyles = StyleSheet.create({
     marginHorizontal: 5,
   },
 
+  iconStyle: {
+    fontSize: 44,
+    color: "#000",
+    paddingLeft: 6,
+    paddingRight: 6,
+    paddingTop: 3,
+  },
+
   defText: {
     fontSize: 18,
     color: "#000",
@@ -81,6 +89,7 @@ const globalStyles = StyleSheet.create({
     marginTop: 14,
     marginBottom: 12,
     borderRadius: 3,
+    zIndex: 2,
   },
 
   title: {
@@ -101,6 +110,14 @@ const globalStyles = StyleSheet.create({
     padding: 11,
     backgroundColor: "#f9f9f9",
     borderRadius: 8,
+    borderBottom: 2,
+    borderStyle: "solid",
+    borderColor: "#000",
+  },
+
+  items: {
+    padding: 8,
+    marginBottom: 12,
   },
 
   textContainer: {
@@ -112,6 +129,26 @@ const globalStyles = StyleSheet.create({
     flex: 1,
   },
 
+  textItemTitle: {
+    height: 60,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    marginVertical: 4,
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+
+  textDescription: {
+    height: 200,
+    textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+  
   text: {
     flex: 1,
   },
@@ -145,7 +182,6 @@ const globalStyles = StyleSheet.create({
     textShadowColor: "#fff", 
     textShadowOffset: { width: 1, height: 1 }, 
     textShadowRadius: 6,
-
   },
   
   appBarTitle: {
@@ -217,7 +253,8 @@ const globalStyles = StyleSheet.create({
   },
 
   disabledButton: {
-    backgroundColor: "#a0a0a0",
+    fontSize: 55,
+    color: "#ccc",
   },
 
   mapContainer: {
@@ -250,7 +287,19 @@ const globalStyles = StyleSheet.create({
   viewButtons: {
     flexDirection: "row",
     justifyContent: "center",
-    marginVertical: 8,
+    paddingVertical: 9,
+    borderRadius: 8,
+  },
+
+  viewIcons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingVertical: 9,
+    backgroundColor: "#e5e5e5",
+    marginTop: -18,
+    width: "80%",
+    alignSelf: "center",
+    borderRadius: 8,
   },
 
   itemName: {
@@ -270,6 +319,18 @@ const globalStyles = StyleSheet.create({
     borderRadius: 8, 
     marginVertical: 20,
     alignSelf: 'center',
+  },
+
+  suggestionsList: {
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    marginVertical: 2,
+  },
+
+  autocompleteItem: {
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    marginVertical: 2,
   },
 
 });
