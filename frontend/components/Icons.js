@@ -139,7 +139,7 @@ export const IconList = ({ onPress }) => {
             <Icon name="list-outline" style={globalStyles.iconStyle} />
         </TouchableOpacity>
     );
-}
+};
 
 export const IconChat = ({ onPress, disabled }) => {
     return (
@@ -148,7 +148,39 @@ export const IconChat = ({ onPress, disabled }) => {
             style={[globalStyles.iconButton, disabled && globalStyles.disabledButton]} 
             disabled={disabled} 
         >
-            <Icon name="chatbubble-ellipses-outline" style={[globalStyles.iconStyle, disabled && { color: '#ccc' }]} />
+            <Icon name="chatbox-ellipses-outline" style={[globalStyles.iconStyle, disabled && { color: '#ccc' }]} />
+        </TouchableOpacity>
+    );
+};
+
+export const IconNewDocument = ({ onPress }) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={[globalStyles.iconButton]}>
+            <Icon name="create-outline" style={globalStyles.iconStyle} />
+        </TouchableOpacity>
+    );
+};
+
+export const IconLocation = ({ onPress }) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={[globalStyles.iconButton]}>
+            <Icon name="location-outline" style={globalStyles.iconStyle} />
+        </TouchableOpacity>
+    );
+};
+
+export const IconMyItemList = ({ onPress }) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={[globalStyles.iconButton]}>
+            <Icon name="layers-outline" style={globalStyles.iconStyle} />
+        </TouchableOpacity>
+    );
+};
+
+export const IconMyQueueList = ({ onPress }) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={[globalStyles.iconButton]}>
+            <Icon name="checkmark-circle-outline" style={globalStyles.iconStyle} />
         </TouchableOpacity>
     );
 }

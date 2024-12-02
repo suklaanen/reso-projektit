@@ -51,8 +51,11 @@ const globalStyles = StyleSheet.create({
   },
 
   iconStyle: {
-    fontSize: 55,
+    fontSize: 44,
     color: "#000",
+    paddingLeft: 6,
+    paddingRight: 6,
+    paddingTop: 3,
   },
 
   defText: {
@@ -86,6 +89,7 @@ const globalStyles = StyleSheet.create({
     marginTop: 14,
     marginBottom: 12,
     borderRadius: 3,
+    zIndex: 2,
   },
 
   title: {
@@ -283,6 +287,19 @@ const globalStyles = StyleSheet.create({
   viewButtons: {
     flexDirection: "row",
     justifyContent: "center",
+    paddingVertical: 9,
+    borderRadius: 8,
+  },
+
+  viewIcons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingVertical: 9,
+    backgroundColor: "#e5e5e5",
+    marginTop: -18,
+    width: "80%",
+    alignSelf: "center",
+    borderRadius: 8,
   },
 
   itemName: {
