@@ -277,15 +277,15 @@ import { getUserData } from './firestoreUsers';
       export const fetchFirstInQueue = async (itemId) => {
         try {
             const takersRef = collection(firestore, `items/${itemId}/takers`);
-            const snapshot = await getDocs(takersRef);
-    
+            const snapshot = await getDocs(query(takersRef, orderBy('createdAt')));
+        
             if (snapshot.empty) {
                 return null;
             }
     
             const firstInQueueDoc = snapshot.docs[0]; 
             const userRef = firstInQueueDoc.data().takerId;
-    
+        
             if (!userRef) {
                 return null; 
             }
@@ -294,10 +294,10 @@ import { getUserData } from './firestoreUsers';
             if (!userSnapshot.exists()) {
                 return null; 
             }
-    
+        
             const username = userSnapshot.data().username; 
             return username; 
-    
+        
         } catch (error) {
             console.error('Virhe jonossa ensimmäisen hakemisessa:', error);
             return null;

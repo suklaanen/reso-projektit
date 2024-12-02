@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { ButtonCancel, ButtonConfirm } from '../../components/Buttons';
+import { ButtonCancel, ButtonConfirm, ButtonPage } from '../../components/Buttons';
 import { Text, View } from 'react-native';
 import { BasicSection } from '../../components/CommonComponents';
 import globalStyles from "../../assets/styles/Styles.js";
@@ -128,6 +128,17 @@ export const MyItems = () => {
                 ))
             ) : (
                 <Text>Julkaisuja ei löytynyt.</Text>
+            )}
+
+            {items.length > 0 && (
+                <ButtonPage 
+                    title="Lataa lisää" 
+                    onPress={async () => {
+                        const { items: newItems, lastDoc: newLastDoc } = await getCurrentUserItems(authState.user.id, lastDoc, pageSize);
+                        setItems((prevItems) => [...prevItems, ...newItems]);
+                        setLastDoc(newLastDoc);
+                    }} 
+                />
             )}
         </View>
     );
