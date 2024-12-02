@@ -70,7 +70,7 @@ const AuthScreen = () => {
     : "Onko sinulla jo tili?";
 
   return (
-    <View style={[styles.container, globalStyles.container]}>
+    <View style={[styles.container, globalStyles.container, globalStyles.authPadding]}>
       <Text style={[styles.title, globalStyles.title]}>
         {isLogin ? "Kirjaudu sisään" : "Rekisteröidy"}
       </Text>

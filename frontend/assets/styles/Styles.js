@@ -26,6 +26,10 @@ const globalStyles = StyleSheet.create({
     elevation: 90,
   },
 
+  authPadding: {
+    padding: 24,
+  },
+
   iconContainer: {
     marginTop: 10,
     marginBottom: 16,
