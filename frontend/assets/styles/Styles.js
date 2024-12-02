@@ -49,6 +49,11 @@ const globalStyles = StyleSheet.create({
     marginLeft: 4,
   },
 
+  textWithIcon: {
+    fontSize: 12,
+    color: "#000",
+  },
+
   iconsOnUse: {
     fontSize: 40,
     marginHorizontal: 5,
@@ -304,6 +309,12 @@ const globalStyles = StyleSheet.create({
     width: "80%",
     alignSelf: "center",
     borderRadius: 8,
+  },
+
+  iconWithText: {
+    flex: 1,
+    alignItems: "center",
+    alignSelf: "center",
   },
 
   itemName: {

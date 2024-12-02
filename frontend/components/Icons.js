@@ -184,3 +184,19 @@ export const IconMyQueueList = ({ onPress }) => {
         </TouchableOpacity>
     );
 }
+
+export const IconLogout = ({ onPress }) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={[globalStyles.iconButton]}>
+            <Icon name="log-out-outline" style={globalStyles.iconStyle} />
+        </TouchableOpacity>
+    );
+}
+
+export const IconRemoveUser = ({ onPress }) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={[globalStyles.iconButton]}>
+            <Icon name="person-remove-outline" style={globalStyles.iconStyle} />
+        </TouchableOpacity>
+    );
+}

@@ -22,11 +22,22 @@ const ItemsMain = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
 
-        <Heading title="Ilmoitukset" />
+        <Heading title="Kierrätyspaneeli" />
         <View style={globalStyles.viewIcons}>
-          <IconNewDocument onPress={() => navigation.navigate('ItemAddView')} />
-          <IconMyItemList onPress={() => navigation.navigate('MyItems')} />
-          <IconMyQueueList onPress={() => navigation.navigate('MyQueues')} />
+          <View style={globalStyles.iconWithText}>
+            <IconNewDocument onPress={() => navigation.navigate('ItemAddView')} />
+            <Text style={globalStyles.textWithIcon}>Uusi julkaisu</Text>
+          </View>
+
+          <View style={globalStyles.iconWithText}>
+            <IconMyItemList onPress={() => navigation.navigate('MyItems')} />
+            <Text style={globalStyles.textWithIcon}>Ilmoitukset</Text>
+          </View>
+
+          <View style={globalStyles.iconWithText}>
+            <IconMyQueueList onPress={() => navigation.navigate('MyQueues')} />
+            <Text style={globalStyles.textWithIcon}>Varaukset</Text>
+          </View>
         </View>
 
         <AllItems />
