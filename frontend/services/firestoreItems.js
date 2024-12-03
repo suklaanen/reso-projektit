@@ -1,10 +1,10 @@
-import { 
-    collection, 
-    addDoc, 
-    query, 
-    where, 
-    getDocs, 
-    deleteDoc, 
+import {
+    collection,
+    addDoc,
+    query,
+    where,
+    getDocs,
+    deleteDoc,
     doc,
     getDoc,
     serverTimestamp,
@@ -16,15 +16,24 @@ import {
 } from 'firebase/firestore';
 
 import { firestore } from './firebaseConfig';
-import { now } from 'lodash';
 import { Timestamp } from 'firebase/firestore';
+import regionsAndCities from '../components/Sorted-maakunnat.json';
+import { getUserData } from './firestoreUsers';
 
-    export const addItemToFirestore = async (uid, itemname, itemdescription, postalcode, city ) => {
+    export const addItemToFirestore = async (uid, itemname, itemdescription, city ) => {
 
-        if (!itemname || !itemdescription || !postalcode || !city) {
+        if (!itemname || !itemdescription || !city) {
             console.error('Virhe: Yksi tai useampi kenttä on tyhjä!');
             throw new Error('Täytä puuttuvat kentät.');
         }
+
+        const allCities = Object.values(regionsAndCities).flat();
+        const isCityValid = allCities.includes(city.trim());
+
+        if (!isCityValid) {
+            throw new Error('Tarkista kaupungin oikeinkirjoitus.');
+        }
+
 
         try {
             const giverRef = doc(firestore, 'users', uid);
@@ -41,7 +50,6 @@ import { Timestamp } from 'firebase/firestore';
             const itemData = {
             itemname,
             itemdescription,
-            postalcode,
             city,
             giverid: giverRef,
             givername: giverUsername,
@@ -80,18 +88,25 @@ import { Timestamp } from 'firebase/firestore';
         }
     };
 
-    export const paginateItems = async (lastDoc, pageSize,
+    export const paginateItems = async (
+        lastDoc,
+        pageSize,
         filter = undefined,
+        city = undefined,
         refToCollection = () => collection(firestore, 'items'),
-        idFieldHandler = (item) => item.id  ) => {
+        idFieldHandler = (item) => item.id
+    ) => {
         try {
-            const itemsRef = refToCollection();
+            let itemsRef = refToCollection();
             let q;
 
             if (lastDoc) {
                 q = query(itemsRef, orderBy('createdAt'), startAfter(lastDoc), limit(pageSize));
             } else {
                 q = query(itemsRef, orderBy('createdAt'), limit(pageSize));
+            }
+            if (city) {
+                q = query(q, where('city', '==', city));
             }
 
             if (filter) {
@@ -102,7 +117,6 @@ import { Timestamp } from 'firebase/firestore';
             const items = [];
 
             itemsSnapshot.forEach((doc) => {
-                console.log(doc.data());
                 items.push({ id: idFieldHandler(doc), ...doc.data() });
             });
 
@@ -111,21 +125,48 @@ import { Timestamp } from 'firebase/firestore';
         } catch (error) {
             throw error;
         }
-    }; 
+    };
 
     export const getCurrentUserItems = async (uid, lastDoc, pageSize) => {
         return paginateItems(lastDoc, pageSize, () => where('giverid', '==', doc(firestore, 'users', uid)));
     };
 
-    export const getCurrentUserItemQueues = async (uid, lastDoc, pageSize) => {
-        const {items: itemIdRefs, lastDoc: newLastDoc} = await paginateItems(lastDoc, pageSize,
-            () => where('takerId', '==', doc(firestore, 'users', uid)),
-            () => collectionGroup(firestore, 'takers'),
-            (doc) => doc.ref.parent.parent.id);
+    export const getTotalItems = async () => {
 
-            const itemIds = itemIdRefs.map((doc) => doc.id);
-            const {items} = await paginateItems(null, itemIds.length, () => where(documentId(), 'in', itemIds));
-            return {items, lastDoc: newLastDoc};
+        const count = await getDocs(collection(firestore, 'items')).then((snapshot) => {
+            return snapshot.size;
+        }
+        );
+        return count;
+    };
+
+    export const getCurrentUserItemQueues = async (uid, lastDoc, pageSize) => {
+        try {
+            const {items: takerDocs, lastDoc: newLastDoc} = await paginateItems(
+                lastDoc,
+                pageSize,
+                () => where('takerId', '==', doc(firestore, 'users', uid)),
+                undefined,
+                () => collectionGroup(firestore, 'takers'),
+                (doc) => doc.ref.parent.parent
+            );
+
+            if (takerDocs.length === 0) {
+                return { items: [], lastDoc: null };
+            }
+
+            const itemIds = takerDocs.map((ref) => ref.id);
+            const {items} = await paginateItems(
+                null,
+                itemIds.length,
+                () => where(documentId(), 'in', itemIds)
+            );
+
+            return { items, lastDoc: newLastDoc };
+        } catch (error) {
+            console.error('getCurrentUserItemQueues error:', error)
+            throw error;
+        }
     }
 
     export const getItemFromFirestore = async (itemId) => {
@@ -226,3 +267,33 @@ import { Timestamp } from 'firebase/firestore';
             console.error('Virhe jonottajien määrän hakemisessa:', error);
         }
       };
+
+      export const fetchFirstInQueue = async (itemId) => {
+        try {
+            const takersRef = collection(firestore, `items/${itemId}/takers`);
+            const snapshot = await getDocs(query(takersRef, orderBy('createdAt')));
+
+            if (snapshot.empty) {
+                return null;
+            }
+
+            const firstInQueueDoc = snapshot.docs[0];
+            const userRef = firstInQueueDoc.data().takerId;
+
+            if (!userRef) {
+                return null;
+            }
+
+            const userSnapshot = await getDoc(userRef);
+            if (!userSnapshot.exists()) {
+                return null;
+            }
+
+            const username = userSnapshot.data().username;
+            return username;
+
+        } catch (error) {
+            console.error('Virhe jonossa ensimmäisen hakemisessa:', error);
+            return null;
+        }
+    };

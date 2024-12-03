@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import useUserData from "../../hooks/useUserData";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { BasicSection, Heading } from "../../components/CommonComponents";
@@ -7,10 +7,13 @@ import globalStyles from "../../assets/styles/Styles";
 import Icon from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
 import { ItemCard } from "./ItemCard";
+import { fetchFirstInQueue } from "../../services/firestoreItems.js";
 
 export const UserItemsView = () => {
   const navigation = useNavigation();
   const { items, userItemsLoading, userItemsError, removeItem } = useUserData();
+  const [queueUsernames, setQueueUsernames] = useState({});
+  const [someoneOnQueue, setSomeoneOnQueue] = useState(false);
 
   const handleDelete = async (itemId) => {
     try {
@@ -20,6 +23,30 @@ export const UserItemsView = () => {
       console.error("Virhe poistettaessa itemiä:", error);
     }
   };
+
+  const checkIfSomeoneOnQueue = async (itemId) => {
+    try {
+      const firstInQueue = await fetchFirstInQueue(itemId);
+      setSomeoneOnQueue(firstInQueue !== null);
+
+      if (firstInQueue) {
+        setQueueUsernames((prevState) => ({
+          ...prevState,
+          [itemId]: firstInQueue,
+        }));
+      }
+    } catch (error) {
+      console.error("Virhe jonottajien tarkistamisessa:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (items.length > 0) {
+      items.forEach((item) => {
+        checkIfSomeoneOnQueue(item.id);
+      });
+    }
+  }, [items]);
 
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
@@ -53,6 +80,8 @@ export const UserItemsView = () => {
                 item={item}
                 showActions={true}
                 onRemove={handleDelete}
+                someoneOnQueue={someoneOnQueue}
+                queueUsernames={queueUsernames}
               />
             ))
           ) : (

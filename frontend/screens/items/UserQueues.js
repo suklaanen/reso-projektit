@@ -35,7 +35,7 @@ export const UserQueues = () => {
             <Text>Ei varauksia</Text>
           </BasicSection>
         )}
-        ){takersLoading && <LoadingIndicator />}
+        {takersLoading && <LoadingIndicator />}
         <Text style={{ textAlign: "center", marginTop: 16 }}>
           Ei enempää kohteita
         </Text>

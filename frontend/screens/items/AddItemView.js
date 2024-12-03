@@ -2,41 +2,62 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../context/AuthenticationContext";
 import Toast from "react-native-toast-message";
-import { ScrollView, TextInput, View } from "react-native";
+import {
+  Keyboard,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Text,
+} from "react-native";
 import globalStyles from "../../assets/styles/Styles";
 import { Heading } from "../../components/CommonComponents";
 import { ButtonAdd } from "../../components/Buttons";
 import useItemStore from "../../store/useItemStore";
+import regionsAndCities from "../../components/Sorted-maakunnat.json";
 
-const ItemForm = ({ itemData, handleChange, onPress }) => {
+const ItemForm = ({
+  itemData,
+  handleChange,
+  onPress,
+  handleCitySelection,
+  showSuggestions,
+  filteredCities,
+}) => {
   return (
     <>
       <TextInput
-        style={globalStyles.textInput}
+        style={globalStyles.textItemTitle}
         placeholder="Otsikko (tuotteen nimi)"
         value={itemData.name}
         onChangeText={(value) => handleChange("name", value)}
       />
       <TextInput
-        style={globalStyles.textInput}
+        style={globalStyles.textDescription}
         placeholder="Kuvaus tuotteesta"
         value={itemData.description}
         onChangeText={(value) => handleChange("description", value)}
         multiline
       />
       <TextInput
-        style={globalStyles.textInput}
-        placeholder="Postinumero"
-        keyboardType="numeric"
-        value={itemData.postcode}
-        onChangeText={(value) => handleChange("postcode", value)}
-      />
-      <TextInput
-        style={globalStyles.textInput}
-        placeholder="Kaupunki"
+        style={globalStyles.textItemTitle}
+        placeholder="Paikkakunta (tuotteen sijainti)"
         value={itemData.city}
         onChangeText={(value) => handleChange("city", value)}
       />
+
+      {showSuggestions && (
+        <ScrollView style={globalStyles.suggestionsList}>
+          {filteredCities.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleCitySelection(item)}
+            >
+              <Text style={globalStyles.autocompleteItem}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
 
       <ButtonAdd title="Julkaise" onPress={onPress} color="#4CAF50" />
     </>
@@ -47,22 +68,31 @@ export const AddItemView = () => {
   const [itemData, setItemData] = useState({
     name: "",
     description: "",
-    postcode: "",
     city: "",
   });
+  const [filteredCities, setFilteredCities] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const allCities = Object.values(regionsAndCities).flat();
   const navigation = useNavigation();
   const { user } = useAuth();
   const addItem = useItemStore((state) => state.addItem);
 
   const handleAddItem = async () => {
+    if (!itemData.city) {
+      Toast.show({
+        type: "error",
+        text1: "Valitse paikkakunta ennen julkaisua",
+      });
+      return;
+    }
+
     try {
-      await addItem(
-        user.id,
-        itemData.name,
-        itemData.description,
-        itemData.postcode,
-        itemData.city
-      );
+      await addItem({
+        userId: user.id,
+        itemname: itemData.name,
+        itemdescription: itemData.description,
+        city: itemData.city,
+      });
       Toast.show({ type: "success", text1: "Julkaisu lisätty!" });
 
       navigation.navigate("ItemsMain");
@@ -77,6 +107,28 @@ export const AddItemView = () => {
 
   const handleChange = (name, value) => {
     setItemData((prevData) => ({ ...prevData, [name]: value }));
+
+    if (name === "city") handleCityInputChange(value);
+  };
+
+  const handleCityInputChange = (input) => {
+    if (input.trim() === "") {
+      setFilteredCities([]);
+      setShowSuggestions(false);
+    } else {
+      const filtered = allCities.filter((c) =>
+        c.toLowerCase().includes(input.toLowerCase())
+      );
+      setFilteredCities(filtered);
+      setShowSuggestions(true);
+    }
+  };
+
+  const handleCitySelection = (selectedCity) => {
+    setItemData((prevData) => ({ ...prevData, city: selectedCity }));
+    setFilteredCities([]);
+    setShowSuggestions(false);
+    Keyboard.dismiss();
   };
 
   return (
@@ -87,6 +139,10 @@ export const AddItemView = () => {
           itemData={itemData}
           handleChange={handleChange}
           onPress={handleAddItem}
+          handleCityInputChange={handleCityInputChange}
+          showSuggestions={showSuggestions}
+          filteredCities={filteredCities}
+          handleCitySelection={handleCitySelection}
         />
       </View>
     </ScrollView>

@@ -10,38 +10,55 @@ import {
   deleteTakerFromItem,
   getUserPositionInQueue,
 } from "../services/firestoreQueues";
-import { collection, doc, getDoc } from "firebase/firestore";
+import {collection, doc, getDoc, where} from "firebase/firestore";
 import { firestore } from "../services/firebaseConfig";
+
+const pageSize = 5;
 
 const useItemStore = create((set, get) => {
   const setLoading = (loading) => set({ loading });
   const setError = (error) => set({ error });
-  const updatePaginatedState = (items, lastDoc, pageSize) => {
-    set((state) => ({
-      items: [...state.items, ...items],
-      lastDoc,
-      hasMore: items.length === pageSize,
-    }));
-  };
   return {
     items: [],
     loading: false,
     error: null,
     lastDoc: null,
     hasMore: true,
+    pages: [],
+    isLastPage: false,
+    currentPage: 0,
 
-    fetchItems: async (pageSize) => {
+    fetchItems: async (pageIndex, selectedCity = "") => {
       setLoading(true);
       setError(null);
       try {
-        const { items, lastDoc } = await paginateItems(get().lastDoc, pageSize);
-        const newItems = items.filter(
+        const lastDoc = get().pages[pageIndex - 1];
+
+        const { items: newItems, lastDoc: newLastDoc } = await paginateItems(
+          lastDoc,
+          pageSize,
+          () => (selectedCity ? where("city", "==", selectedCity) : undefined)
+        );
+
+        if (!get().pages[pageIndex]) {
+          set((state) => {
+            const updatedPages = [...state.pages];
+            updatedPages[pageIndex] = newLastDoc;
+            return { pages: updatedPages };
+          });
+        }
+        const filteredItems = newItems.filter(
           (item) => !get().items.some((i) => i.id === item.id)
         );
-        updatePaginatedState(newItems, lastDoc, pageSize);
+        set((state) => ({
+          items: [...newItems],
+          lastDoc: newLastDoc,
+          isLastPage: newItems.length < pageSize,
+          hasMore: newItems.length === pageSize,
+        }));
       } catch (error) {
         setError(error);
-        console.error("Error fetching items:", error);
+        console.error("Virhe ladattaessa kohteita:", error);
       } finally {
         setLoading(false);
       }
@@ -67,13 +84,12 @@ const useItemStore = create((set, get) => {
       }
     },
 
-    addItem: async (userId, itemname, itemdescription, postalcode, city) => {
+    addItem: async ({ userId, itemname, itemdescription, city }) => {
       try {
         const id = await addItemToFirestore(
           userId,
           itemname,
           itemdescription,
-          postalcode,
           city
         );
         const itemCollectionRef = collection(firestore, "items");

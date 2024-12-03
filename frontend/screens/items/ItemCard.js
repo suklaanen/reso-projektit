@@ -11,14 +11,17 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {
   ButtonCancel,
   ButtonConfirm,
-  ButtonDelete,
 } from "../../components/Buttons";
 import { LoadingIndicator } from "../../components/LoadingIndicator";
+import { useRoute } from "@react-navigation/native";
+import {IconChat, IconTrash} from "../../components/Icons";
 
 export const ItemCard = ({
   item,
   onRemove = () => {},
   showActions = false,
+  someoneOnQueue = false,
+  queueUsernames = {},
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -26,45 +29,69 @@ export const ItemCard = ({
     setConfirmDelete((prev) => !prev);
 
   return (
-    <View style={globalStyles.itemContainer}>
+    <View style={globalStyles.items}>
       <ItemDetails item={item} />
       {showActions ? (
         <ActionButtons
           isConfirmDeleteVisible={confirmDelete}
           onRemove={onRemove}
           onToggle={handleToggleDeleteConfirmation}
+          queueUsernames={queueUsernames}
+          item={item}
         />
       ) : (
         <ItemJoinOnQueue itemId={item.id} />
+      )}
+
+      {someoneOnQueue && queueUsernames[item.id] ? (
+        <>
+          <Text>Noutosijalla: {queueUsernames[item.id]}</Text>
+        </>
+      ) : (
+        <>
+          <Text>Ei vielä varaajia.</Text>
+        </>
       )}
     </View>
   );
 };
 
-const ActionButtons = ({ isConfirmDeleteVisible, onRemove, onToggle }) => (
+const ActionButtons = ({ isConfirmDeleteVisible, onRemove, onToggle, queueUsernames, item }) => (
   <View style={globalStyles.viewButtons}>
     {isConfirmDeleteVisible ? (
       <>
-        <ButtonConfirm title="Vahvista" onPress={onRemove} />
+        <ButtonConfirm title="Poista" onPress={onRemove} />
         <ButtonCancel title="Peruuta" onPress={onToggle} />
       </>
     ) : (
-      <ButtonDelete title="Poista" onPress={onToggle} />
+      <>
+        <IconChat
+          onPress={() => navigation.navigate("ItemsMain")}
+          disabled={!queueUsernames[item.id]}
+        />
+        <IconTrash onPress={onToggle} />
+      </>
     )}
   </View>
 );
 
-const ItemDetails = ({ item }) => (
-  <>
-    <Text style={globalStyles.itemName}>{item.itemname}</Text>
-    <Text>{item.itemdescription}</Text>
-    <Text>
-      Sijainti: {item.postalcode}, {item.city}
-    </Text>
-    <Text>Julkaisija: {item.givername}</Text>
-    <Text>{formatTimestamp(item.createdAt)}</Text>
-  </>
-);
+const ItemDetails = ({ item }) => {
+  const routeName = useRoute().name;
+
+  return (
+    <>
+      <Text style={globalStyles.itemName}>{item.itemname}</Text>
+      <Text>{item.itemdescription}</Text>
+      <Text>Paikkakunta: {item.city}</Text>
+      {routeName !== "MyItems" && (
+        <>
+          <Text>Julkaisija: {item.givername}</Text>
+          <Text>{formatTimestamp(item.createdAt)}</Text>
+        </>
+      )}
+    </>
+  );
+};
 
 const ItemJoinOnQueue = ({ itemId }) => {
   const { queues, items: userItems } = useUserData();
