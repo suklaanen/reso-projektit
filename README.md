@@ -63,14 +63,16 @@
   - Viestiketjut lähtevät vanhentuneiden ja peruuntuneiden varausten mukana.
 - Android-toteutus React nativella.
 - Tietokannaksi valikoitui Firestore ja autentikointi Firebasea käyttäen.
- -- Toteutus meneillään
- 
+  - Toteutus meneillään
+
+![image](https://github.com/user-attachments/assets/b946a7b9-d583-492f-bef7-a0a57bccacd0)
+
 ----------------------------------------------------------
 
 ## 2024-Q4-Puistotreffit
 
 - Puistotreffit koirille -mobiilisovellus Androidille.
 - Tavoitteena on tarjota helppokäyttöinen alusta puistotreffien sopimiselle ja leikkiseuran löytämiseksi paikallisiin koirapuistoihin.
-  -- Toteutus meneillään, lisää infoa tulossa
+  - Toteutus meneillään, lisää infoa tulossa
 
 ----------------------------------------------------------
