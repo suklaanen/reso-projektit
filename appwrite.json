@@ -1,0 +1,39 @@
+{
+    "projectId": "674f7f73b3e73abb13fc",
+    "functions": [
+        {
+            "$id": "delete-expired-items",
+            "name": "delete-expired-items",
+            "runtime": "node-22",
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "scopes": [],
+            "schedule": "0 0 * * *",
+            "timeout": 15,
+            "enabled": true,
+            "logging": true,
+            "entrypoint": "src/index.js",
+            "commands": "npm install",
+            "path": "functions/delete-expired-items"
+        },
+        {
+            "$id": "handle-expired-takers",
+            "name": "handle-expired-takers",
+            "runtime": "node-22",
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "scopes": [],
+            "schedule": "0 * * * *",
+            "timeout": 15,
+            "enabled": true,
+            "logging": true,
+            "entrypoint": "src/index.js",
+            "commands": "npm install",
+            "path": "functions/handle-expired-takers"
+        }
+    ]
+}
