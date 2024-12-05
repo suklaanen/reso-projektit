@@ -12,7 +12,7 @@ const Home = () => {
 
     useEffect(() => {
       const random = Math.random();
-      if (random < 0.5) {
+      if (random < 0.6) {
         setImageSource(require('../../assets/images/bg2.png'));
       } else {
         setImageSource(require('../../assets/images/bg3.png'));
