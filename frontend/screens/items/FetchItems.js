@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard, Image } from 'react-native';
 import { paginateItems } from '../../services/firestoreItems.js';
 import { ItemJoinOnQueue } from './ItemQueues.js';
 import globalStyles from '../../assets/styles/Styles.js';
@@ -8,6 +8,7 @@ import { useLoading } from '../../context/LoadingContext.js';
 import regionsAndCities from '../../components/Sorted-maakunnat.json';
 import { ButtonPage } from '../../components/Buttons.js';
 import { where } from 'firebase/firestore';
+import placeholderImage from '../../assets/images/kiertis-icon.png';
 
 export const AllItems = () => {
     const [items, setItems] = useState([]);
@@ -23,6 +24,7 @@ export const AllItems = () => {
     const [filteredCities, setFilteredCities] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const allCities = Object.values(regionsAndCities).flat();
+    const placeholderImageUrl = Image.resolveAssetSource(placeholderImage).uri;
 
     const loadItems = async (pageIndex, selectedCity = '') => {
         setError(null);
@@ -135,6 +137,7 @@ export const AllItems = () => {
                     {items.map((item) => (
                         <View key={item.id} style={globalStyles.itemContainer}>
                             <Text style={globalStyles.itemName}>{item.itemname}</Text>
+                            <Image source={{ uri: item.imageUrl }} style={globalStyles.itemImage} />
                             <Text>{item.itemdescription}</Text>
                             <Text>Paikkakunta: {item.city}</Text>
                             <Text>Julkaisija: {item.givername}</Text>

@@ -2,12 +2,13 @@ import React, { useState, useContext } from 'react';
 import { addItemToFirestore } from '../../services/firestoreItems.js';
 import { Heading } from '../../components/CommonComponents';
 import { ButtonAdd } from '../../components/Buttons';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Keyboard, Image} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from "../../assets/styles/Styles.js";
 import Toast from 'react-native-toast-message';
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import regionsAndCities from '../../components/Sorted-maakunnat.json';
+import placeholderImage from '../../assets/images/kiertis-icon.png'; 
 
 export const AddItem = () => {
     const [itemname, setItemname] = useState('');
@@ -18,15 +19,15 @@ export const AddItem = () => {
     const navigation = useNavigation();
     const authState = useContext(AuthenticationContext);
     const allCities = Object.values(regionsAndCities).flat();
+    const placeholderImageUrl = Image.resolveAssetSource(placeholderImage).uri;
 
     const handleAddItem = async () => {
         if (!city) {
             Toast.show({ type: 'error', text1: 'Valitse paikkakunta ennen julkaisua' });
             return;
         }
-
         try {
-            const response = await addItemToFirestore(authState.user.id, itemname, itemdescription, city);
+            const response = await addItemToFirestore(authState.user.id, itemname, itemdescription, city, placeholderImageUrl);
             console.log('Add item response:', response);
             Toast.show({ type: 'success', text1: 'Julkaisu lisätty!' });
             navigation.navigate('ItemsMain');
@@ -74,7 +75,13 @@ export const AddItem = () => {
                 onChangeText={setItemdescription}
                 multiline
             />
-
+            <View style={globalStyles.imageContainer}>
+                <Image 
+                    style={globalStyles.placeholderImage}
+                    source={placeholderImage}
+                />
+                <Text style={globalStyles.imageText}>Tuotekuva</Text>
+            </View>
             <TextInput
                 style={globalStyles.textItemTitle}
                 placeholder="Paikkakunta (tuotteen sijainti)"
