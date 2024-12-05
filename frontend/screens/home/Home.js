@@ -8,6 +8,16 @@ import { Image } from 'react-native';
 
 const Home = () => {
     const  authState  = useContext(AuthenticationContext);
+    const [imageSource, setImageSource] = useState(require('../../assets/images/bg2.png'));
+
+    useEffect(() => {
+      const random = Math.random();
+      if (random < 0.6) {
+        setImageSource(require('../../assets/images/bg2.png'));
+      } else {
+        setImageSource(require('../../assets/images/bg3.png'));
+      }
+    }, []);
 
     return (
       <ScrollView contentContainerStyle={{ padding: 8 }}>
@@ -20,7 +30,7 @@ const Home = () => {
               <View style={globalStyles.separatorBold} />
 
               <Image 
-                source={require('../../assets/images/bg2.png')} 
+                source={imageSource} 
                 style={globalStyles.image} 
                 resizeMode="contain"
               />
