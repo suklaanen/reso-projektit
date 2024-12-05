@@ -8,7 +8,6 @@ import { useLoading } from '../../context/LoadingContext.js';
 import regionsAndCities from '../../components/Sorted-maakunnat.json';
 import { ButtonPage } from '../../components/Buttons.js';
 import { where } from 'firebase/firestore';
-import placeholderImage from '../../assets/images/kiertis-icon.png';
 
 export const AllItems = () => {
     const [items, setItems] = useState([]);
@@ -24,7 +23,6 @@ export const AllItems = () => {
     const [filteredCities, setFilteredCities] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const allCities = Object.values(regionsAndCities).flat();
-    const placeholderImageUrl = Image.resolveAssetSource(placeholderImage).uri;
 
     const loadItems = async (pageIndex, selectedCity = '') => {
         setError(null);
