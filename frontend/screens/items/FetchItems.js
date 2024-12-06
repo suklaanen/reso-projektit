@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard, Image } from 'react-native';
 import { paginateItems } from '../../services/firestoreItems.js';
 import { ItemJoinOnQueue } from './ItemQueues.js';
 import globalStyles from '../../assets/styles/Styles.js';
@@ -8,6 +8,7 @@ import { useLoading } from '../../context/LoadingContext.js';
 import regionsAndCities from '../../components/Sorted-maakunnat.json';
 import { ButtonPage } from '../../components/Buttons.js';
 import { where } from 'firebase/firestore';
+import Constants from 'expo-constants';
 
 export const AllItems = () => {
     const [items, setItems] = useState([]);
@@ -45,7 +46,6 @@ export const AllItems = () => {
             setItems(newItems);
             setIsLastPage(newItems.length < pageSize);
 
-
             setLoading(false);
         } catch (err) {
             console.error('Virhe ladattaessa kohteita:', err);
@@ -54,6 +54,32 @@ export const AllItems = () => {
         }
     };
 
+    const getExpoServerUrl = (url) => {
+        if (!url) return url;    
+        // Jos URL on jo täysi (alkaa 'http://')
+        const isFullUrl = /^http:\/\//.test(url);
+        if (isFullUrl) {
+            // Jos URL on täysi ja sisältää Expo-palvelimen IP-osoitteen, ei tarvitse muuttaa
+            const expoServerIp = Constants.expoGoConfig.debuggerHost.split(':')[0];
+            if (url.includes(expoServerIp)) {
+                return url; // Palautetaan alkuperäinen URL, jos Expo-palvelimen IP löytyy jo
+            } else {
+                // Jos Expo-palvelimen IP ei ole mukana, muokkaa se
+                return url.replace(/http:\/\/[^/]+/, `http://${expoServerIp}:8081`);
+            }
+        }
+    
+        // Jos URL on suhteellinen (alkaa '/assets'), muutetaan se Expo-palvelimen URL:ksi
+        if (url.startsWith('/assets')) {
+            const expoServerIp = Constants.expoGoConfig.debuggerHost.split(':')[0];
+            return `http://${expoServerIp}:8081${url}`;  // Muodostetaan URL Expo-palvelimelle
+        }
+    
+        // Muutoin palautetaan alkuperäinen URL
+        return url;
+    };
+    
+      
     useEffect(() => {
         loadItems(0); 
     }, []);
@@ -135,6 +161,8 @@ export const AllItems = () => {
                     {items.map((item) => (
                         <View key={item.id} style={globalStyles.itemContainer}>
                             <Text style={globalStyles.itemName}>{item.itemname}</Text>
+                            <Image source={{ uri: getExpoServerUrl(item.imageUrl) }} style={globalStyles.itemImage} />
+                            {console.log(getExpoServerUrl(item.imageUrl))}
                             <Text>{item.itemdescription}</Text>
                             <Text>Paikkakunta: {item.city}</Text>
                             <Text>Julkaisija: {item.givername}</Text>
