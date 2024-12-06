@@ -9,12 +9,14 @@ import {
   TouchableOpacity,
   View,
   Text,
+  Image,
 } from "react-native";
 import globalStyles from "../../assets/styles/Styles";
 import { Heading } from "../../components/CommonComponents";
 import { ButtonAdd } from "../../components/Buttons";
 import useItemStore from "../../store/useItemStore";
 import regionsAndCities from "../../components/Sorted-maakunnat.json";
+import placeholderImage from '../../assets/images/kiertis-icon.png'; 
 
 const ItemForm = ({
   itemData,
@@ -23,6 +25,7 @@ const ItemForm = ({
   handleCitySelection,
   showSuggestions,
   filteredCities,
+  placeholderImage
 }) => {
   return (
     <>
@@ -39,6 +42,13 @@ const ItemForm = ({
         onChangeText={(value) => handleChange("description", value)}
         multiline
       />
+      <View style={globalStyles.imageContainer}>
+                <Image 
+                    style={globalStyles.placeholderImage}
+                    source={placeholderImage}
+                />
+                <Text style={globalStyles.imageText}>Tuotekuva</Text>
+            </View> 
       <TextInput
         style={globalStyles.textItemTitle}
         placeholder="Paikkakunta (tuotteen sijainti)"
@@ -76,6 +86,7 @@ export const AddItemView = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const addItem = useItemStore((state) => state.addItem);
+  const placeholderImageUrl = Image.resolveAssetSource(placeholderImage).uri;
 
   const handleAddItem = async () => {
     if (!itemData.city) {
@@ -92,6 +103,7 @@ export const AddItemView = () => {
         itemname: itemData.name,
         itemdescription: itemData.description,
         city: itemData.city,
+        imageUrl: placeholderImageUrl
       });
       Toast.show({ type: "success", text1: "Julkaisu lisätty!" });
 
@@ -143,6 +155,7 @@ export const AddItemView = () => {
           showSuggestions={showSuggestions}
           filteredCities={filteredCities}
           handleCitySelection={handleCitySelection}
+          placeholderImageUrl={placeholderImageUrl}
         />
       </View>
     </ScrollView>

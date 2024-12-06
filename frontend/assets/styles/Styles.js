@@ -336,6 +336,37 @@ const globalStyles = StyleSheet.create({
     alignSelf: 'center',
   },
 
+  placeholderImage: {
+    width: '98%',
+    height: undefined, 
+    aspectRatio: 1 / 1,
+    borderRadius: 8, 
+    marginVertical: 20,
+    alignSelf: 'center',
+    borderWidth: 2,
+    borderColor: '#ccc',
+    backgroundColor: '#f0f0f0',
+  },
+
+  itemImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+
+  imageText: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white',
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    borderRadius: 3,
+    fontSize: 12,
+  },
+
   suggestionsList: {
     backgroundColor: "#f0f0f0",
     padding: 10,

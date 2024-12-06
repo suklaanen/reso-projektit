@@ -4,10 +4,9 @@ import { LoadingIndicator } from "../../components/LoadingIndicator";
 import { deleteExpiredStuff } from "../../services/firestoreQueues";
 import { deleteExpiredItems } from "../../services/firestoreItems";
 import { ItemCard } from "./ItemCard";
-
-import {Text, View, ScrollView, TouchableOpacity, Keyboard, TextInput } from "react-native";
+import { Text, View, ScrollView, TouchableOpacity, Keyboard, TextInput } from "react-native";
 import { BasicSection, Heading } from "../../components/CommonComponents";
-import {ButtonNavigate, ButtonPage} from "../../components/Buttons";
+import { ButtonNavigate, ButtonPage } from "../../components/Buttons";
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../assets/styles/Styles";
 import {
@@ -67,15 +66,6 @@ const ItemsMain = () => {
 
     return (
         <ScrollView contentContainerStyle={{ padding: 8 }}>
-            {/* <Heading title="Ilmoitukset" />
-      <ButtonAdd
-        title="Uusi ilmoitus"
-        onPress={() => navigation.navigate("AddItemView")}
-      />
-
-      <Heading title="Omat listaukset" />
-      <NavigationButtons navigation={navigation} /> */}
-
             <Heading title="Kierrätyspaneeli" />
             <View style={globalStyles.viewIcons}>
                 <View style={globalStyles.iconWithText}>

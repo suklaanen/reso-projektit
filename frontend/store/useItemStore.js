@@ -13,7 +13,7 @@ import {
 import {collection, doc, getDoc, where} from "firebase/firestore";
 import { firestore } from "../services/firebaseConfig";
 
-const pageSize = 5;
+const PAGE_SIZE = 5;
 
 const useItemStore = create((set, get) => {
   const setLoading = (loading) => set({ loading });
@@ -36,7 +36,7 @@ const useItemStore = create((set, get) => {
 
         const { items: newItems, lastDoc: newLastDoc } = await paginateItems(
           lastDoc,
-          pageSize,
+          PAGE_SIZE,
           () => (selectedCity ? where("city", "==", selectedCity) : undefined)
         );
 
@@ -53,8 +53,8 @@ const useItemStore = create((set, get) => {
         set((state) => ({
           items: [...newItems],
           lastDoc: newLastDoc,
-          isLastPage: newItems.length < pageSize,
-          hasMore: newItems.length === pageSize,
+          isLastPage: newItems.length < PAGE_SIZE,
+          hasMore: newItems.length === PAGE_SIZE,
         }));
       } catch (error) {
         setError(error);
@@ -84,13 +84,14 @@ const useItemStore = create((set, get) => {
       }
     },
 
-    addItem: async ({ userId, itemname, itemdescription, city }) => {
+    addItem: async ({ userId, itemname, itemdescription, city, imageUrl }) => {
       try {
         const id = await addItemToFirestore(
           userId,
           itemname,
           itemdescription,
-          city
+          city,
+          imageUrl
         );
         const itemCollectionRef = collection(firestore, "items");
         const itemSnap = await getDoc(doc(itemCollectionRef, id));
