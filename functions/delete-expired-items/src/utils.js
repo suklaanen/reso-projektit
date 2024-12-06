@@ -1,5 +1,9 @@
 import admin from "firebase-admin";
-import { COLLECTION_TAKERS, COLLECTION_THREADS } from "./constants.js";
+import {
+  COLLECTION_TAKERS,
+  COLLECTION_THREADS,
+  COLLECTION_MESSAGES,
+} from "./constants.js";
 
 const firebaseConfig = {
   credential: admin.credential.cert({
@@ -21,28 +25,30 @@ export const db = admin.firestore();
 /**
  * hakee dokumentit, joiden expiration on aiempi kuin currentTime
  * @param {string} collectionName
- * @param {Date} currentTime
  */
-export const getExpiredDocuments = async (collectionName, currentTime) =>
+export const getExpiredDocuments = async (collectionName) =>
   await db
     .collection(collectionName)
-    .where("expiration", "<=", currentTime)
+    .where("expiration", "<=", new Date())
     .get();
 
 /**
- * poistaa snapshotin dokumentit ja alikokoelman takers
+ * poistaa itemit ja niihin liittyvät takers ja threadit
  * @param {FirebaseFirestore.QuerySnapshot} querySnapshot - snapshot poistettavista dokumenteista
  */
 export const handleBatchDeletion = async (querySnapshot) => {
   const batch = db.batch();
 
-  for (const doc of querySnapshot.docs) {
-    // itemin alikokoelma takers
-    const takersSnapshot = await doc.ref.collection(COLLECTION_TAKERS).get();
-    // threads, jossa itemRef == item field
-    const itemThreadSnapshot = await db
+  for (const itemDoc of querySnapshot.docs) {
+    // haetaan itemin alikokoelma takers
+    const takersSnapshot = await itemDoc.ref
+      .collection(COLLECTION_TAKERS)
+      .get();
+
+    // haetaan itemin threadit
+    const threadSnapshot = await db
       .collection(COLLECTION_THREADS)
-      .where("item", "==", doc.ref)
+      .where("item", "==", itemDoc.ref)
       .get();
 
     // poistetaan alikokoelman takers dokumentit
@@ -50,25 +56,20 @@ export const handleBatchDeletion = async (querySnapshot) => {
       batch.delete(taker.ref);
     });
 
-    itemThreadSnapshot.forEach((thread) => {
-      // poistetaan threadin alikokoelman messages dokumentit
-      thread.ref
-        .collection(COLLECTION_MESSAGES)
-        .get()
-        .then((messages) => {
-          messages.size &&
-            messages.forEach((message) => {
-              batch.delete(message.ref);
-            });
-        })
-        .catch((e) => {
-          console.error("Messages alikokoelmaa ei voitu hakea: ", e);
-        }) // poistetaan thread dokumentti
-        .finally(() => batch.delete(thread.ref));
-    });
+    await Promise.all(
+      threadSnapshot.docs.map(async (thread) => {
+        // poistetaan threadin alikokoelman messages dokumentit
+        const messages = await thread.ref.collection(COLLECTION_MESSAGES).get();
+        messages.forEach((message) => {
+          batch.delete(message.ref);
+        });
+        // poistetaan thread dokumentti
+        batch.delete(thread.ref);
+      })
+    );
 
-    // poistetaan itse item dokumentti
-    batch.delete(doc.ref);
+    // poistetaan item dokumentti
+    batch.delete(itemDoc.ref);
   }
 
   await batch.commit();

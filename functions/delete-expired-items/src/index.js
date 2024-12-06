@@ -2,13 +2,8 @@ import { getExpiredDocuments, handleBatchDeletion } from "./utils.js";
 import { COLLECTION_ITEMS } from "./constants.js";
 
 export default async ({ res, log, error }) => {
-  const currentTime = new Date();
-
   try {
-    const querySnapshot = await getExpiredDocuments(
-      COLLECTION_ITEMS,
-      currentTime
-    );
+    const querySnapshot = await getExpiredDocuments(COLLECTION_ITEMS);
 
     if (querySnapshot.empty) {
       log("ilmoitukset ovat ajan tasalla");
