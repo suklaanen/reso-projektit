@@ -1,33 +1,38 @@
 {
-    "Uusimaa": [
+    "Itä-Uudenmaan hyvinvointialue": [
         "Askola",
-        "Espoo",
-        "Hanko",
-        "Helsinki",
-        "Hyvinkää",
-        "Inkoo",
-        "Järvenpää",
-        "Karkkila",
-        "Kauniainen",
-        "Kerava",
-        "Kirkkonummi",
         "Lapinjärvi",
-        "Lohja",
         "Loviisa",
         "Myrskylä",
+        "Porvoo",
+        "Pukkila",
+        "Sipoo"
+    ],
+    "Keski-Uudenmaan hyvinvointialue": [
+        "Hyvinkää",
+        "Järvenpää",
         "Mäntsälä",
         "Nurmijärvi",
         "Pornainen",
-        "Porvoo",
-        "Pukkila",
+        "Tuusula"
+    ],
+    "Länsi-Uudenmaan hyvinvointialue": [
+        "Espoo",
+        "Hanko",
+        "Inkoo",
+        "Karkkila",
+        "Kauniainen",
+        "Kirkkonummi",
+        "Lohja",
         "Raasepori",
-        "Sipoo",
         "Siuntio",
-        "Tuusula",
-        "Vantaa",
         "Vihti"
     ],
-    "Varsinais-Suomi": [
+    "Vantaan ja Keravan hyvinvointialue": [
+        "Kerava",
+        "Vantaa"
+    ],
+    "Varsinais-Suomen hyvinvointialue": [
         "Aura",
         "Kaarina",
         "Kemiönsaari",
@@ -56,7 +61,7 @@
         "Uusikaupunki",
         "Vehmaa"
     ],
-    "Satakunta": [
+    "Satakunnan hyvinvointialue": [
         "Eura",
         "Eurajoki",
         "Harjavalta",
@@ -74,7 +79,7 @@
         "Säkylä",
         "Ulvila"
     ],
-    "Kanta-Häme": [
+    "Kanta-Hämeen hyvinvointialue": [
         "Forssa",
         "Hattula",
         "Hausjärvi",
@@ -87,7 +92,7 @@
         "Tammela",
         "Ypäjä"
     ],
-    "Pirkanmaa": [
+    "Pirkanmaan hyvinvointialue": [
         "Akaa",
         "Hämeenkyrö",
         "Ikaalinen",
@@ -112,7 +117,7 @@
         "Virrat",
         "Ylöjärvi"
     ],
-    "Päijät-Häme": [
+    "Päijät-Hämeen hyvinvointialue": [
         "Asikkala",
         "Hartola",
         "Heinola",
@@ -124,7 +129,7 @@
         "Padasjoki",
         "Sysmä"
     ],
-    "Kymenlaakso": [
+    "Kymenlaakson hyvinvointialue": [
         "Hamina",
         "Kotka",
         "Kouvola",
@@ -132,7 +137,7 @@
         "Pyhtää",
         "Virolahti"
     ],
-    "Etelä-Karjala": [
+    "Etelä-Karjalan hyvinvointialue": [
         "Imatra",
         "Lappeenranta",
         "Lemi",
@@ -143,7 +148,7 @@
         "Savitaipale",
         "Taipalsaari"
     ],
-    "Etelä-Savo": [
+    "Etelä-Savon hyvinvointialue": [
         "Enonkoski",
         "Hirvensalmi",
         "Juva",
@@ -157,7 +162,7 @@
         "Savonlinna",
         "Sulkava"
     ],
-    "Pohjois-Savo": [
+    "Pohjois-Savon hyvinvointialue": [
         "Iisalmi",
         "Joroinen",
         "Kaavi",
@@ -178,7 +183,7 @@
         "Vesanto",
         "Vieremä"
     ],
-    "Pohjois-Karjala": [
+    "Pohjois-Karjalan hyvinvointialue": [
         "Heinävesi",
         "Ilomantsi",
         "Joensuu",
@@ -193,7 +198,7 @@
         "Rääkkylä",
         "Tohmajärvi"
     ],
-    "Keski-Suomi": [
+    "Keski-Suomen hyvinvointialue": [
         "Hankasalmi",
         "Joutsa",
         "Jyväskylä",
@@ -217,7 +222,7 @@
         "Viitasaari",
         "Äänekoski"
     ],
-    "Etelä-Pohjanmaa": [
+    "Etelä-Pohjanmaan hyvinvointialue": [
         "Alajärvi",
         "Alavus",
         "Evijärvi",
@@ -237,7 +242,7 @@
         "Vimpeli",
         "Ähtäri"
     ],
-    "Pohjanmaa": [
+    "Pohjanmaan hyvinvointialue": [
         "Kaskinen",
         "Korsnäs",
         "Kristiinankaupunki",
@@ -253,7 +258,7 @@
         "Vaasa",
         "Vöyri"
     ],
-    "Keski-Pohjanmaa": [
+    "Keski-Pohjanmaan hyvinvointialue": [
         "Halsua",
         "Kannus",
         "Kaustinen",
@@ -263,7 +268,7 @@
         "Toholampi",
         "Veteli"
     ],
-    "Pohjois-Pohjanmaa": [
+    "Pohjois-Pohjanmaan hyvinvointialue": [
         "Alavieska",
         "Haapajärvi",
         "Haapavesi",
@@ -295,7 +300,7 @@
         "Vaala",
         "Ylivieska"
     ],
-    "Kainuu": [
+    "Kainuun hyvinvointialue": [
         "Hyrynsalmi",
         "Kajaani",
         "Kuhmo",
@@ -305,7 +310,7 @@
         "Sotkamo",
         "Suomussalmi"
     ],
-    "Lappi": [
+    "Lapin hyvinvointialue": [
         "Enontekiö",
         "Inari",
         "Kemi",
@@ -327,6 +332,9 @@
         "Tornio",
         "Utsjoki",
         "Ylitornio"
+    ],
+    "Helsingin kaupunki": [
+        "Helsinki"
     ],
     "Ahvenanmaa": [
         "Brändö",

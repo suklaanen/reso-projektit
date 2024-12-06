@@ -8,7 +8,8 @@ import {
   LogoutFromThisUser,
   MessagingSystem,
   AccountSystem,
-} from "./FindUser";
+  ChangeUsernameOfThisUser,
+  } from "./FindUser";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../assets/styles/Styles";
@@ -32,6 +33,8 @@ export const AccountLoggedIn = () => {
       );
     }
   }
+
+  // handleUsernameChange
 
   if (!authState) {
     return <Text>Ei käyttäjätietoja saatavilla.</Text>;
@@ -66,6 +69,11 @@ export const AccountLoggedIn = () => {
         </View>
 
         <View style={globalStyles.iconWithText}>
+          <IconRemoveUser onPress={() => navigation.navigate('AccountUsername')} />
+          <Text style={globalStyles.textWithIcon}>Vaihda käyttäjänimi</Text>
+        </View>
+
+        <View style={globalStyles.iconWithText}>
           <IconLogout onPress={handleLogout} />
           <Text style={globalStyles.textWithIcon}>Kirjaudu ulos</Text>
         </View>
@@ -79,6 +87,15 @@ export const AccountMaintain = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <DeleteAccountOfThisUser />
+    </ScrollView>
+  );
+};
+
+//käyttäjänimen koodia
+export const AccountUsername = () => {
+  return (
+    <ScrollView contentContainerStyle={{ padding: 8 }}>
+      <ChangeUsernameOfThisUser />
     </ScrollView>
   );
 };
