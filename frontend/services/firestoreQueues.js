@@ -12,6 +12,22 @@ import {
 } from "firebase/firestore";
 import { firestore } from "./firebaseConfig";
 import { Timestamp } from "firebase/firestore";
+import client from "../appwrite";
+
+export const createTaker = async (uid, itemId) => {
+  const userRef = doc(firestore, "users", uid);
+  const data = { itemId, takerId: userRef.path };
+  try {
+    const response = await client.functions.createExecution(
+      "handle-taker-creation",
+      JSON.stringify(data)
+    );
+    return response;
+  } catch (error) {
+    console.error("Virhe:", error.message);
+    throw new Error(error.message);
+  }
+};
 
 export const addTakerToItem = async (uid, itemId) => {
   try {
@@ -135,6 +151,10 @@ export const deleteTakerFromItem = async (uid, itemId) => {
       await deleteDoc(takerDoc.ref);
       console.log(`UID: ${uid} poistanut varauksen:`, takerDoc.id);
     }
+    const response = await client.functions.createExecution(
+      "handle-invalid-threads"
+    );
+    return response;
   } catch (error) {
     console.error("Poistovirhe:", error);
     throw error;

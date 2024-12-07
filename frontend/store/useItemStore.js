@@ -7,10 +7,11 @@ import {
 } from "../services/firestoreItems";
 import {
   addTakerToItem,
+  createTaker,
   deleteTakerFromItem,
   getUserPositionInQueue,
 } from "../services/firestoreQueues";
-import {collection, doc, getDoc, where} from "firebase/firestore";
+import { collection, doc, getDoc, where } from "firebase/firestore";
 import { firestore } from "../services/firebaseConfig";
 
 const PAGE_SIZE = 5;
@@ -65,7 +66,9 @@ const useItemStore = create((set, get) => {
     },
     addUserToQueue: async (userId, itemId) => {
       try {
-        await addTakerToItem(userId, itemId);
+        // await addTakerToItem(userId, itemId);
+        const response = await createTaker(userId, itemId);
+        console.log("Response:", response);
         const queueCount = await fetchQueueCount(itemId);
         const queuePosition = await getUserPositionInQueue(userId, itemId);
         return { queueCount, queuePosition };

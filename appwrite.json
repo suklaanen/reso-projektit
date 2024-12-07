@@ -45,6 +45,21 @@
       "entrypoint": "src/index.js",
       "commands": "npm install",
       "path": "functions"
+    },
+    {
+      "$id": "handle-taker-creation",
+      "name": "handle-taker-creation",
+      "runtime": "node-22",
+      "execute": ["any"],
+      "events": [],
+      "scopes": ["users.read"],
+      "schedule": "",
+      "timeout": 15,
+      "enabled": true,
+      "logging": true,
+      "entrypoint": "src/index.js",
+      "commands": "npm install",
+      "path": "functions"
     }
   ]
 }

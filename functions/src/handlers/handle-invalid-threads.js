@@ -30,12 +30,13 @@ export default async ({ res, log, error }) => {
             return true;
           }
 
-          const takersQuery = await thread.item
+          const takersQuery = await threadDoc
+            .get("item")
             .collection(COLLECTION_TAKERS)
             .where(
               "takerId",
               "in",
-              thread.participants.map((p) => p.id)
+              participantSnapshots.map((snap) => snap.ref)
             )
             .get();
 
