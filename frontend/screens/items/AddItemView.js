@@ -18,62 +18,6 @@ import useItemStore from "../../store/useItemStore";
 import regionsAndCities from "../../components/Sorted-maakunnat.json";
 import placeholderImage from '../../assets/images/kiertis-icon.png'; 
 
-const ItemForm = ({
-  itemData,
-  handleChange,
-  onPress,
-  handleCitySelection,
-  showSuggestions,
-  filteredCities,
-  placeholderImage
-}) => {
-  return (
-    <>
-      <TextInput
-        style={globalStyles.textItemTitle}
-        placeholder="Otsikko (tuotteen nimi)"
-        value={itemData.name}
-        onChangeText={(value) => handleChange("name", value)}
-      />
-      <TextInput
-        style={globalStyles.textDescription}
-        placeholder="Kuvaus tuotteesta"
-        value={itemData.description}
-        onChangeText={(value) => handleChange("description", value)}
-        multiline
-      />
-      <View style={globalStyles.imageContainer}>
-                <Image 
-                    style={globalStyles.placeholderImage}
-                    source={placeholderImage}
-                />
-                <Text style={globalStyles.imageText}>Tuotekuva</Text>
-            </View> 
-      <TextInput
-        style={globalStyles.textItemTitle}
-        placeholder="Paikkakunta (tuotteen sijainti)"
-        value={itemData.city}
-        onChangeText={(value) => handleChange("city", value)}
-      />
-
-      {showSuggestions && (
-        <ScrollView style={globalStyles.suggestionsList}>
-          {filteredCities.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => handleCitySelection(item)}
-            >
-              <Text style={globalStyles.autocompleteItem}>{item}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-
-      <ButtonAdd title="Julkaise" onPress={onPress} color="#4CAF50" />
-    </>
-  );
-};
-
 export const AddItemView = () => {
   const [itemData, setItemData] = useState({
     name: "",
@@ -155,9 +99,63 @@ export const AddItemView = () => {
           showSuggestions={showSuggestions}
           filteredCities={filteredCities}
           handleCitySelection={handleCitySelection}
-          placeholderImageUrl={placeholderImageUrl}
         />
       </View>
     </ScrollView>
+  );
+};
+
+const ItemForm = ({
+  itemData,
+  handleChange,
+  onPress,
+  handleCitySelection,
+  showSuggestions,
+  filteredCities,
+}) => {
+  return (
+    <>
+      <TextInput
+        style={globalStyles.textItemTitle}
+        placeholder="Otsikko (tuotteen nimi)"
+        value={itemData.name}
+        onChangeText={(value) => handleChange("name", value)}
+      />
+      <TextInput
+        style={globalStyles.textDescription}
+        placeholder="Kuvaus tuotteesta"
+        value={itemData.description}
+        onChangeText={(value) => handleChange("description", value)}
+        multiline
+      />
+      <View style={globalStyles.imageContainer}>
+                <Image 
+                    style={globalStyles.placeholderImage}
+                    source={placeholderImage}
+                />
+                <Text style={globalStyles.imageText}>Tuotekuva</Text>
+            </View> 
+      <TextInput
+        style={globalStyles.textItemTitle}
+        placeholder="Paikkakunta (tuotteen sijainti)"
+        value={itemData.city}
+        onChangeText={(value) => handleChange("city", value)}
+      />
+
+      {showSuggestions && (
+        <ScrollView style={globalStyles.suggestionsList}>
+          {filteredCities.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleCitySelection(item)}
+            >
+              <Text style={globalStyles.autocompleteItem}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
+
+      <ButtonAdd title="Julkaise" onPress={onPress} color="#4CAF50" />
+    </>
   );
 };
