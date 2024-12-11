@@ -16,6 +16,8 @@ export const UserItemsView = () => {
   const [someoneOnQueue, setSomeoneOnQueue] = useState(false);
 
   const handleDelete = async (itemId) => {
+    console.log("Poistetaan itemiä", itemId);
+
     try {
       await removeItem(itemId);
       console.log(`Item ${itemId} poistettu.`);
@@ -53,8 +55,7 @@ export const UserItemsView = () => {
       <Heading title="Omat ilmoitukset" />
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={globalStyles.iconContainer}
-      >
+        style={globalStyles.iconContainer}>
         <View style={globalStyles.iconTextContainer}>
           <Icon name="arrow-back" size={30} color="#000" />
           <Text style={globalStyles.iconText}>Takaisin</Text>
@@ -79,7 +80,7 @@ export const UserItemsView = () => {
                 key={item.id}
                 item={item}
                 showActions={true}
-                onRemove={handleDelete}
+                onRemove={() => handleDelete(item.id)}
                 someoneOnQueue={someoneOnQueue}
                 queueUsernames={queueUsernames}
               />

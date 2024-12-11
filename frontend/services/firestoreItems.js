@@ -20,7 +20,7 @@ import { Timestamp } from 'firebase/firestore';
 import regionsAndCities from '../components/Sorted-maakunnat.json';
 import { getUserData } from './firestoreUsers';
 
-    export const addItemToFirestore = async (uid, itemname, itemdescription, city, imageUrl ) => {
+    export const addItemToFirestore = async (uid, itemname, itemdescription, city, imageUrl, image ) => {
 
         if (!itemname || !itemdescription || !city || !imageUrl) {
             console.error('Virhe: Yksi tai useampi kenttä on tyhjä!');
@@ -51,6 +51,7 @@ import { getUserData } from './firestoreUsers';
             itemname,
             itemdescription,
             imageUrl,
+            image,
             city,
             giverid: giverRef,
             givername: giverUsername,

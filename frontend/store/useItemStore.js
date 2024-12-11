@@ -87,14 +87,15 @@ const useItemStore = create((set, get) => {
       }
     },
 
-    addItem: async ({ userId, itemname, itemdescription, city, imageUrl }) => {
+    addItem: async ({ userId, itemname, itemdescription, city, imageUrl, image }) => {
       try {
         const id = await addItemToFirestore(
           userId,
           itemname,
           itemdescription,
           city,
-          imageUrl
+          imageUrl,
+          image
         );
         const itemCollectionRef = collection(firestore, "items");
         const itemSnap = await getDoc(doc(itemCollectionRef, id));

@@ -8,14 +8,11 @@ import useItemStore from "../../store/useItemStore";
 import { fetchQueueCount } from "../../services/firestoreItems";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/Ionicons";
-import {
-  ButtonCancel,
-  ButtonConfirm,
-} from "../../components/Buttons";
+import { ButtonCancel, ButtonConfirm } from "../../components/Buttons";
 import { LoadingIndicator } from "../../components/LoadingIndicator";
 import { useRoute } from "@react-navigation/native";
-import {IconChat, IconTrash} from "../../components/Icons";
-import Constants from 'expo-constants';
+import { IconChat, IconTrash } from "../../components/Icons";
+import Constants from "expo-constants";
 
 export const ItemCard = ({
   item,
@@ -57,7 +54,13 @@ export const ItemCard = ({
   );
 };
 
-const ActionButtons = ({ isConfirmDeleteVisible, onRemove, onToggle, queueUsernames, item }) => (
+const ActionButtons = ({
+  isConfirmDeleteVisible,
+  onRemove,
+  onToggle,
+  queueUsernames,
+  item,
+}) => (
   <View style={globalStyles.viewButtons}>
     {isConfirmDeleteVisible ? (
       <>
@@ -80,34 +83,39 @@ const ItemDetails = ({ item }) => {
   const routeName = useRoute().name;
 
   const getExpoServerUrl = (url) => {
-        if (!url) return url;    
-        // Jos URL on jo täysi (alkaa 'http://')
-        const isFullUrl = /^http:\/\//.test(url);
-        if (isFullUrl) {
-            // Jos URL on täysi ja sisältää Expo-palvelimen IP-osoitteen, ei tarvitse muuttaa
-            const expoServerIp = Constants.expoGoConfig.debuggerHost.split(':')[0];
-            if (url.includes(expoServerIp)) {
-                return url; // Palautetaan alkuperäinen URL, jos Expo-palvelimen IP löytyy jo
-            } else {
-                // Jos Expo-palvelimen IP ei ole mukana, muokkaa se
-                return url.replace(/http:\/\/[^/]+/, `http://${expoServerIp}:8081`);
-            }
-        }
-    
-        // Jos URL on suhteellinen (alkaa '/assets'), muutetaan se Expo-palvelimen URL:ksi
-        if (url.startsWith('/assets')) {
-            const expoServerIp = Constants.expoGoConfig.debuggerHost.split(':')[0];
-            return `http://${expoServerIp}:8081${url}`;  // Muodostetaan URL Expo-palvelimelle
-        }
-    
-        // Muutoin palautetaan alkuperäinen URL
-        return url;
-    };
+    if (!url) return url;
+    // Jos URL on jo täysi (alkaa 'http://')
+    const isFullUrl = /^http:\/\//.test(url);
+    if (isFullUrl) {
+      // Jos URL on täysi ja sisältää Expo-palvelimen IP-osoitteen, ei tarvitse muuttaa
+      const expoServerIp = Constants.expoGoConfig.debuggerHost.split(":")[0];
+      if (url.includes(expoServerIp)) {
+        return url; // Palautetaan alkuperäinen URL, jos Expo-palvelimen IP löytyy jo
+      } else {
+        // Jos Expo-palvelimen IP ei ole mukana, muokkaa se
+        return url.replace(/http:\/\/[^/]+/, `http://${expoServerIp}:8081`);
+      }
+    }
+
+    // Jos URL on suhteellinen (alkaa '/assets'), muutetaan se Expo-palvelimen URL:ksi
+    if (url.startsWith("/assets")) {
+      const expoServerIp = Constants.expoGoConfig.debuggerHost.split(":")[0];
+      return `http://${expoServerIp}:8081${url}`; // Muodostetaan URL Expo-palvelimelle
+    }
+
+    // Muutoin palautetaan alkuperäinen URL
+    return url;
+  };
 
   return (
     <>
       <Text style={globalStyles.itemName}>{item.itemname}</Text>
-      <Image source={{ uri: getExpoServerUrl(item.imageUrl) }} style={globalStyles.itemImage} />
+      <Image
+        source={{
+          uri: item.image ? item.image : getExpoServerUrl(item.imageUrl),
+        }}
+        style={globalStyles.itemImage}
+      />
       {console.log(getExpoServerUrl(item.imageUrl))}
       <Text>{item.itemdescription}</Text>
       <Text>Paikkakunta: {item.city}</Text>
@@ -190,8 +198,7 @@ const ItemJoinOnQueue = ({ itemId }) => {
           <TouchableOpacity
             onPress={handleSaveForQueue}
             disabled={onQueue}
-            style={globalStyles.iconButton}
-          >
+            style={globalStyles.iconButton}>
             <Icon
               name="checkmark-circle"
               color={onQueue ? "#bdbdbd" : "#195010"}
@@ -202,8 +209,7 @@ const ItemJoinOnQueue = ({ itemId }) => {
           <TouchableOpacity
             onPress={handleDeleteFromQueue}
             disabled={!onQueue}
-            style={globalStyles.iconButton}
-          >
+            style={globalStyles.iconButton}>
             <Icon
               name="close-circle"
               color={!onQueue ? "#bdbdbd" : "#790809"}

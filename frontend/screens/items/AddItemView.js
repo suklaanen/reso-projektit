@@ -10,13 +10,17 @@ import {
   View,
   Text,
   Image,
+  Pressable,
 } from "react-native";
 import globalStyles from "../../assets/styles/Styles";
 import { Heading } from "../../components/CommonComponents";
 import { ButtonAdd } from "../../components/Buttons";
 import useItemStore from "../../store/useItemStore";
 import regionsAndCities from "../../components/Sorted-maakunnat.json";
-import placeholderImage from '../../assets/images/kiertis-icon.png'; 
+import placeholderImage from "../../assets/images/kiertis-icon.png";
+import { storage } from "../../appwrite";
+import { Role, Permission } from "react-native-appwrite";
+import * as ImagePicker from "expo-image-picker";
 
 export const AddItemView = () => {
   const [itemData, setItemData] = useState({
@@ -26,6 +30,7 @@ export const AddItemView = () => {
   });
   const [filteredCities, setFilteredCities] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [pickedImage, setPickedImage] = useState(null);
   const allCities = Object.values(regionsAndCities).flat();
   const navigation = useNavigation();
   const { user } = useAuth();
@@ -41,24 +46,63 @@ export const AddItemView = () => {
       return;
     }
 
+    console.log("pickedImage", pickedImage);
+
     try {
+      let uploaded = await storage.createFile(
+        "images",
+        "unique()",
+        pickedImage,
+        [Permission.read(Role.any())]
+      );
+
+      const url = storage.getFileView("images", uploaded.$id);
+      console.log("Uploaded file:", uploaded);
+      console.log("File URL:", url);
+
       await addItem({
         userId: user.id,
         itemname: itemData.name,
         itemdescription: itemData.description,
         city: itemData.city,
-        imageUrl: placeholderImageUrl
+        imageUrl: placeholderImageUrl,
+        image: url.href,
       });
       Toast.show({ type: "success", text1: "Julkaisu lisätty!" });
 
-      navigation.navigate("ItemsMain");
+      navigation.goBack();
     } catch (error) {
+      console.log(error);
+
       Toast.show({
         type: "error",
         text1: "Virhe julkaisua lisättäessä",
         text2: error.message,
       });
     }
+  };
+
+  let pickFile = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      quality: 1,
+      allowsMultipleSelection: false,
+    });
+
+    if (!result.assets) return;
+    console.log("Result:", result);
+
+    const asset = result.assets[0];
+    if (!result.canceled) {
+      let image = {
+        name: asset.fileName,
+        type: asset.mimeType,
+        uri: asset.uri,
+        size: asset.fileSize,
+      };
+      setPickedImage(image);
+    }
+    console.log("Picked images:", pickedImage);
   };
 
   const handleChange = (name, value) => {
@@ -88,8 +132,8 @@ export const AddItemView = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 8 }}>
-      <View style={globalStyles.container}>
+    <View style={globalStyles.container}>
+      <ScrollView contentContainerStyle={{ padding: 8 }}>
         <Heading title="Lisää uusi ilmoitus" />
         <ItemForm
           itemData={itemData}
@@ -99,9 +143,11 @@ export const AddItemView = () => {
           showSuggestions={showSuggestions}
           filteredCities={filteredCities}
           handleCitySelection={handleCitySelection}
+          pickedImage={pickedImage}
+          pickFile={pickFile}
         />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -112,6 +158,8 @@ const ItemForm = ({
   handleCitySelection,
   showSuggestions,
   filteredCities,
+  pickedImage,
+  pickFile,
 }) => {
   return (
     <>
@@ -129,32 +177,33 @@ const ItemForm = ({
         multiline
       />
       <View style={globalStyles.imageContainer}>
-                <Image 
-                    style={globalStyles.placeholderImage}
-                    source={placeholderImage}
-                />
-                <Text style={globalStyles.imageText}>Tuotekuva</Text>
-            </View> 
+        <Pressable onPress={pickFile}>
+          <Image
+            style={globalStyles.placeholderImage}
+            source={
+              pickedImage?.uri ? { uri: pickedImage.uri } : placeholderImage
+            }
+          />
+          <Text style={globalStyles.imageText}>Tuotekuva</Text>
+        </Pressable>
+      </View>
       <TextInput
         style={globalStyles.textItemTitle}
         placeholder="Paikkakunta (tuotteen sijainti)"
         value={itemData.city}
         onChangeText={(value) => handleChange("city", value)}
       />
-
       {showSuggestions && (
         <ScrollView style={globalStyles.suggestionsList}>
           {filteredCities.map((item, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => handleCitySelection(item)}
-            >
+              onPress={() => handleCitySelection(item)}>
               <Text style={globalStyles.autocompleteItem}>{item}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
       )}
-
       <ButtonAdd title="Julkaise" onPress={onPress} color="#4CAF50" />
     </>
   );
