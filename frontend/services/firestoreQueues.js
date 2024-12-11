@@ -152,19 +152,15 @@ export const deleteTakerFromItem = async (uid, itemId) => {
 
         if (taker.expiration) {
           const now = Timestamp.now();
-          await setDoc(takerDoc.ref, { expiration: now });
+          now.seconds -= 60;
+          await setDoc(takerDoc.ref, { expiration: now }, { merge: true });
+          await functions.createExecution("handle-expired-takers");
           console.log(`UID: ${uid} poistanut varauksen:`, takerDoc.id);
-
-          const response = await functions.createExecution(
-            "handle-expired-takers"
-          );
-          console.log(response);
         } else {
           await deleteDoc(takerDoc.ref);
           console.log(`UID: ${uid} poistanut varauksen:`, takerDoc.id);
         }
       }
-
       await functions.createExecution("handle-invalid-threads");
     }
   } catch (error) {

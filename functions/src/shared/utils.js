@@ -61,7 +61,7 @@ export const handleExpiredItem = async (itemDoc) => {
  * @param {FirebaseFirestore.Timestamp} now
  * @param {FirebaseFirestore.DocumentData} takerData
  */
-const setupNextTaker = async (itemRef, now, takerData) => {
+const setupNextTaker = async (itemRef, takerData) => {
   await db.runTransaction(async (transaction) => {
     const nextInLineQuery = await itemRef
       .collection(COLLECTION_TAKERS)
@@ -83,13 +83,13 @@ const setupNextTaker = async (itemRef, now, takerData) => {
     }
 
     const expirationTime = Timestamp.fromMillis(
-      now.toMillis() + TAKER_EXPIRATION_HOURS * 60 * 60 * 1000
+      Timestamp.now().toMillis() + TAKER_EXPIRATION_HOURS * 60 * 60 * 1000
     );
 
     transaction.set(threadRef, {
       participants: [itemData.giverid, nextTakerData.takerId],
       item: itemRef,
-      createdAt: now,
+      createdAt: Timestamp.now(),
     });
 
     transaction.set(nextInLine.ref, {
@@ -108,24 +108,17 @@ export const handleExpiredTaker = async (takerDoc) => {
   const batchManager = new BatchManager();
 
   const itemRef = takerDoc.ref.parent.parent;
+
   if (!itemRef) throw new Error("Virheellinen itemRef");
 
   const takerData = takerDoc.data();
   if (!takerData) throw new Error("Virheellinen takerData");
 
-  const now = Timestamp.now();
+  const thread = await db.doc(takerData.thread.path).get();
 
-  const threads = await db
-    .collection(COLLECTION_THREADS)
-    .where("item", "==", itemRef)
-    .where("participants", "array-contains", takerData.takerId)
-    .get();
+  thread && (await deleteThreadAndMessages(thread, batchManager));
 
-  for (const thread of threads.docs) {
-    await deleteThreadAndMessages(thread, batchManager);
-  }
-
-  await setupNextTaker(itemRef, now, takerData);
+  await setupNextTaker(itemRef, takerData);
 
   await batchManager.delete(takerDoc.ref);
   await batchManager.commit();
