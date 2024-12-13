@@ -86,7 +86,7 @@
 - Tietokanta PostgreSQL, fronttiteknologia Vue.
   - Toteutus meneillään, julkaistaan pian
 
-![image](https://github.com/user-attachments/assets/84a1cdac-1adc-4415-9ad7-3c3f4e2034f2)
+![image](https://github.com/user-attachments/assets/c3576847-1a30-4210-b7fe-9826502e494c)
 
 ----------------------------------------------------------
 ## Peliprojektit
