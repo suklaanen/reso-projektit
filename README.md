@@ -78,8 +78,7 @@
 ----------------------------------------------------------
 ## 2024-Q4-Kavio
 
-- Web-sovelluksena virtuaalitalli, kaikki tiedot fiktiivisiä.
-- Harrastuksen ja koodauksen ilosta rakennettu talli, jonka kaikki tiedot ovat fiktiivisiä ja pohjautuvat yhteisöön, eli mm.
+- Web-sovelluksena harrastuksen ja koodauksen ilosta virtuaalitalli, jonka kaikki tiedot ovat fiktiivisiä ja pohjautuvat yhteisöön, eli mm.
   - Kantaan kerätään ja hankitaan virtuaalihevosia, joita kilpailutetaan ja kasvatetaan
   - Kilpailut ovat eri tallien järjestämiä ja ratkaisultaan yleensä arvontapohjaisia
   - Hevosille muotoutuu pitkänkin linjan sukutaulut ja kilpailuista kerätään dataa
