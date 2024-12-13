@@ -76,3 +76,22 @@
   - Toteutus meneillään, lisää infoa tulossa
 
 ----------------------------------------------------------
+## 2024-Q4-Kavio
+
+- Web-sovelluksena virtuaalitalli, kaikki tiedot fiktiivisiä.
+- Harrastuksen ja koodauksen ilosta rakennettu talli, jonka kaikki tiedot ovat fiktiivisiä ja pohjautuvat yhteisöön, eli mm.
+  - Kantaan kerätään ja hankitaan virtuaalihevosia, joita kilpailutetaan ja kasvatetaan
+  - Kilpailut ovat eri tallien järjestämiä ja ratkaisultaan yleensä arvontapohjaisia
+  - Hevosille muotoutuu pitkänkin linjan sukutaulut ja kilpailuista kerätään dataa
+  - Tässä tallissa kaikki käytetyt assetit on generoitu AI:lla
+- Tietokanta PostgreSQL, fronttiteknologia Vue.
+  - Toteutus meneillään, julkaistaan pian
+
+![image](https://github.com/user-attachments/assets/84a1cdac-1adc-4415-9ad7-3c3f4e2034f2)
+
+----------------------------------------------------------
+## Peliprojektit
+
+- Käynnissä peliprojektia, jonka kautta tarkoituksena on tutustua lisää pelin ja sen lisäosien julkaisu- ja päivitysprosesseihin.
+  - Toteutus meneillään, lisää tietoa myöhemmin
+
