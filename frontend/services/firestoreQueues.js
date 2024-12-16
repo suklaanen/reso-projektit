@@ -12,13 +12,13 @@ import {
 } from "firebase/firestore";
 import { firestore } from "./firebaseConfig";
 import { Timestamp } from "firebase/firestore";
-import client from "../appwrite";
+import { functions } from "../appwrite";
 
 export const createTaker = async (uid, itemId) => {
   const userRef = doc(firestore, "users", uid);
   const data = { itemId, takerId: userRef.path };
   try {
-    const response = await client.functions.createExecution(
+    const response = await functions.createExecution(
       "handle-taker-creation",
       JSON.stringify(data)
     );
@@ -146,15 +146,23 @@ export const itemQueuesForUser = async (uid, itemId) => {
 export const deleteTakerFromItem = async (uid, itemId) => {
   try {
     const querySnapshot = await itemQueuesForUser(uid, itemId);
+    if (querySnapshot) {
+      for (const takerDoc of querySnapshot.docs) {
+        const taker = takerDoc.data();
 
-    for (const takerDoc of querySnapshot.docs) {
-      await deleteDoc(takerDoc.ref);
-      console.log(`UID: ${uid} poistanut varauksen:`, takerDoc.id);
+        if (taker.expiration) {
+          const now = Timestamp.now();
+          now.seconds -= 60;
+          await setDoc(takerDoc.ref, { expiration: now }, { merge: true });
+          await functions.createExecution("handle-expired-takers");
+          console.log(`UID: ${uid} poistanut varauksen:`, takerDoc.id);
+        } else {
+          await deleteDoc(takerDoc.ref);
+          console.log(`UID: ${uid} poistanut varauksen:`, takerDoc.id);
+        }
+      }
+      await functions.createExecution("handle-invalid-threads");
     }
-    const response = await client.functions.createExecution(
-      "handle-invalid-threads"
-    );
-    return response;
   } catch (error) {
     console.error("Poistovirhe:", error);
     throw error;

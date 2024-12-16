@@ -15,9 +15,7 @@ export const useThreadsStore = create((set, get) => ({
   setError: (error) => set({ error }),
 
   addThread: async (threadData) => {
-    console.log("threads state: ", get().threads);
-    const threadId = await addThreadToFirestore(threadData);
-    console.log("threads state after add: ", get().threads);
+    await addThreadToFirestore(threadData);
   },
 
   removeThread: async (threadId) => {

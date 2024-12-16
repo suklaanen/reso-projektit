@@ -22,4 +22,6 @@ const functions = new Functions(client);
 
 const messaging = new Messaging(client);
 
-export default { client, account, databases, storage, functions, messaging };
+export { account, databases, storage, functions, messaging };
+
+export default client;

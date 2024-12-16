@@ -5,40 +5,45 @@ import { Timestamp } from "firebase-admin/firestore";
 
 export default async ({ res, log, error }) => {
   try {
-    const currentTime = Timestamp.now();
+    const takersSnapshot = await db.collectionGroup(COLLECTION_TAKERS).get();
 
-    const takersSnapshot = await db
-      .collectionGroup(COLLECTION_TAKERS)
-      .where("expiration", "<", currentTime)
-      .get();
-
-    const expiredTakers = takersSnapshot.docs;
-
-    if (expiredTakers.length === 0) {
-      log("vanhentuneita varauksia ei löytynyt");
-      return res.json(
-        { message: "Vanhentuneita varauksia ei löytynyt.", processedCount: 0 },
-        200
-      );
+    if (takersSnapshot.empty) {
+      log("varaukset ovat ajan tasalla");
+      return res.json({ message: "Varaukset ovat ajan tasalla." }, 200);
     }
 
-    log(`${expiredTakers.length} vanhentunutta varausta löydetty: `);
+    const expired = takersSnapshot.docs.filter(
+      (doc) => doc.data().expiration && doc.data().expiration <= Timestamp.now()
+    );
+
+    log(`löydetty ${expired.length} vanhentunutta varausta:`);
+    log(
+      expired
+        .map(
+          (doc) =>
+            `\t${doc.id} - ${doc.data().expiration?.toDate("yyyy-MM-dd HH:mm", "fi-FI")}`
+        )
+        .join("\n")
+    );
+
+    let count = 0;
+
     await Promise.all(
-      expiredTakers.map(async (takerDoc) => {
+      expired.map(async (takerDoc) => {
         try {
           await handleExpiredTaker(takerDoc);
-          log(`\t${takerDoc.id} - ${takerDoc.data().expiration?.toDate()}`);
+          log(`\t${takerDoc.id} käsitelty`);
+          count++;
         } catch (err) {
           error(`virhe varauksen ${takerDoc.id} käsittelyssä: `, err);
         }
       })
     );
 
-    log("vanhentuneet varaukset käsitelty");
     return res.json(
       {
         message: "Vanhentuneet varaukset poistettu onnistuneesti.",
-        processedCount: expiredTakers.length,
+        processedCount: count,
       },
       200
     );
