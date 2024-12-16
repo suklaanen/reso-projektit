@@ -63,7 +63,6 @@
   - Viestiketjut lähtevät vanhentuneiden ja peruuntuneiden varausten mukana.
 - Android-toteutus React nativella.
 - Tietokannaksi valikoitui Firestore ja autentikointi Firebasea käyttäen.
-  - Toteutus meneillään
 
 ![image](https://github.com/user-attachments/assets/b946a7b9-d583-492f-bef7-a0a57bccacd0)
 
