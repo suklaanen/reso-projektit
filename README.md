@@ -68,28 +68,23 @@
 
 ----------------------------------------------------------
 
+## Pelikomponenttien arkisto
+
+- Sisältää uudelleenkäytettäviä komponentteja omiin peliprojekteihin, mikä nopeuttaa ja sujuvoittaa pelien tekemistä.
+- Tarkoituksena on siis luoda hyvät pohjat asetuksista lähtien ja näin saada tuotettua laadukkaita indie-pelejä.
+
+----------------------------------------------------------
+
+## Peliprojektit
+
+- Em. komponenttien ohella käynnissä on peliprojektia, jonka kautta tarkoituksena on tutustua lisää pelin ja sen lisäosien julkaisu- ja päivitysprosesseihin.
+  - Lisää tietoa peliprojekteista myöhemmin.
+
+----------------------------------------------------------
+
 ## 2024-Q4-Puistotreffit
 
 - Puistotreffit koirille -mobiilisovellus Androidille.
 - Tavoitteena on tarjota helppokäyttöinen alusta puistotreffien sopimiselle ja leikkiseuran löytämiseksi paikallisiin koirapuistoihin.
-  - Toteutus meneillään, lisää infoa tulossa
-
-----------------------------------------------------------
-## 2024-Q4-Kavio
-
-- Web-sovelluksena harrastuksen ja koodauksen ilosta virtuaalitalli, jonka kaikki tiedot ovat fiktiivisiä ja pohjautuvat yhteisöön, eli mm.
-  - Kantaan kerätään ja hankitaan virtuaalihevosia, joita kilpailutetaan ja kasvatetaan
-  - Kilpailut ovat eri tallien järjestämiä ja ratkaisultaan yleensä arvontapohjaisia
-  - Hevosille muotoutuu pitkänkin linjan sukutaulut ja kilpailuista kerätään dataa
-  - Tässä tallissa kaikki käytetyt assetit on generoitu AI:lla
-- Tietokanta PostgreSQL, fronttiteknologia Vue.
-  - Toteutus meneillään, julkaistaan pian
-
-![image](https://github.com/user-attachments/assets/c3576847-1a30-4210-b7fe-9826502e494c)
-
-----------------------------------------------------------
-## Peliprojektit
-
-- Käynnissä peliprojektia, jonka kautta tarkoituksena on tutustua lisää pelin ja sen lisäosien julkaisu- ja päivitysprosesseihin.
-  - Toteutus meneillään, lisää tietoa myöhemmin
-
+  - Toteutus meneillään, mutta tauolla
+    
