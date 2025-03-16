@@ -70,10 +70,11 @@
 
 ## 2025-Q2-CozyHouseTour
 
-- Peliprojekti, jossa istutan muutamia asetuksiin liittyviä osia mukaan sekä kokeilen samalla, kuinka Sweet Home 3D soveltuu talomallien paketointiin ja tuomiseen mukaan Unreal Engineen.
-- Projekti on vielä keskeneräinen ja lisäilen siihen toimminnallisuutta, mutta on julkaistu varhaisessa vaiheessa ja mukaan on onnistuneesti saatu yksi talomalli.
-- Muut pelilliset toiminnallisuudet, kuten questit ja inventoriot jätin nyt suosiolla pois, sillä halusin tehdä tällaisen yksinkertaisen kävelysimulaattorin, missä ajan komponentteja vähitellen sisään.
-- Pelistä ei vielä ole asennusohjelmaa, mutta on ladattavissa exenä itch.iosta: [Cozy House Tour](https://lejdi.itch.io/cozy-house-tour)
+- Peliprojekti, jossa istutan muutamia asetuksiin liittyviä osia mukaan sekä kokeilen samalla, kuinka Sweet Home 3D soveltuu talomallien paketointiin ja tuomiseen mukaan Unreal Engineen. 
+- Muut pelilliset toiminnallisuudet, kuten questit ja inventoriot jätin suosiolla pois, sillä halusin tehdä tällaisen yksinkertaisen kävelysimulaattorin, missä ajan komponentteja vähitellen sisään.
+  - Varhainen julkaisu ja mukaan on onnistuneesti saatu tässä vaiheessa yksi talomalli.
+  - Projekti on keskeneräinen ja siihen tulee lisää toiminnallisuutta. 
+- Pelistä ei vielä ole asennusohjelmaa. Peli löytyy ladattavana .exenä itch.iosta: [Cozy House Tour](https://lejdi.itch.io/cozy-house-tour)
 
 ![image](https://github.com/user-attachments/assets/5eadcf16-b804-4bb1-a92e-ccb25e13798c)
 
