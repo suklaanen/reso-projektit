@@ -74,7 +74,7 @@
 - Pelillisiä toiminnallisuuksia jätetty pois (_esim. tarina, questit_) sillä halusin tehdä tällaisen yksinkertaisen kävelysimulaattorin, missä aloitan asetuksien tuomisesta.
   - Varhainen julkaisu ja mukaan on onnistuneesti saatu tässä vaiheessa yksi talomalli.
 - Pelistä ei ole vielä asennusohjelmaa. Peli löytyy ladattavana .exenä itch.iosta: [Cozy House Tour](https://lejdi.itch.io/cozy-house-tour)
-- Tässä vaiheessa löytyy jo mm.
+- Tässä vaiheessa rakennettu jo mm.
   - Audio asetukset, joissa säädöt äänille: Master, Music, SFX ja Ambient
   - Peliasetukset, joissa säädöt asetuksille: Invert mouse, Mouse sensitivity, Field of View, Motion blur, Show / Hide HUD
   - Asetusten asettaminen (Apply) ja asetusten palauttaminen (Set to defaults)
@@ -84,10 +84,12 @@
 
 ----------------------------------------------------------
 
-## Peliprojektit
+## Pelikomponenttien arkisto ja projektit
 
-- Em. komponenttien ohella käynnissä on peliprojektia, jonka kautta tarkoituksena on tutustua lisää pelin ja sen lisäosien julkaisu- ja päivitysprosesseihin.
-  - Lisää tietoa peliprojekteista myöhemmin.
+- Arkisto sisältää uudelleenkäytettäviä komponentteja omiin peliprojekteihin, mikä nopeuttaa ja sujuvoittaa pelien tekemistä.
+- Tarkoituksena on luoda hyvät pohjat asetuksista lähtien ja näin saada tuotettua laadukkaita indie-pelejä.
+- Em. komponenttien ohella käynnissä peliprojekteja, jonka kautta tarkoituksena on tutustua lisää pelin ja sen lisäosien julkaisu- ja päivitysprosesseihin.
+  - Lisää tietoa peliprojekteista niiden edetessä. Parhaillaan käynnissä yksi toteutus (Cozy House Tour) ja siitä lisää tietoa ylempänä + itch.iossa. 
 
 ----------------------------------------------------------
 
