@@ -70,12 +70,17 @@
 
 ## 2025-Q1-CozyHouseTour
 
-- Peliprojekti, jossa istutan muutamia asetuksiin liittyviä osia mukaan sekä kokeilen samalla, kuinka Sweet Home 3D soveltuu talomallien paketointiin ja tuomiseen mukaan Unreal Engineen. 
-- Muut pelilliset toiminnallisuudet, kuten questit ja inventoriot jätin suosiolla pois, sillä halusin tehdä tällaisen yksinkertaisen kävelysimulaattorin, missä ajan komponentteja vähitellen sisään.
+- Peliprojekti, jossa lisään vähitellen komponentteja projektipohjaan ja kokeilen samalla, kuinka Sweet Home 3D soveltuu talomallien paketointiin ja tuomiseen mukaan Unreal Engineen. 
+- Pelillisiä toiminnallisuuksia jätetty pois (esim. tarina, questit) sillä halusin tehdä tällaisen yksinkertaisen kävelysimulaattorin, missä aloitan asetuksien tuomisesta.
   - Varhainen julkaisu ja mukaan on onnistuneesti saatu tässä vaiheessa yksi talomalli.
 - Pelistä ei ole vielä asennusohjelmaa. Peli löytyy ladattavana .exenä itch.iosta: [Cozy House Tour](https://lejdi.itch.io/cozy-house-tour)
+- Saatu rakennettua jo mm.
+- Audio asetukset, joissa säädöt äänille: Master, Music, SFX ja Ambient
+- Peliasetukset, joissa säädöt asetuksille: Invert mouse, Mouse sensitivity, Field of View, Motion blur, Show / Hide HUD
+- Asetusten asettaminen (Apply) ja asetusten palauttaminen (Set to defaults)
+  - Käyttäjän määrittämät asetukset säilyvät pelissä ja istunnoissa
 
-![image](https://github.com/user-attachments/assets/5eadcf16-b804-4bb1-a92e-ccb25e13798c)
+![image](https://github.com/user-attachments/assets/5e5e6a1f-6e5c-4b5b-a5ee-315c1ec2a7b6)
 
 ----------------------------------------------------------
 
