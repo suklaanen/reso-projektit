@@ -77,7 +77,9 @@
 - Tässä vaiheessa rakennettu jo mm.
   - Audio asetukset, joissa säädöt äänille: Master, Music, SFX ja Ambient
   - Peliasetukset, joissa säädöt asetuksille: Invert mouse, Mouse sensitivity, Field of View, Motion blur, Show / Hide HUD
+  - Grafiikka-asetuket, joissa säädöt: Window mode (_fullscreen, borderless, windowed_), Resolution (_many_), Scalability (_low, medium, high, epic_)
   - Asetusten asettaminen (Apply) ja asetusten palauttaminen (Set to defaults)
+  - Responsiiviset widgetit skaalautuvat dynaamisesti eri resoluutioiden välillä
   - Käyttäjän määrittämät asetukset säilyvät pelissä ja istunnoissa
 
 ![image](https://github.com/user-attachments/assets/5e5e6a1f-6e5c-4b5b-a5ee-315c1ec2a7b6)
