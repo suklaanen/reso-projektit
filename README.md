@@ -86,18 +86,30 @@
 
 ----------------------------------------------------------
 
-## Pelikomponenttien arkisto ja projektit
+## 2025-Q2-Q3-HoroxAlptraum
 
-- Arkisto sisältää uudelleenkäytettäviä komponentteja omiin peliprojekteihin, mikä nopeuttaa ja sujuvoittaa pelien tekemistä.
-- Tarkoituksena on luoda hyvät pohjat asetuksista lähtien ja näin saada tuotettua laadukkaita indie-pelejä.
-- Em. komponenttien ohella käynnissä peliprojekteja, jonka kautta tarkoituksena on tutustua lisää pelin ja sen lisäosien julkaisu- ja päivitysprosesseihin.
-  - Lisää tietoa peliprojekteista niiden edetessä. Parhaillaan käynnissä yksi toteutus (Cozy House Tour) ja siitä lisää tietoa ylempänä + itch.iossa. 
+- Peliprojekti, jonka genrenä psykologinen kauhu 
+  - Monta tapaa voittaa ja hävitä peli.
+  - Peliin on tehty randomointia eri elementteihin ja tapahtumiin, mikä tuo uudelleenpelattavuutta.
+  - Pelikokemus on erittäin immersiivinen.
+- Toteutin tässä yhteistyöprojektissa seuraavia rooleja ja asioita
+  - Techlead (DevOps) 
+    - Dokumentoin kaiken, mitä tein sekä muodostin samalla projektille Qitlab-wikiä.
+    - Autoin tiimiläisiä gitin haasteiden kanssa, mm. rebasen käytön hallintaa ja koodillisten konfliktien ratkaisemista.
+    - Suunnittelin sekä toteutin pelille pohjan ja päälle monipuolisen interaktio-järjestelmän, johon lähes kaikki tehtävät & keräilyt pelissä nojaavat.
+    - Toteutin peliin laadukkaat ja kattavat asetukset, joiden avulla pelaaja voi vaikuttaa pelikokemukseensa tottumustensa tai tietokoneensa tehon puitteissa.
+    - Huomioin suorituskyvykkyydestä koko projektin etenemisen ajan, jotta kone ei hyytyisi.
+    - Toin DevOps -henkeä mukaan projektiin & tein toistettavasti välttäen turhaa toistoa koodillisissa rakenteissa.
+    - Tein buildit ja järjestin jakelut.
+    - Tein Qt:lla Launcherin, joka lataa pelin asennusohjelman sekä suorittaa asennuksen käyttäjäystävällisesti.
+  - Harjoittelin lisää 3D mallintamista ja animointia.
+- Kaikkiaan mielenkiintoinen projekti, jossa opin paljon uutta sekä jatkoin laatuun tähtäävää työskentelyäni, mikä korostuu myös aiemmissa projekteissani.
 
 ----------------------------------------------------------
 
-## 2024-Q4-Puistotreffit
+## Pelimekaniikkaa uudelleenkäytettävästi
 
-- Puistotreffit koirille -mobiilisovellus Androidille.
-- Tavoitteena on tarjota helppokäyttöinen alusta puistotreffien sopimiselle ja leikkiseuran löytämiseksi paikallisiin koirapuistoihin.
-  - Toteutus meneillään, mutta tauolla
-    
+- Toteutan omaa arkistoa, mikä sisältää uudelleenkäytettäviä mekaniikkaa & komponentteja omiin peliprojekteihin.
+  - Tämä nopeuttaa ja sujuvoittaa pelien tekemistä huomattavasti. 
+- Tarkoituksena on luoda hyvät pohjat asetuksista lähtien ja näin saada tuotettua laadukkaita indie-pelejä.
+- Niiden ohella tavoitteenani on tutustua lisää pelin ja sen lisäosien julkaisu- ja päivitysprosesseihin.
