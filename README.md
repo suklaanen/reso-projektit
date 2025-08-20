@@ -104,6 +104,7 @@
     - Tein Qt:lla Launcherin, joka lataa pelin asennusohjelman sekä suorittaa asennuksen käyttäjäystävällisesti.
   - Harjoittelin lisää 3D mallintamista ja animointia.
 - Kaikkiaan mielenkiintoinen projekti, jossa opin paljon uutta sekä jatkoin laatuun tähtäävää työskentelyäni, mikä korostuu myös aiemmissa projekteissani.
+- Pelin kehityspolku gitissä on &#x1F512;, buildi julkaistu itch.iossa:  [Horox: Alptraum](https://lejdi.itch.io/horoxalptraum)
 
 ![alt text](image.png)
 
