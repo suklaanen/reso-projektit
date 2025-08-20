@@ -105,6 +105,8 @@
   - Harjoittelin lisää 3D mallintamista ja animointia.
 - Kaikkiaan mielenkiintoinen projekti, jossa opin paljon uutta sekä jatkoin laatuun tähtäävää työskentelyäni, mikä korostuu myös aiemmissa projekteissani.
 
+![alt text](image.png)
+
 ----------------------------------------------------------
 
 ## Pelimekaniikkaa uudelleenkäytettävästi
