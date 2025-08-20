@@ -70,17 +70,17 @@
 
 ## 2025-Q1-CozyHouseTour
 
-- Peliprojekti, jossa lisään vähitellen komponentteja projektipohjaan ja kokeilen samalla, kuinka Sweet Home 3D soveltuu talomallien paketointiin ja tuomiseen mukaan Unreal Engineen. 
-- Pelillisiä toiminnallisuuksia jätetty pois (_esim. tarina, questit_) sillä halusin tehdä tällaisen yksinkertaisen kävelysimulaattorin, missä aloitan asetuksien tuomisesta.
-  - Varhainen julkaisu ja mukaan on onnistuneesti saatu tässä vaiheessa yksi talomalli.
-- Pelistä ei ole vielä asennusohjelmaa. Peli löytyy ladattavana .exenä itch.iosta: [Cozy House Tour](https://lejdi.itch.io/cozy-house-tour)
-- Tässä vaiheessa rakennettu jo mm.
-  - Audio asetukset, joissa säädöt äänille: Master, Music, SFX ja Ambient
-  - Peliasetukset, joissa säädöt asetuksille: Invert mouse, Mouse sensitivity, Field of View, Motion blur, Show / Hide HUD
-  - Grafiikka-asetuket, joissa säädöt: Window mode (_fullscreen, borderless, windowed_), Resolution (_many_), Scalability (_low, medium, high, epic_)
-  - Asetusten asettaminen (Apply) ja asetusten palauttaminen (Set to defaults)
-  - Responsiiviset widgetit skaalautuvat dynaamisesti eri resoluutioiden välillä
-  - Käyttäjän määrittämät asetukset säilyvät pelissä ja istunnoissa
+- Erittäin pienimuotoinen peliprojekti, jossa lisäsin muutaman osan projektipohjaan ja kokeilin samalla, kuinka Sweet Home 3D soveltuu talomallien paketointiin ja tuomiseen mukaan Unreal Engineen. 
+- Pelillisiä toiminnallisuuksia jätin pois (_esim. tarina, questit_) sillä halusin tehdä tällaisen yksinkertaisen kävelysimulaattorin ja aloittaa asetuksien tuomisesta.
+  - Totesin, että suunnitteluohjelman talomallin tuominen pelimoottoriin on varsin helppoa.
+- Ladattava exe -tiedosto löytyy itch.iosta, mutta en tätä kokeilun nimissä laajemmin jakele.
+- Tekniset ja tärkeät pointit, joita tein projektipohjaan (C++ & Blueprint):
+  - Audio asetukset, joissa säädöt äänille: Master, Music, SFX ja Ambient.
+  - Peliasetukset, joissa säädöt asetuksille: Invert mouse, Mouse sensitivity, Field of View, Motion blur, Show / Hide HUD.
+  - Grafiikka-asetuket, joissa säädöt: Window mode (_fullscreen, borderless, windowed_), Resolution (_many_), Scalability (_low, medium, high, epic_).
+  - Asetusten asettaminen (Apply) ja asetusten palauttaminen (Set to defaults).
+  - Responsiiviset widgetit skaalautuvat dynaamisesti eri resoluutioiden välillä.
+  - Käyttäjän määrittämät asetukset säilyvät pelissä ja istunnoissa.
 
 ![image](https://github.com/user-attachments/assets/5e5e6a1f-6e5c-4b5b-a5ee-315c1ec2a7b6)
 
@@ -94,7 +94,7 @@
   - Pelikokemus on erittäin immersiivinen.
 - Toteutin tässä yhteistyöprojektissa seuraavia rooleja ja asioita
   - Techlead (DevOps) 
-    - Dokumentoin kaiken, mitä tein sekä muodostin samalla projektille Qitlab-wikiä.
+    - Dokumentoin kaiken, mitä tein sekä muodostin samalla projektille Gitlab-wikiä.
     - Autoin tiimiläisiä gitin haasteiden kanssa, mm. rebasen käytön hallintaa ja koodillisten konfliktien ratkaisemista.
     - Suunnittelin sekä toteutin pelille pohjan ja päälle monipuolisen interaktio-järjestelmän, mihin lähes kaikki tehtävät & keräilyt pelissä nojaavat.
     - Toteutin peliin laadukkaat ja kattavat asetukset. Niiden avulla pelaaja voi vaikuttaa pelikokemukseensa tottumustensa tai tietokoneensa tehon puitteissa.
