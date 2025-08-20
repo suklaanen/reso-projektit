@@ -88,7 +88,7 @@
 
 ## 2025-Q2-Q3-HoroxAlptraum
 
-- Peliprojekti, jonka genrenä psykologinen kauhu 
+- Peliprojekti, genrenä psykologinen kauhu
   - Monta tapaa voittaa ja hävitä peli.
   - Peliin on tehty randomointia eri elementteihin ja tapahtumiin, mikä tuo uudelleenpelattavuutta.
   - Pelikokemus on erittäin immersiivinen.
@@ -96,9 +96,9 @@
   - Techlead (DevOps) 
     - Dokumentoin kaiken, mitä tein sekä muodostin samalla projektille Qitlab-wikiä.
     - Autoin tiimiläisiä gitin haasteiden kanssa, mm. rebasen käytön hallintaa ja koodillisten konfliktien ratkaisemista.
-    - Suunnittelin sekä toteutin pelille pohjan ja päälle monipuolisen interaktio-järjestelmän, johon lähes kaikki tehtävät & keräilyt pelissä nojaavat.
-    - Toteutin peliin laadukkaat ja kattavat asetukset, joiden avulla pelaaja voi vaikuttaa pelikokemukseensa tottumustensa tai tietokoneensa tehon puitteissa.
-    - Huomioin suorituskyvykkyydestä koko projektin etenemisen ajan, jotta kone ei hyytyisi.
+    - Suunnittelin sekä toteutin pelille pohjan ja päälle monipuolisen interaktio-järjestelmän, mihin lähes kaikki tehtävät & keräilyt pelissä nojaavat.
+    - Toteutin peliin laadukkaat ja kattavat asetukset. Niiden avulla pelaaja voi vaikuttaa pelikokemukseensa tottumustensa tai tietokoneensa tehon puitteissa.
+    - Huomioin suorituskyvykkyydestä koko projektin etenemisen ajan, jotta kenenkään kone ei hyytyisi.
     - Toin DevOps -henkeä mukaan projektiin & tein toistettavasti välttäen turhaa toistoa koodillisissa rakenteissa.
     - Tein buildit ja järjestin jakelut.
     - Tein Qt:lla Launcherin, joka lataa pelin asennusohjelman sekä suorittaa asennuksen käyttäjäystävällisesti.
