@@ -98,9 +98,9 @@
     - Autoin tiimiläisiä gitin haasteiden kanssa, mm. rebasen käytön hallintaa ja koodillisten konfliktien ratkaisemista.
     - Suunnittelin sekä toteutin pelille pohjan ja päälle monipuolisen interaktio-järjestelmän, mihin lähes kaikki tehtävät & keräilyt pelissä nojaavat.
     - Toteutin peliin laadukkaat ja kattavat asetukset. Niiden avulla pelaaja voi vaikuttaa pelikokemukseensa tottumustensa tai tietokoneensa tehon puitteissa.
-    - Huomioin suorituskyvykkyydestä koko projektin etenemisen ajan, jotta kenenkään kone ei hyytyisi.
+    - Pidin huolta suorituskyvykkyydestä koko projektin etenemisen ajan, jotta kenenkään kone ei hyytyisi.
     - Toin DevOps -henkeä mukaan projektiin & tein toistettavasti välttäen turhaa toistoa koodillisissa rakenteissa.
-    - Tein buildit ja järjestin jakelut.
+    - Rakensin buildit ja järjestin jakelut.
     - Tein Qt:lla Launcherin, joka lataa pelin asennusohjelman sekä suorittaa asennuksen käyttäjäystävällisesti.
   - Harjoittelin lisää 3D mallintamista ja animointia.
 - Kaikkiaan mielenkiintoinen projekti, jossa opin paljon uutta sekä jatkoin laatuun tähtäävää työskentelyäni, mikä korostuu myös aiemmissa projekteissani.
